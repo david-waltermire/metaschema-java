@@ -27,9 +27,9 @@
 package gov.nist.secauto.metaschema.databind.io;
 
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -45,20 +45,22 @@ public enum Format {
   /**
    * The <a href="https://www.w3.org/XML/">Extensible Markup Language</a> format.
    */
-  XML(Set.of(".xml")),
+  XML(".xml", Set.of()),
   /**
    * The <a href="https://www.json.org/">JavaScript Object Notation</a> format.
    */
-  JSON(Set.of(".json")),
+  JSON(".json", Set.of()),
   /**
    * The <a href="https://yaml.org/">YAML Ain't Markup Language</a> format.
    */
-  YAML(Set.of(".yml", ".yaml"));
+  YAML(".yaml", Set.of(".yml"));
 
   private static final List<String> NAMES;
 
   @NonNull
-  private final Set<String> defaultExtensions;
+  private final String defaultExtension;
+  @NonNull
+  private final Set<String> recognizedExtensions;
 
   static {
     NAMES = Arrays.stream(values())
@@ -76,8 +78,14 @@ public enum Format {
     return NAMES;
   }
 
-  Format(Set<String> defaultExtensions) {
-    this.defaultExtensions = CollectionUtil.unmodifiableSet(ObjectUtils.requireNonNull(defaultExtensions));
+  Format(@NonNull String defaultExtension, Set<String> otherExtensions) {
+    this.defaultExtension = defaultExtension;
+
+    Set<String> recognizedExtensions = new HashSet<>();
+    recognizedExtensions.add(defaultExtension);
+    recognizedExtensions.addAll(otherExtensions);
+
+    this.recognizedExtensions = CollectionUtil.unmodifiableSet(recognizedExtensions);
   }
 
   /**
@@ -86,7 +94,17 @@ public enum Format {
    * @return the default extension
    */
   @NonNull
-  public Set<String> getDefaultExtension() {
-    return defaultExtensions;
+  public Set<String> getRecognizedExtensions() {
+    return recognizedExtensions;
+  }
+
+  /**
+   * Get the default extension to use for the format.
+   *
+   * @return the default extension
+   */
+  @NonNull
+  public String getDefaultExtension() {
+    return defaultExtension;
   }
 }
