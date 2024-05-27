@@ -8,86 +8,70 @@
 		<artifactId>oss-parent</artifactId>
 		<version>28-SNAPSHOT</version>
 	</parent>
-	<groupId>gov.nist.secauto.metaschema</groupId>
-	<artifactId>metaschema-framework</artifactId>
+	<groupId>dev.metaschema</groupId>
+	<artifactId>metaschema-java-parent</artifactId>
 	<version>1.0.0-M2-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Metaschema Framework Parent</name>
-	<description>A common build root for all NIST Java projects related to the
-		Metaschema framework.</description>
+	<name>Metaschema Framework Java Implementation Parent</name>
+	<description>A collection of Java projects supporting use of the Metaschema Framework for information modeling and working with Metaschema module-based data. This project was started at the National Institute of Standards and Technology. In the time since, this project has evolved into an open source, implementation-driven effort contributed to and used by many organizations.</description>
 	<url>${site.url}</url>
 	<issueManagement>
-		<url>https://github.com/usnistgov/metaschema-java/issues</url>
+		<url>https://github.com/metaschema-framework/metaschema-java/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 	<scm>
-		<url>https://github.com/usnistgov/metaschema-java/tree/main</url>
-		<connection>scm:git:git@github.com/usnistgov/metaschema-java.git</connection>
+		<url>https://github.com/metaschema-framework/metaschema-java/tree/main</url>
+		<connection>
+			scm:git:git@github.com/metaschema-framework/metaschema-java.git</connection>
 		<developerConnection>
-			scm:git:git@github.com:usnistgov/metaschema-java.git</developerConnection>
+			scm:git:git@github.com:metaschema-framework/metaschema-java.git</developerConnection>
 		<tag>v0.12.0</tag>
 	</scm>
 	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-		<site>
-			<id>nist-pages</id>
+        <site>
+			<id>website</id>
 			<url>${site.url}</url>
 		</site>
 	</distributionManagement>
 	<licenses>
 		<license>
-			<name>NIST License</name>
-			<url>https://www.nist.gov/director/licensing</url>
+			<name>The CC0 Public Domain Dedication</name>
+			<url>https://creativecommons.org/publicdomain/zero/1.0/legalcode</url>
 			<distribution>repo</distribution>
-			<comments>NIST software License</comments>
+			<comments>This project continues to provide open source under the CC0 license originally used by NIST for previous revisions of this project. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.</comments>
 		</license>
 	</licenses>
 	<organization>
-		<name>National Institute of Standards and Technology</name>
-		<url>https://www.nist.gov</url>
+		<name>metaschema.dev</name>
+		<url>https://metaschema.dev</url>
 	</organization>
 	<developers>
 		<developer>
-			<id>david.waltermire@nist.gov</id>
+			<id>davewaltermire@gmail.com</id>
 			<name>David Waltermire</name>
-			<email>david.waltermire@nist.gov</email>
-			<organization>National Institute of Standards and Technology</organization>
+			<email>davewaltermire@gmail.com</email>
+			<organization>metaschema.dev</organization>
 			<roles>
 				<role>architect</role>
 				<role>developer</role>
 				<role>maintainer</role>
 			</roles>
 		</developer>
+        <developer>
+            <id>david.waltermire@nist.gov</id>
+            <name>David Waltermire</name>
+            <organization>National Institute of Standards and Technology</organization>
+            <roles>
+				<role>creator</role>
+			</roles>
+		</developer>
 	</developers>
-	<mailingLists>
-		<mailingList>
-			<name>OSCAL NIST Team</name>
-			<post>oscal@nist.gov</post>
-		</mailingList>
-		<mailingList>
-			<name>OSCAL Project Development Discussion</name>
-			<post>oscal-dev@nist.gov</post>
-			<subscribe>oscal-dev-join@nist.gov</subscribe>
-			<unsubscribe>oscal-dev-leave@nist.gov</unsubscribe>
-		</mailingList>
-		<mailingList>
-			<name>OSCAL Project Updates</name>
-			<subscribe>oscal-updates-join@nist.gov</subscribe>
-			<unsubscribe>oscal-updates-leave@nist.gov</unsubscribe>
-		</mailingList>
-	</mailingLists>
 	<properties>
 		<!-- site configuration -->
-		<site.url>https://pages.nist.gov/metaschema-java/</site.url>
-		<scm.url>https://github.com/usnistgov/metaschema-java</scm.url>
-		<issueManagement.url>https://github.com/usnistgov/metaschema-java/issues</issueManagement.url>
+		<site.url>https://metaschema-java.metaschema.dev/</site.url>
+		<scm.url>https://github.com/david-waltermire/metaschema-java</scm.url>
+		<issueManagement.url>
+			https://github.com/david-waltermire/metaschema-java/issues</issueManagement.url>
 		<!--
 		================================================================================ -->
 		<!-- Web dependencies version -->
@@ -793,4 +777,53 @@
 		<!-- <module>metaschema-freemarker-support</module> -->
 		<!-- <module>metaschema-documentation-generator</module> -->
 	</modules>
+	<profiles>
+		<profile>
+			<id>github</id>
+			<activation>
+				<property>
+					<name>!deployOSSRH</name>
+				</property>
+			</activation>
+			<distributionManagement>
+				<snapshotRepository>
+					<id>github</id>
+					<name>GitHub Packages</name>
+					<url>
+						https://maven.pkg.github.com/david-waltermire/metaschema-java</url>
+				</snapshotRepository>
+				<repository>
+					<id>github</id>
+					<name>GitHub Packages</name>
+					<url>
+						https://maven.pkg.github.com/david-waltermire/metaschema-java</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+		<profile>
+			<id>ossrh</id>
+			<activation>
+				<property>
+					<name>deployOSSRH</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<distributionManagement>
+				<snapshotRepository>
+					<id>ossrh</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+				</snapshotRepository>
+				<repository>
+					<id>ossrh</id>
+					<url>
+						https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+				</repository>
+				<site>
+					<id>website</id>
+					<url>${site.url}</url>
+				</site>
+			</distributionManagement>
+
+		</profile>
+	</profiles>
 </project>
