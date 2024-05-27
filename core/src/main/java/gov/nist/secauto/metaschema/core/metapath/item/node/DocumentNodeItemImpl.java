@@ -75,4 +75,9 @@ class DocumentNodeItemImpl
   public ModelContainer getModel() {
     return model.get();
   }
+
+  @Override
+  public Object getValue() {
+    return getRootAssemblyNodeItem().getValue();
+  }
 }

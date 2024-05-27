@@ -38,7 +38,7 @@ import javax.xml.namespace.QName;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-public interface IDocumentNodeItem extends INodeItem, IFeatureNoDataItem {
+public interface IDocumentNodeItem extends INodeItem {
   @Override
   default NodeItemType getNodeItemType() {
     return NodeItemType.DOCUMENT;
