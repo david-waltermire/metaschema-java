@@ -31,6 +31,7 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.ServiceLoader;
 import java.util.ServiceLoader.Provider;
+import java.util.stream.Stream;
 
 import javax.xml.namespace.QName;
 
@@ -64,7 +65,7 @@ public final class FunctionService {
     FunctionLibrary functionLibrary = new FunctionLibrary();
     loader.stream()
         .map(Provider<IFunctionLibrary>::get)
-        .flatMap(IFunctionLibrary::getFunctionsAsStream)
+        .flatMap(IFunctionLibrary::stream)
         .forEachOrdered(function -> functionLibrary.registerFunction(ObjectUtils.notNull(function)));
     this.library = functionLibrary;
   }
@@ -77,6 +78,10 @@ public final class FunctionService {
   @NonNull
   private ServiceLoader<IFunctionLibrary> getLoader() {
     return loader;
+  }
+
+  public Stream<IFunction> stream() {
+    return this.library.stream();
   }
 
   /**

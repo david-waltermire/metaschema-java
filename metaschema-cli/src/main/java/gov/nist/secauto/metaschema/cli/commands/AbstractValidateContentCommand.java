@@ -80,7 +80,7 @@ public abstract class AbstractValidateContentCommand
   private static final String COMMAND = "validate";
   @NonNull
   private static final List<ExtraArgument> EXTRA_ARGUMENTS = ObjectUtils.notNull(List.of(
-      new DefaultExtraArgument("file to validate", true)));
+      new DefaultExtraArgument("file-or-URI-to-validate", true)));
 
   @NonNull
   private static final Option AS_OPTION = ObjectUtils.notNull(
@@ -189,7 +189,7 @@ public abstract class AbstractValidateContentCommand
       IBoundLoader loader = bindingContext.newBoundLoader();
 
       List<String> extraArgs = cmdLine.getArgList();
-      // @SuppressWarnings("null")
+
       String sourceName = extraArgs.get(0);
       URI source;
 

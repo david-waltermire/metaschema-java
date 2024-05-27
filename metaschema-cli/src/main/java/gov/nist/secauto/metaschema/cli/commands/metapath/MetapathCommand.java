@@ -24,46 +24,26 @@
  * OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
  */
 
-package gov.nist.secauto.metaschema.cli;
+package gov.nist.secauto.metaschema.cli.commands.metapath;
 
-import gov.nist.secauto.metaschema.cli.commands.MetaschemaCommands;
-import gov.nist.secauto.metaschema.cli.processor.CLIProcessor;
-import gov.nist.secauto.metaschema.cli.processor.ExitStatus;
-import gov.nist.secauto.metaschema.cli.processor.command.CommandService;
-import gov.nist.secauto.metaschema.core.MetaschemaJavaVersion;
-import gov.nist.secauto.metaschema.core.model.MetaschemaVersion;
-import gov.nist.secauto.metaschema.core.util.IVersionInfo;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.cli.processor.command.AbstractParentCommand;
 
-import java.util.List;
+public class MetapathCommand
+    extends AbstractParentCommand {
+  private static final String COMMAND = "metapath";
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-
-@SuppressWarnings("PMD.ShortClassName")
-public final class CLI {
-  public static void main(String[] args) {
-    System.exit(runCli(args).getExitCode().getStatusCode());
+  public MetapathCommand() {
+    super(true);
+    addCommandHandler(new ListFunctionsSubcommand());
   }
 
-  @NonNull
-  public static ExitStatus runCli(String... args) {
-    System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
-
-    List<IVersionInfo> versions = ObjectUtils.notNull(
-        List.of(
-            new MetaschemaJavaVersion(),
-            new MetaschemaVersion()));
-    CLIProcessor processor = new CLIProcessor("metaschema-cli", versions);
-    MetaschemaCommands.COMMANDS.forEach(processor::addCommandHandler);
-
-    CommandService.getInstance().getCommands().stream().forEach(command -> {
-      assert command != null;
-      processor.addCommandHandler(command);
-    });
-    return processor.process(args);
+  @Override
+  public String getName() {
+    return COMMAND;
   }
 
-  private CLI() {
-    // disable construction
+  @Override
+  public String getDescription() {
+    return "Perform a Metapath operation.";
   }
 }

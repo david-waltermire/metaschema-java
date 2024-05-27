@@ -89,7 +89,7 @@ public class FunctionLibrary implements IFunctionLibrary {
   }
 
   @Override
-  public Stream<IFunction> getFunctionsAsStream() {
+  public Stream<IFunction> stream() {
     synchronized (this) {
       return ObjectUtils.notNull(libraryByQName.values().stream().flatMap(NamedFunctionSet::getFunctionsAsStream));
     }

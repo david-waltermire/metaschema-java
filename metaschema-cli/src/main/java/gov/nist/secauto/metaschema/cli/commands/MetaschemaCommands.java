@@ -24,46 +24,21 @@
  * OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
  */
 
-package gov.nist.secauto.metaschema.cli;
+package gov.nist.secauto.metaschema.cli.commands;
 
-import gov.nist.secauto.metaschema.cli.commands.MetaschemaCommands;
-import gov.nist.secauto.metaschema.cli.processor.CLIProcessor;
-import gov.nist.secauto.metaschema.cli.processor.ExitStatus;
-import gov.nist.secauto.metaschema.cli.processor.command.CommandService;
-import gov.nist.secauto.metaschema.core.MetaschemaJavaVersion;
-import gov.nist.secauto.metaschema.core.model.MetaschemaVersion;
-import gov.nist.secauto.metaschema.core.util.IVersionInfo;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.cli.commands.metapath.MetapathCommand;
+import gov.nist.secauto.metaschema.cli.processor.command.ICommand;
 
 import java.util.List;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+public final class MetaschemaCommands {
+  public static final List<ICommand> COMMANDS = List.of(
+      new ValidateModuleCommand(),
+      new GenerateSchemaCommand(),
+      new ValidateContentUsingModuleCommand(),
+      new MetapathCommand());
 
-@SuppressWarnings("PMD.ShortClassName")
-public final class CLI {
-  public static void main(String[] args) {
-    System.exit(runCli(args).getExitCode().getStatusCode());
-  }
-
-  @NonNull
-  public static ExitStatus runCli(String... args) {
-    System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
-
-    List<IVersionInfo> versions = ObjectUtils.notNull(
-        List.of(
-            new MetaschemaJavaVersion(),
-            new MetaschemaVersion()));
-    CLIProcessor processor = new CLIProcessor("metaschema-cli", versions);
-    MetaschemaCommands.COMMANDS.forEach(processor::addCommandHandler);
-
-    CommandService.getInstance().getCommands().stream().forEach(command -> {
-      assert command != null;
-      processor.addCommandHandler(command);
-    });
-    return processor.process(args);
-  }
-
-  private CLI() {
+  private MetaschemaCommands() {
     // disable construction
   }
 }

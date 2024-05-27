@@ -231,7 +231,7 @@ public interface IFunction {
     return ObjectUtils.notNull(String.format("Q{%s}%s(%s) as %s",
         getNamespace(),
         getName(),
-        getArguments().isEmpty() ? "()"
+        getArguments().isEmpty() ? ""
             : getArguments().stream().map(IArgument::toSignature).collect(Collectors.joining(","))
                 + (isArityUnbounded() ? ", ..." : ""),
         getResult().toSignature()));

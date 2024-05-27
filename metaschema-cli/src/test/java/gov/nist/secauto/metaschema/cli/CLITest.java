@@ -141,6 +141,9 @@ public class CLITest {
                 "--as=xml"
             },
             ExitCode.IO_ERROR, java.io.FileNotFoundException.class));
+        add(Arguments.of(
+            new String[] { "metapath", "list-functions" },
+            ExitCode.OK, NO_EXCEPTION_CLASS));
       }
     };
 
