@@ -88,7 +88,7 @@ public class InstanceFlagInline
     this.javaTypeAdapter = ModelUtil.getDataTypeAdapter(
         adapterClass,
         containingDefinition.getBindingContext());
-    this.defaultValue = ModelUtil.resolveNullOrValue(getAnnotation().defaultValue(), this.javaTypeAdapter);
+    this.defaultValue = ModelUtil.resolveDefaultValue(getAnnotation().defaultValue(), this.javaTypeAdapter);
 
     this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
       IValueConstrained retval = new ValueConstraintSet();

@@ -37,8 +37,8 @@ import gov.nist.secauto.metaschema.core.model.INamedModelInstanceGrouped;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.AssemblyModel;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.JsonKey;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonKey;
 
 import java.math.BigInteger;
 

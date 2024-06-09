@@ -98,7 +98,7 @@ public final class InstanceModelFieldComplex
       }
     }
 
-    IGroupAs groupAs = ModelUtil.groupAs(
+    IGroupAs groupAs = ModelUtil.resolveDefaultGroupAs(
         annotation.groupAs(),
         parent.getContainingModule());
     if (annotation.maxOccurs() == -1 || annotation.maxOccurs() > 1) {

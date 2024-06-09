@@ -136,6 +136,6 @@ public class InstanceModelGroupedAssembly
 
   @Override
   public Integer getUseIndex() {
-    return ModelUtil.resolveNullOrInteger(getAnnotation().useIndex());
+    return ModelUtil.resolveDefaultInteger(getAnnotation().useIndex());
   }
 }

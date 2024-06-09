@@ -31,7 +31,7 @@ import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.XmlGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.GroupAs;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.GroupAs;
 
 import javax.xml.namespace.QName;
 

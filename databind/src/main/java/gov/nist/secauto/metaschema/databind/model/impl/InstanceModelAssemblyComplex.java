@@ -91,7 +91,9 @@ public final class InstanceModelAssemblyComplex
       @NonNull IBoundDefinitionModelAssembly definition,
       @NonNull IBoundDefinitionModelAssembly containingDefinition) {
     BoundAssembly annotation = ModelUtil.getAnnotation(javaField, BoundAssembly.class);
-    IGroupAs groupAs = ModelUtil.groupAs(annotation.groupAs(), containingDefinition.getContainingModule());
+    IGroupAs groupAs = ModelUtil.resolveDefaultGroupAs(
+        annotation.groupAs(),
+        containingDefinition.getContainingModule());
     if (annotation.maxOccurs() == -1 || annotation.maxOccurs() > 1) {
       if (IGroupAs.SINGLETON_GROUP_AS.equals(groupAs)) {
         throw new IllegalStateException(String.format("Field '%s' on class '%s' is missing the '%s' annotation.",

@@ -38,8 +38,8 @@ import gov.nist.secauto.metaschema.databind.io.DeserializationFeature;
 import gov.nist.secauto.metaschema.databind.io.Format;
 import gov.nist.secauto.metaschema.databind.io.IDeserializer;
 import gov.nist.secauto.metaschema.databind.io.ISerializer;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA;
 import gov.nist.secauto.metaschema.databind.model.metaschema.BindingModuleLoader;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.METASCHEMA;
 
 import org.junit.jupiter.api.Test;
 
@@ -63,7 +63,7 @@ class MetaschemaModuleMetaschemaTest
         ObjectUtils.notNull(
             Paths.get("../databind-metaschema/src/main/metaschema-bindings/metaschema-metaschema-bindings.xml")),
         null,
-        "gov.nist.secauto.metaschema.databind.model.metaschema.binding.METASCHEMA",
+        ObjectUtils.notNull(METASCHEMA.class.getName()),
         ObjectUtils.notNull(generationDir),
         null);
   }

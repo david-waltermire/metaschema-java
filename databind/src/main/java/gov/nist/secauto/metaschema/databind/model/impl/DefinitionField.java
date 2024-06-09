@@ -222,7 +222,7 @@ public final class DefinitionField
   @Override
   @Nullable
   public Integer getIndex() {
-    return ModelUtil.resolveNullOrInteger(getAnnotation().index());
+    return ModelUtil.resolveDefaultInteger(getAnnotation().index());
   }
 
   @Override
@@ -261,7 +261,7 @@ public final class DefinitionField
       this.javaTypeAdapter = ModelUtil.getDataTypeAdapter(
           this.annotation.typeAdapter(),
           bindingContext);
-      this.defaultValue = ModelUtil.resolveNullOrValue(this.annotation.defaultValue(), this.javaTypeAdapter);
+      this.defaultValue = ModelUtil.resolveDefaultValue(this.annotation.defaultValue(), this.javaTypeAdapter);
     }
 
     /**

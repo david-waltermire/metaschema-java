@@ -174,7 +174,7 @@ public final class DefinitionAssembly
   @Override
   @Nullable
   public Integer getIndex() {
-    return ModelUtil.resolveNullOrInteger(getAnnotation().index());
+    return ModelUtil.resolveDefaultInteger(getAnnotation().index());
   }
 
   @Override
@@ -208,7 +208,7 @@ public final class DefinitionAssembly
   @Override
   @Nullable
   public Integer getRootIndex() {
-    return ModelUtil.resolveNullOrInteger(getAnnotation().rootIndex());
+    return ModelUtil.resolveDefaultInteger(getAnnotation().rootIndex());
   }
 
   // ----------------------------------------

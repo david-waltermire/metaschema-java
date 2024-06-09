@@ -49,9 +49,9 @@ import gov.nist.secauto.metaschema.core.model.constraint.ISource;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.AssemblyConstraints;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.InlineDefineAssembly;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.JsonKey;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyConstraints;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.InlineDefineAssembly;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonKey;
 
 import java.math.BigInteger;
 import java.util.Map;

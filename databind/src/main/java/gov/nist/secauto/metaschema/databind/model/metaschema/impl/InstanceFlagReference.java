@@ -37,7 +37,7 @@ import gov.nist.secauto.metaschema.core.model.IFlagInstance;
 import gov.nist.secauto.metaschema.core.model.IModelDefinition;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.FlagReference;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FlagReference;
 
 import java.util.Map;
 import java.util.Set;

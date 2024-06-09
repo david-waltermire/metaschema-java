@@ -42,10 +42,10 @@ import gov.nist.secauto.metaschema.core.model.constraint.IValueConstrained;
 import gov.nist.secauto.metaschema.core.model.constraint.ValueConstraintSet;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.FieldConstraints;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.JsonKey;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.JsonValueKeyFlag;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.METASCHEMA;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FieldConstraints;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonKey;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonValueKeyFlag;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA;
 
 import java.util.Map;
 import java.util.Set;

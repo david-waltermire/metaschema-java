@@ -129,7 +129,7 @@ public abstract class ModelTestBase {
             flag.isRequired(),
             "required"),
         () -> assertEquals(
-            ModelUtil.resolveNullOrValue(annotation.defaultValue(), adapter),
+            ModelUtil.resolveDefaultValue(annotation.defaultValue(), adapter),
             flag.getDefaultValue(),
             "defaultValue"),
         () -> assertEquals(
@@ -181,7 +181,7 @@ public abstract class ModelTestBase {
             field.getDefinition().getJavaTypeAdapter(),
             "typeAdapter"),
         () -> assertEquals(
-            ModelUtil.resolveNullOrValue(annotation.defaultValue(), adapter),
+            ModelUtil.resolveDefaultValue(annotation.defaultValue(), adapter),
             field.getDefaultValue(),
             "defaultValue"),
         () -> assertEquals(

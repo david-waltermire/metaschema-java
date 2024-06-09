@@ -39,7 +39,7 @@ import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.AssemblyModel;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

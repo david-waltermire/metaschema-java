@@ -37,8 +37,8 @@ import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.INamedModelInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.AssemblyReference;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.FieldReference;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyReference;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FieldReference;
 
 import java.util.List;
 import java.util.Map;

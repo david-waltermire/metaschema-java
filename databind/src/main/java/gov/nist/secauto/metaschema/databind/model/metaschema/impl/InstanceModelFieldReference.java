@@ -38,7 +38,7 @@ import gov.nist.secauto.metaschema.core.model.IFieldInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
-import gov.nist.secauto.metaschema.databind.model.metaschema.binding.FieldReference;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FieldReference;
 
 import java.math.BigInteger;
 import java.util.Map;

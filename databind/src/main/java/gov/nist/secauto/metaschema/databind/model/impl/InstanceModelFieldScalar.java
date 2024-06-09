@@ -94,7 +94,7 @@ public final class InstanceModelFieldScalar
       @NonNull Field javaField,
       @NonNull IBoundDefinitionModelAssembly containingDefinition) {
     BoundField annotation = ModelUtil.getAnnotation(javaField, BoundField.class);
-    IGroupAs groupAs = ModelUtil.groupAs(
+    IGroupAs groupAs = ModelUtil.resolveDefaultGroupAs(
         annotation.groupAs(),
         containingDefinition.getContainingModule());
 

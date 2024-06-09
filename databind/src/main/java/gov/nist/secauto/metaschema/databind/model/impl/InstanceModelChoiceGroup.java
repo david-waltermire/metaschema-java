@@ -106,7 +106,7 @@ public final class InstanceModelChoiceGroup
       @NonNull Field javaField,
       @NonNull IBoundDefinitionModelAssembly parent) {
     BoundChoiceGroup annotation = ModelUtil.getAnnotation(javaField, BoundChoiceGroup.class);
-    IGroupAs groupAs = ModelUtil.groupAs(annotation.groupAs(), parent.getContainingModule());
+    IGroupAs groupAs = ModelUtil.resolveDefaultGroupAs(annotation.groupAs(), parent.getContainingModule());
     if (annotation.maxOccurs() == -1 || annotation.maxOccurs() > 1) {
       if (IGroupAs.SINGLETON_GROUP_AS.equals(groupAs)) {
         throw new IllegalStateException(String.format("Field '%s' on class '%s' is missing the '%s' annotation.",

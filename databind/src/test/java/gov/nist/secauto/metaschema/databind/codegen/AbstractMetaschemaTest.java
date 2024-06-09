@@ -66,6 +66,7 @@ abstract class AbstractMetaschemaTest {
     return LOADER.load(moduleFile);
   }
 
+  @NonNull
   public static Class<?> compileModule(@NonNull Path moduleFile, @Nullable Path bindingFile,
       @NonNull String rootClassName, @NonNull Path classDir)
       throws IOException, ClassNotFoundException, MetaschemaException {
@@ -79,10 +80,10 @@ abstract class AbstractMetaschemaTest {
     ModuleCompilerHelper.compileModule(module, classDir, bindingConfiguration);
 
     // Load classes
-    return ModuleCompilerHelper.newClassLoader(
+    return ObjectUtils.notNull(ModuleCompilerHelper.newClassLoader(
         classDir,
         ObjectUtils.notNull(Thread.currentThread().getContextClassLoader()))
-        .loadClass(rootClassName);
+        .loadClass(rootClassName));
   }
 
   private static Object read(
@@ -146,7 +147,15 @@ abstract class AbstractMetaschemaTest {
         bindingPath,
         rootClassName,
         classDir);
-    assert rootClass != null;
+    runTests(examplePath, rootClass, assertions);
+  }
+
+  @SuppressWarnings("unused")
+  public static void runTests(
+      @Nullable Path examplePath,
+      @NonNull Class<?> rootClass,
+      java.util.function.Consumer<Object> assertions)
+      throws ClassNotFoundException, IOException, MetaschemaException, BindingException {
 
     if (examplePath != null && Files.exists(examplePath)) {
       IBindingContext context = new DefaultBindingContext();

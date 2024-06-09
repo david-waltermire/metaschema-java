@@ -35,7 +35,7 @@
  * load a bound Java class.</li>
  * <li>A metaschema-specific binding, based on the first method, that is capable
  * of representing a Metaschema module
- * ({@link gov.nist.secauto.metaschema.databind.model.metaschema.binding}). The
+ * ({@link gov.nist.secauto.metaschema.databind.model.binding.metaschema}). The
  * {@link gov.nist.secauto.metaschema.databind.model.metaschema.BindingConstraintLoader}
  * can be used to load any Metaschema module using this method. Once loaded, the
  * module can be registered with the binding context using
