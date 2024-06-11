@@ -52,6 +52,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModel;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaField;
 
@@ -114,7 +115,7 @@ public interface IBindingContext {
    * @return the matcher
    */
   @NonNull
-  IBindingMatcher registerBindingMatcher(@NonNull Class<?> clazz);
+  IBindingMatcher registerBindingMatcher(@NonNull Class<? extends IBoundObject> clazz);
 
   /**
    * Register a class binding for a given bound class.
@@ -140,7 +141,7 @@ public interface IBindingContext {
    *         not bound
    */
   @Nullable
-  IBoundDefinitionModelComplex getBoundDefinitionForClass(@NonNull Class<?> clazz);
+  IBoundDefinitionModelComplex getBoundDefinitionForClass(@NonNull Class<? extends IBoundObject> clazz);
 
   /**
    * Determine the bound class for the provided XML {@link QName}.
@@ -151,7 +152,7 @@ public interface IBindingContext {
    * @see IBindingContext#registerBindingMatcher(Class)
    */
   @Nullable
-  Class<?> getBoundClassForRootXmlQName(@NonNull QName rootQName);
+  Class<? extends IBoundObject> getBoundClassForRootXmlQName(@NonNull QName rootQName);
 
   /**
    * Determine the bound class for the provided JSON/YAML property/item name using
@@ -163,7 +164,7 @@ public interface IBindingContext {
    * @see IBindingContext#registerBindingMatcher(Class)
    */
   @Nullable
-  Class<?> getBoundClassForRootJsonName(@NonNull String rootName);
+  Class<? extends IBoundObject> getBoundClassForRootJsonName(@NonNull String rootName);
 
   /**
    * Get's the {@link IDataTypeAdapter} associated with the specified Java class,
@@ -240,7 +241,9 @@ public interface IBindingContext {
    * @see #getBoundDefinitionForClass(Class)
    */
   @NonNull
-  <CLASS> ISerializer<CLASS> newSerializer(@NonNull Format format, @NonNull Class<? extends CLASS> clazz);
+  <CLASS extends IBoundObject> ISerializer<CLASS> newSerializer(
+      @NonNull Format format,
+      @NonNull Class<CLASS> clazz);
 
   /**
    * Gets a data {@link IDeserializer} which can be used to read Java instance
@@ -267,7 +270,9 @@ public interface IBindingContext {
    * @see #getBoundDefinitionForClass(Class)
    */
   @NonNull
-  <CLASS> IDeserializer<CLASS> newDeserializer(@NonNull Format format, @NonNull Class<CLASS> clazz);
+  <CLASS extends IBoundObject> IDeserializer<CLASS> newDeserializer(
+      @NonNull Format format,
+      @NonNull Class<CLASS> clazz);
 
   /**
    * Get a new {@link IBoundLoader} instance.
@@ -295,7 +300,8 @@ public interface IBindingContext {
    *           if the provided class is not bound to a Module assembly or field
    */
   @NonNull
-  <CLASS> CLASS deepCopy(@NonNull CLASS other, Object parentInstance) throws BindingException;
+  <CLASS extends IBoundObject> CLASS deepCopy(@NonNull CLASS other, IBoundObject parentInstance)
+      throws BindingException;
 
   /**
    * Get a new single use constraint validator.
@@ -419,7 +425,7 @@ public interface IBindingContext {
      *         not bound
      */
     @Nullable
-    IBoundDefinitionModelComplex getBoundDefinitionForClass(@NonNull Class<?> clazz);
+    IBoundDefinitionModelComplex getBoundDefinitionForClass(@NonNull Class<? extends IBoundObject> clazz);
   }
 
   interface ISchemaValidationProvider {
@@ -427,7 +433,7 @@ public interface IBindingContext {
     @NonNull
     default IValidationResult validate(@NonNull URI target, @NonNull Format asFormat)
         throws FileNotFoundException, IOException {
-      URL targetResource = target.toURL();
+      URL targetResource = ObjectUtils.notNull(target.toURL());
 
       IValidationResult retval;
       switch (asFormat) {
@@ -511,7 +517,7 @@ public interface IBindingContext {
      * @return the bound class for the XML qualified name or {@code null} if not
      *         recognized
      */
-    Class<?> getBoundClassForXmlQName(QName rootQName);
+    Class<? extends IBoundObject> getBoundClassForXmlQName(QName rootQName);
 
     /**
      * Determine the bound class for the provided JSON/YAML property/item name.
@@ -521,6 +527,6 @@ public interface IBindingContext {
      * @return the bound class for the JSON property name or {@code null} if not
      *         recognized
      */
-    Class<?> getBoundClassForJsonName(String rootName);
+    Class<? extends IBoundObject> getBoundClassForJsonName(String rootName);
   }
 }

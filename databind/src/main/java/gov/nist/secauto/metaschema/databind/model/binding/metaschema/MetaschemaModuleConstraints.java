@@ -33,6 +33,8 @@ import gov.nist.secauto.metaschema.core.datatype.adapter.UriReferenceAdapter;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
@@ -66,7 +68,10 @@ import java.util.List;
     name = "metaschema-module-constraints",
     moduleClass = MetaschemaModelModule.class,
     rootName = "METASCHEMA-CONSTRAINTS")
-public class MetaschemaModuleConstraints {
+public class MetaschemaModuleConstraints
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundField(
       description = "The name of this constraint set.",
       useName = "name",
@@ -92,6 +97,19 @@ public class MetaschemaModuleConstraints {
       maxOccurs = -1,
       groupAs = @GroupAs(name = "scopes", inJson = JsonGroupAsBehavior.LIST))
   private List<Scope> _scopes;
+
+  public MetaschemaModuleConstraints() {
+    this(null);
+  }
+
+  public MetaschemaModuleConstraints(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public String getName() {
     return _name;
@@ -187,7 +205,10 @@ public class MetaschemaModuleConstraints {
   @MetaschemaAssembly(
       name = "scope",
       moduleClass = MetaschemaModelModule.class)
-  public static class Scope {
+  public static class Scope
+      implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
     @BoundFlag(
         name = "metaschema-namespace",
         required = true,
@@ -216,6 +237,19 @@ public class MetaschemaModuleConstraints {
         description = "Any explanatory or helpful information to be provided about the remarks parent.",
         useName = "remarks")
     private Remarks _remarks;
+
+    public Scope() {
+      this(null);
+    }
+
+    public Scope(IMetaschemaData metaschemaData) {
+      this.__metaschemaData = metaschemaData;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
 
     public URI getMetaschemaNamespace() {
       return _metaschemaNamespace;
@@ -257,7 +291,10 @@ public class MetaschemaModuleConstraints {
     @MetaschemaAssembly(
         name = "flag",
         moduleClass = MetaschemaModelModule.class)
-    public static class Flag implements IValueConstraintsBase {
+    public static class Flag
+        implements IBoundObject, IValueConstraintsBase {
+      private final IMetaschemaData __metaschemaData;
+
       @BoundFlag(
           formalName = "Constraint Target Metapath Expression",
           name = "target",
@@ -280,6 +317,19 @@ public class MetaschemaModuleConstraints {
           },
           groupAs = @GroupAs(name = "rules", inJson = JsonGroupAsBehavior.LIST))
       private List<? extends ITargetedConstraintBase> _rules;
+
+      public Flag() {
+        this(null);
+      }
+
+      public Flag(IMetaschemaData metaschemaData) {
+        this.__metaschemaData = metaschemaData;
+      }
+
+      @Override
+      public IMetaschemaData getMetaschemaData() {
+        return __metaschemaData;
+      }
 
       @Override
       public List<ConstraintLetExpression> getLets() {
@@ -312,7 +362,10 @@ public class MetaschemaModuleConstraints {
     @MetaschemaAssembly(
         name = "field",
         moduleClass = MetaschemaModelModule.class)
-    public static class Field implements IValueConstraintsBase {
+    public static class Field
+        implements IBoundObject, IValueConstraintsBase {
+      private final IMetaschemaData __metaschemaData;
+
       @BoundFlag(
           formalName = "Constraint Target Metapath Expression",
           name = "target",
@@ -335,6 +388,19 @@ public class MetaschemaModuleConstraints {
           },
           groupAs = @GroupAs(name = "rules", inJson = JsonGroupAsBehavior.LIST))
       private List<? extends ITargetedConstraintBase> _rules;
+
+      public Field() {
+        this(null);
+      }
+
+      public Field(IMetaschemaData metaschemaData) {
+        this.__metaschemaData = metaschemaData;
+      }
+
+      @Override
+      public IMetaschemaData getMetaschemaData() {
+        return __metaschemaData;
+      }
 
       public String getTarget() {
         return _target;
@@ -367,7 +433,10 @@ public class MetaschemaModuleConstraints {
     @MetaschemaAssembly(
         name = "assembly",
         moduleClass = MetaschemaModelModule.class)
-    public static class Assembly implements IModelConstraintsBase {
+    public static class Assembly
+        implements IBoundObject, IModelConstraintsBase {
+      private final IMetaschemaData __metaschemaData;
+
       @BoundFlag(
           formalName = "Constraint Target Metapath Expression",
           name = "target",
@@ -396,6 +465,19 @@ public class MetaschemaModuleConstraints {
           },
           groupAs = @GroupAs(name = "rules", inJson = JsonGroupAsBehavior.LIST))
       private List<? extends ITargetedConstraintBase> _rules;
+
+      public Assembly() {
+        this(null);
+      }
+
+      public Assembly(IMetaschemaData metaschemaData) {
+        this.__metaschemaData = metaschemaData;
+      }
+
+      @Override
+      public IMetaschemaData getMetaschemaData() {
+        return __metaschemaData;
+      }
 
       public String getTarget() {
         return _target;
@@ -434,7 +516,10 @@ public class MetaschemaModuleConstraints {
       description = "Declares a set of Metaschema constraints from an out-of-line resource to import, supporting composition of constraint sets.",
       name = "import",
       moduleClass = MetaschemaModelModule.class)
-  public static class Import {
+  public static class Import
+      implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
     /**
      * "A relative or absolute URI for retrieving an out-of-line Metaschema
      * constraint definition."
@@ -445,6 +530,19 @@ public class MetaschemaModuleConstraints {
         required = true,
         typeAdapter = UriReferenceAdapter.class)
     private URI _href;
+
+    public Import() {
+      this(null);
+    }
+
+    public Import(IMetaschemaData metaschemaData) {
+      this.__metaschemaData = metaschemaData;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
 
     public URI getHref() {
       return _href;

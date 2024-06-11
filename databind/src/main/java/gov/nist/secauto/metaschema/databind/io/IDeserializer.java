@@ -31,6 +31,7 @@ import gov.nist.secauto.metaschema.core.configuration.IMutableConfiguration;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraintValidationHandler;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,7 +54,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * @param <CLASS>
  *          the Java type into which data can be read
  */
-public interface IDeserializer<CLASS> extends IMutableConfiguration<DeserializationFeature<?>> {
+public interface IDeserializer<CLASS extends IBoundObject> extends IMutableConfiguration<DeserializationFeature<?>> {
 
   @Override
   IDeserializer<CLASS> enableFeature(DeserializationFeature<?> feature);

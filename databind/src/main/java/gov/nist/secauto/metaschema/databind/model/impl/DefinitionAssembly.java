@@ -41,6 +41,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelChoiceGroup
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelField;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelNamed;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IBoundProperty;
 import gov.nist.secauto.metaschema.databind.model.annotations.AssemblyConstraints;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
@@ -60,9 +61,9 @@ public final class DefinitionAssembly
     extends AbstractBoundDefinitionModelComplex<MetaschemaAssembly>
     implements IBoundDefinitionModelAssembly,
     IFeatureBoundContainerModelAssembly<
-        IBoundInstanceModel,
-        IBoundInstanceModelNamed,
-        IBoundInstanceModelField,
+        IBoundInstanceModel<?>,
+        IBoundInstanceModelNamed<?>,
+        IBoundInstanceModelField<?>,
         IBoundInstanceModelAssembly,
         IBoundInstanceModelChoiceGroup> {
 
@@ -75,10 +76,10 @@ public final class DefinitionAssembly
   @NonNull
   private final Lazy<QName> xmlRootQName;
   @NonNull
-  private final Lazy<Map<String, IBoundProperty>> jsonProperties;
+  private final Lazy<Map<String, IBoundProperty<?>>> jsonProperties;
 
   public static DefinitionAssembly newInstance(
-      @NonNull Class<?> clazz,
+      @NonNull Class<? extends IBoundObject> clazz,
       @NonNull IBindingContext bindingContext) {
     MetaschemaAssembly annotation = ModelUtil.getAnnotation(clazz, MetaschemaAssembly.class);
     Class<? extends IBoundModule> moduleClass = annotation.moduleClass();
@@ -86,7 +87,7 @@ public final class DefinitionAssembly
   }
 
   private DefinitionAssembly(
-      @NonNull Class<?> clazz,
+      @NonNull Class<? extends IBoundObject> clazz,
       @NonNull MetaschemaAssembly annotation,
       @NonNull Class<? extends IBoundModule> moduleClass,
       @NonNull IBindingContext bindingContext) {
@@ -115,17 +116,17 @@ public final class DefinitionAssembly
   }
 
   @Override
-  protected void deepCopyItemInternal(Object fromObject, Object toObject) throws BindingException {
+  protected void deepCopyItemInternal(IBoundObject fromObject, IBoundObject toObject) throws BindingException {
     // copy the flags
     super.deepCopyItemInternal(fromObject, toObject);
 
-    for (IBoundInstanceModel instance : getModelInstances()) {
+    for (IBoundInstanceModel<?> instance : getModelInstances()) {
       instance.deepCopy(fromObject, toObject);
     }
   }
 
   @Override
-  public Map<String, IBoundProperty> getJsonProperties() {
+  public Map<String, IBoundProperty<?>> getJsonProperties() {
     return ObjectUtils.notNull(jsonProperties.get());
   }
 

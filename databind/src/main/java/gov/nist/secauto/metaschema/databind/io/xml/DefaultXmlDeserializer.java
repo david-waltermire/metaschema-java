@@ -35,6 +35,7 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.io.AbstractDeserializer;
 import gov.nist.secauto.metaschema.databind.io.DeserializationFeature;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import org.codehaus.stax2.XMLEventReader2;
 import org.codehaus.stax2.XMLInputFactory2;
@@ -52,7 +53,7 @@ import javax.xml.stream.XMLStreamException;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-public class DefaultXmlDeserializer<CLASS>
+public class DefaultXmlDeserializer<CLASS extends IBoundObject>
     extends AbstractDeserializer<CLASS> {
   private XMLInputFactory2 xmlInputFactory;
 
@@ -94,6 +95,7 @@ public class DefaultXmlDeserializer<CLASS>
         assert xmlInputFactory instanceof WstxInputFactory;
         xmlInputFactory.configureForXmlConformance();
         xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, false);
+        xmlInputFactory.setProperty(XMLInputFactory2.P_PRESERVE_LOCATION, true);
         // xmlInputFactory.configureForSpeed();
 
         if (isFeatureEnabled(DeserializationFeature.DESERIALIZE_XML_ALLOW_ENTITY_RESOLUTION)) {

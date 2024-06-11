@@ -29,6 +29,7 @@ package gov.nist.secauto.metaschema.databind.model.annotations;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -45,7 +46,7 @@ public @interface Module {
    * @return an array of field classes
    */
   @NonNull
-  Class<?>[] fields() default {};
+  Class<? extends IBoundObject>[] fields() default {};
 
   /**
    * Get the classes representing the global assemblies defined on this Module.
@@ -53,7 +54,7 @@ public @interface Module {
    * @return an array of assembly classes
    */
   @NonNull
-  Class<?>[] assemblies() default {};
+  Class<? extends IBoundObject>[] assemblies() default {};
 
   /**
    * Get the classes representing the Metaschemas imported by this Module.

@@ -35,8 +35,11 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 /**
  * Represents a binding of Java data to a Metaschema module construct, i.e.
  * definition, instance, field value.
+ *
+ * @param <ITEM>
+ *          the Java type for associated bound objects
  */
-public interface IBoundModuleElement extends IItemValueHandler {
+public interface IBoundModuleElement<ITEM> extends IItemValueHandler<ITEM> {
   /**
    * Determine if the provided XML qualified name is associated with this
    * property.

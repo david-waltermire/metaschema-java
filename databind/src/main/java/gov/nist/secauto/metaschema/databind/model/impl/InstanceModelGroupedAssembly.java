@@ -33,6 +33,7 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IBoundProperty;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.ModelUtil;
@@ -59,7 +60,7 @@ public class InstanceModelGroupedAssembly
   @NonNull
   private final IBoundDefinitionModelAssembly definition;
   @NonNull
-  private final Lazy<Map<String, IBoundProperty>> jsonProperties;
+  private final Lazy<Map<String, IBoundProperty<?>>> jsonProperties;
 
   /**
    * Construct a new field model instance instance that is a member of a choice
@@ -95,12 +96,12 @@ public class InstanceModelGroupedAssembly
   // ------------------------------------------
 
   @Override
-  public Class<?> getBoundClass() {
+  public Class<? extends IBoundObject> getBoundClass() {
     return getAnnotation().binding();
   }
 
   @Override
-  public Map<String, IBoundProperty> getJsonProperties() {
+  public Map<String, IBoundProperty<?>> getJsonProperties() {
     return ObjectUtils.notNull(jsonProperties.get());
   }
 

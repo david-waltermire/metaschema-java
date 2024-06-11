@@ -33,6 +33,7 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IBoundProperty;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
@@ -59,19 +60,19 @@ public final class InstanceModelAssemblyComplex
         IBoundDefinitionModelAssembly,
         IBoundInstanceModelAssembly,
         IBoundDefinitionModelAssembly>
-    implements IBoundInstanceModelAssembly, IFeatureInstanceModelGroupAs {
+    implements IBoundInstanceModelAssembly, IFeatureInstanceModelGroupAs<IBoundObject> {
   @NonNull
   private final Field javaField;
   @NonNull
   private final BoundAssembly annotation;
   @NonNull
-  private final Lazy<IModelInstanceCollectionInfo> collectionInfo;
+  private final Lazy<IModelInstanceCollectionInfo<IBoundObject>> collectionInfo;
   @NonNull
   private final IBoundDefinitionModelAssembly definition;
   @NonNull
   private final IGroupAs groupAs;
   @NonNull
-  private final Lazy<Map<String, IBoundProperty>> jsonProperties;
+  private final Lazy<Map<String, IBoundProperty<?>>> jsonProperties;
 
   /**
    * Construct a new field instance bound to a Java field, supported by a bound
@@ -150,7 +151,7 @@ public final class InstanceModelAssemblyComplex
 
   @SuppressWarnings("null")
   @Override
-  public IModelInstanceCollectionInfo getCollectionInfo() {
+  public IModelInstanceCollectionInfo<IBoundObject> getCollectionInfo() {
     return collectionInfo.get();
   }
 
@@ -159,7 +160,7 @@ public final class InstanceModelAssemblyComplex
   // ------------------------------------------
 
   @Override
-  public Map<String, IBoundProperty> getJsonProperties() {
+  public Map<String, IBoundProperty<?>> getJsonProperties() {
     return ObjectUtils.notNull(jsonProperties.get());
   }
 

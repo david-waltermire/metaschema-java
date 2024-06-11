@@ -35,6 +35,8 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
@@ -62,7 +64,10 @@ import java.util.List;
     formalName = "Inline Field Definition",
     name = "inline-define-field",
     moduleClass = MetaschemaModelModule.class)
-public class InlineDefineField {
+public class InlineDefineField
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundFlag(
       formalName = "Inline Field Name",
       name = "name",
@@ -214,6 +219,19 @@ public class InlineDefineField {
       groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "examples",
           inJson = JsonGroupAsBehavior.LIST))
   private List<Example> _examples;
+
+  public InlineDefineField() {
+    this(null);
+  }
+
+  public InlineDefineField(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public String getName() {
     return _name;

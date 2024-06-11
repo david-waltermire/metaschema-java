@@ -44,7 +44,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * Represents an assembly instance bound to Java field.
  */
 public interface IBoundInstanceModelAssembly
-    extends IBoundInstanceModelNamed, IAssemblyInstanceAbsolute, IFeatureComplexItemValueHandler {
+    extends IBoundInstanceModelNamed<IBoundObject>, IAssemblyInstanceAbsolute, IFeatureComplexItemValueHandler {
   /**
    * Create a new bound assembly instance.
    *
@@ -58,9 +58,9 @@ public interface IBoundInstanceModelAssembly
   static IBoundInstanceModelAssembly newInstance(
       @NonNull Field field,
       @NonNull IBoundDefinitionModelAssembly containingDefinition) {
-    Class<?> itemType = IBoundInstanceModel.getItemType(field);
+    Class<? extends IBoundObject> itemType = IBoundInstanceModel.getItemType(field, IBoundObject.class);
     IBindingContext bindingContext = containingDefinition.getBindingContext();
-    IBoundDefinitionModel definition = bindingContext.getBoundDefinitionForClass(itemType);
+    IBoundDefinitionModel<?> definition = bindingContext.getBoundDefinitionForClass(itemType);
     if (definition instanceof IBoundDefinitionModelAssembly) {
       return InstanceModelAssemblyComplex.newInstance(
           field,
@@ -69,7 +69,7 @@ public interface IBoundInstanceModelAssembly
     }
 
     throw new IllegalStateException(String.format(
-        "The field '%s' on class '%s' is not bound to a Metaschema field",
+        "The field '%s' on class '%s' is not bound to a Metaschema assembly",
         field.toString(),
         field.getDeclaringClass().getName()));
   }
@@ -88,32 +88,32 @@ public interface IBoundInstanceModelAssembly
   // }
 
   @Override
-  default Object readItem(Object parent, IItemReadHandler handler) throws IOException {
+  default IBoundObject readItem(IBoundObject parent, IItemReadHandler handler) throws IOException {
     return handler.readItemAssembly(ObjectUtils.requireNonNull(parent, "parent"), this);
   }
 
   @Override
-  default void writeItem(Object item, IItemWriteHandler handler) throws IOException {
+  default void writeItem(IBoundObject item, IItemWriteHandler handler) throws IOException {
     handler.writeItemAssembly(item, this);
   }
 
   @Override
-  default Object deepCopyItem(Object item, Object parentInstance) throws BindingException {
+  default IBoundObject deepCopyItem(IBoundObject item, IBoundObject parentInstance) throws BindingException {
     return getDefinition().deepCopyItem(item, parentInstance);
   }
 
   @Override
-  default Class<?> getBoundClass() {
+  default Class<? extends IBoundObject> getBoundClass() {
     return getDefinition().getBoundClass();
   }
 
   @Override
-  default void callBeforeDeserialize(Object targetObject, Object parentObject) throws BindingException {
+  default void callBeforeDeserialize(IBoundObject targetObject, IBoundObject parentObject) throws BindingException {
     getDefinition().callBeforeDeserialize(targetObject, parentObject);
   }
 
   @Override
-  default void callAfterDeserialize(Object targetObject, Object parentObject) throws BindingException {
+  default void callAfterDeserialize(IBoundObject targetObject, IBoundObject parentObject) throws BindingException {
     getDefinition().callAfterDeserialize(targetObject, parentObject);
   }
 }

@@ -56,17 +56,17 @@ import nl.talsmasoftware.lazy4j.Lazy;
 public final class InstanceModelFieldScalar
     extends AbstractInlineFieldDefinition<
         IBoundDefinitionModelAssembly,
-        IBoundDefinitionModelField,
+        IBoundDefinitionModelField<Object>,
         IBoundInstanceModelFieldScalar,
         IBoundDefinitionModelAssembly,
         IBoundInstanceFlag>
-    implements IBoundInstanceModelFieldScalar, IFeatureInstanceModelGroupAs {
+    implements IBoundInstanceModelFieldScalar, IFeatureInstanceModelGroupAs<Object> {
   @NonNull
   private final Field javaField;
   @NonNull
   private final BoundField annotation;
   @NonNull
-  private final Lazy<IModelInstanceCollectionInfo> collectionInfo;
+  private final Lazy<IModelInstanceCollectionInfo<Object>> collectionInfo;
   @NonNull
   private final IGroupAs groupAs;
   @NonNull
@@ -166,7 +166,7 @@ public final class InstanceModelFieldScalar
 
   @SuppressWarnings("null")
   @Override
-  public IModelInstanceCollectionInfo getCollectionInfo() {
+  public IModelInstanceCollectionInfo<Object> getCollectionInfo() {
     return collectionInfo.get();
   }
 

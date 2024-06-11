@@ -36,12 +36,12 @@ import javax.xml.namespace.QName;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-public interface IBoundInstanceModelNamed
-    extends IBoundInstanceModel, INamedModelInstanceAbsolute {
+public interface IBoundInstanceModelNamed<ITEM>
+    extends IBoundInstanceModel<ITEM>, INamedModelInstanceAbsolute {
 
   @Override
   @NonNull
-  IBoundDefinitionModel getDefinition();
+  IBoundDefinitionModel<ITEM> getDefinition();
 
   @Override
   default String getName() {

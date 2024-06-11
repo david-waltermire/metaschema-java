@@ -102,19 +102,6 @@ public final class ConstraintBindingSupport {
     }
   }
 
-  public static void parseLet(
-      @NonNull IValueConstrained constraintSet,
-      @NonNull IValueConstraintsBase constraints,
-      @NonNull ISource source) {
-    // parse let expressions
-    for (ConstraintLetExpression letObj : constraints.getLets()) {
-      ILet let = ILet.of(
-          ObjectUtils.requireNonNull(new QName(letObj.getVar())),
-          ObjectUtils.requireNonNull(letObj.getExpression()), source);
-      constraintSet.addLetExpression(let);
-    }
-  }
-
   public static void parse(
       @NonNull IModelConstrained constraintSet,
       @NonNull IModelConstraintsBase constraints,
@@ -145,6 +132,19 @@ public final class ConstraintBindingSupport {
         IUniqueConstraint constraint = newUnique((TargetedIsUniqueConstraint) ruleObj, source);
         constraintSet.addConstraint(constraint);
       }
+    }
+  }
+
+  public static void parseLet(
+      @NonNull IValueConstrained constraintSet,
+      @NonNull IValueConstraintsBase constraints,
+      @NonNull ISource source) {
+    // parse let expressions
+    for (ConstraintLetExpression letObj : constraints.getLets()) {
+      ILet let = ILet.of(
+          ObjectUtils.requireNonNull(new QName(letObj.getVar())),
+          ObjectUtils.requireNonNull(letObj.getExpression()), source);
+      constraintSet.addLetExpression(let);
     }
   }
 

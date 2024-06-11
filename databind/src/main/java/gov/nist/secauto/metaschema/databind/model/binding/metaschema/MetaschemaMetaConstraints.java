@@ -31,6 +31,8 @@ import gov.nist.secauto.metaschema.core.datatype.adapter.UriAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.UriReferenceAdapter;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
@@ -58,7 +60,9 @@ import java.util.List;
     name = "metaschema-meta-constraints",
     moduleClass = MetaschemaModelModule.class,
     rootName = "metaschema-meta-constraints")
-public class MetaschemaMetaConstraints {
+public class MetaschemaMetaConstraints implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundAssembly(
       description = "Declares a set of Metaschema constraints from an out-of-line resource to import, supporting composition of constraint sets.",
       useName = "import",
@@ -76,6 +80,19 @@ public class MetaschemaMetaConstraints {
       maxOccurs = -1,
       groupAs = @GroupAs(name = "metapath-contexts", inJson = JsonGroupAsBehavior.LIST))
   private List<MetapathContext> _metapathContexts;
+
+  public MetaschemaMetaConstraints() {
+    this(null);
+  }
+
+  public MetaschemaMetaConstraints(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public List<Import> getImports() {
     return _imports;
@@ -164,7 +181,10 @@ public class MetaschemaMetaConstraints {
   @MetaschemaAssembly(
       name = "definition-context",
       moduleClass = MetaschemaModelModule.class)
-  public static class DefinitionContext {
+  public static class DefinitionContext
+      implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
     @BoundFlag(
         name = "name",
         required = true,
@@ -187,6 +207,19 @@ public class MetaschemaMetaConstraints {
         description = "Any explanatory or helpful information to be provided about the remarks parent.",
         useName = "remarks")
     private Remarks _remarks;
+
+    public DefinitionContext() {
+      this(null);
+    }
+
+    public DefinitionContext(IMetaschemaData metaschemaData) {
+      this.__metaschemaData = metaschemaData;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
 
     public String getName() {
       return _name;
@@ -234,7 +267,10 @@ public class MetaschemaMetaConstraints {
       description = "Declares a set of Metaschema constraints from an out-of-line resource to import, supporting composition of constraint sets.",
       name = "import",
       moduleClass = MetaschemaModelModule.class)
-  public static class Import {
+  public static class Import
+      implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
     /**
      * "A relative or absolute URI for retrieving an out-of-line Metaschema
      * constraint definition."
@@ -245,6 +281,19 @@ public class MetaschemaMetaConstraints {
         required = true,
         typeAdapter = UriReferenceAdapter.class)
     private URI _href;
+
+    public Import() {
+      this(null);
+    }
+
+    public Import(IMetaschemaData metaschemaData) {
+      this.__metaschemaData = metaschemaData;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
 
     public URI getHref() {
       return _href;

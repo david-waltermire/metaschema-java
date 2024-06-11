@@ -35,7 +35,7 @@ import gov.nist.secauto.metaschema.databind.model.info.IItemWriteHandler;
 import java.io.IOException;
 
 public interface IBoundInstanceModelFieldComplex
-    extends IBoundInstanceModelField, IFeatureComplexItemValueHandler {
+    extends IBoundInstanceModelField<IBoundObject>, IFeatureComplexItemValueHandler {
 
   @Override
   IBoundDefinitionModelFieldComplex getDefinition();
@@ -47,32 +47,32 @@ public interface IBoundInstanceModelFieldComplex
   }
 
   @Override
-  default Object readItem(Object parent, IItemReadHandler handler) throws IOException {
+  default IBoundObject readItem(IBoundObject parent, IItemReadHandler handler) throws IOException {
     return handler.readItemField(ObjectUtils.requireNonNull(parent, "parent"), this);
   }
 
   @Override
-  default void writeItem(Object item, IItemWriteHandler handler) throws IOException {
+  default void writeItem(IBoundObject item, IItemWriteHandler handler) throws IOException {
     handler.writeItemField(item, this);
   }
 
   @Override
-  default Object deepCopyItem(Object item, Object parentInstance) throws BindingException {
+  default IBoundObject deepCopyItem(IBoundObject item, IBoundObject parentInstance) throws BindingException {
     return getDefinition().deepCopyItem(item, parentInstance);
   }
 
   @Override
-  default Class<?> getBoundClass() {
+  default Class<? extends IBoundObject> getBoundClass() {
     return getDefinition().getBoundClass();
   }
 
   @Override
-  default void callBeforeDeserialize(Object targetObject, Object parentObject) throws BindingException {
+  default void callBeforeDeserialize(IBoundObject targetObject, IBoundObject parentObject) throws BindingException {
     getDefinition().callBeforeDeserialize(targetObject, parentObject);
   }
 
   @Override
-  default void callAfterDeserialize(Object targetObject, Object parentObject) throws BindingException {
+  default void callAfterDeserialize(IBoundObject targetObject, IBoundObject parentObject) throws BindingException {
     getDefinition().callAfterDeserialize(targetObject, parentObject);
   }
 }

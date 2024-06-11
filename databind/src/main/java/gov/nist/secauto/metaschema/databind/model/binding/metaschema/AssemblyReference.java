@@ -35,6 +35,8 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
@@ -57,7 +59,10 @@ import java.util.List;
     formalName = "Assembly Reference",
     name = "assembly-reference",
     moduleClass = MetaschemaModelModule.class)
-public class AssemblyReference {
+public class AssemblyReference
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundFlag(
       formalName = "Global Assembly Reference",
       name = "ref",
@@ -130,6 +135,19 @@ public class AssemblyReference {
       description = "Any explanatory or helpful information to be provided about the remarks parent.",
       useName = "remarks")
   private Remarks _remarks;
+
+  public AssemblyReference() {
+    this(null);
+  }
+
+  public AssemblyReference(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public String getRef() {
     return _ref;

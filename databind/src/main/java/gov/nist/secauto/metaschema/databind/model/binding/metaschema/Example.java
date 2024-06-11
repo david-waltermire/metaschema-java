@@ -30,6 +30,8 @@ import gov.nist.secauto.metaschema.core.datatype.adapter.StringAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.UriReferenceAdapter;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
@@ -47,7 +49,10 @@ import java.net.URI;
     formalName = "Example",
     name = "example",
     moduleClass = MetaschemaModelModule.class)
-public class Example {
+public class Example
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundFlag(
       formalName = "Example Reference",
       name = "ref",
@@ -70,6 +75,19 @@ public class Example {
       description = "Any explanatory or helpful information to be provided about the remarks parent.",
       useName = "remarks")
   private Remarks _remarks;
+
+  public Example() {
+    this(null);
+  }
+
+  public Example(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public URI getRef() {
     return _ref;

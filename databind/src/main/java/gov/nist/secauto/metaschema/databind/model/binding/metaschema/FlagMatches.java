@@ -33,6 +33,8 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
@@ -57,7 +59,10 @@ import java.util.List;
     formalName = "Value Matches Constraint",
     name = "flag-matches",
     moduleClass = MetaschemaModelModule.class)
-public class FlagMatches implements IConstraintBase {
+public class FlagMatches
+    implements IBoundObject, IConstraintBase {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundFlag(
       formalName = "Constraint Identifier",
       name = "id",
@@ -135,6 +140,19 @@ public class FlagMatches implements IConstraintBase {
       description = "Any explanatory or helpful information to be provided about the remarks parent.",
       useName = "remarks")
   private Remarks _remarks;
+
+  public FlagMatches() {
+    this(null);
+  }
+
+  public FlagMatches(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   @Override
   public String getId() {

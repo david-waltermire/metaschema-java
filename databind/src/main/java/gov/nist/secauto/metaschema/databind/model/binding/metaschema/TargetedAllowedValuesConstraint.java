@@ -33,6 +33,8 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
@@ -57,7 +59,10 @@ import java.util.List;
     formalName = "Allowed Values Constraint",
     name = "targeted-allowed-values-constraint",
     moduleClass = MetaschemaModelModule.class)
-public class TargetedAllowedValuesConstraint implements ITargetedConstraintBase {
+public class TargetedAllowedValuesConstraint
+    implements IBoundObject, ITargetedConstraintBase {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundFlag(
       formalName = "Constraint Identifier",
       name = "id",
@@ -146,6 +151,19 @@ public class TargetedAllowedValuesConstraint implements ITargetedConstraintBase 
       description = "Any explanatory or helpful information to be provided about the remarks parent.",
       useName = "remarks")
   private Remarks _remarks;
+
+  public TargetedAllowedValuesConstraint() {
+    this(null);
+  }
+
+  public TargetedAllowedValuesConstraint(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   @Override
   public String getId() {

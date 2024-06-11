@@ -45,7 +45,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * Represents a choice group instance bound to Java field.
  */
 public interface IBoundInstanceModelChoiceGroup
-    extends IBoundInstanceModel, IBoundContainerModelChoiceGroup, IChoiceGroupInstance {
+    extends IBoundInstanceModel<IBoundObject>, IBoundContainerModelChoiceGroup, IChoiceGroupInstance {
 
   /**
    * Create a new bound choice group instance.
@@ -130,19 +130,19 @@ public interface IBoundInstanceModelChoiceGroup
   }
 
   @Override
-  default Object readItem(Object parent, IItemReadHandler handler) throws IOException {
+  default IBoundObject readItem(IBoundObject parent, IItemReadHandler handler) throws IOException {
     return handler.readChoiceGroupItem(ObjectUtils.requireNonNull(parent, "parent"), this);
   }
 
   @Override
-  default void writeItem(Object item, IItemWriteHandler handler) throws IOException {
+  default void writeItem(IBoundObject item, IItemWriteHandler handler) throws IOException {
     handler.writeChoiceGroupItem(item, this);
   }
 
   @Override
-  default Object deepCopyItem(Object item, Object parentInstance) throws BindingException {
+  default IBoundObject deepCopyItem(IBoundObject item, IBoundObject parentInstance) throws BindingException {
     IBoundInstanceModelGroupedNamed itemInstance = getItemInstance(item);
-    return itemInstance.deepCopyItem(itemInstance, parentInstance);
+    return itemInstance.deepCopyItem(item, parentInstance);
   }
 
   @Override

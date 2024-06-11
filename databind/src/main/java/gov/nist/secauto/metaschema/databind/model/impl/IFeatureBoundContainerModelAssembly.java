@@ -46,9 +46,9 @@ import javax.xml.namespace.QName;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 public interface IFeatureBoundContainerModelAssembly<
-    MI extends IBoundInstanceModel,
-    NMI extends IBoundInstanceModelNamed,
-    FI extends IBoundInstanceModelField,
+    MI extends IBoundInstanceModel<?>,
+    NMI extends IBoundInstanceModelNamed<?>,
+    FI extends IBoundInstanceModelField<?>,
     AI extends IBoundInstanceModelAssembly,
     CGI extends IBoundInstanceModelChoiceGroup>
     extends IBoundContainerModelAssembly, IFeatureContainerModelAssembly<MI, NMI, FI, AI, IChoiceInstance, CGI> {

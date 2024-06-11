@@ -41,7 +41,7 @@ public interface IBoundModule
         IBoundModule,
         IBoundDefinitionModelComplex,
         IBoundDefinitionFlag,
-        IBoundDefinitionModelField,
+        IBoundDefinitionModelField<?>,
         IBoundDefinitionModelAssembly> {
 
   /**
@@ -65,8 +65,8 @@ public interface IBoundModule
   IBoundDefinitionModelAssembly getAssemblyDefinitionByName(@NonNull QName name);
 
   @Override
-  Collection<IBoundDefinitionModelField> getFieldDefinitions();
+  Collection<IBoundDefinitionModelField<?>> getFieldDefinitions();
 
   @Override
-  IBoundDefinitionModelField getFieldDefinitionByName(@NonNull QName name);
+  IBoundDefinitionModelField<?> getFieldDefinitionByName(@NonNull QName name);
 }

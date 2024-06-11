@@ -28,6 +28,8 @@ package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
@@ -50,7 +52,10 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "assembly-constraints",
     moduleClass = MetaschemaModelModule.class)
-public class AssemblyConstraints implements IModelConstraintsBase {
+public class AssemblyConstraints
+    implements IBoundObject, IModelConstraintsBase {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundAssembly(
       formalName = "Constraint Let Expression",
       useName = "let",
@@ -79,6 +84,19 @@ public class AssemblyConstraints implements IModelConstraintsBase {
       },
       groupAs = @GroupAs(name = "rules", inJson = JsonGroupAsBehavior.LIST))
   private List<? extends ITargetedConstraintBase> _rules;
+
+  public AssemblyConstraints() {
+    this(null);
+  }
+
+  public AssemblyConstraints(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   @Override
   public List<ConstraintLetExpression> getLets() {

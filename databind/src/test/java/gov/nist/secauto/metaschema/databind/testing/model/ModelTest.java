@@ -158,17 +158,17 @@ class ModelTest
       IBoundDefinitionModelAssembly definition = ObjectUtils.requireNonNull(
           (IBoundDefinitionModelAssembly) context.getBoundDefinitionForClass(RootAssemblyWithFields.class));
 
-      IBoundInstanceModelField defaultField = ObjectUtils.requireNonNull(
+      IBoundInstanceModelField<?> defaultField = ObjectUtils.requireNonNull(
           definition.getFieldInstanceByName(new QName(NS, "defaultField")));
-      IBoundInstanceModelField collectionField = ObjectUtils.requireNonNull(
+      IBoundInstanceModelField<?> collectionField = ObjectUtils.requireNonNull(
           definition.getFieldInstanceByName(new QName(NS, "field2")));
-      IBoundInstanceModelField specifiedValueKeyField = ObjectUtils.requireNonNull(
+      IBoundInstanceModelField<?> specifiedValueKeyField = ObjectUtils.requireNonNull(
           definition.getFieldInstanceByName(new QName(NS, "field-value-key")));
-      IBoundInstanceModelField defaultValueKeyField = ObjectUtils.requireNonNull(
+      IBoundInstanceModelField<?> defaultValueKeyField = ObjectUtils.requireNonNull(
           definition.getFieldInstanceByName(new QName(NS, "field-default-value-key")));
-      IBoundInstanceModelField flagValueKeyField = ObjectUtils.requireNonNull(
+      IBoundInstanceModelField<?> flagValueKeyField = ObjectUtils.requireNonNull(
           definition.getFieldInstanceByName(new QName(NS, "field-flag-value-key")));
-      IBoundInstanceModelField flagJsonKeyField = ObjectUtils.requireNonNull(
+      IBoundInstanceModelField<?> flagJsonKeyField = ObjectUtils.requireNonNull(
           definition.getFieldInstanceByName(new QName(NS, "field-json-key")));
 
       assertAll(

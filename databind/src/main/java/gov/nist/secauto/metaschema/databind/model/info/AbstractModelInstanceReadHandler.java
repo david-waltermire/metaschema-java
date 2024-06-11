@@ -29,18 +29,19 @@ package gov.nist.secauto.metaschema.databind.model.info;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModel;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelNamed;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-public abstract class AbstractModelInstanceReadHandler implements IModelInstanceReadHandler {
+public abstract class AbstractModelInstanceReadHandler<ITEM> implements IModelInstanceReadHandler<ITEM> {
   @NonNull
-  private final IBoundInstanceModel instance;
+  private final IBoundInstanceModel<ITEM> instance;
   @NonNull
-  private final Object parentObject;
+  private final IBoundObject parentObject;
 
   protected AbstractModelInstanceReadHandler(
-      @NonNull IBoundInstanceModel instance,
-      @NonNull Object parentObject) {
+      @NonNull IBoundInstanceModel<ITEM> instance,
+      @NonNull IBoundObject parentObject) {
     this.instance = instance;
     this.parentObject = parentObject;
   }
@@ -51,7 +52,7 @@ public abstract class AbstractModelInstanceReadHandler implements IModelInstance
    * @return the collection information
    */
   @NonNull
-  public IBoundInstanceModel getInstance() {
+  public IBoundInstanceModel<ITEM> getInstance() {
     return instance;
   }
 
@@ -61,7 +62,7 @@ public abstract class AbstractModelInstanceReadHandler implements IModelInstance
    * @return the collection information
    */
   @NonNull
-  public IModelInstanceCollectionInfo getCollectionInfo() {
+  public IModelInstanceCollectionInfo<ITEM> getCollectionInfo() {
     return getInstance().getCollectionInfo();
   }
 
@@ -71,16 +72,16 @@ public abstract class AbstractModelInstanceReadHandler implements IModelInstance
    * @return the parentObject
    */
   @NonNull
-  public Object getParentObject() {
+  public IBoundObject getParentObject() {
     return parentObject;
   }
 
   @Override
   public String getJsonKeyFlagName() {
-    IBoundInstanceModel instance = getInstance();
+    IBoundInstanceModel<?> instance = getInstance();
     String retval = null;
     if (instance instanceof IBoundInstanceModelNamed) {
-      IBoundInstanceFlag jsonKey = ((IBoundInstanceModelNamed) instance).getEffectiveJsonKey();
+      IBoundInstanceFlag jsonKey = ((IBoundInstanceModelNamed<?>) instance).getEffectiveJsonKey();
       if (jsonKey != null) {
         retval = jsonKey.getEffectiveName();
       }

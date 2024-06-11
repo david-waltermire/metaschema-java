@@ -29,6 +29,7 @@ package gov.nist.secauto.metaschema.databind.io.xml;
 import gov.nist.secauto.metaschema.databind.io.IParsingContext;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModel;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import org.codehaus.stax2.XMLEventReader2;
 
@@ -77,8 +78,8 @@ public interface IXmlParsingContext extends IParsingContext<XMLEventReader2, IXm
    *           if an error occurred while parsing the input
    *
    */
-  boolean readItems(
-      @NonNull IBoundInstanceModel instance,
-      @NonNull Object parentObject,
+  <T> boolean readItems(
+      @NonNull IBoundInstanceModel<T> instance,
+      @NonNull IBoundObject parentObject,
       boolean parseGrouping) throws IOException;
 }

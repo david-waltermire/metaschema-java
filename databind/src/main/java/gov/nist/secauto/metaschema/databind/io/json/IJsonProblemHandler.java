@@ -26,8 +26,11 @@
 
 package gov.nist.secauto.metaschema.databind.io.json;
 
+import com.fasterxml.jackson.core.JsonParser;
+
 import gov.nist.secauto.metaschema.databind.io.IProblemHandler;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.IOException;
 
@@ -46,7 +49,7 @@ public interface IJsonProblemHandler extends IProblemHandler {
    *          the Java object for the {@code parentDefinition}
    * @param fieldName
    *          the unknown JSON field name
-   * @param reader
+   * @param parser
    *          the JSON reader context used for parsing
    * @return {@code true} if the attribute was handled by this method, or
    *         {@code false} otherwise
@@ -55,7 +58,7 @@ public interface IJsonProblemHandler extends IProblemHandler {
    */
   boolean handleUnknownProperty(
       @NonNull IBoundDefinitionModelComplex definition,
-      @Nullable Object parentItem,
+      @Nullable IBoundObject parentItem,
       @NonNull String fieldName,
-      @NonNull IJsonParsingContext.IInstanceReader reader) throws IOException;
+      @NonNull JsonParser parser) throws IOException;
 }

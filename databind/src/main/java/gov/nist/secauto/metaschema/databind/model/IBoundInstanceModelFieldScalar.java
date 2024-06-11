@@ -36,13 +36,13 @@ import gov.nist.secauto.metaschema.databind.model.info.IItemWriteHandler;
 import java.io.IOException;
 
 public interface IBoundInstanceModelFieldScalar
-    extends IBoundInstanceModelField,
-    IBoundDefinitionModelField, IFeatureScalarItemValueHandler,
-    IFeatureDefinitionInstanceInlined<IBoundDefinitionModelField, IBoundInstanceModelFieldScalar> {
+    extends IBoundInstanceModelField<Object>,
+    IBoundDefinitionModelField<Object>, IFeatureScalarItemValueHandler,
+    IFeatureDefinitionInstanceInlined<IBoundDefinitionModelField<Object>, IBoundInstanceModelFieldScalar> {
 
   // integrate above
   @Override
-  default IBoundDefinitionModelField getDefinition() {
+  default IBoundDefinitionModelField<Object> getDefinition() {
     return IFeatureDefinitionInstanceInlined.super.getDefinition();
   }
 
@@ -90,7 +90,7 @@ public interface IBoundInstanceModelFieldScalar
   }
 
   @Override
-  default Object readItem(Object parent, IItemReadHandler handler) throws IOException {
+  default Object readItem(IBoundObject parent, IItemReadHandler handler) throws IOException {
     return handler.readItemField(ObjectUtils.requireNonNull(parent, "parent"), this);
   }
 

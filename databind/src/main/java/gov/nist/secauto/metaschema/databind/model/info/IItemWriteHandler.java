@@ -36,6 +36,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelFieldComple
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelFieldScalar;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedField;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.IOException;
 
@@ -81,7 +82,7 @@ public interface IItemWriteHandler {
    *           if an error occurred while parsing
    */
   void writeItemField(
-      @NonNull Object item,
+      @NonNull IBoundObject item,
       @NonNull IBoundInstanceModelFieldComplex instance) throws IOException;
 
   /**
@@ -95,7 +96,7 @@ public interface IItemWriteHandler {
    *           if an error occurred while parsing
    */
   void writeItemField(
-      @NonNull Object item,
+      @NonNull IBoundObject item,
       @NonNull IBoundInstanceModelGroupedField instance) throws IOException;
 
   /**
@@ -109,7 +110,7 @@ public interface IItemWriteHandler {
    *           if an error occurred while parsing
    */
   void writeItemField(
-      @NonNull Object item,
+      @NonNull IBoundObject item,
       @NonNull IBoundDefinitionModelFieldComplex definition) throws IOException;
 
   /**
@@ -137,7 +138,7 @@ public interface IItemWriteHandler {
    *           if an error occurred while parsing
    */
   void writeItemAssembly(
-      @NonNull Object item,
+      @NonNull IBoundObject item,
       @NonNull IBoundInstanceModelAssembly instance) throws IOException;
 
   /**
@@ -151,7 +152,7 @@ public interface IItemWriteHandler {
    *           if an error occurred while parsing
    */
   void writeItemAssembly(
-      @NonNull Object item,
+      @NonNull IBoundObject item,
       @NonNull IBoundInstanceModelGroupedAssembly instance) throws IOException;
 
   /**
@@ -165,7 +166,7 @@ public interface IItemWriteHandler {
    *           if an error occurred while parsing
    */
   void writeItemAssembly(
-      @NonNull Object item,
+      @NonNull IBoundObject item,
       @NonNull IBoundDefinitionModelAssembly definition) throws IOException;
 
   /**
@@ -179,7 +180,7 @@ public interface IItemWriteHandler {
    *           if an error occurred while parsing
    */
   void writeChoiceGroupItem(
-      @NonNull Object item,
+      @NonNull IBoundObject item,
       @NonNull IBoundInstanceModelChoiceGroup instance) throws IOException;
 
 }

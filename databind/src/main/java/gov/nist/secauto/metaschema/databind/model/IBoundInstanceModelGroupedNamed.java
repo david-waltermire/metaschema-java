@@ -72,17 +72,17 @@ public interface IBoundInstanceModelGroupedNamed
   }
 
   @Override
-  default Object deepCopyItem(Object item, Object parentInstance) throws BindingException {
+  default IBoundObject deepCopyItem(IBoundObject item, IBoundObject parentInstance) throws BindingException {
     return getDefinition().deepCopyItem(item, parentInstance);
   }
 
   @Override
-  default void callBeforeDeserialize(Object targetObject, Object parentObject) throws BindingException {
+  default void callBeforeDeserialize(IBoundObject targetObject, IBoundObject parentObject) throws BindingException {
     getDefinition().callBeforeDeserialize(targetObject, parentObject);
   }
 
   @Override
-  default void callAfterDeserialize(Object targetObject, Object parentObject) throws BindingException {
+  default void callAfterDeserialize(IBoundObject targetObject, IBoundObject parentObject) throws BindingException {
     getDefinition().callAfterDeserialize(targetObject, parentObject);
   }
 }

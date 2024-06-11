@@ -130,7 +130,7 @@ public class TypeSystem {
 
     Class<?>[] interfaces = clazz.getInterfaces();
     if (interfaces.length > 0) {
-      retval = Stream.concat(retval, Arrays.stream(interfaces).flatMap(intf -> getItemInterfaces(intf)));
+      retval = Stream.concat(retval, Arrays.stream(interfaces).flatMap(TypeSystem::getItemInterfaces));
     }
 
     return retval;

@@ -26,17 +26,37 @@
 
 package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-@SuppressWarnings("PMD.ShortClassName")
+@SuppressWarnings({
+    "PMD.ShortClassName",
+    "PMD.FieldNamingConventions" })
 @MetaschemaAssembly(
     formalName = "Any Additional Content",
     name = "any",
     moduleClass = MetaschemaModelModule.class)
-public class Any {
+public class Any
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
+  public Any() {
+    this(null);
+  }
+
+  public Any(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
+
   @Override
   public String toString() {
     return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();

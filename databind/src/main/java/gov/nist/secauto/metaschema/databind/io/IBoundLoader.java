@@ -33,6 +33,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.DefaultBindingContext;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import org.xml.sax.InputSource;
 
@@ -184,7 +185,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    * @see #detectFormat(File)
    */
   @NonNull
-  default <CLASS> CLASS load(@NonNull File file) throws IOException {
+  default <CLASS extends IBoundObject> CLASS load(@NonNull File file) throws IOException {
     return load(ObjectUtils.notNull(file.toPath()));
   }
 
@@ -203,7 +204,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    * @see #detectFormat(File)
    */
   @NonNull
-  default <CLASS> CLASS load(@NonNull Path path) throws IOException {
+  default <CLASS extends IBoundObject> CLASS load(@NonNull Path path) throws IOException {
     return load(ObjectUtils.notNull(path.toUri()));
   }
 
@@ -224,7 +225,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    * @see #detectFormat(URL)
    */
   @NonNull
-  default <CLASS> CLASS load(@NonNull URL url) throws IOException, URISyntaxException {
+  default <CLASS extends IBoundObject> CLASS load(@NonNull URL url) throws IOException, URISyntaxException {
     return load(ObjectUtils.notNull(url.toURI()));
   }
 
@@ -244,7 +245,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    * @see #detectFormat(URL)
    */
   @NonNull
-  <CLASS> CLASS load(@NonNull URI uri) throws IOException;
+  <CLASS extends IBoundObject> CLASS load(@NonNull URI uri) throws IOException;
 
   /**
    * Load data from the provided resource into a bound object.
@@ -266,7 +267,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    * @see #detectFormat(InputStream)
    */
   @NonNull
-  <CLASS> CLASS load(@NonNull InputStream is, @NonNull URI documentUri) throws IOException;
+  <CLASS extends IBoundObject> CLASS load(@NonNull InputStream is, @NonNull URI documentUri) throws IOException;
 
   /**
    * Load data from the specified resource into a bound object with the type of
@@ -283,7 +284,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           if an error occurred while loading the data in the specified file
    */
   @NonNull
-  default <CLASS> CLASS load(
+  default <CLASS extends IBoundObject> CLASS load(
       @NonNull Class<CLASS> clazz,
       @NonNull File file) throws IOException {
     return load(clazz, ObjectUtils.notNull(file.toPath()));
@@ -304,7 +305,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           if an error occurred while loading the data in the specified file
    */
   @NonNull
-  default <CLASS> CLASS load(
+  default <CLASS extends IBoundObject> CLASS load(
       @NonNull Class<CLASS> clazz,
       @NonNull Path path) throws IOException {
     return load(clazz, ObjectUtils.notNull(path.toUri()));
@@ -327,7 +328,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           if the provided {@code url} is malformed
    */
   @NonNull
-  default <CLASS> CLASS load(
+  default <CLASS extends IBoundObject> CLASS load(
       @NonNull Class<CLASS> clazz,
       @NonNull URL url) throws IOException, URISyntaxException {
     return load(clazz, ObjectUtils.notNull(url.toURI()));
@@ -348,7 +349,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           if an error occurred while loading the data in the specified file
    */
   @NonNull
-  <CLASS> CLASS load(
+  <CLASS extends IBoundObject> CLASS load(
       @NonNull Class<CLASS> clazz,
       @NonNull URI uri) throws IOException;
 
@@ -379,7 +380,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           resource
    */
   @NonNull
-  <CLASS> CLASS load(
+  <CLASS extends IBoundObject> CLASS load(
       @NonNull Class<CLASS> clazz,
       @NonNull InputStream is,
       @NonNull URI documentUri) throws IOException;
@@ -407,7 +408,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           resource
    */
   @NonNull
-  <CLASS> CLASS load(
+  <CLASS extends IBoundObject> CLASS load(
       @NonNull Class<CLASS> clazz,
       @NonNull Format format,
       @NonNull InputStream is,
@@ -512,7 +513,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           if an error occurred while loading the data from the specified
    *           resource or writing the converted data to the specified destination
    */
-  default <CLASS> void convert(
+  default <CLASS extends IBoundObject> void convert(
       @NonNull Path source,
       @NonNull Path destination,
       @NonNull Format toFormat,
@@ -546,7 +547,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           if an error occurred while loading the data from the specified
    *           resource or writing the converted data to the specified destination
    */
-  default <CLASS> void convert(
+  default <CLASS extends IBoundObject> void convert(
       @NonNull Path source,
       @NonNull OutputStream os,
       @NonNull Format toFormat,
@@ -580,7 +581,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           if an error occurred while loading the data from the specified
    *           resource or writing the converted data to the specified destination
    */
-  default <CLASS> void convert(
+  default <CLASS extends IBoundObject> void convert(
       @NonNull URI source,
       @NonNull Path destination,
       @NonNull Format toFormat,
@@ -614,7 +615,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           if an error occurred while loading the data from the specified
    *           resource or writing the converted data to the specified destination
    */
-  default <CLASS> void convert(
+  default <CLASS extends IBoundObject> void convert(
       @NonNull URI source,
       @NonNull OutputStream os,
       @NonNull Format toFormat,
@@ -648,7 +649,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           if an error occurred while loading the data from the specified
    *           resource or writing the converted data to the specified destination
    */
-  default <CLASS> void convert(
+  default <CLASS extends IBoundObject> void convert(
       @NonNull URI source,
       @NonNull Writer writer,
       @NonNull Format toFormat,

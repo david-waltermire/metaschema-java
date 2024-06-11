@@ -26,11 +26,9 @@
 
 package gov.nist.secauto.metaschema.databind.model;
 
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.io.BindingException;
 import gov.nist.secauto.metaschema.databind.model.info.IFeatureComplexItemValueHandler;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -43,40 +41,14 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * Represents a field or assembly instance bound to Java class.
  */
 public interface IBoundDefinitionModelComplex
-    extends IBoundDefinitionModel, IFeatureComplexItemValueHandler {
+    extends IBoundDefinitionModel<IBoundObject>, IFeatureComplexItemValueHandler {
 
   @NonNull
-  Map<String, IBoundProperty> getJsonProperties(@Nullable Predicate<IBoundInstanceFlag> flagFilter);
+  Map<String, IBoundProperty<?>> getJsonProperties(@Nullable Predicate<IBoundInstanceFlag> flagFilter);
 
   @Override
   default boolean isInline() {
     return getBoundClass().getEnclosingClass() != null;
-  }
-
-  /**
-   * Gets a new instance of the bound class.
-   *
-   * @param <CLASS>
-   *          the type of the bound class
-   * @return a Java object for the class
-   * @throws RuntimeException
-   *           if the instance cannot be created due to a binding error
-   */
-  @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
-  @Override
-  @NonNull
-  default <CLASS> CLASS newInstance() {
-    Class<?> clazz = getBoundClass();
-    try {
-      @SuppressWarnings("unchecked") Constructor<CLASS> constructor
-          = (Constructor<CLASS>) clazz.getDeclaredConstructor();
-      return ObjectUtils.notNull(constructor.newInstance());
-    } catch (NoSuchMethodException ex) {
-      String msg = String.format("Class '%s' does not have a required no-arg constructor.", clazz.getName());
-      throw new RuntimeException(msg, ex);
-    } catch (InstantiationException | IllegalAccessException | InvocationTargetException ex) {
-      throw new RuntimeException(ex);
-    }
   }
 
   @Nullable
@@ -98,7 +70,7 @@ public interface IBoundDefinitionModelComplex
    *           if an error occurs while calling the method
    */
   @Override
-  default void callBeforeDeserialize(Object targetObject, Object parentObject) throws BindingException {
+  default void callBeforeDeserialize(IBoundObject targetObject, IBoundObject parentObject) throws BindingException {
     Method beforeDeserializeMethod = getBeforeDeserializeMethod();
     if (beforeDeserializeMethod != null) {
       try {
@@ -128,7 +100,7 @@ public interface IBoundDefinitionModelComplex
    *           if an error occurs while calling the method
    */
   @Override
-  default void callAfterDeserialize(Object targetObject, Object parentObject) throws BindingException {
+  default void callAfterDeserialize(IBoundObject targetObject, IBoundObject parentObject) throws BindingException {
     Method afterDeserializeMethod = getAfterDeserializeMethod();
     if (afterDeserializeMethod != null) {
       try {

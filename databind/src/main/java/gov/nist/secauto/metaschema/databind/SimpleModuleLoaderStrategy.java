@@ -30,6 +30,7 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.AbstractBoundModule;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaField;
 import gov.nist.secauto.metaschema.databind.model.impl.DefinitionAssembly;
@@ -72,7 +73,7 @@ public class SimpleModuleLoaderStrategy implements IBindingContext.IModuleLoader
   }
 
   @Override
-  public IBoundDefinitionModelComplex getBoundDefinitionForClass(@NonNull Class<?> clazz) {
+  public IBoundDefinitionModelComplex getBoundDefinitionForClass(@NonNull Class<? extends IBoundObject> clazz) {
     IBoundDefinitionModelComplex retval;
     synchronized (this) {
       retval = definitionsByClass.get(clazz);
@@ -87,7 +88,7 @@ public class SimpleModuleLoaderStrategy implements IBindingContext.IModuleLoader
   }
 
   @Nullable
-  private IBoundDefinitionModelComplex newBoundDefinition(@NonNull Class<?> clazz) {
+  private IBoundDefinitionModelComplex newBoundDefinition(@NonNull Class<? extends IBoundObject> clazz) {
     IBoundDefinitionModelComplex retval = null;
     if (clazz.isAnnotationPresent(MetaschemaAssembly.class)) {
       retval = DefinitionAssembly.newInstance(clazz, getBindingContext());

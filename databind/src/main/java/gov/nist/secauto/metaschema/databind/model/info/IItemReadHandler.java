@@ -36,6 +36,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelFieldComple
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelFieldScalar;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedField;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.IOException;
 
@@ -56,7 +57,7 @@ public interface IItemReadHandler {
    */
   @NonNull
   Object readItemFlag(
-      @NonNull Object parent,
+      @NonNull IBoundObject parent,
       @NonNull IBoundInstanceFlag instance) throws IOException;
 
   /**
@@ -72,7 +73,7 @@ public interface IItemReadHandler {
    */
   @NonNull
   Object readItemField(
-      @NonNull Object parent,
+      @NonNull IBoundObject parent,
       @NonNull IBoundInstanceModelFieldScalar instance) throws IOException;
 
   /**
@@ -87,8 +88,8 @@ public interface IItemReadHandler {
    *           if an error occurred while parsing
    */
   @NonNull
-  Object readItemField(
-      @NonNull Object parent,
+  IBoundObject readItemField(
+      @NonNull IBoundObject parent,
       @NonNull IBoundInstanceModelFieldComplex instance) throws IOException;
 
   /**
@@ -103,8 +104,8 @@ public interface IItemReadHandler {
    *           if an error occurred while parsing
    */
   @NonNull
-  Object readItemField(
-      @NonNull Object parent,
+  IBoundObject readItemField(
+      @NonNull IBoundObject parent,
       @NonNull IBoundInstanceModelGroupedField instance) throws IOException;
 
   /**
@@ -120,8 +121,8 @@ public interface IItemReadHandler {
    *           if an error occurred while parsing
    */
   @NonNull
-  Object readItemField(
-      @Nullable Object parent,
+  IBoundObject readItemField(
+      @Nullable IBoundObject parent,
       @NonNull IBoundDefinitionModelFieldComplex definition) throws IOException;
 
   /**
@@ -137,7 +138,7 @@ public interface IItemReadHandler {
    */
   @NonNull
   Object readItemFieldValue(
-      @NonNull Object parent,
+      @NonNull IBoundObject parent,
       @NonNull IBoundFieldValue fieldValue) throws IOException;
 
   /**
@@ -152,8 +153,8 @@ public interface IItemReadHandler {
    *           if an error occurred while parsing
    */
   @NonNull
-  Object readItemAssembly(
-      @NonNull Object parent,
+  IBoundObject readItemAssembly(
+      @NonNull IBoundObject parent,
       @NonNull IBoundInstanceModelAssembly instance) throws IOException;
 
   /**
@@ -168,8 +169,8 @@ public interface IItemReadHandler {
    *           if an error occurred while parsing
    */
   @NonNull
-  Object readItemAssembly(
-      @NonNull Object parent,
+  IBoundObject readItemAssembly(
+      @NonNull IBoundObject parent,
       @NonNull IBoundInstanceModelGroupedAssembly instance) throws IOException;
 
   /**
@@ -185,8 +186,8 @@ public interface IItemReadHandler {
    *           if an error occurred while parsing
    */
   @NonNull
-  Object readItemAssembly(
-      @Nullable Object parent,
+  IBoundObject readItemAssembly(
+      @Nullable IBoundObject parent,
       @NonNull IBoundDefinitionModelAssembly definition) throws IOException;
 
   /**
@@ -201,7 +202,7 @@ public interface IItemReadHandler {
    *           if an error occurred while parsing
    */
   @NonNull
-  Object readChoiceGroupItem(
-      @NonNull Object parent,
+  IBoundObject readChoiceGroupItem(
+      @NonNull IBoundObject parent,
       @NonNull IBoundInstanceModelChoiceGroup instance) throws IOException;
 }

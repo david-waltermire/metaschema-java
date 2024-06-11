@@ -24,44 +24,14 @@
  * OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
  */
 
-package gov.nist.secauto.metaschema.databind.model.info;
+package gov.nist.secauto.metaschema.databind.model;
 
-import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
-import gov.nist.secauto.metaschema.databind.io.BindingException;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IValuedMutable;
+public interface IMetaschemaData {
+  int getLine();
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+  int getColumn();
 
-public interface IFeatureScalarItemValueHandler
-    extends IItemValueHandler<Object>, IValuedMutable {
+  long getCharOffset();
 
-  default void setValue(@NonNull Object parent, @NonNull String text) {
-    Object item = getValueFromString(text);
-    setValue(parent, item);
-  }
-
-  @Nullable
-  default String toStringFromItem(@NonNull Object parent) {
-    Object item = getValue(parent);
-    return item == null ? null : getJavaTypeAdapter().asString(item);
-  }
-
-  default Object getValueFromString(@NonNull String text) {
-    return getJavaTypeAdapter().parse(text);
-  }
-
-  /**
-   * Get the data type adapter supporting the scalar value.
-   *
-   * @return the data type adapter
-   */
-  @NonNull
-  IDataTypeAdapter<?> getJavaTypeAdapter();
-
-  @Override
-  default Object deepCopyItem(Object source, IBoundObject parentInstance) throws BindingException {
-    return getJavaTypeAdapter().copy(source);
-  }
+  long getByteOffset();
 }

@@ -37,6 +37,8 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
@@ -74,7 +76,10 @@ import java.util.List;
     name = "METASCHEMA",
     moduleClass = MetaschemaModelModule.class,
     rootName = "METASCHEMA")
-public class METASCHEMA {
+public class METASCHEMA
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   /**
    * "Determines if the Metaschema module is abstract (&lsquo;yes&rsquo;) or not
    * (&lsquo;no&rsquo;)."
@@ -154,6 +159,19 @@ public class METASCHEMA {
       },
       groupAs = @GroupAs(name = "definitions", inJson = JsonGroupAsBehavior.LIST))
   private List<Object> _definitions;
+
+  public METASCHEMA() {
+    this(null);
+  }
+
+  public METASCHEMA(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public String getAbstract() {
     return _abstract;
@@ -263,7 +281,10 @@ public class METASCHEMA {
       formalName = "Global Field Definition",
       name = "define-field",
       moduleClass = MetaschemaModelModule.class)
-  public static class DefineField {
+  public static class DefineField
+      implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
     @BoundFlag(
         formalName = "Global Field Name",
         name = "name",
@@ -397,6 +418,19 @@ public class METASCHEMA {
         maxOccurs = -1,
         groupAs = @GroupAs(name = "examples", inJson = JsonGroupAsBehavior.LIST))
     private List<Example> _examples;
+
+    public DefineField() {
+      this(null);
+    }
+
+    public DefineField(IMetaschemaData metaschemaData) {
+      this.__metaschemaData = metaschemaData;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
 
     public String getName() {
       return _name;
@@ -600,7 +634,10 @@ public class METASCHEMA {
       formalName = "Global Flag Definition",
       name = "define-flag",
       moduleClass = MetaschemaModelModule.class)
-  public static class DefineFlag {
+  public static class DefineFlag
+      implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
     @BoundFlag(
         formalName = "Global Flag Name",
         name = "name",
@@ -706,6 +743,19 @@ public class METASCHEMA {
         maxOccurs = -1,
         groupAs = @GroupAs(name = "examples", inJson = JsonGroupAsBehavior.LIST))
     private List<Example> _examples;
+
+    public DefineFlag() {
+      this(null);
+    }
+
+    public DefineFlag(IMetaschemaData metaschemaData) {
+      this.__metaschemaData = metaschemaData;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
 
     public String getName() {
       return _name;
@@ -882,7 +932,10 @@ public class METASCHEMA {
       description = "Imports a set of Metaschema modules contained in another resource. Imports support the reuse of common information structures.",
       name = "import",
       moduleClass = MetaschemaModelModule.class)
-  public static class Import {
+  public static class Import
+      implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
     /**
      * "A relative or absolute URI for retrieving an out-of-line Metaschema
      * definition."
@@ -894,6 +947,19 @@ public class METASCHEMA {
         required = true,
         typeAdapter = UriReferenceAdapter.class)
     private URI _href;
+
+    public Import() {
+      this(null);
+    }
+
+    public Import(IMetaschemaData metaschemaData) {
+      this.__metaschemaData = metaschemaData;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
 
     public URI getHref() {
       return _href;
@@ -920,7 +986,10 @@ public class METASCHEMA {
       description = "In XML, an element with structured element content. In JSON, an object with properties. Defined globally, an assembly can be assigned to appear in the `model` of any assembly (another assembly type, or itself), by `assembly` reference.",
       name = "define-assembly",
       moduleClass = MetaschemaModelModule.class)
-  public static class DefineAssembly {
+  public static class DefineAssembly
+      implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
     @BoundFlag(
         formalName = "Global Assembly Name",
         name = "name",
@@ -1021,6 +1090,19 @@ public class METASCHEMA {
         maxOccurs = -1,
         groupAs = @GroupAs(name = "examples", inJson = JsonGroupAsBehavior.LIST))
     private List<Example> _examples;
+
+    public DefineAssembly() {
+      this(null);
+    }
+
+    public DefineAssembly(IMetaschemaData metaschemaData) {
+      this.__metaschemaData = metaschemaData;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
 
     public String getName() {
       return _name;
@@ -1212,7 +1294,10 @@ public class METASCHEMA {
         description = "Provides a root name, for when the definition is used as the root of a node hierarchy.",
         name = "root-name",
         moduleClass = MetaschemaModelModule.class)
-    public static class RootName {
+    public static class RootName
+        implements IBoundObject {
+      private final IMetaschemaData __metaschemaData;
+
       /**
        * "Used for binary formats instead of the textual name."
        */
@@ -1227,6 +1312,19 @@ public class METASCHEMA {
           valueKeyName = "name",
           typeAdapter = TokenAdapter.class)
       private String _name;
+
+      public RootName() {
+        this(null);
+      }
+
+      public RootName(IMetaschemaData metaschemaData) {
+        this.__metaschemaData = metaschemaData;
+      }
+
+      @Override
+      public IMetaschemaData getMetaschemaData() {
+        return __metaschemaData;
+      }
 
       public BigInteger getIndex() {
         return _index;

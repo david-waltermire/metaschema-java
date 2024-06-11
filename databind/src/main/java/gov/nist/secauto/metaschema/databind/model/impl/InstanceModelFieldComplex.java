@@ -35,6 +35,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelFieldComp
 import gov.nist.secauto.metaschema.databind.model.IBoundFieldValue;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelFieldComplex;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IBoundProperty;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
@@ -60,13 +61,13 @@ public final class InstanceModelFieldComplex
         IBoundDefinitionModelFieldComplex,
         IBoundInstanceModelFieldComplex,
         IBoundDefinitionModelAssembly>
-    implements IBoundInstanceModelFieldComplex, IFeatureInstanceModelGroupAs {
+    implements IBoundInstanceModelFieldComplex, IFeatureInstanceModelGroupAs<IBoundObject> {
   @NonNull
   private final Field javaField;
   @NonNull
   private final BoundField annotation;
   @NonNull
-  private final Lazy<IModelInstanceCollectionInfo> collectionInfo;
+  private final Lazy<IModelInstanceCollectionInfo<IBoundObject>> collectionInfo;
   @NonNull
   private final IGroupAs groupAs;
   @NonNull
@@ -74,8 +75,9 @@ public final class InstanceModelFieldComplex
   @NonNull
   private final Lazy<Object> defaultValue;
   @NonNull
-  private final Lazy<Map<String, IBoundProperty>> jsonProperties;
+  private final Lazy<Map<String, IBoundProperty<?>>> jsonProperties;
 
+  @NonNull
   public static InstanceModelFieldComplex newInstance(
       @NonNull Field javaField,
       @NonNull DefinitionField definition,
@@ -152,7 +154,7 @@ public final class InstanceModelFieldComplex
 
         Object fieldValueDefault = fieldValue.getDefaultValue();
         if (fieldValueDefault != null) {
-          retval = newInstance();
+          retval = newInstance(null);
           fieldValue.setValue(retval, fieldValueDefault);
 
           for (IBoundInstanceFlag flag : definition.getFlagInstances()) {
@@ -192,7 +194,7 @@ public final class InstanceModelFieldComplex
 
   @SuppressWarnings("null")
   @Override
-  public IModelInstanceCollectionInfo getCollectionInfo() {
+  public IModelInstanceCollectionInfo<IBoundObject> getCollectionInfo() {
     return collectionInfo.get();
   }
 
@@ -207,7 +209,7 @@ public final class InstanceModelFieldComplex
   }
 
   @Override
-  public Map<String, IBoundProperty> getJsonProperties() {
+  public Map<String, IBoundProperty<?>> getJsonProperties() {
     return ObjectUtils.notNull(jsonProperties.get());
   }
 

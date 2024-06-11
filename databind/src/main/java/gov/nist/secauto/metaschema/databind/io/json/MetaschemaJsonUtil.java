@@ -70,17 +70,17 @@ final class MetaschemaJsonUtil {
    * @return a mapping of JSON property to related Module instance
    */
   @NonNull
-  public static Map<String, ? extends IBoundProperty> getJsonInstanceMap(
-      @NonNull IBoundDefinitionModel targetDefinition,
+  public static Map<String, ? extends IBoundProperty<?>> getJsonInstanceMap(
+      @NonNull IBoundDefinitionModel<?> targetDefinition,
       @Nullable IBoundInstanceFlag jsonKey) {
     Collection<? extends IBoundInstanceFlag> flags = targetDefinition.getFlagInstances();
     int flagCount = flags.size() - (jsonKey == null ? 0 : 1);
 
-    Stream<? extends IBoundProperty> instanceStream;
+    Stream<? extends IBoundProperty<?>> instanceStream;
     if (targetDefinition instanceof IBoundDefinitionModelAssembly) {
       // use all child instances
       instanceStream = ((IBoundDefinitionModelAssembly) targetDefinition).getModelInstances().stream()
-          .map(instance -> (IBoundProperty) instance);
+          .map(instance -> (IBoundProperty<?>) instance);
     } else if (targetDefinition instanceof IBoundDefinitionModelFieldComplex) {
       IBoundDefinitionModelFieldComplex targetFieldDefinition = (IBoundDefinitionModelFieldComplex) targetDefinition;
 

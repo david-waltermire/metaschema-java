@@ -35,6 +35,8 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
@@ -62,7 +64,10 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "assembly-model",
     moduleClass = MetaschemaModelModule.class)
-public class AssemblyModel {
+public class AssemblyModel
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundChoiceGroup(
       maxOccurs = -1,
       assemblies = {
@@ -84,6 +89,19 @@ public class AssemblyModel {
       formalName = "Any Additional Content",
       useName = "any")
   private Any _any;
+
+  public AssemblyModel() {
+    this(null);
+  }
+
+  public AssemblyModel(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public List<Object> getInstances() {
     return _instances;
@@ -110,7 +128,10 @@ public class AssemblyModel {
       formalName = "Choice Grouping",
       name = "choice-group",
       moduleClass = MetaschemaModelModule.class)
-  public static class ChoiceGroup {
+  public static class ChoiceGroup
+      implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
     @BoundFlag(
         formalName = "Minimum Occurrence",
         name = "min-occurs",
@@ -167,6 +188,19 @@ public class AssemblyModel {
         description = "Any explanatory or helpful information to be provided about the remarks parent.",
         useName = "remarks")
     private Remarks _remarks;
+
+    public ChoiceGroup() {
+      this(null);
+    }
+
+    public ChoiceGroup(IMetaschemaData metaschemaData) {
+      this.__metaschemaData = metaschemaData;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
 
     public BigInteger getMinOccurs() {
       return _minOccurs;
@@ -233,7 +267,10 @@ public class AssemblyModel {
         formalName = "Grouping Assembly Reference",
         name = "assembly",
         moduleClass = MetaschemaModelModule.class)
-    public static class Assembly {
+    public static class Assembly
+        implements IBoundObject {
+      private final IMetaschemaData __metaschemaData;
+
       @BoundFlag(
           formalName = "Global Assembly Reference",
           name = "ref",
@@ -291,6 +328,19 @@ public class AssemblyModel {
           description = "Any explanatory or helpful information to be provided about the remarks parent.",
           useName = "remarks")
       private Remarks _remarks;
+
+      public Assembly() {
+        this(null);
+      }
+
+      public Assembly(IMetaschemaData metaschemaData) {
+        this.__metaschemaData = metaschemaData;
+      }
+
+      @Override
+      public IMetaschemaData getMetaschemaData() {
+        return __metaschemaData;
+      }
 
       public String getRef() {
         return _ref;
@@ -402,7 +452,10 @@ public class AssemblyModel {
         formalName = "Inline Assembly Definition",
         name = "define-assembly",
         moduleClass = MetaschemaModelModule.class)
-    public static class DefineAssembly {
+    public static class DefineAssembly
+        implements IBoundObject {
+      private final IMetaschemaData __metaschemaData;
+
       @BoundFlag(
           formalName = "Inline Assembly Name",
           name = "name",
@@ -481,6 +534,19 @@ public class AssemblyModel {
           groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "examples",
               inJson = JsonGroupAsBehavior.LIST))
       private List<Example> _examples;
+
+      public DefineAssembly() {
+        this(null);
+      }
+
+      public DefineAssembly(IMetaschemaData metaschemaData) {
+        this.__metaschemaData = metaschemaData;
+      }
+
+      @Override
+      public IMetaschemaData getMetaschemaData() {
+        return __metaschemaData;
+      }
 
       public String getName() {
         return _name;
@@ -644,7 +710,10 @@ public class AssemblyModel {
         formalName = "Grouping Field Reference",
         name = "field",
         moduleClass = MetaschemaModelModule.class)
-    public static class Field {
+    public static class Field
+        implements IBoundObject {
+      private final IMetaschemaData __metaschemaData;
+
       @BoundFlag(
           formalName = "Global Field Reference",
           name = "ref",
@@ -721,6 +790,19 @@ public class AssemblyModel {
           description = "Any explanatory or helpful information to be provided about the remarks parent.",
           useName = "remarks")
       private Remarks _remarks;
+
+      public Field() {
+        this(null);
+      }
+
+      public Field(IMetaschemaData metaschemaData) {
+        this.__metaschemaData = metaschemaData;
+      }
+
+      @Override
+      public IMetaschemaData getMetaschemaData() {
+        return __metaschemaData;
+      }
 
       public String getRef() {
         return _ref;
@@ -848,7 +930,10 @@ public class AssemblyModel {
         formalName = "Inline Field Definition",
         name = "define-field",
         moduleClass = MetaschemaModelModule.class)
-    public static class DefineField {
+    public static class DefineField
+        implements IBoundObject {
+      private final IMetaschemaData __metaschemaData;
+
       @BoundFlag(
           formalName = "Inline Field Name",
           name = "name",
@@ -968,6 +1053,19 @@ public class AssemblyModel {
           groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "examples",
               inJson = JsonGroupAsBehavior.LIST))
       private List<Example> _examples;
+
+      public DefineField() {
+        this(null);
+      }
+
+      public DefineField(IMetaschemaData metaschemaData) {
+        this.__metaschemaData = metaschemaData;
+      }
+
+      @Override
+      public IMetaschemaData getMetaschemaData() {
+        return __metaschemaData;
+      }
 
       public String getName() {
         return _name;
@@ -1156,7 +1254,10 @@ public class AssemblyModel {
       formalName = "Choice",
       name = "choice",
       moduleClass = MetaschemaModelModule.class)
-  public static class Choice {
+  public static class Choice
+      implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
     @BoundChoiceGroup(
         minOccurs = 1,
         maxOccurs = -1,
@@ -1177,6 +1278,19 @@ public class AssemblyModel {
         formalName = "Any Additional Content",
         useName = "any")
     private Any _any;
+
+    public Choice() {
+      this(null);
+    }
+
+    public Choice(IMetaschemaData metaschemaData) {
+      this.__metaschemaData = metaschemaData;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
 
     public List<Object> getChoices() {
       return _choices;

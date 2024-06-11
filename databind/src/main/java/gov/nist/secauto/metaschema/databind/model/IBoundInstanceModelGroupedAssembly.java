@@ -59,9 +59,9 @@ public interface IBoundInstanceModelGroupedAssembly
   static IBoundInstanceModelGroupedAssembly newInstance(
       @NonNull BoundGroupedAssembly annotation,
       @NonNull IBoundInstanceModelChoiceGroup container) {
-    Class<?> clazz = annotation.binding();
+    Class<? extends IBoundObject> clazz = annotation.binding();
     IBindingContext bindingContext = container.getContainingDefinition().getBindingContext();
-    IBoundDefinitionModel definition = bindingContext.getBoundDefinitionForClass(clazz);
+    IBoundDefinitionModel<?> definition = bindingContext.getBoundDefinitionForClass(clazz);
     if (definition instanceof IBoundDefinitionModelAssembly) {
       return new InstanceModelGroupedAssembly(annotation, (IBoundDefinitionModelAssembly) definition, container);
     }
@@ -79,12 +79,12 @@ public interface IBoundInstanceModelGroupedAssembly
   IBoundDefinitionModelAssembly getDefinition();
 
   @Override
-  default Object readItem(Object parent, @NonNull IItemReadHandler handler) throws IOException {
+  default IBoundObject readItem(IBoundObject parent, @NonNull IItemReadHandler handler) throws IOException {
     return handler.readItemAssembly(ObjectUtils.requireNonNull(parent, "parent"), this);
   }
 
   @Override
-  default void writeItem(Object item, IItemWriteHandler handler) throws IOException {
+  default void writeItem(IBoundObject item, IItemWriteHandler handler) throws IOException {
     handler.writeItemAssembly(item, this);
   }
 }

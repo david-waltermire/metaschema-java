@@ -32,6 +32,6 @@ import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
  * Represents a flag definition/instance bound to Java field.
  */
 public interface IBoundDefinitionFlag
-    extends IFlagDefinition, IBoundModuleElement {
+    extends IFlagDefinition, IBoundModuleElement<Object> {
   // no additional methods
 }

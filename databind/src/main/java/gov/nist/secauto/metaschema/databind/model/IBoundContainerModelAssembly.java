@@ -43,23 +43,23 @@ public interface IBoundContainerModelAssembly extends IContainerModelAssembly {
 
   @Override
   @NonNull
-  Collection<? extends IBoundInstanceModel> getModelInstances();
+  Collection<? extends IBoundInstanceModel<?>> getModelInstances();
 
   @Override
   @NonNull
-  Collection<? extends IBoundInstanceModelNamed> getNamedModelInstances();
+  Collection<? extends IBoundInstanceModelNamed<?>> getNamedModelInstances();
 
   @Override
   @Nullable
-  IBoundInstanceModelNamed getNamedModelInstanceByName(QName name);
+  IBoundInstanceModelNamed<?> getNamedModelInstanceByName(QName name);
 
   @Override
   @NonNull
-  Collection<? extends IBoundInstanceModelField> getFieldInstances();
+  Collection<? extends IBoundInstanceModelField<?>> getFieldInstances();
 
   @Override
   @Nullable
-  IBoundInstanceModelField getFieldInstanceByName(QName name);
+  IBoundInstanceModelField<?> getFieldInstanceByName(QName name);
 
   @Override
   @NonNull

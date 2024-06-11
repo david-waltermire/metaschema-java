@@ -34,6 +34,8 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
@@ -58,7 +60,10 @@ import java.util.List;
     formalName = "Inline Flag Definition",
     name = "inline-define-flag",
     moduleClass = MetaschemaModelModule.class)
-public class InlineDefineFlag {
+public class InlineDefineFlag
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundFlag(
       formalName = "Inline Flag Name",
       name = "name",
@@ -154,6 +159,19 @@ public class InlineDefineFlag {
       maxOccurs = -1,
       groupAs = @GroupAs(name = "examples", inJson = JsonGroupAsBehavior.LIST))
   private List<Example> _examples;
+
+  public InlineDefineFlag() {
+    this(null);
+  }
+
+  public InlineDefineFlag(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public String getName() {
     return _name;

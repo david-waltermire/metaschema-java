@@ -27,6 +27,8 @@
 package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
 import gov.nist.secauto.metaschema.core.datatype.adapter.StringAdapter;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
@@ -42,7 +44,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Key Constraint",
     name = "key-constraint-field",
     moduleClass = MetaschemaModelModule.class)
-public class KeyConstraintField {
+public class KeyConstraintField
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundFlag(
       formalName = "Key Field Value Target",
       name = "target",
@@ -61,6 +66,19 @@ public class KeyConstraintField {
       description = "Any explanatory or helpful information to be provided about the remarks parent.",
       useName = "remarks")
   private Remarks _remarks;
+
+  public KeyConstraintField() {
+    this(null);
+  }
+
+  public KeyConstraintField(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public String getTarget() {
     return _target;

@@ -35,6 +35,8 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
@@ -59,7 +61,10 @@ import java.util.List;
     formalName = "Inline Assembly Definition",
     name = "inline-define-assembly",
     moduleClass = MetaschemaModelModule.class)
-public class InlineDefineAssembly {
+public class InlineDefineAssembly
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundFlag(
       formalName = "Inline Assembly Name",
       name = "name",
@@ -159,6 +164,19 @@ public class InlineDefineAssembly {
       groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "examples",
           inJson = JsonGroupAsBehavior.LIST))
   private List<Example> _examples;
+
+  public InlineDefineAssembly() {
+    this(null);
+  }
+
+  public InlineDefineAssembly(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public String getName() {
     return _name;

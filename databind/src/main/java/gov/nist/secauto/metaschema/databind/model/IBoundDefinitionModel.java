@@ -33,10 +33,12 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 
 /**
  * Represents a field or assembly instance bound to Java data.
+ *
+ * @param <ITEM>
+ *          the Java type for associated bound objects
  */
-// REFACTOR: rename to IBoundDefinitionModel
-public interface IBoundDefinitionModel
-    extends IBoundModuleElement, IFeatureContainerFlag<IBoundInstanceFlag> {
+public interface IBoundDefinitionModel<ITEM>
+    extends IBoundModuleElement<ITEM>, IFeatureContainerFlag<IBoundInstanceFlag> {
   /**
    * Get the binding context used for the definition.
    *
@@ -46,7 +48,7 @@ public interface IBoundDefinitionModel
   IBindingContext getBindingContext();
 
   @Override
-  IBoundInstanceModelNamed getInlineInstance();
+  IBoundInstanceModelNamed<ITEM> getInlineInstance();
 
   //
   // @Override

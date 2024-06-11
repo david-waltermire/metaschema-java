@@ -40,6 +40,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelFieldComp
 import gov.nist.secauto.metaschema.databind.model.IBoundFieldValue;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IBoundProperty;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFieldValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.Ignore;
@@ -68,7 +69,7 @@ public final class DefinitionField
   @NonNull
   private final Lazy<IValueConstrained> constraints;
   @NonNull
-  private final Lazy<Map<String, IBoundProperty>> jsonProperties;
+  private final Lazy<Map<String, IBoundProperty<?>>> jsonProperties;
 
   /**
    * Collect all fields that are part of the model for this class.
@@ -111,7 +112,7 @@ public final class DefinitionField
    */
   @NonNull
   public static DefinitionField newInstance(
-      @NonNull Class<?> clazz,
+      @NonNull Class<? extends IBoundObject> clazz,
       @NonNull IBindingContext bindingContext) {
     MetaschemaField annotation = ModelUtil.getAnnotation(clazz, MetaschemaField.class);
     Class<? extends IBoundModule> moduleClass = annotation.moduleClass();
@@ -119,7 +120,7 @@ public final class DefinitionField
   }
 
   private DefinitionField(
-      @NonNull Class<?> clazz,
+      @NonNull Class<? extends IBoundObject> clazz,
       @NonNull MetaschemaField annotation,
       @NonNull Class<? extends IBoundModule> moduleClass,
       @NonNull IBindingContext bindingContext) {
@@ -172,7 +173,7 @@ public final class DefinitionField
   }
 
   @Override
-  protected void deepCopyItemInternal(Object fromObject, Object toObject) throws BindingException {
+  protected void deepCopyItemInternal(IBoundObject fromObject, IBoundObject toObject) throws BindingException {
     // copy the flags
     super.deepCopyItemInternal(fromObject, toObject);
 
@@ -197,7 +198,7 @@ public final class DefinitionField
   }
 
   @Override
-  public Map<String, IBoundProperty> getJsonProperties() {
+  public Map<String, IBoundProperty<?>> getJsonProperties() {
     return ObjectUtils.notNull(jsonProperties.get());
   }
 

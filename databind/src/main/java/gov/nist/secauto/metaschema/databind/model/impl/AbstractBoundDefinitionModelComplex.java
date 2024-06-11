@@ -32,6 +32,7 @@ import gov.nist.secauto.metaschema.databind.io.BindingException;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -45,7 +46,7 @@ import nl.talsmasoftware.lazy4j.Lazy;
 public abstract class AbstractBoundDefinitionModelComplex<A extends Annotation>
     implements IBoundDefinitionModelComplex {
   @NonNull
-  private final Class<?> clazz;
+  private final Class<? extends IBoundObject> clazz;
   @NonNull
   private final A annotation;
   @NonNull
@@ -62,7 +63,7 @@ public abstract class AbstractBoundDefinitionModelComplex<A extends Annotation>
   private final Method afterDeserializeMethod;
 
   protected AbstractBoundDefinitionModelComplex(
-      @NonNull Class<?> clazz,
+      @NonNull Class<? extends IBoundObject> clazz,
       @NonNull A annotation,
       @NonNull Class<? extends IBoundModule> moduleClass,
       @NonNull IBindingContext bindingContext) {
@@ -83,7 +84,7 @@ public abstract class AbstractBoundDefinitionModelComplex<A extends Annotation>
   }
 
   @Override
-  public Class<?> getBoundClass() {
+  public Class<? extends IBoundObject> getBoundClass() {
     return clazz;
   }
 
@@ -137,8 +138,8 @@ public abstract class AbstractBoundDefinitionModelComplex<A extends Annotation>
   // }
 
   @Override
-  public Object deepCopyItem(Object item, Object parentInstance) throws BindingException {
-    Object instance = newInstance();
+  public IBoundObject deepCopyItem(IBoundObject item, IBoundObject parentInstance) throws BindingException {
+    IBoundObject instance = newInstance(() -> item.getMetaschemaData());
 
     callBeforeDeserialize(instance, parentInstance);
 
@@ -149,7 +150,7 @@ public abstract class AbstractBoundDefinitionModelComplex<A extends Annotation>
     return instance;
   }
 
-  protected void deepCopyItemInternal(@NonNull Object fromObject, @NonNull Object toObject)
+  protected void deepCopyItemInternal(@NonNull IBoundObject fromObject, @NonNull IBoundObject toObject)
       throws BindingException {
     for (IBoundInstanceFlag instance : getFlagInstances()) {
       instance.deepCopy(fromObject, toObject);

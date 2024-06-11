@@ -28,6 +28,8 @@ package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
 import gov.nist.secauto.metaschema.core.datatype.adapter.StringAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.TokenAdapter;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
@@ -43,7 +45,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Constraint Let Expression",
     name = "constraint-let-expression",
     moduleClass = MetaschemaModelModule.class)
-public class ConstraintLetExpression {
+public class ConstraintLetExpression
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundFlag(
       formalName = "Let Variable Name",
       name = "var",
@@ -63,6 +68,19 @@ public class ConstraintLetExpression {
       description = "Any explanatory or helpful information to be provided about the remarks parent.",
       useName = "remarks")
   private Remarks _remarks;
+
+  public ConstraintLetExpression() {
+    this(null);
+  }
+
+  public ConstraintLetExpression(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public String getVar() {
     return _var;

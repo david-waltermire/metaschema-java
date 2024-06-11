@@ -36,6 +36,7 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.io.AbstractDeserializer;
 import gov.nist.secauto.metaschema.databind.io.DeserializationFeature;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -43,7 +44,7 @@ import java.net.URI;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-public class DefaultJsonDeserializer<CLASS>
+public class DefaultJsonDeserializer<CLASS extends IBoundObject>
     extends AbstractDeserializer<CLASS> {
   private JsonFactory jsonFactory;
 
@@ -116,7 +117,7 @@ public class DefaultJsonDeserializer<CLASS>
       if (definition.isRoot()
           && configuration.isFeatureEnabled(DeserializationFeature.DESERIALIZE_JSON_ROOT_PROPERTY)) {
         // now parse the root property
-        CLASS value = ObjectUtils.requireNonNull(parser.readProperty(definition, definition.getRootJsonName()));
+        CLASS value = ObjectUtils.requireNonNull(parser.readObjectRoot(definition, definition.getRootJsonName()));
 
         retval = INodeItemFactory.instance().newDocumentNodeItem(definition, documentUri, value);
       } else {
@@ -141,7 +142,7 @@ public class DefaultJsonDeserializer<CLASS>
           && configuration.isFeatureEnabled(DeserializationFeature.DESERIALIZE_JSON_ROOT_PROPERTY)) {
 
         // now parse the root property
-        retval = ObjectUtils.requireNonNull(parser.readProperty(definition, definition.getRootJsonName()));
+        retval = ObjectUtils.requireNonNull(parser.readObjectRoot(definition, definition.getRootJsonName()));
       } else {
         // read the top-level definition
         retval = ObjectUtils.asType(ObjectUtils.requireNonNull(

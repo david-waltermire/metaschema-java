@@ -48,7 +48,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 public interface IBoundInstanceFlag
     extends IFlagInstance, IBoundDefinitionFlag,
     IFeatureScalarItemValueHandler,
-    IBoundInstance, IFeatureDefinitionInstanceInlined<IBoundDefinitionFlag, IBoundInstanceFlag> {
+    IBoundInstance<Object>, IFeatureDefinitionInstanceInlined<IBoundDefinitionFlag, IBoundInstanceFlag> {
 
   /**
    * Create a new bound flag instance.
@@ -62,7 +62,7 @@ public interface IBoundInstanceFlag
   @NonNull
   static IBoundInstanceFlag newInstance(
       @NonNull Field field,
-      @NonNull IBoundDefinitionModel containingDefinition) {
+      @NonNull IBoundDefinitionModel<IBoundObject> containingDefinition) {
     return new InstanceFlagInline(field, containingDefinition);
   }
 
@@ -91,11 +91,11 @@ public interface IBoundInstanceFlag
 
   @Override
   @NonNull
-  IBoundDefinitionModel getContainingDefinition();
+  IBoundDefinitionModel<IBoundObject> getContainingDefinition();
 
   @Override
   @NonNull
-  default IBoundDefinitionModel getParentContainer() {
+  default IBoundDefinitionModel<IBoundObject> getParentContainer() {
     return getContainingDefinition();
   }
 
@@ -116,7 +116,7 @@ public interface IBoundInstanceFlag
   }
 
   @Override
-  default void deepCopy(@NonNull Object fromInstance, @NonNull Object toInstance) throws BindingException {
+  default void deepCopy(@NonNull IBoundObject fromInstance, @NonNull IBoundObject toInstance) throws BindingException {
     Object value = getValue(fromInstance);
     if (value != null) {
       setValue(toInstance, deepCopyItem(value, toInstance));
@@ -125,7 +125,7 @@ public interface IBoundInstanceFlag
 
   @Override
   @NonNull
-  default Object readItem(Object parent, @NonNull IItemReadHandler handler) throws IOException {
+  default Object readItem(IBoundObject parent, @NonNull IItemReadHandler handler) throws IOException {
     return handler.readItemFlag(ObjectUtils.requireNonNull(parent, "parent"), this);
   }
 

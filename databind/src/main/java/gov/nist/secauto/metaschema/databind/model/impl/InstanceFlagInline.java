@@ -37,6 +37,7 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModel;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.JsonFieldValueKeyFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.JsonKey;
@@ -56,7 +57,7 @@ import nl.talsmasoftware.lazy4j.Lazy;
  */
 // TODO: implement getProperties()
 public class InstanceFlagInline
-    extends AbstractInlineFlagDefinition<IBoundDefinitionModel, IBoundDefinitionFlag, IBoundInstanceFlag>
+    extends AbstractInlineFlagDefinition<IBoundDefinitionModel<IBoundObject>, IBoundDefinitionFlag, IBoundInstanceFlag>
     // extends AbstractBoundInstanceJavaField<BoundFlag, IBoundDefinitionModel>
     implements IBoundInstanceFlag {
   @NonNull
@@ -80,7 +81,7 @@ public class InstanceFlagInline
    */
   public InstanceFlagInline(
       @NonNull Field javaField,
-      @NonNull IBoundDefinitionModel containingDefinition) {
+      @NonNull IBoundDefinitionModel<IBoundObject> containingDefinition) {
     super(containingDefinition);
     this.javaField = javaField;
     this.annotation = ModelUtil.getAnnotation(javaField, BoundFlag.class);

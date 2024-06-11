@@ -128,9 +128,7 @@ public class DefinitionAssemblyGlobal
             .requireNonNull(bindingInstance.getDefinition().getAssemblyInstanceByName(MODEL_QNAME)),
         this,
         nodeItemFactory)));
-    this.modelConstraints = ObjectUtils.notNull(Lazy.lazy(() ->
-
-    {
+    this.modelConstraints = ObjectUtils.notNull(Lazy.lazy(() -> {
       IModelConstrained retval = new AssemblyConstraintSet();
       AssemblyConstraints constraints = getBinding().getConstraint();
       if (constraints != null) {

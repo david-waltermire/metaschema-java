@@ -28,6 +28,8 @@ package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
@@ -46,7 +48,10 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "metapath-context",
     moduleClass = MetaschemaModelModule.class)
-public class MetapathContext {
+public class MetapathContext
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   @BoundAssembly(
       description = "A Metapath expression identifying the model node that the constraints will be applied to.",
       useName = "metapath",
@@ -70,6 +75,19 @@ public class MetapathContext {
       description = "Any explanatory or helpful information to be provided about the remarks parent.",
       useName = "remarks")
   private Remarks _remarks;
+
+  public MetapathContext() {
+    this(null);
+  }
+
+  public MetapathContext(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public List<MetaschemaMetapath> getMetapaths() {
     return _metapaths;

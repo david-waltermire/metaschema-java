@@ -36,6 +36,7 @@ import gov.nist.secauto.metaschema.core.model.constraint.IConstraintValidationHa
 import gov.nist.secauto.metaschema.core.model.constraint.LoggingConstraintValidationHandler;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -49,7 +50,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * @param <CLASS>
  *          the bound class to deserialize to
  */
-public abstract class AbstractDeserializer<CLASS>
+public abstract class AbstractDeserializer<CLASS extends IBoundObject>
     extends AbstractSerializationBase<DeserializationFeature<?>>
     implements IDeserializer<CLASS> {
 

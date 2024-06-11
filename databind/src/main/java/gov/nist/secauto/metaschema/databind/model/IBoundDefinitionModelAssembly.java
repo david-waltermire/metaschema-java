@@ -78,7 +78,7 @@ public interface IBoundDefinitionModelAssembly
 
   @Override
   @NonNull
-  default Map<String, IBoundProperty> getJsonProperties(@Nullable Predicate<IBoundInstanceFlag> flagFilter) {
+  default Map<String, IBoundProperty<?>> getJsonProperties(@Nullable Predicate<IBoundInstanceFlag> flagFilter) {
     Stream<? extends IBoundInstanceFlag> flagStream = getFlagInstances().stream();
 
     if (flagFilter != null) {
@@ -91,12 +91,12 @@ public interface IBoundDefinitionModelAssembly
 
   @Override
   @NonNull
-  default Object readItem(@Nullable Object parent, @NonNull IItemReadHandler handler) throws IOException {
+  default IBoundObject readItem(@Nullable IBoundObject parent, @NonNull IItemReadHandler handler) throws IOException {
     return handler.readItemAssembly(parent, this);
   }
 
   @Override
-  default void writeItem(Object item, IItemWriteHandler handler) throws IOException {
+  default void writeItem(IBoundObject item, IItemWriteHandler handler) throws IOException {
     handler.writeItemAssembly(item, this);
   }
 

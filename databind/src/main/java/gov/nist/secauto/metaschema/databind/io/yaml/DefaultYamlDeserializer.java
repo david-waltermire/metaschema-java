@@ -31,10 +31,11 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import gov.nist.secauto.metaschema.databind.io.json.DefaultJsonDeserializer;
 import gov.nist.secauto.metaschema.databind.io.yaml.impl.YamlFactoryFactory;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-public class DefaultYamlDeserializer<CLASS>
+public class DefaultYamlDeserializer<CLASS extends IBoundObject>
     extends DefaultJsonDeserializer<CLASS> {
 
   /**

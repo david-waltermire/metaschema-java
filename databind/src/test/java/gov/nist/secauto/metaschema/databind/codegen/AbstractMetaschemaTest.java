@@ -37,6 +37,7 @@ import gov.nist.secauto.metaschema.databind.codegen.config.DefaultBindingConfigu
 import gov.nist.secauto.metaschema.databind.io.BindingException;
 import gov.nist.secauto.metaschema.databind.io.Format;
 import gov.nist.secauto.metaschema.databind.io.IDeserializer;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.metaschema.BindingModuleLoader;
 
 import org.apache.logging.log4j.LogManager;
@@ -67,7 +68,7 @@ abstract class AbstractMetaschemaTest {
   }
 
   @NonNull
-  public static Class<?> compileModule(@NonNull Path moduleFile, @Nullable Path bindingFile,
+  public static Class<? extends IBoundObject> compileModule(@NonNull Path moduleFile, @Nullable Path bindingFile,
       @NonNull String rootClassName, @NonNull Path classDir)
       throws IOException, ClassNotFoundException, MetaschemaException {
     IMetaschemaModule module = loadModule(moduleFile);
@@ -80,29 +81,29 @@ abstract class AbstractMetaschemaTest {
     ModuleCompilerHelper.compileModule(module, classDir, bindingConfiguration);
 
     // Load classes
-    return ObjectUtils.notNull(ModuleCompilerHelper.newClassLoader(
+    return ObjectUtils.asType(ObjectUtils.notNull(ModuleCompilerHelper.newClassLoader(
         classDir,
         ObjectUtils.notNull(Thread.currentThread().getContextClassLoader()))
-        .loadClass(rootClassName));
+        .loadClass(rootClassName)));
   }
 
-  private static Object read(
+  private static <T extends IBoundObject> T read(
       @NonNull Format format,
       @NonNull Path file,
-      @NonNull Class<?> rootClass,
+      @NonNull Class<T> rootClass,
       @NonNull IBindingContext context)
       throws IOException {
-    IDeserializer<?> deserializer = context.newDeserializer(format, rootClass);
+    IDeserializer<T> deserializer = context.newDeserializer(format, rootClass);
     LOGGER.info("Reading content: {}", file);
     return deserializer.deserialize(file);
   }
 
-  private static <CLASS> void write(
+  private static <T extends IBoundObject> void write(
       @NonNull Format format,
       @NonNull Path file,
-      @NonNull CLASS rootObject,
+      @NonNull T rootObject,
       @NonNull IBindingContext context) throws IOException {
-    @SuppressWarnings("unchecked") Class<CLASS> clazz = (Class<CLASS>) rootObject.getClass();
+    @SuppressWarnings("unchecked") Class<T> clazz = (Class<T>) rootObject.getClass();
 
     try (Writer writer = Files.newBufferedWriter(file, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
         StandardOpenOption.TRUNCATE_EXISTING)) {
@@ -142,7 +143,7 @@ abstract class AbstractMetaschemaTest {
       java.util.function.Consumer<Object> assertions)
       throws ClassNotFoundException, IOException, MetaschemaException, BindingException {
 
-    Class<?> rootClass = compileModule(
+    Class<? extends IBoundObject> rootClass = compileModule(
         metaschemaPath,
         bindingPath,
         rootClassName,
@@ -151,9 +152,9 @@ abstract class AbstractMetaschemaTest {
   }
 
   @SuppressWarnings("unused")
-  public static void runTests(
+  public static <T extends IBoundObject> void runTests(
       @Nullable Path examplePath,
-      @NonNull Class<?> rootClass,
+      @NonNull Class<? extends T> rootClass,
       java.util.function.Consumer<Object> assertions)
       throws ClassNotFoundException, IOException, MetaschemaException, BindingException {
 
@@ -165,7 +166,7 @@ abstract class AbstractMetaschemaTest {
       String xml;
       {
 
-        Object root = read(Format.XML, examplePath, rootClass, context);
+        T root = read(Format.XML, examplePath, rootClass, context);
         if (LOGGER.isDebugEnabled()) {
           LOGGER.atDebug().log("Read XML: Object: {}", root.toString());
         }

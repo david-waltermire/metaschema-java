@@ -57,6 +57,8 @@ import gov.nist.secauto.metaschema.databind.codegen.typeinfo.def.IFieldDefinitio
 import gov.nist.secauto.metaschema.databind.codegen.typeinfo.def.IModelDefinitionTypeInfo;
 import gov.nist.secauto.metaschema.databind.model.AbstractBoundModule;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaField;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaPackage;
@@ -421,8 +423,33 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
     TypeSpec.Builder builder = TypeSpec.classBuilder(typeInfo.getClassName()).addModifiers(Modifier.PUBLIC);
     assert builder != null;
     if (isChild) {
-      builder.addModifiers(Modifier.STATIC);
+      builder.addModifiers(Modifier.STATIC, Modifier.FINAL);
     }
+
+    builder.addSuperinterface(ClassName.get(IBoundObject.class));
+
+    // add field for Metaschema info
+    builder.addField(FieldSpec.builder(IMetaschemaData.class, "__metaschemaData", Modifier.PRIVATE)
+        .build());
+
+    builder.addMethod(MethodSpec.constructorBuilder()
+        .addModifiers(Modifier.PUBLIC)
+        .addParameter(IMetaschemaData.class, "data")
+        .addStatement("this.$N = $N", "__metaschemaData", "data")
+        .build());
+
+    builder.addMethod(MethodSpec.constructorBuilder()
+        .addModifiers(Modifier.PUBLIC)
+        .addStatement("this(null)")
+        .build());
+
+    // generate a toString method that will help with debugging
+    MethodSpec.Builder getMetaschemaData = MethodSpec.methodBuilder("getMetaschemaData")
+        .addModifiers(Modifier.PUBLIC)
+        .returns(IMetaschemaData.class)
+        .addAnnotation(Override.class)
+        .addStatement("return __metaschemaData");
+    builder.addMethod(getMetaschemaData.build());
 
     ClassName baseClassName = typeInfo.getBaseClassName();
     if (baseClassName != null) {
@@ -464,8 +491,6 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
   protected Set<IModelDefinition> buildClass(
       @NonNull IAssemblyDefinitionTypeInfo typeInfo,
       @NonNull TypeSpec.Builder builder) {
-    Set<IModelDefinition> retval = new HashSet<>(buildClass((IModelDefinitionTypeInfo) typeInfo, builder));
-
     AnnotationSpec.Builder metaschemaAssembly = ObjectUtils.notNull(AnnotationSpec.builder(MetaschemaAssembly.class));
 
     buildCommonProperties(typeInfo, metaschemaAssembly);
@@ -484,7 +509,8 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
     AnnotationGenerator.buildAssemblyConstraints(metaschemaAssembly, definition);
 
     builder.addAnnotation(metaschemaAssembly.build());
-    return retval;
+
+    return new HashSet<>(buildClass((IModelDefinitionTypeInfo) typeInfo, builder));
   }
 
   /**
@@ -501,7 +527,6 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
   protected Set<IModelDefinition> buildClass(
       @NonNull IFieldDefinitionTypeInfo typeInfo,
       @NonNull TypeSpec.Builder builder) {
-    Set<IModelDefinition> retval = new HashSet<>(buildClass((IModelDefinitionTypeInfo) typeInfo, builder));
     AnnotationSpec.Builder metaschemaField = ObjectUtils.notNull(AnnotationSpec.builder(MetaschemaField.class));
 
     buildCommonProperties(typeInfo, metaschemaField);
@@ -510,7 +535,8 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
     AnnotationGenerator.buildValueConstraints(metaschemaField, definition);
 
     builder.addAnnotation(metaschemaField.build());
-    return retval;
+
+    return new HashSet<>(buildClass((IModelDefinitionTypeInfo) typeInfo, builder));
   }
 
   /**

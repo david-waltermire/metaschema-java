@@ -41,12 +41,12 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel.Choice;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel.ChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyReference;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FieldReference;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.InlineDefineAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.InlineDefineField;
-import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel.Choice;
-import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel.ChoiceGroup;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;

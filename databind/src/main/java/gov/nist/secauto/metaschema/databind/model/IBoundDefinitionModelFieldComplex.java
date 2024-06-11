@@ -50,7 +50,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * This definition is considered "complex", since it is bound to a Java class.
  */
 public interface IBoundDefinitionModelFieldComplex
-    extends IBoundDefinitionModelField, IBoundDefinitionModelComplex {
+    extends IBoundDefinitionModelField<IBoundObject>, IBoundDefinitionModelComplex {
 
   // Complex Field Definition Features
   // =================================
@@ -69,7 +69,7 @@ public interface IBoundDefinitionModelFieldComplex
 
     Object fieldValueDefault = fieldValue.getDefaultValue();
     if (fieldValueDefault != null) {
-      retval = definition.newInstance();
+      retval = definition.newInstance(null);
       fieldValue.setValue(retval, fieldValueDefault);
 
       // since the field value is non-null, populate the flags
@@ -111,7 +111,7 @@ public interface IBoundDefinitionModelFieldComplex
 
   @Override
   @NonNull
-  default Map<String, IBoundProperty> getJsonProperties(@Nullable Predicate<IBoundInstanceFlag> flagFilter) {
+  default Map<String, IBoundProperty<?>> getJsonProperties(@Nullable Predicate<IBoundInstanceFlag> flagFilter) {
     Predicate<IBoundInstanceFlag> actualFlagFilter = flagFilter;
 
     IBoundFieldValue fieldValue = getFieldValue();
@@ -140,7 +140,7 @@ public interface IBoundDefinitionModelFieldComplex
       flagStream = flagInstances.stream();
     }
 
-    Stream<? extends IBoundProperty> resultStream = fieldValue == null
+    Stream<? extends IBoundProperty<?>> resultStream = fieldValue == null
         ? flagStream
         : Stream.concat(flagStream, Stream.of(getFieldValue()));
 
@@ -150,12 +150,12 @@ public interface IBoundDefinitionModelFieldComplex
 
   @Override
   @NonNull
-  default Object readItem(Object parent, IItemReadHandler handler) throws IOException {
+  default IBoundObject readItem(IBoundObject parent, IItemReadHandler handler) throws IOException {
     return handler.readItemField(parent, this);
   }
 
   @Override
-  default void writeItem(Object item, IItemWriteHandler handler) throws IOException {
+  default void writeItem(IBoundObject item, IItemWriteHandler handler) throws IOException {
     handler.writeItemField(item, this);
   }
 

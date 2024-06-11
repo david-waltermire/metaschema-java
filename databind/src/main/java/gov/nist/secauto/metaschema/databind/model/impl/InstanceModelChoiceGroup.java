@@ -37,6 +37,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelChoiceGroup
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedField;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedNamed;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
@@ -74,13 +75,13 @@ public final class InstanceModelChoiceGroup
         IBoundInstanceModelGroupedAssembly>
     // extends AbstractBoundInstanceModelJavaField<BoundChoiceGroup>
     implements IBoundInstanceModelChoiceGroup,
-    IFeatureBoundContainerModelChoiceGroup, IFeatureInstanceModelGroupAs {
+    IFeatureBoundContainerModelChoiceGroup, IFeatureInstanceModelGroupAs<IBoundObject> {
   @NonNull
   private final Field javaField;
   @NonNull
   private final BoundChoiceGroup annotation;
   @NonNull
-  private final Lazy<IModelInstanceCollectionInfo> collectionInfo;
+  private final Lazy<IModelInstanceCollectionInfo<IBoundObject>> collectionInfo;
   @NonNull
   private final IGroupAs groupAs;
   @NonNull
@@ -176,7 +177,7 @@ public final class InstanceModelChoiceGroup
 
   @SuppressWarnings("null")
   @Override
-  public IModelInstanceCollectionInfo getCollectionInfo() {
+  public IModelInstanceCollectionInfo<IBoundObject> getCollectionInfo() {
     return collectionInfo.get();
   }
 

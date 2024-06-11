@@ -75,8 +75,8 @@ public class AbstractBoundModelTestSupport {
   }
 
   @NonNull
-  protected IBoundDefinitionModel registerClassBinding(@NonNull Class<?> clazz) {
-    IBoundDefinitionModel definition = getBindingContext().getBoundDefinitionForClass(clazz);
+  protected IBoundDefinitionModelComplex registerClassBinding(@NonNull Class<? extends IBoundObject> clazz) {
+    IBoundDefinitionModelComplex definition = getBindingContext().getBoundDefinitionForClass(clazz);
     if (definition == null) {
       throw new IllegalArgumentException(String.format("Unable to find bound definition for class '%s'.",
           clazz.getName()));

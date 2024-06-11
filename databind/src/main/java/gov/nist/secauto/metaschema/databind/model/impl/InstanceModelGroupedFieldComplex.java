@@ -35,6 +35,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelFieldComp
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedField;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IBoundProperty;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedField;
 import gov.nist.secauto.metaschema.databind.model.annotations.ModelUtil;
@@ -59,7 +60,7 @@ public class InstanceModelGroupedFieldComplex
   @NonNull
   private final DefinitionField definition;
   @NonNull
-  private final Lazy<Map<String, IBoundProperty>> jsonProperties;
+  private final Lazy<Map<String, IBoundProperty<?>>> jsonProperties;
 
   public InstanceModelGroupedFieldComplex(
       @NonNull BoundGroupedField annotation,
@@ -93,12 +94,12 @@ public class InstanceModelGroupedFieldComplex
   // ------------------------------------------
 
   @Override
-  public Class<?> getBoundClass() {
+  public Class<? extends IBoundObject> getBoundClass() {
     return getAnnotation().binding();
   }
 
   @Override
-  public Map<String, IBoundProperty> getJsonProperties() {
+  public Map<String, IBoundProperty<?>> getJsonProperties() {
     return ObjectUtils.notNull(jsonProperties.get());
   }
 

@@ -28,6 +28,8 @@ package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
 import gov.nist.secauto.metaschema.core.datatype.adapter.NonNegativeIntegerAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.TokenAdapter;
+import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFieldValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaField;
@@ -49,7 +51,10 @@ import java.math.BigInteger;
     description = "Allows the name of the definition to be overridden.",
     name = "use-name",
     moduleClass = MetaschemaModelModule.class)
-public class UseName {
+public class UseName
+    implements IBoundObject {
+  private final IMetaschemaData __metaschemaData;
+
   /**
    * "Used for binary formats instead of the textual name."
    */
@@ -64,6 +69,19 @@ public class UseName {
       valueKeyName = "name",
       typeAdapter = TokenAdapter.class)
   private String _name;
+
+  public UseName() {
+    this(null);
+  }
+
+  public UseName(IMetaschemaData metaschemaData) {
+    this.__metaschemaData = metaschemaData;
+  }
+
+  @Override
+  public IMetaschemaData getMetaschemaData() {
+    return __metaschemaData;
+  }
 
   public BigInteger getIndex() {
     return _index;
