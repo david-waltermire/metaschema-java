@@ -37,7 +37,7 @@ import java.math.BigInteger;
 @MetaschemaAssembly(
     name = "assembly-with-flags",
     rootName = "root-assembly-with-flags",
-    moduleClass = MetaschemaModule.class)
+    moduleClass = TestModule.class)
 public class RootAssemblyWithFlags implements IBoundObject {
   private final IMetaschemaData metaschemaData;
 

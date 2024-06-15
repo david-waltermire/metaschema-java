@@ -63,6 +63,33 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<groupId>gov.nist.secauto.metaschema</groupId>
+				<artifactId>metaschema-maven-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<id>metaschema-codegen</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate-sources</goal>
+						</goals>
+						<configuration>
+							<metaschemaDir>${project.basedir}/../core/metaschema/schema/metaschema</metaschemaDir>
+							<outputDirectory>${project.build.directory}/generated-sources/metaschema</outputDirectory>
+							<!--
+							<configs>
+								<config>
+									${project.basedir}/src/main/metaschema-bindings/metaschema-metaschema-bindings.xml</config>
+							</configs>
+							-->
+							<includes>
+								<include>sarif-metaschema.xml</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>appassembler-maven-plugin</artifactId>
 				<configuration>

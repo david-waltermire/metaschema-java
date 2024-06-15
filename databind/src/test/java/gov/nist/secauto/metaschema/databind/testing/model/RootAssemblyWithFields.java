@@ -49,7 +49,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @MetaschemaAssembly(
     name = "assembly-with-fields",
     rootName = "root-assembly-with-fields",
-    moduleClass = MetaschemaModule.class)
+    moduleClass = TestModule.class)
 public class RootAssemblyWithFields implements IBoundObject {
   private final IMetaschemaData metaschemaData;
 
@@ -136,7 +136,7 @@ public class RootAssemblyWithFields implements IBoundObject {
   @SuppressWarnings("PMD")
   @MetaschemaField(
       name = "field-value-key",
-      moduleClass = MetaschemaModule.class)
+      moduleClass = TestModule.class)
   public static class ValueKeyField implements IBoundObject {
     private final IMetaschemaData metaschemaData;
 
@@ -171,7 +171,7 @@ public class RootAssemblyWithFields implements IBoundObject {
   @SuppressWarnings("PMD")
   @MetaschemaField(
       name = "field-default-value-key",
-      moduleClass = MetaschemaModule.class)
+      moduleClass = TestModule.class)
   public static class DefaultValueKeyField implements IBoundObject {
     private final IMetaschemaData metaschemaData;
 
@@ -206,7 +206,7 @@ public class RootAssemblyWithFields implements IBoundObject {
   @SuppressWarnings("PMD")
   @MetaschemaField(
       name = "field-flag-value-key",
-      moduleClass = MetaschemaModule.class)
+      moduleClass = TestModule.class)
   public static class FlagValueKeyField implements IBoundObject {
     private final IMetaschemaData metaschemaData;
 
@@ -242,7 +242,7 @@ public class RootAssemblyWithFields implements IBoundObject {
   @SuppressWarnings("PMD")
   @MetaschemaField(
       name = "field-json-key",
-      moduleClass = MetaschemaModule.class)
+      moduleClass = TestModule.class)
   public static class JsonKeyField implements IBoundObject {
     private final IMetaschemaData metaschemaData;
 

@@ -79,7 +79,7 @@ public class DefaultBindingConfiguration implements IBindingConfiguration {
   @Nullable
   public IDefinitionBindingConfiguration getBindingConfigurationForDefinition(
       @NonNull IModelDefinition definition) {
-    String moduleUri = ObjectUtils.notNull(definition.getContainingModule().getLocation().toString());
+    String moduleUri = ObjectUtils.notNull(definition.getContainingModule().getLocation().toASCIIString());
     String definitionName = definition.getName();
 
     MetaschemaBindingConfiguration metaschemaConfig = getMetaschemaBindingConfiguration(moduleUri);
@@ -236,7 +236,7 @@ public class DefaultBindingConfiguration implements IBindingConfiguration {
    *           if an error occurred while reading the {@code file}
    */
   public void load(Path file) throws IOException {
-    URL resource = file.toUri().toURL();
+    URL resource = file.toAbsolutePath().normalize().toUri().toURL();
     load(resource);
   }
 
@@ -249,8 +249,7 @@ public class DefaultBindingConfiguration implements IBindingConfiguration {
    *           if an error occurred while reading the {@code file}
    */
   public void load(File file) throws IOException {
-    URL resource = file.toURI().toURL();
-    load(resource);
+    load(file.toPath());
   }
 
   /**
@@ -299,7 +298,7 @@ public class DefaultBindingConfiguration implements IBindingConfiguration {
       throws MalformedURLException, URISyntaxException {
     String href = metaschema.getHref();
     URL moduleUrl = new URL(configResource, href);
-    String moduleUri = ObjectUtils.notNull(moduleUrl.toURI().toString());
+    String moduleUri = ObjectUtils.notNull(moduleUrl.toURI().normalize().toString());
 
     MetaschemaBindingConfiguration metaschemaConfig = getMetaschemaBindingConfiguration(moduleUri);
     if (metaschemaConfig == null) {
@@ -325,12 +324,9 @@ public class DefaultBindingConfiguration implements IBindingConfiguration {
   private static IMutableDefinitionBindingConfiguration processDefinitionBindingConfiguration(
       @Nullable IDefinitionBindingConfiguration oldConfig,
       @NonNull ObjectDefinitionBindingType objectDefinitionBinding) {
-    IMutableDefinitionBindingConfiguration config;
-    if (oldConfig != null) {
-      config = new DefaultDefinitionBindingConfiguration(oldConfig);
-    } else {
-      config = new DefaultDefinitionBindingConfiguration();
-    }
+    IMutableDefinitionBindingConfiguration config = oldConfig == null
+        ? new DefaultDefinitionBindingConfiguration()
+        : new DefaultDefinitionBindingConfiguration(oldConfig);
 
     if (objectDefinitionBinding.isSetJava()) {
       JavaObjectDefinitionBindingType java = objectDefinitionBinding.getJava();

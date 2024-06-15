@@ -39,7 +39,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 
 @Retention(RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Module {
+public @interface MetaschemaModule {
   /**
    * Get the classes representing the global fields defined on this Module.
    *

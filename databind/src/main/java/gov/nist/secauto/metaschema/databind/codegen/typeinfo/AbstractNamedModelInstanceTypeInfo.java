@@ -45,8 +45,8 @@ import gov.nist.secauto.metaschema.databind.codegen.ClassUtils;
 import gov.nist.secauto.metaschema.databind.codegen.typeinfo.def.IAssemblyDefinitionTypeInfo;
 import gov.nist.secauto.metaschema.databind.codegen.typeinfo.def.IModelDefinitionTypeInfo;
 
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -93,7 +93,7 @@ abstract class AbstractNamedModelInstanceTypeInfo<INSTANCE extends INamedModelIn
 
     IModelDefinition definition = getInstance().getDefinition();
     if (definition.isInline() && (definition.hasChildren() || definition instanceof IAssemblyDefinition)) {
-      retval = new HashSet<>(retval);
+      retval = new LinkedHashSet<>(retval);
 
       // this is an inline definition that must be built as a child class
       retval.add(definition);

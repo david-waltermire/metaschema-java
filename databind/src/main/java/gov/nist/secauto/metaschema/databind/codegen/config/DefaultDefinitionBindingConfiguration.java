@@ -29,7 +29,7 @@ package gov.nist.secauto.metaschema.databind.codegen.config;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -41,7 +41,7 @@ public class DefaultDefinitionBindingConfiguration implements IMutableDefinition
   @Nullable
   private String baseClassName;
   @NonNull
-  private final Set<String> interfacesToImplement = new HashSet<>();
+  private final Set<String> interfacesToImplement = new LinkedHashSet<>();
 
   /**
    * Create a new definition binding configuration.

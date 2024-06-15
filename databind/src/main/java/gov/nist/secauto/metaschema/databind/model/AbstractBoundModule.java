@@ -30,7 +30,7 @@ import gov.nist.secauto.metaschema.core.model.AbstractModule;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
-import gov.nist.secauto.metaschema.databind.model.annotations.Module;
+import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaModule;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -66,7 +66,7 @@ public abstract class AbstractBoundModule
 
   /**
    * Create a new Module instance for a given class annotated by the
-   * {@link Module} annotation.
+   * {@link MetaschemaModule} annotation.
    * <p>
    * Will also load any imported Metaschemas.
    *
@@ -82,12 +82,12 @@ public abstract class AbstractBoundModule
       @NonNull Class<? extends IBoundModule> clazz,
       @NonNull IBindingContext bindingContext) {
 
-    if (!clazz.isAnnotationPresent(Module.class)) {
+    if (!clazz.isAnnotationPresent(MetaschemaModule.class)) {
       throw new IllegalStateException(String.format("The class '%s' is missing the '%s' annotation",
-          clazz.getCanonicalName(), Module.class.getCanonicalName()));
+          clazz.getCanonicalName(), MetaschemaModule.class.getCanonicalName()));
     }
 
-    Module moduleAnnotation = clazz.getAnnotation(Module.class);
+    MetaschemaModule moduleAnnotation = clazz.getAnnotation(MetaschemaModule.class);
 
     List<IBoundModule> importedModules;
     if (moduleAnnotation.imports().length > 0) {
@@ -171,8 +171,8 @@ public abstract class AbstractBoundModule
   @SuppressWarnings({ "null", "unchecked" })
   @NonNull
   protected Class<? extends IBoundObject>[] getAssemblyClasses() {
-    return getClass().isAnnotationPresent(Module.class)
-        ? getClass().getAnnotation(Module.class).assemblies()
+    return getClass().isAnnotationPresent(MetaschemaModule.class)
+        ? getClass().getAnnotation(MetaschemaModule.class).assemblies()
         : (Class<? extends IBoundObject>[]) Array.newInstance(Class.class, 0);
   }
 
@@ -184,8 +184,8 @@ public abstract class AbstractBoundModule
   @SuppressWarnings({ "null", "unchecked" })
   @NonNull
   protected Class<? extends IBoundObject>[] getFieldClasses() {
-    return getClass().isAnnotationPresent(Module.class)
-        ? getClass().getAnnotation(Module.class).fields()
+    return getClass().isAnnotationPresent(MetaschemaModule.class)
+        ? getClass().getAnnotation(MetaschemaModule.class).fields()
         : (Class<? extends IBoundObject>[]) Array.newInstance(Class.class, 0);
   }
 

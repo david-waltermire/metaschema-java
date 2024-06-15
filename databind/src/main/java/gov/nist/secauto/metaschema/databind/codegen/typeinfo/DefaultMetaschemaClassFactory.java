@@ -61,8 +61,8 @@ import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaField;
+import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaModule;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaPackage;
-import gov.nist.secauto.metaschema.databind.model.annotations.Module;
 import gov.nist.secauto.metaschema.databind.model.annotations.XmlNs;
 import gov.nist.secauto.metaschema.databind.model.annotations.XmlNsForm;
 import gov.nist.secauto.metaschema.databind.model.annotations.XmlSchema;
@@ -77,7 +77,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -148,7 +148,7 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
         module.getAssemblyDefinitions().stream(),
         module.getFieldDefinitions().stream());
 
-    Set<String> classNames = new HashSet<>();
+    Set<String> classNames = new LinkedHashSet<>();
 
     @SuppressWarnings("PMD.UseConcurrentHashMap") // map is unmodifiable
     Map<IModelDefinition, IGeneratedDefinitionClass> definitionProductions
@@ -271,7 +271,7 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
 
     builder.superclass(AbstractBoundModule.class);
 
-    AnnotationSpec.Builder moduleAnnotation = AnnotationSpec.builder(Module.class);
+    AnnotationSpec.Builder moduleAnnotation = AnnotationSpec.builder(MetaschemaModule.class);
 
     ITypeResolver typeResolver = getTypeResolver();
     for (IFieldDefinition definition : module.getFieldDefinitions()) {
@@ -510,7 +510,7 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
 
     builder.addAnnotation(metaschemaAssembly.build());
 
-    return new HashSet<>(buildClass((IModelDefinitionTypeInfo) typeInfo, builder));
+    return new LinkedHashSet<>(buildClass((IModelDefinitionTypeInfo) typeInfo, builder));
   }
 
   /**
@@ -536,7 +536,7 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
 
     builder.addAnnotation(metaschemaField.build());
 
-    return new HashSet<>(buildClass((IModelDefinitionTypeInfo) typeInfo, builder));
+    return new LinkedHashSet<>(buildClass((IModelDefinitionTypeInfo) typeInfo, builder));
   }
 
   /**
@@ -559,7 +559,7 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
       builder.addJavadoc(description.toHtml());
     }
 
-    Set<IModelDefinition> additionalChildClasses = new HashSet<>();
+    Set<IModelDefinition> additionalChildClasses = new LinkedHashSet<>();
 
     // // generate a no-arg constructor
     // builder.addMethod(MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC).build());
