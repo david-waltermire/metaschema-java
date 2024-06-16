@@ -49,8 +49,7 @@ import java.net.URI;
     formalName = "Example",
     name = "example",
     moduleClass = MetaschemaModelModule.class)
-public class Example
-    implements IBoundObject {
+public class Example implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
@@ -80,8 +79,8 @@ public class Example
     this(null);
   }
 
-  public Example(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public Example(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

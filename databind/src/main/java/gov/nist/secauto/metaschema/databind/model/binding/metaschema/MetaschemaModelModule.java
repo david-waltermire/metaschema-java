@@ -53,7 +53,7 @@ import java.util.List;
         FlagReference.class,
         AssemblyModel.class,
         JsonValueKeyFlag.class,
-        GroupAs.class,
+        GroupingAs.class,
         Example.class,
         Property.class,
         JsonKey.class,
@@ -75,6 +75,7 @@ import java.util.List;
         TargetedHasCardinalityConstraint.class,
         MetaschemaModuleConstraints.class,
         MetaschemaMetaConstraints.class,
+        MetaschemaMetapath.class,
         MetapathContext.class
     })
 public final class MetaschemaModelModule

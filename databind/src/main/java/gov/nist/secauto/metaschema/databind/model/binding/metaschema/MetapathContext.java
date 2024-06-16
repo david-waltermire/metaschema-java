@@ -48,8 +48,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "metapath-context",
     moduleClass = MetaschemaModelModule.class)
-public class MetapathContext
-    implements IBoundObject {
+public class MetapathContext implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(
@@ -80,8 +79,8 @@ public class MetapathContext
     this(null);
   }
 
-  public MetapathContext(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public MetapathContext(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

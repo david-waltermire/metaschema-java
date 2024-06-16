@@ -64,13 +64,6 @@ public class MetaschemaMetaConstraints implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(
-      description = "Declares a set of Metaschema constraints from an out-of-line resource to import, supporting composition of constraint sets.",
-      useName = "import",
-      maxOccurs = -1,
-      groupAs = @GroupAs(name = "imports", inJson = JsonGroupAsBehavior.LIST))
-  private List<Import> _imports;
-
-  @BoundAssembly(
       useName = "definition-context")
   private DefinitionContext _definitionContext;
 
@@ -85,48 +78,13 @@ public class MetaschemaMetaConstraints implements IBoundObject {
     this(null);
   }
 
-  public MetaschemaMetaConstraints(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public MetaschemaMetaConstraints(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override
   public IMetaschemaData getMetaschemaData() {
     return __metaschemaData;
-  }
-
-  public List<Import> getImports() {
-    return _imports;
-  }
-
-  public void setImports(List<Import> value) {
-    _imports = value;
-  }
-
-  /**
-   * Add a new {@link Import} item to the underlying collection.
-   *
-   * @param item
-   *          the item to add
-   * @return {@code true}
-   */
-  public boolean addImport(Import item) {
-    Import value = ObjectUtils.requireNonNull(item, "item cannot be null");
-    if (_imports == null) {
-      _imports = new LinkedList<>();
-    }
-    return _imports.add(value);
-  }
-
-  /**
-   * Remove the first matching {@link Import} item from the underlying collection.
-   *
-   * @param item
-   *          the item to remove
-   * @return {@code true} if the item was removed or {@code false} otherwise
-   */
-  public boolean removeImport(Import item) {
-    Import value = ObjectUtils.requireNonNull(item, "item cannot be null");
-    return _imports != null && _imports.remove(value);
   }
 
   public DefinitionContext getDefinitionContext() {
@@ -181,8 +139,7 @@ public class MetaschemaMetaConstraints implements IBoundObject {
   @MetaschemaAssembly(
       name = "definition-context",
       moduleClass = MetaschemaModelModule.class)
-  public static class DefinitionContext
-      implements IBoundObject {
+  public static final class DefinitionContext implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     @BoundFlag(
@@ -212,8 +169,8 @@ public class MetaschemaMetaConstraints implements IBoundObject {
       this(null);
     }
 
-    public DefinitionContext(IMetaschemaData metaschemaData) {
-      this.__metaschemaData = metaschemaData;
+    public DefinitionContext(IMetaschemaData data) {
+      this.__metaschemaData = data;
     }
 
     @Override
@@ -251,56 +208,6 @@ public class MetaschemaMetaConstraints implements IBoundObject {
 
     public void setRemarks(Remarks value) {
       _remarks = value;
-    }
-
-    @Override
-    public String toString() {
-      return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
-    }
-  }
-
-  /**
-   * Declares a set of Metaschema constraints from an out-of-line resource to
-   * import, supporting composition of constraint sets.
-   */
-  @MetaschemaAssembly(
-      description = "Declares a set of Metaschema constraints from an out-of-line resource to import, supporting composition of constraint sets.",
-      name = "import",
-      moduleClass = MetaschemaModelModule.class)
-  public static class Import
-      implements IBoundObject {
-    private final IMetaschemaData __metaschemaData;
-
-    /**
-     * "A relative or absolute URI for retrieving an out-of-line Metaschema
-     * constraint definition."
-     */
-    @BoundFlag(
-        description = "A relative or absolute URI for retrieving an out-of-line Metaschema constraint definition.",
-        name = "href",
-        required = true,
-        typeAdapter = UriReferenceAdapter.class)
-    private URI _href;
-
-    public Import() {
-      this(null);
-    }
-
-    public Import(IMetaschemaData metaschemaData) {
-      this.__metaschemaData = metaschemaData;
-    }
-
-    @Override
-    public IMetaschemaData getMetaschemaData() {
-      return __metaschemaData;
-    }
-
-    public URI getHref() {
-      return _href;
-    }
-
-    public void setHref(URI value) {
-      _href = value;
     }
 
     @Override

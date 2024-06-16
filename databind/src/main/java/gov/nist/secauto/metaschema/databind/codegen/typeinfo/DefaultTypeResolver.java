@@ -52,9 +52,11 @@ import org.apache.logging.log4j.Logger;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -270,6 +272,14 @@ class DefaultTypeResolver implements ITypeResolver {
       retval = ClassName.bestGuess(className);
     }
     return retval;
+  }
+
+  @Override
+  public List<ClassName> getSuperinterfaces(IModelDefinition definition) {
+    List<String> classNames = bindingConfiguration.getQualifiedSuperinterfaceClassNames(definition);
+    return classNames.stream()
+        .map(ClassName::bestGuess)
+        .collect(Collectors.toUnmodifiableList());
   }
 
   @Override

@@ -58,8 +58,7 @@ import java.util.List;
     formalName = "Allowed Values Constraint",
     name = "flag-allowed-values",
     moduleClass = MetaschemaModelModule.class)
-public class FlagAllowedValues
-    implements IBoundObject, IConstraintBase {
+public class FlagAllowedValues implements IBoundObject, IConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
@@ -81,7 +80,9 @@ public class FlagAllowedValues
           @AllowedValue(value = "WARNING",
               description = "A violation of the constraint represents a potential issue with the content."),
           @AllowedValue(value = "INFORMATIONAL",
-              description = "A violation of the constraint represents a point of interest.") })))
+              description = "A violation of the constraint represents a point of interest."),
+          @AllowedValue(value = "DEBUG",
+              description = "A violation of the constraint represents a fault in the content that may warrant review by a developer when performing model or tool development.") })))
   private String _level;
 
   @BoundFlag(
@@ -148,8 +149,8 @@ public class FlagAllowedValues
     this(null);
   }
 
-  public FlagAllowedValues(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public FlagAllowedValues(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

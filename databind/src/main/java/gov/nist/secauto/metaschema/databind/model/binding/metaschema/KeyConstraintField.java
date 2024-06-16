@@ -44,8 +44,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Key Constraint",
     name = "key-constraint-field",
     moduleClass = MetaschemaModelModule.class)
-public class KeyConstraintField
-    implements IBoundObject {
+public class KeyConstraintField implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
@@ -71,8 +70,8 @@ public class KeyConstraintField
     this(null);
   }
 
-  public KeyConstraintField(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public KeyConstraintField(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

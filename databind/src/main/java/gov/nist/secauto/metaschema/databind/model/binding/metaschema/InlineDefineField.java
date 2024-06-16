@@ -44,6 +44,8 @@ import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
+import gov.nist.secauto.metaschema.databind.model.annotations.Expect;
+import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.Matches;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.ValueConstraints;
@@ -64,15 +66,16 @@ import java.util.List;
     formalName = "Inline Field Definition",
     name = "inline-define-field",
     moduleClass = MetaschemaModelModule.class)
-public class InlineDefineField
-    implements IBoundObject {
+public class InlineDefineField implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
       formalName = "Inline Field Name",
       name = "name",
       required = true,
-      typeAdapter = TokenAdapter.class)
+      typeAdapter = TokenAdapter.class,
+      valueConstraints = @ValueConstraints(expect = @Expect(level = IConstraint.Level.WARNING,
+          test = "not(.=$keywords)", message = "Names cannot be non-delimiting terminal symbols in Metapath syntax.")))
   private String _name;
 
   @BoundFlag(
@@ -165,8 +168,7 @@ public class InlineDefineField
       formalName = "Property",
       useName = "prop",
       maxOccurs = -1,
-      groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "props",
-          inJson = JsonGroupAsBehavior.LIST))
+      groupAs = @GroupAs(name = "props", inJson = JsonGroupAsBehavior.LIST))
   private List<Property> _props;
 
   @BoundAssembly(
@@ -189,7 +191,7 @@ public class InlineDefineField
   @BoundAssembly(
       formalName = "Group As",
       useName = "group-as")
-  private GroupAs _groupAs;
+  private GroupingAs _groupAs;
 
   @BoundChoiceGroup(
       maxOccurs = -1,
@@ -198,8 +200,7 @@ public class InlineDefineField
               binding = InlineDefineFlag.class),
           @BoundGroupedAssembly(formalName = "Flag Reference", useName = "flag", binding = FlagReference.class)
       },
-      groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "flags",
-          inJson = JsonGroupAsBehavior.LIST))
+      groupAs = @GroupAs(name = "flags", inJson = JsonGroupAsBehavior.LIST))
   private List<Object> _flags;
 
   @BoundAssembly(
@@ -216,16 +217,15 @@ public class InlineDefineField
       formalName = "Example",
       useName = "example",
       maxOccurs = -1,
-      groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "examples",
-          inJson = JsonGroupAsBehavior.LIST))
+      groupAs = @GroupAs(name = "examples", inJson = JsonGroupAsBehavior.LIST))
   private List<Example> _examples;
 
   public InlineDefineField() {
     this(null);
   }
 
-  public InlineDefineField(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public InlineDefineField(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override
@@ -373,11 +373,11 @@ public class InlineDefineField
     _jsonValueKeyFlag = value;
   }
 
-  public GroupAs getGroupAs() {
+  public GroupingAs getGroupAs() {
     return _groupAs;
   }
 
-  public void setGroupAs(GroupAs value) {
+  public void setGroupAs(GroupingAs value) {
     _groupAs = value;
   }
 

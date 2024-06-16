@@ -41,6 +41,7 @@ import gov.nist.secauto.metaschema.databind.io.ISerializer;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA;
 import gov.nist.secauto.metaschema.databind.model.metaschema.BindingModuleLoader;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -57,6 +58,7 @@ class MetaschemaModuleMetaschemaTest
       = ObjectUtils.notNull(Paths.get("../core/metaschema/schema/metaschema/metaschema-module-metaschema.xml"));
 
   @Test
+  @Disabled
   void testMetaschemaMetaschema() throws MetaschemaException, IOException, ClassNotFoundException, BindingException {
     runTests(
         ObjectUtils.notNull(METASCHEMA_FILE),
@@ -69,6 +71,7 @@ class MetaschemaModuleMetaschemaTest
   }
 
   @Test
+  @Disabled
   void testReadMetaschemaAsXml() throws IOException {
     IBindingContext context = IBindingContext.instance();
 

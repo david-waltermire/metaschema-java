@@ -68,8 +68,7 @@ import java.util.List;
     name = "metaschema-module-constraints",
     moduleClass = MetaschemaModelModule.class,
     rootName = "METASCHEMA-CONSTRAINTS")
-public class MetaschemaModuleConstraints
-    implements IBoundObject {
+public class MetaschemaModuleConstraints implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundField(
@@ -102,8 +101,8 @@ public class MetaschemaModuleConstraints
     this(null);
   }
 
-  public MetaschemaModuleConstraints(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public MetaschemaModuleConstraints(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override
@@ -202,11 +201,59 @@ public class MetaschemaModuleConstraints
     return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
   }
 
+  /**
+   * Declares a set of Metaschema constraints from an out-of-line resource to
+   * import, supporting composition of constraint sets.
+   */
+  @MetaschemaAssembly(
+      description = "Declares a set of Metaschema constraints from an out-of-line resource to import, supporting composition of constraint sets.",
+      name = "import",
+      moduleClass = MetaschemaModelModule.class)
+  public static final class Import implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
+    /**
+     * "A relative or absolute URI for retrieving an out-of-line Metaschema
+     * constraint definition."
+     */
+    @BoundFlag(
+        description = "A relative or absolute URI for retrieving an out-of-line Metaschema constraint definition.",
+        name = "href",
+        required = true,
+        typeAdapter = UriReferenceAdapter.class)
+    private URI _href;
+
+    public Import() {
+      this(null);
+    }
+
+    public Import(IMetaschemaData data) {
+      this.__metaschemaData = data;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
+
+    public URI getHref() {
+      return _href;
+    }
+
+    public void setHref(URI value) {
+      _href = value;
+    }
+
+    @Override
+    public String toString() {
+      return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
+    }
+  }
+
   @MetaschemaAssembly(
       name = "scope",
       moduleClass = MetaschemaModelModule.class)
-  public static class Scope
-      implements IBoundObject {
+  public static final class Scope implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     @BoundFlag(
@@ -242,8 +289,8 @@ public class MetaschemaModuleConstraints
       this(null);
     }
 
-    public Scope(IMetaschemaData metaschemaData) {
-      this.__metaschemaData = metaschemaData;
+    public Scope(IMetaschemaData data) {
+      this.__metaschemaData = data;
     }
 
     @Override
@@ -289,152 +336,9 @@ public class MetaschemaModuleConstraints
     }
 
     @MetaschemaAssembly(
-        name = "flag",
-        moduleClass = MetaschemaModelModule.class)
-    public static class Flag
-        implements IBoundObject, IValueConstraintsBase {
-      private final IMetaschemaData __metaschemaData;
-
-      @BoundFlag(
-          formalName = "Constraint Target Metapath Expression",
-          name = "target",
-          required = true,
-          typeAdapter = StringAdapter.class)
-      private String _target;
-
-      @BoundChoiceGroup(
-          minOccurs = 1,
-          maxOccurs = -1,
-          assemblies = {
-              @BoundGroupedAssembly(formalName = "Allowed Values Constraint", useName = "allowed-values",
-                  binding = FlagAllowedValues.class),
-              @BoundGroupedAssembly(formalName = "Expect Condition Constraint", useName = "expect",
-                  binding = FlagExpect.class),
-              @BoundGroupedAssembly(formalName = "Index Has Key Constraint", useName = "index-has-key",
-                  binding = FlagIndexHasKey.class),
-              @BoundGroupedAssembly(formalName = "Value Matches Constraint", useName = "matches",
-                  binding = FlagMatches.class)
-          },
-          groupAs = @GroupAs(name = "rules", inJson = JsonGroupAsBehavior.LIST))
-      private List<? extends ITargetedConstraintBase> _rules;
-
-      public Flag() {
-        this(null);
-      }
-
-      public Flag(IMetaschemaData metaschemaData) {
-        this.__metaschemaData = metaschemaData;
-      }
-
-      @Override
-      public IMetaschemaData getMetaschemaData() {
-        return __metaschemaData;
-      }
-
-      @Override
-      public List<ConstraintLetExpression> getLets() {
-        return CollectionUtil.emptyList();
-      }
-
-      public String getTarget() {
-        return _target;
-      }
-
-      public void setTarget(String value) {
-        _target = value;
-      }
-
-      @Override
-      public List<? extends ITargetedConstraintBase> getRules() {
-        return _rules;
-      }
-
-      public void setRules(List<? extends ITargetedConstraintBase> value) {
-        _rules = value;
-      }
-
-      @Override
-      public String toString() {
-        return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
-      }
-    }
-
-    @MetaschemaAssembly(
-        name = "field",
-        moduleClass = MetaschemaModelModule.class)
-    public static class Field
-        implements IBoundObject, IValueConstraintsBase {
-      private final IMetaschemaData __metaschemaData;
-
-      @BoundFlag(
-          formalName = "Constraint Target Metapath Expression",
-          name = "target",
-          required = true,
-          typeAdapter = StringAdapter.class)
-      private String _target;
-
-      @BoundChoiceGroup(
-          minOccurs = 1,
-          maxOccurs = -1,
-          assemblies = {
-              @BoundGroupedAssembly(formalName = "Allowed Values Constraint", useName = "allowed-values",
-                  binding = TargetedAllowedValuesConstraint.class),
-              @BoundGroupedAssembly(formalName = "Expect Condition Constraint", useName = "expect",
-                  binding = TargetedExpectConstraint.class),
-              @BoundGroupedAssembly(formalName = "Targeted Index Has Key Constraint", useName = "index-has-key",
-                  binding = TargetedIndexHasKeyConstraint.class),
-              @BoundGroupedAssembly(formalName = "Value Matches Constraint", useName = "matches",
-                  binding = TargetedMatchesConstraint.class)
-          },
-          groupAs = @GroupAs(name = "rules", inJson = JsonGroupAsBehavior.LIST))
-      private List<? extends ITargetedConstraintBase> _rules;
-
-      public Field() {
-        this(null);
-      }
-
-      public Field(IMetaschemaData metaschemaData) {
-        this.__metaschemaData = metaschemaData;
-      }
-
-      @Override
-      public IMetaschemaData getMetaschemaData() {
-        return __metaschemaData;
-      }
-
-      public String getTarget() {
-        return _target;
-      }
-
-      public void setTarget(String value) {
-        _target = value;
-      }
-
-      @Override
-      public List<ConstraintLetExpression> getLets() {
-        return CollectionUtil.emptyList();
-      }
-
-      @Override
-      public List<? extends ITargetedConstraintBase> getRules() {
-        return _rules;
-      }
-
-      public void setRules(List<? extends ITargetedConstraintBase> value) {
-        _rules = value;
-      }
-
-      @Override
-      public String toString() {
-        return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
-      }
-    }
-
-    @MetaschemaAssembly(
         name = "assembly",
         moduleClass = MetaschemaModelModule.class)
-    public static class Assembly
-        implements IBoundObject, IModelConstraintsBase {
+    public static final class Assembly implements IBoundObject, IModelConstraintsBase {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
@@ -470,8 +374,8 @@ public class MetaschemaModuleConstraints
         this(null);
       }
 
-      public Assembly(IMetaschemaData metaschemaData) {
-        this.__metaschemaData = metaschemaData;
+      public Assembly(IMetaschemaData data) {
+        this.__metaschemaData = data;
       }
 
       @Override
@@ -506,55 +410,145 @@ public class MetaschemaModuleConstraints
         return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
       }
     }
-  }
 
-  /**
-   * Declares a set of Metaschema constraints from an out-of-line resource to
-   * import, supporting composition of constraint sets.
-   */
-  @MetaschemaAssembly(
-      description = "Declares a set of Metaschema constraints from an out-of-line resource to import, supporting composition of constraint sets.",
-      name = "import",
-      moduleClass = MetaschemaModelModule.class)
-  public static class Import
-      implements IBoundObject {
-    private final IMetaschemaData __metaschemaData;
+    @MetaschemaAssembly(
+        name = "field",
+        moduleClass = MetaschemaModelModule.class)
+    public static final class Field implements IBoundObject, IValueConstraintsBase {
+      private final IMetaschemaData __metaschemaData;
 
-    /**
-     * "A relative or absolute URI for retrieving an out-of-line Metaschema
-     * constraint definition."
-     */
-    @BoundFlag(
-        description = "A relative or absolute URI for retrieving an out-of-line Metaschema constraint definition.",
-        name = "href",
-        required = true,
-        typeAdapter = UriReferenceAdapter.class)
-    private URI _href;
+      @BoundFlag(
+          formalName = "Constraint Target Metapath Expression",
+          name = "target",
+          required = true,
+          typeAdapter = StringAdapter.class)
+      private String _target;
 
-    public Import() {
-      this(null);
+      @BoundChoiceGroup(
+          minOccurs = 1,
+          maxOccurs = -1,
+          assemblies = {
+              @BoundGroupedAssembly(formalName = "Allowed Values Constraint", useName = "allowed-values",
+                  binding = TargetedAllowedValuesConstraint.class),
+              @BoundGroupedAssembly(formalName = "Expect Condition Constraint", useName = "expect",
+                  binding = TargetedExpectConstraint.class),
+              @BoundGroupedAssembly(formalName = "Targeted Index Has Key Constraint", useName = "index-has-key",
+                  binding = TargetedIndexHasKeyConstraint.class),
+              @BoundGroupedAssembly(formalName = "Value Matches Constraint", useName = "matches",
+                  binding = TargetedMatchesConstraint.class)
+          },
+          groupAs = @GroupAs(name = "rules", inJson = JsonGroupAsBehavior.LIST))
+      private List<? extends ITargetedConstraintBase> _rules;
+
+      public Field() {
+        this(null);
+      }
+
+      public Field(IMetaschemaData data) {
+        this.__metaschemaData = data;
+      }
+
+      @Override
+      public IMetaschemaData getMetaschemaData() {
+        return __metaschemaData;
+      }
+
+      public String getTarget() {
+        return _target;
+      }
+
+      public void setTarget(String value) {
+        _target = value;
+      }
+
+      @Override
+      public List<ConstraintLetExpression> getLets() {
+        return CollectionUtil.emptyList();
+      }
+
+      @Override
+      public List<? extends ITargetedConstraintBase> getRules() {
+        return _rules;
+      }
+
+      public void setRules(List<? extends ITargetedConstraintBase> value) {
+        _rules = value;
+      }
+
+      @Override
+      public String toString() {
+        return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
+      }
     }
 
-    public Import(IMetaschemaData metaschemaData) {
-      this.__metaschemaData = metaschemaData;
-    }
+    @MetaschemaAssembly(
+        name = "flag",
+        moduleClass = MetaschemaModelModule.class)
+    public static final class Flag implements IBoundObject, IValueConstraintsBase {
+      private final IMetaschemaData __metaschemaData;
 
-    @Override
-    public IMetaschemaData getMetaschemaData() {
-      return __metaschemaData;
-    }
+      @BoundFlag(
+          formalName = "Constraint Target Metapath Expression",
+          name = "target",
+          required = true,
+          typeAdapter = StringAdapter.class)
+      private String _target;
 
-    public URI getHref() {
-      return _href;
-    }
+      @BoundChoiceGroup(
+          minOccurs = 1,
+          maxOccurs = -1,
+          assemblies = {
+              @BoundGroupedAssembly(formalName = "Allowed Values Constraint", useName = "allowed-values",
+                  binding = FlagAllowedValues.class),
+              @BoundGroupedAssembly(formalName = "Expect Condition Constraint", useName = "expect",
+                  binding = FlagExpect.class),
+              @BoundGroupedAssembly(formalName = "Index Has Key Constraint", useName = "index-has-key",
+                  binding = FlagIndexHasKey.class),
+              @BoundGroupedAssembly(formalName = "Value Matches Constraint", useName = "matches",
+                  binding = FlagMatches.class)
+          },
+          groupAs = @GroupAs(name = "rules", inJson = JsonGroupAsBehavior.LIST))
+      private List<? extends ITargetedConstraintBase> _rules;
 
-    public void setHref(URI value) {
-      _href = value;
-    }
+      public Flag() {
+        this(null);
+      }
 
-    @Override
-    public String toString() {
-      return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
+      public Flag(IMetaschemaData data) {
+        this.__metaschemaData = data;
+      }
+
+      @Override
+      public IMetaschemaData getMetaschemaData() {
+        return __metaschemaData;
+      }
+
+      @Override
+      public List<ConstraintLetExpression> getLets() {
+        return CollectionUtil.emptyList();
+      }
+
+      public String getTarget() {
+        return _target;
+      }
+
+      public void setTarget(String value) {
+        _target = value;
+      }
+
+      @Override
+      public List<? extends ITargetedConstraintBase> getRules() {
+        return _rules;
+      }
+
+      public void setRules(List<? extends ITargetedConstraintBase> value) {
+        _rules = value;
+      }
+
+      @Override
+      public String toString() {
+        return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
+      }
     }
   }
 }

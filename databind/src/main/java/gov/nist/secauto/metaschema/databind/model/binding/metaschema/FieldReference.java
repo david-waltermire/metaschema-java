@@ -42,6 +42,7 @@ import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
+import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.Matches;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.ValueConstraints;
@@ -61,8 +62,7 @@ import java.util.List;
     formalName = "Field Reference",
     name = "field-reference",
     moduleClass = MetaschemaModelModule.class)
-public class FieldReference
-    implements IBoundObject {
+public class FieldReference implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
@@ -136,8 +136,7 @@ public class FieldReference
       formalName = "Property",
       useName = "prop",
       maxOccurs = -1,
-      groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "props",
-          inJson = JsonGroupAsBehavior.LIST))
+      groupAs = @GroupAs(name = "props", inJson = JsonGroupAsBehavior.LIST))
   private List<Property> _props;
 
   @BoundField(
@@ -149,7 +148,7 @@ public class FieldReference
   @BoundAssembly(
       formalName = "Group As",
       useName = "group-as")
-  private GroupAs _groupAs;
+  private GroupingAs _groupAs;
 
   @BoundField(
       formalName = "Remarks",
@@ -161,8 +160,8 @@ public class FieldReference
     this(null);
   }
 
-  public FieldReference(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public FieldReference(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override
@@ -286,11 +285,11 @@ public class FieldReference
     _useName = value;
   }
 
-  public GroupAs getGroupAs() {
+  public GroupingAs getGroupAs() {
     return _groupAs;
   }
 
-  public void setGroupAs(GroupAs value) {
+  public void setGroupAs(GroupingAs value) {
     _groupAs = value;
   }
 

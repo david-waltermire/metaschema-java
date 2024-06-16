@@ -51,8 +51,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "field-constraints",
     moduleClass = MetaschemaModelModule.class)
-public class FieldConstraints
-    implements IBoundObject, IValueConstraintsBase {
+public class FieldConstraints implements IBoundObject, IValueConstraintsBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(
@@ -82,8 +81,8 @@ public class FieldConstraints
     this(null);
   }
 
-  public FieldConstraints(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public FieldConstraints(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

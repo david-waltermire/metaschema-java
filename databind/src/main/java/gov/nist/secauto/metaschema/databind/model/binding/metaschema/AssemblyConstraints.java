@@ -52,8 +52,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "assembly-constraints",
     moduleClass = MetaschemaModelModule.class)
-public class AssemblyConstraints
-    implements IBoundObject, IModelConstraintsBase {
+public class AssemblyConstraints implements IBoundObject, IModelConstraintsBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(
@@ -89,8 +88,8 @@ public class AssemblyConstraints
     this(null);
   }
 
-  public AssemblyConstraints(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public AssemblyConstraints(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

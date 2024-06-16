@@ -41,6 +41,7 @@ import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
+import gov.nist.secauto.metaschema.databind.model.annotations.Expect;
 import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.ValueConstraints;
@@ -60,15 +61,16 @@ import java.util.List;
     formalName = "Inline Flag Definition",
     name = "inline-define-flag",
     moduleClass = MetaschemaModelModule.class)
-public class InlineDefineFlag
-    implements IBoundObject {
+public class InlineDefineFlag implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
       formalName = "Inline Flag Name",
       name = "name",
       required = true,
-      typeAdapter = TokenAdapter.class)
+      typeAdapter = TokenAdapter.class,
+      valueConstraints = @ValueConstraints(expect = @Expect(level = IConstraint.Level.WARNING,
+          test = "not(.=$keywords)", message = "Names cannot be non-delimiting terminal symbols in Metapath syntax.")))
   private String _name;
 
   @BoundFlag(
@@ -164,8 +166,8 @@ public class InlineDefineFlag
     this(null);
   }
 
-  public InlineDefineFlag(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public InlineDefineFlag(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

@@ -40,16 +40,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Any Additional Content",
     name = "any",
     moduleClass = MetaschemaModelModule.class)
-public class Any
-    implements IBoundObject {
+public class Any implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   public Any() {
     this(null);
   }
 
-  public Any(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public Any(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

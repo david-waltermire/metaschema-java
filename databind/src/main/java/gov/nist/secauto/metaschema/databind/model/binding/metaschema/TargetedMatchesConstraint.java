@@ -82,7 +82,9 @@ public class TargetedMatchesConstraint
           @AllowedValue(value = "WARNING",
               description = "A violation of the constraint represents a potential issue with the content."),
           @AllowedValue(value = "INFORMATIONAL",
-              description = "A violation of the constraint represents a point of interest.") })))
+              description = "A violation of the constraint represents a point of interest."),
+          @AllowedValue(value = "DEBUG",
+              description = "A violation of the constraint represents a fault in the content that may warrant review by a developer when performing model or tool development.") })))
   private String _level;
 
   @BoundFlag(
@@ -152,8 +154,8 @@ public class TargetedMatchesConstraint
     this(null);
   }
 
-  public TargetedMatchesConstraint(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public TargetedMatchesConstraint(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

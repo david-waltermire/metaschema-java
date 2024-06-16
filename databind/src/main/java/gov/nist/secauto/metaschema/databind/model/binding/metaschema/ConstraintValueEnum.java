@@ -75,8 +75,8 @@ public class ConstraintValueEnum
     this(null);
   }
 
-  public ConstraintValueEnum(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public ConstraintValueEnum(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

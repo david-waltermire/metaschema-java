@@ -45,6 +45,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -63,6 +64,9 @@ public abstract class AbstractModelDefinitionTypeInfo<DEF extends IModelDefiniti
   private final ClassName className;
   @Nullable
   private final ClassName baseClassName;
+  @NonNull
+  private final List<ClassName> superinterfaces;
+  @NonNull
   private final Lazy<Map<String, IFlagInstanceTypeInfo>> flagTypeInfos;
 
   public AbstractModelDefinitionTypeInfo(
@@ -72,6 +76,7 @@ public abstract class AbstractModelDefinitionTypeInfo<DEF extends IModelDefiniti
     this.typeResolver = typeResolver;
     this.className = typeResolver.getClassName(definition);
     this.baseClassName = typeResolver.getBaseClassName(definition);
+    this.superinterfaces = typeResolver.getSuperinterfaces(definition);
     this.flagTypeInfos = ObjectUtils.notNull(Lazy.lazy(() -> flags()
         .collect(CustomCollectors.toMap(
             ITypeInfo::getPropertyName,
@@ -103,6 +108,11 @@ public abstract class AbstractModelDefinitionTypeInfo<DEF extends IModelDefiniti
   @Override
   public ClassName getBaseClassName() {
     return baseClassName;
+  }
+
+  @Override
+  public List<ClassName> getSuperinterfaces() {
+    return superinterfaces;
   }
 
   private Stream<IFlagInstanceTypeInfo> flags() {

@@ -60,8 +60,7 @@ import java.util.List;
     formalName = "Flag Reference",
     name = "flag-reference",
     moduleClass = MetaschemaModelModule.class)
-public class FlagReference
-    implements IBoundObject {
+public class FlagReference implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
@@ -99,7 +98,7 @@ public class FlagReference
   private String _required;
 
   @BoundField(
-      formalName = "Formal NameT",
+      formalName = "Formal Name",
       description = "A formal name for the data construct, to be presented in documentation.",
       useName = "formal-name")
   private String _formalName;
@@ -134,8 +133,8 @@ public class FlagReference
     this(null);
   }
 
-  public FlagReference(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public FlagReference(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

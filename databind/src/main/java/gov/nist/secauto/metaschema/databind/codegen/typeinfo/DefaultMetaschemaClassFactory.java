@@ -423,24 +423,25 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
     TypeSpec.Builder builder = TypeSpec.classBuilder(typeInfo.getClassName()).addModifiers(Modifier.PUBLIC);
     assert builder != null;
     if (isChild) {
-      builder.addModifiers(Modifier.STATIC, Modifier.FINAL);
+      builder.addModifiers(Modifier.STATIC);
     }
+    builder.addModifiers(Modifier.FINAL);
 
     builder.addSuperinterface(ClassName.get(IBoundObject.class));
 
     // add field for Metaschema info
-    builder.addField(FieldSpec.builder(IMetaschemaData.class, "__metaschemaData", Modifier.PRIVATE)
+    builder.addField(FieldSpec.builder(IMetaschemaData.class, "__metaschemaData", Modifier.PRIVATE, Modifier.FINAL)
+        .build());
+
+    builder.addMethod(MethodSpec.constructorBuilder()
+        .addModifiers(Modifier.PUBLIC)
+        .addStatement("this(null)")
         .build());
 
     builder.addMethod(MethodSpec.constructorBuilder()
         .addModifiers(Modifier.PUBLIC)
         .addParameter(IMetaschemaData.class, "data")
         .addStatement("this.$N = $N", "__metaschemaData", "data")
-        .build());
-
-    builder.addMethod(MethodSpec.constructorBuilder()
-        .addModifiers(Modifier.PUBLIC)
-        .addStatement("this(null)")
         .build());
 
     // generate a toString method that will help with debugging
@@ -454,6 +455,10 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
     ClassName baseClassName = typeInfo.getBaseClassName();
     if (baseClassName != null) {
       builder.superclass(baseClassName);
+    }
+
+    for (ClassName superinterface : typeInfo.getSuperinterfaces()) {
+      builder.addSuperinterface(superinterface);
     }
 
     Set<IModelDefinition> additionalChildClasses;

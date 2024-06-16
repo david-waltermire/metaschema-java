@@ -51,8 +51,7 @@ import java.math.BigInteger;
     description = "Allows the name of the definition to be overridden.",
     name = "use-name",
     moduleClass = MetaschemaModelModule.class)
-public class UseName
-    implements IBoundObject {
+public class UseName implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   /**
@@ -74,8 +73,8 @@ public class UseName
     this(null);
   }
 
-  public UseName(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public UseName(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

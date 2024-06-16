@@ -58,8 +58,7 @@ import java.util.List;
     formalName = "Index Has Key Constraint",
     name = "flag-index-has-key",
     moduleClass = MetaschemaModelModule.class)
-public class FlagIndexHasKey
-    implements IBoundObject, IConstraintBase {
+public class FlagIndexHasKey implements IBoundObject, IConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
@@ -81,7 +80,9 @@ public class FlagIndexHasKey
           @AllowedValue(value = "WARNING",
               description = "A violation of the constraint represents a potential issue with the content."),
           @AllowedValue(value = "INFORMATIONAL",
-              description = "A violation of the constraint represents a point of interest.") })))
+              description = "A violation of the constraint represents a point of interest."),
+          @AllowedValue(value = "DEBUG",
+              description = "A violation of the constraint represents a fault in the content that may warrant review by a developer when performing model or tool development.") })))
   private String _level;
 
   @BoundFlag(
@@ -129,8 +130,8 @@ public class FlagIndexHasKey
     this(null);
   }
 
-  public FlagIndexHasKey(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public FlagIndexHasKey(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

@@ -59,8 +59,7 @@ import java.util.List;
     formalName = "Expect Condition Constraint",
     name = "targeted-expect-constraint",
     moduleClass = MetaschemaModelModule.class)
-public class TargetedExpectConstraint
-    implements IBoundObject, ITargetedConstraintBase {
+public class TargetedExpectConstraint implements IBoundObject, ITargetedConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
@@ -82,7 +81,9 @@ public class TargetedExpectConstraint
           @AllowedValue(value = "WARNING",
               description = "A violation of the constraint represents a potential issue with the content."),
           @AllowedValue(value = "INFORMATIONAL",
-              description = "A violation of the constraint represents a point of interest.") })))
+              description = "A violation of the constraint represents a point of interest."),
+          @AllowedValue(value = "DEBUG",
+              description = "A violation of the constraint represents a fault in the content that may warrant review by a developer when performing model or tool development.") })))
   private String _level;
 
   @BoundFlag(
@@ -134,8 +135,8 @@ public class TargetedExpectConstraint
     this(null);
   }
 
-  public TargetedExpectConstraint(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public TargetedExpectConstraint(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

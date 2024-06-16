@@ -44,6 +44,8 @@ import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
+import gov.nist.secauto.metaschema.databind.model.annotations.Expect;
+import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.Matches;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.ValueConstraints;
@@ -64,8 +66,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "assembly-model",
     moduleClass = MetaschemaModelModule.class)
-public class AssemblyModel
-    implements IBoundObject {
+public class AssemblyModel implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundChoiceGroup(
@@ -81,8 +82,7 @@ public class AssemblyModel
           @BoundGroupedAssembly(formalName = "Choice", useName = "choice", binding = Choice.class),
           @BoundGroupedAssembly(formalName = "Choice Grouping", useName = "choice-group", binding = ChoiceGroup.class)
       },
-      groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "instances",
-          inJson = JsonGroupAsBehavior.LIST))
+      groupAs = @GroupAs(name = "instances", inJson = JsonGroupAsBehavior.LIST))
   private List<Object> _instances;
 
   @BoundAssembly(
@@ -94,8 +94,8 @@ public class AssemblyModel
     this(null);
   }
 
-  public AssemblyModel(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public AssemblyModel(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override
@@ -125,11 +125,72 @@ public class AssemblyModel
   }
 
   @MetaschemaAssembly(
+      formalName = "Choice",
+      name = "choice",
+      moduleClass = MetaschemaModelModule.class)
+  public static final class Choice implements IBoundObject {
+    private final IMetaschemaData __metaschemaData;
+
+    @BoundChoiceGroup(
+        minOccurs = 1,
+        maxOccurs = -1,
+        assemblies = {
+            @BoundGroupedAssembly(formalName = "Assembly Reference", useName = "assembly",
+                binding = AssemblyReference.class),
+            @BoundGroupedAssembly(formalName = "Inline Assembly Definition", useName = "define-assembly",
+                binding = InlineDefineAssembly.class),
+            @BoundGroupedAssembly(formalName = "Field Reference", useName = "field", binding = FieldReference.class),
+            @BoundGroupedAssembly(formalName = "Inline Field Definition", useName = "define-field",
+                binding = InlineDefineField.class)
+        },
+        groupAs = @GroupAs(name = "choices", inJson = JsonGroupAsBehavior.LIST))
+    private List<Object> _choices;
+
+    @BoundAssembly(
+        formalName = "Any Additional Content",
+        useName = "any")
+    private Any _any;
+
+    public Choice() {
+      this(null);
+    }
+
+    public Choice(IMetaschemaData data) {
+      this.__metaschemaData = data;
+    }
+
+    @Override
+    public IMetaschemaData getMetaschemaData() {
+      return __metaschemaData;
+    }
+
+    public List<Object> getChoices() {
+      return _choices;
+    }
+
+    public void setChoices(List<Object> value) {
+      _choices = value;
+    }
+
+    public Any getAny() {
+      return _any;
+    }
+
+    public void setAny(Any value) {
+      _any = value;
+    }
+
+    @Override
+    public String toString() {
+      return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
+    }
+  }
+
+  @MetaschemaAssembly(
       formalName = "Choice Grouping",
       name = "choice-group",
       moduleClass = MetaschemaModelModule.class)
-  public static class ChoiceGroup
-      implements IBoundObject {
+  public static final class ChoiceGroup implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     @BoundFlag(
@@ -158,7 +219,7 @@ public class AssemblyModel
         formalName = "Group As",
         useName = "group-as",
         minOccurs = 1)
-    private GroupAs _groupAs;
+    private GroupingAs _groupAs;
 
     @BoundField(
         formalName = "Discriminator JSON Property",
@@ -179,8 +240,7 @@ public class AssemblyModel
             @BoundGroupedAssembly(formalName = "Inline Field Definition", useName = "define-field",
                 binding = DefineField.class)
         },
-        groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "choices",
-            inJson = JsonGroupAsBehavior.LIST))
+        groupAs = @GroupAs(name = "choices", inJson = JsonGroupAsBehavior.LIST))
     private List<Object> _choices;
 
     @BoundField(
@@ -193,8 +253,8 @@ public class AssemblyModel
       this(null);
     }
 
-    public ChoiceGroup(IMetaschemaData metaschemaData) {
-      this.__metaschemaData = metaschemaData;
+    public ChoiceGroup(IMetaschemaData data) {
+      this.__metaschemaData = data;
     }
 
     @Override
@@ -226,11 +286,11 @@ public class AssemblyModel
       _jsonKey = value;
     }
 
-    public GroupAs getGroupAs() {
+    public GroupingAs getGroupAs() {
       return _groupAs;
     }
 
-    public void setGroupAs(GroupAs value) {
+    public void setGroupAs(GroupingAs value) {
       _groupAs = value;
     }
 
@@ -267,8 +327,7 @@ public class AssemblyModel
         formalName = "Grouping Assembly Reference",
         name = "assembly",
         moduleClass = MetaschemaModelModule.class)
-    public static class Assembly
-        implements IBoundObject {
+    public static final class Assembly implements IBoundObject {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
@@ -307,8 +366,7 @@ public class AssemblyModel
           formalName = "Property",
           useName = "prop",
           maxOccurs = -1,
-          groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "props",
-              inJson = JsonGroupAsBehavior.LIST))
+          groupAs = @GroupAs(name = "props", inJson = JsonGroupAsBehavior.LIST))
       private List<Property> _props;
 
       @BoundField(
@@ -333,8 +391,8 @@ public class AssemblyModel
         this(null);
       }
 
-      public Assembly(IMetaschemaData metaschemaData) {
-        this.__metaschemaData = metaschemaData;
+      public Assembly(IMetaschemaData data) {
+        this.__metaschemaData = data;
       }
 
       @Override
@@ -452,15 +510,17 @@ public class AssemblyModel
         formalName = "Inline Assembly Definition",
         name = "define-assembly",
         moduleClass = MetaschemaModelModule.class)
-    public static class DefineAssembly
-        implements IBoundObject {
+    public static final class DefineAssembly implements IBoundObject {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
           formalName = "Inline Assembly Name",
           name = "name",
           required = true,
-          typeAdapter = TokenAdapter.class)
+          typeAdapter = TokenAdapter.class,
+          valueConstraints = @ValueConstraints(
+              expect = @Expect(level = IConstraint.Level.WARNING, test = "not(.=$keywords)",
+                  message = "Names cannot be non-delimiting terminal symbols in Metapath syntax.")))
       private String _name;
 
       @BoundFlag(
@@ -492,8 +552,7 @@ public class AssemblyModel
           formalName = "Property",
           useName = "prop",
           maxOccurs = -1,
-          groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "props",
-              inJson = JsonGroupAsBehavior.LIST))
+          groupAs = @GroupAs(name = "props", inJson = JsonGroupAsBehavior.LIST))
       private List<Property> _props;
 
       @BoundField(
@@ -509,8 +568,7 @@ public class AssemblyModel
                   binding = InlineDefineFlag.class),
               @BoundGroupedAssembly(formalName = "Flag Reference", useName = "flag", binding = FlagReference.class)
           },
-          groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "flags",
-              inJson = JsonGroupAsBehavior.LIST))
+          groupAs = @GroupAs(name = "flags", inJson = JsonGroupAsBehavior.LIST))
       private List<Object> _flags;
 
       @BoundAssembly(
@@ -531,16 +589,15 @@ public class AssemblyModel
           formalName = "Example",
           useName = "example",
           maxOccurs = -1,
-          groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "examples",
-              inJson = JsonGroupAsBehavior.LIST))
+          groupAs = @GroupAs(name = "examples", inJson = JsonGroupAsBehavior.LIST))
       private List<Example> _examples;
 
       public DefineAssembly() {
         this(null);
       }
 
-      public DefineAssembly(IMetaschemaData metaschemaData) {
-        this.__metaschemaData = metaschemaData;
+      public DefineAssembly(IMetaschemaData data) {
+        this.__metaschemaData = data;
       }
 
       @Override
@@ -710,8 +767,7 @@ public class AssemblyModel
         formalName = "Grouping Field Reference",
         name = "field",
         moduleClass = MetaschemaModelModule.class)
-    public static class Field
-        implements IBoundObject {
+    public static final class Field implements IBoundObject {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
@@ -769,8 +825,7 @@ public class AssemblyModel
           formalName = "Property",
           useName = "prop",
           maxOccurs = -1,
-          groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "props",
-              inJson = JsonGroupAsBehavior.LIST))
+          groupAs = @GroupAs(name = "props", inJson = JsonGroupAsBehavior.LIST))
       private List<Property> _props;
 
       @BoundField(
@@ -795,8 +850,8 @@ public class AssemblyModel
         this(null);
       }
 
-      public Field(IMetaschemaData metaschemaData) {
-        this.__metaschemaData = metaschemaData;
+      public Field(IMetaschemaData data) {
+        this.__metaschemaData = data;
       }
 
       @Override
@@ -930,15 +985,17 @@ public class AssemblyModel
         formalName = "Inline Field Definition",
         name = "define-field",
         moduleClass = MetaschemaModelModule.class)
-    public static class DefineField
-        implements IBoundObject {
+    public static final class DefineField implements IBoundObject {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
           formalName = "Inline Field Name",
           name = "name",
           required = true,
-          typeAdapter = TokenAdapter.class)
+          typeAdapter = TokenAdapter.class,
+          valueConstraints = @ValueConstraints(
+              expect = @Expect(level = IConstraint.Level.WARNING, test = "not(.=$keywords)",
+                  message = "Names cannot be non-delimiting terminal symbols in Metapath syntax.")))
       private String _name;
 
       @BoundFlag(
@@ -1004,8 +1061,7 @@ public class AssemblyModel
           formalName = "Property",
           useName = "prop",
           maxOccurs = -1,
-          groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "props",
-              inJson = JsonGroupAsBehavior.LIST))
+          groupAs = @GroupAs(name = "props", inJson = JsonGroupAsBehavior.LIST))
       private List<Property> _props;
 
       @BoundField(
@@ -1032,8 +1088,7 @@ public class AssemblyModel
                   binding = InlineDefineFlag.class),
               @BoundGroupedAssembly(formalName = "Flag Reference", useName = "flag", binding = FlagReference.class)
           },
-          groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "flags",
-              inJson = JsonGroupAsBehavior.LIST))
+          groupAs = @GroupAs(name = "flags", inJson = JsonGroupAsBehavior.LIST))
       private List<Object> _flags;
 
       @BoundAssembly(
@@ -1050,16 +1105,15 @@ public class AssemblyModel
           formalName = "Example",
           useName = "example",
           maxOccurs = -1,
-          groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "examples",
-              inJson = JsonGroupAsBehavior.LIST))
+          groupAs = @GroupAs(name = "examples", inJson = JsonGroupAsBehavior.LIST))
       private List<Example> _examples;
 
       public DefineField() {
         this(null);
       }
 
-      public DefineField(IMetaschemaData metaschemaData) {
-        this.__metaschemaData = metaschemaData;
+      public DefineField(IMetaschemaData data) {
+        this.__metaschemaData = data;
       }
 
       @Override
@@ -1247,70 +1301,6 @@ public class AssemblyModel
       public String toString() {
         return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
       }
-    }
-  }
-
-  @MetaschemaAssembly(
-      formalName = "Choice",
-      name = "choice",
-      moduleClass = MetaschemaModelModule.class)
-  public static class Choice
-      implements IBoundObject {
-    private final IMetaschemaData __metaschemaData;
-
-    @BoundChoiceGroup(
-        minOccurs = 1,
-        maxOccurs = -1,
-        assemblies = {
-            @BoundGroupedAssembly(formalName = "Assembly Reference", useName = "assembly",
-                binding = AssemblyReference.class),
-            @BoundGroupedAssembly(formalName = "Inline Assembly Definition", useName = "define-assembly",
-                binding = InlineDefineAssembly.class),
-            @BoundGroupedAssembly(formalName = "Field Reference", useName = "field", binding = FieldReference.class),
-            @BoundGroupedAssembly(formalName = "Inline Field Definition", useName = "define-field",
-                binding = InlineDefineField.class)
-        },
-        groupAs = @gov.nist.secauto.metaschema.databind.model.annotations.GroupAs(name = "choices",
-            inJson = JsonGroupAsBehavior.LIST))
-    private List<Object> _choices;
-
-    @BoundAssembly(
-        formalName = "Any Additional Content",
-        useName = "any")
-    private Any _any;
-
-    public Choice() {
-      this(null);
-    }
-
-    public Choice(IMetaschemaData metaschemaData) {
-      this.__metaschemaData = metaschemaData;
-    }
-
-    @Override
-    public IMetaschemaData getMetaschemaData() {
-      return __metaschemaData;
-    }
-
-    public List<Object> getChoices() {
-      return _choices;
-    }
-
-    public void setChoices(List<Object> value) {
-      _choices = value;
-    }
-
-    public Any getAny() {
-      return _any;
-    }
-
-    public void setAny(Any value) {
-      _any = value;
-    }
-
-    @Override
-    public String toString() {
-      return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
     }
   }
 }

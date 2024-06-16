@@ -47,8 +47,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Group As",
     name = "group-as",
     moduleClass = MetaschemaModelModule.class)
-public class GroupAs
-    implements IBoundObject {
+public class GroupingAs implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
@@ -81,12 +80,12 @@ public class GroupAs
               @AllowedValue(value = "UNGROUPED", description = "Do not use a wrapper element.") })))
   private String _inXml;
 
-  public GroupAs() {
+  public GroupingAs() {
     this(null);
   }
 
-  public GroupAs(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public GroupingAs(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

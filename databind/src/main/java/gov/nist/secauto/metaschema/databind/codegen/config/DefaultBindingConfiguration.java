@@ -30,6 +30,7 @@ import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
 import gov.nist.secauto.metaschema.core.model.IModelDefinition;
 import gov.nist.secauto.metaschema.core.model.IModule;
+import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.codegen.ClassUtils;
 import gov.nist.secauto.metaschema.databind.codegen.xmlbeans.JavaModelBindingType;
@@ -49,6 +50,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -104,12 +106,9 @@ public class DefaultBindingConfiguration implements IBindingConfiguration {
   @Override
   public String getQualifiedBaseClassName(IModelDefinition definition) {
     IDefinitionBindingConfiguration config = getBindingConfigurationForDefinition(definition);
-
-    String retval = null;
-    if (config != null) {
-      retval = config.getQualifiedBaseClassName();
-    }
-    return retval;
+    return config == null
+        ? null
+        : config.getQualifiedBaseClassName();
   }
 
   @Override
@@ -125,6 +124,14 @@ public class DefaultBindingConfiguration implements IBindingConfiguration {
       retval = ClassUtils.toClassName(definition.getName());
     }
     return retval;
+  }
+
+  @Override
+  public List<String> getQualifiedSuperinterfaceClassNames(IModelDefinition definition) {
+    IDefinitionBindingConfiguration config = getBindingConfigurationForDefinition(definition);
+    return config == null
+        ? CollectionUtil.emptyList()
+        : config.getInterfacesToImplement();
   }
 
   @Override

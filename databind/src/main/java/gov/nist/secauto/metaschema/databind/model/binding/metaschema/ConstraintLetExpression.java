@@ -45,8 +45,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Constraint Let Expression",
     name = "constraint-let-expression",
     moduleClass = MetaschemaModelModule.class)
-public class ConstraintLetExpression
-    implements IBoundObject {
+public class ConstraintLetExpression implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
@@ -73,8 +72,8 @@ public class ConstraintLetExpression
     this(null);
   }
 
-  public ConstraintLetExpression(IMetaschemaData metaschemaData) {
-    this.__metaschemaData = metaschemaData;
+  public ConstraintLetExpression(IMetaschemaData data) {
+    this.__metaschemaData = data;
   }
 
   @Override

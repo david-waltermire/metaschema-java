@@ -43,7 +43,7 @@ import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.ModelUtil;
-import gov.nist.secauto.metaschema.databind.model.binding.metaschema.GroupAs;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.GroupingAs;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA.DefineAssembly.RootName;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.Property;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.Remarks;
@@ -187,7 +187,7 @@ public final class ModelSupport {
 
   @NonNull
   public static IGroupAs groupAs(
-      @Nullable GroupAs groupAs,
+      @Nullable GroupingAs groupAs,
       @NonNull IModule module) {
     return groupAs == null
         ? IGroupAs.SINGLETON_GROUP_AS
