@@ -34,12 +34,12 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import gov.nist.secauto.metaschema.core.configuration.DefaultConfiguration;
 import gov.nist.secauto.metaschema.core.configuration.IConfiguration;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.util.JsonUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
 import gov.nist.secauto.metaschema.databind.io.json.JsonFactoryFactory;
 import gov.nist.secauto.metaschema.databind.io.yaml.impl.YamlFactoryFactory;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import org.codehaus.stax2.XMLEventReader2;
 import org.codehaus.stax2.XMLInputFactory2;

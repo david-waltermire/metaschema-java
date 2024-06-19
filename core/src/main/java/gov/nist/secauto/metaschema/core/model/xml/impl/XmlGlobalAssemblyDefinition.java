@@ -40,6 +40,7 @@ import gov.nist.secauto.metaschema.core.model.IFieldInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
 import gov.nist.secauto.metaschema.core.model.IModelInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.INamedModelInstanceAbsolute;
+import gov.nist.secauto.metaschema.core.model.IResourceLocation;
 import gov.nist.secauto.metaschema.core.model.ModuleScopeEnum;
 import gov.nist.secauto.metaschema.core.model.constraint.AssemblyConstraintSet;
 import gov.nist.secauto.metaschema.core.model.constraint.IModelConstrained;
@@ -66,7 +67,8 @@ class XmlGlobalAssemblyDefinition
         IFieldInstanceAbsolute,
         IAssemblyInstanceAbsolute,
         IChoiceInstance,
-        IChoiceGroupInstance> {
+        IChoiceGroupInstance>
+    implements IXmlObjectBinding {
 
   @NonNull
   private final GlobalAssemblyDefinitionType xmlAssembly;
@@ -140,9 +142,15 @@ class XmlGlobalAssemblyDefinition
    *
    * @return the underlying XML data
    */
+  @Override
   @NonNull
-  protected GlobalAssemblyDefinitionType getXmlObject() {
+  public GlobalAssemblyDefinitionType getXmlObject() {
     return xmlAssembly;
+  }
+
+  @Override
+  public IResourceLocation getLocation(Object itemValue) {
+    return null;
   }
 
   @Override

@@ -26,16 +26,19 @@
 
 package gov.nist.secauto.metaschema.databind;
 
+import gov.nist.secauto.metaschema.core.configuration.IConfiguration;
 import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.constraint.DefaultConstraintValidator;
 import gov.nist.secauto.metaschema.core.model.constraint.FindingCollectingConstraintValidationHandler;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraintValidationHandler;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraintValidator;
+import gov.nist.secauto.metaschema.core.model.constraint.ValidationFeature;
 import gov.nist.secauto.metaschema.core.model.validation.AggregateValidationResult;
 import gov.nist.secauto.metaschema.core.model.validation.IValidationResult;
 import gov.nist.secauto.metaschema.core.model.validation.JsonSchemaContentValidator;
@@ -52,7 +55,6 @@ import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModel;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaField;
 
@@ -308,17 +310,25 @@ public interface IBindingContext {
    *
    * @param handler
    *          the validation handler to use to process the validation results
+   * @param config
+   *          the validation configuration
    *
    * @return the validator
    */
-  default IConstraintValidator newValidator(@NonNull IConstraintValidationHandler handler) {
+  default IConstraintValidator newValidator(
+      @NonNull IConstraintValidationHandler handler,
+      @Nullable IConfiguration<ValidationFeature<?>> config) {
     IBoundLoader loader = newBoundLoader();
     loader.disableFeature(DeserializationFeature.DESERIALIZE_VALIDATE_CONSTRAINTS);
 
     DynamicContext context = new DynamicContext();
     context.setDocumentLoader(loader);
 
-    return new DefaultConstraintValidator(handler);
+    DefaultConstraintValidator retval = new DefaultConstraintValidator(handler);
+    if (config != null) {
+      retval.applyConfiguration(config);
+    }
+    return retval;
   }
 
   /**
@@ -329,13 +339,18 @@ public interface IBindingContext {
    *          the node item to validate
    * @param loader
    *          a module loader used to load and resolve referenced resources
+   * @param config
+   *          the validation configuration
    * @return the validation result
    * @throws IllegalArgumentException
    *           if the provided class is not bound to a Module assembly or field
    */
-  default IValidationResult validate(@NonNull INodeItem nodeItem, @NonNull IBoundLoader loader) {
+  default IValidationResult validate(
+      @NonNull INodeItem nodeItem,
+      @NonNull IBoundLoader loader,
+      @Nullable IConfiguration<ValidationFeature<?>> config) {
     FindingCollectingConstraintValidationHandler handler = new FindingCollectingConstraintValidationHandler();
-    IConstraintValidator validator = newValidator(handler);
+    IConstraintValidator validator = newValidator(handler, config);
 
     StaticContext staticContext = StaticContext.builder()
         .defaultModelNamespace(nodeItem.getNamespace())
@@ -358,6 +373,8 @@ public interface IBindingContext {
    *          the schema format to use to validate the target
    * @param schemaProvider
    *          provides callbacks to get the appropriate schemas
+   * @param config
+   *          the validation configuration
    * @return the validation result
    * @throws IOException
    *           if an error occurred while reading the target
@@ -365,12 +382,13 @@ public interface IBindingContext {
   default IValidationResult validate(
       @NonNull URI target,
       @NonNull Format asFormat,
-      @NonNull ISchemaValidationProvider schemaProvider) throws IOException {
+      @NonNull ISchemaValidationProvider schemaProvider,
+      @Nullable IConfiguration<ValidationFeature<?>> config) throws IOException {
 
     IValidationResult retval = schemaProvider.validate(target, asFormat);
 
     if (retval.isPassing()) {
-      IValidationResult constraintValidationResult = validateWithConstraints(target);
+      IValidationResult constraintValidationResult = validateWithConstraints(target, config);
       retval = AggregateValidationResult.aggregate(retval, constraintValidationResult);
     }
     return retval;
@@ -382,17 +400,21 @@ public interface IBindingContext {
    *
    * @param target
    *          the file to load and validate
+   * @param config
+   *          the validation configuration
    * @return the validation results
    * @throws IOException
    *           if an error occurred while parsing the target
    */
-  default IValidationResult validateWithConstraints(@NonNull URI target)
+  default IValidationResult validateWithConstraints(
+      @NonNull URI target,
+      @Nullable IConfiguration<ValidationFeature<?>> config)
       throws IOException {
     IBoundLoader loader = newBoundLoader();
     loader.disableFeature(DeserializationFeature.DESERIALIZE_VALIDATE_CONSTRAINTS);
     IDocumentNodeItem nodeItem = loader.loadAsNodeItem(target);
 
-    return validate(nodeItem, loader);
+    return validate(nodeItem, loader, config);
   }
 
   interface IModuleLoaderStrategy {

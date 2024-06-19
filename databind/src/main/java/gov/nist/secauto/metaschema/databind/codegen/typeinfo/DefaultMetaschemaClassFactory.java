@@ -38,8 +38,10 @@ import com.squareup.javapoet.WildcardTypeName;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
 import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IDefinition;
 import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.IModelDefinition;
 import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
@@ -57,8 +59,6 @@ import gov.nist.secauto.metaschema.databind.codegen.typeinfo.def.IFieldDefinitio
 import gov.nist.secauto.metaschema.databind.codegen.typeinfo.def.IModelDefinitionTypeInfo;
 import gov.nist.secauto.metaschema.databind.model.AbstractBoundModule;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaField;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaModule;
@@ -267,7 +267,9 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
       @NonNull ClassName className) { // NOPMD - long, but readable
 
     // create the class
-    TypeSpec.Builder builder = TypeSpec.classBuilder(className).addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+    TypeSpec.Builder builder = TypeSpec.classBuilder(className)
+        .addModifiers(Modifier.PUBLIC)
+        .addModifiers(Modifier.FINAL);
 
     builder.superclass(AbstractBoundModule.class);
 
@@ -420,12 +422,13 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
       @NonNull IModelDefinitionTypeInfo typeInfo,
       boolean isChild) throws IOException {
     // create the class
-    TypeSpec.Builder builder = TypeSpec.classBuilder(typeInfo.getClassName()).addModifiers(Modifier.PUBLIC);
+    TypeSpec.Builder builder = TypeSpec.classBuilder(typeInfo.getClassName())
+        .addModifiers(Modifier.PUBLIC);
     assert builder != null;
     if (isChild) {
       builder.addModifiers(Modifier.STATIC);
     }
-    builder.addModifiers(Modifier.FINAL);
+    // builder.addModifiers(Modifier.FINAL);
 
     builder.addSuperinterface(ClassName.get(IBoundObject.class));
 

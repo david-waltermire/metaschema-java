@@ -27,9 +27,9 @@
 package gov.nist.secauto.metaschema.databind.model.test;
 
 import gov.nist.secauto.metaschema.core.datatype.adapter.UuidAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;

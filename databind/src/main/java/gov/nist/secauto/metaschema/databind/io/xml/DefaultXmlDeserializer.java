@@ -30,12 +30,12 @@ import com.ctc.wstx.stax.WstxInputFactory;
 
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItemFactory;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.util.AutoCloser;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.io.AbstractDeserializer;
 import gov.nist.secauto.metaschema.databind.io.DeserializationFeature;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import org.codehaus.stax2.XMLEventReader2;
 import org.codehaus.stax2.XMLInputFactory2;

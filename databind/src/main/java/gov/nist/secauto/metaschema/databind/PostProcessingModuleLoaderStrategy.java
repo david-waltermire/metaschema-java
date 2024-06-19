@@ -26,11 +26,11 @@
 
 package gov.nist.secauto.metaschema.databind;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.IModuleLoader;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;

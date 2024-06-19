@@ -26,11 +26,11 @@
 
 package gov.nist.secauto.metaschema.databind;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.AbstractBoundModule;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaField;
 import gov.nist.secauto.metaschema.databind.model.impl.DefinitionAssembly;

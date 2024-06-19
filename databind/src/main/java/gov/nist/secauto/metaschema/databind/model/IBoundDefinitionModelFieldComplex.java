@@ -27,6 +27,7 @@
 package gov.nist.secauto.metaschema.databind.model;
 
 import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.info.IItemReadHandler;
 import gov.nist.secauto.metaschema.databind.model.info.IItemWriteHandler;

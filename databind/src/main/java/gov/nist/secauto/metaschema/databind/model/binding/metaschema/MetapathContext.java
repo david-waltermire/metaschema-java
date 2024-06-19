@@ -26,10 +26,10 @@
 
 package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
@@ -48,7 +48,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "metapath-context",
     moduleClass = MetaschemaModelModule.class)
-public class MetapathContext implements IBoundObject {
+public final class MetapathContext implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(

@@ -30,8 +30,8 @@ import gov.nist.secauto.metaschema.core.datatype.adapter.StringAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.UriReferenceAdapter;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
@@ -49,7 +49,7 @@ import java.net.URI;
     formalName = "Example",
     name = "example",
     moduleClass = MetaschemaModelModule.class)
-public class Example implements IBoundObject {
+public final class Example implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

@@ -30,6 +30,8 @@ import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.MetaschemaDataTypeProvider;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
@@ -38,6 +40,7 @@ import gov.nist.secauto.metaschema.databind.model.impl.DefaultGroupAs;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.net.URI;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -263,5 +266,28 @@ public final class ModelUtil {
     return NULL_VALUE.equals(groupAs.name())
         ? IGroupAs.SINGLETON_GROUP_AS
         : new DefaultGroupAs(groupAs, module);
+  }
+
+  public static String toLocation(@NonNull IBoundObject obj) {
+    IMetaschemaData data = obj.getMetaschemaData();
+
+    String retval = "";
+    if (data != null) {
+      int line = data.getLine();
+      if (line > -1) {
+        retval = line + ":" + data.getColumn();
+      }
+    }
+    return retval;
+  }
+
+  public static String toLocation(@NonNull IBoundObject obj, @Nullable URI uri) {
+    String retval = uri == null ? "" : uri.toASCIIString();
+
+    String location = toLocation(obj);
+    if (!location.isEmpty()) {
+      retval = retval.isEmpty() ? location : retval + "@" + location;
+    }
+    return retval;
   }
 }

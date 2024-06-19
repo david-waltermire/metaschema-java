@@ -27,9 +27,9 @@
 package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
 import gov.nist.secauto.metaschema.core.datatype.adapter.TokenAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
@@ -47,7 +47,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Group As",
     name = "group-as",
     moduleClass = MetaschemaModelModule.class)
-public class GroupingAs implements IBoundObject {
+public final class GroupingAs implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

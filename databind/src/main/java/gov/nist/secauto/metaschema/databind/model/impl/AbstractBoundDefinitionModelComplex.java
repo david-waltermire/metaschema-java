@@ -26,13 +26,13 @@
 
 package gov.nist.secauto.metaschema.databind.model.impl;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
 import gov.nist.secauto.metaschema.databind.io.BindingException;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

@@ -495,6 +495,9 @@ public abstract class AbstractTestSuite {
     case INFORMATIONAL:
       logBuilder = LOGGER.atInfo();
       break;
+    case DEBUG:
+      logBuilder = LOGGER.atDebug();
+      break;
     default:
       throw new IllegalArgumentException("Unknown level: " + finding.getSeverity().name());
     }

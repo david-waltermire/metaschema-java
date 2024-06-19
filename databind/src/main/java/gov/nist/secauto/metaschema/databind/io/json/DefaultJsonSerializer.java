@@ -31,11 +31,11 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 
 import gov.nist.secauto.metaschema.core.configuration.IMutableConfiguration;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.io.AbstractSerializer;
 import gov.nist.secauto.metaschema.databind.io.SerializationFeature;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.IOException;
 import java.io.Writer;

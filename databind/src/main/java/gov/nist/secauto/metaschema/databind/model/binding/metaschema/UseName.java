@@ -28,8 +28,8 @@ package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
 import gov.nist.secauto.metaschema.core.datatype.adapter.NonNegativeIntegerAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.TokenAdapter;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFieldValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaField;
@@ -51,7 +51,7 @@ import java.math.BigInteger;
     description = "Allows the name of the definition to be overridden.",
     name = "use-name",
     moduleClass = MetaschemaModelModule.class)
-public class UseName implements IBoundObject {
+public final class UseName implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   /**

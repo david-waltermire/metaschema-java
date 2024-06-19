@@ -26,11 +26,11 @@
 
 package gov.nist.secauto.metaschema.databind.model.impl;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.XmlGroupAsBehavior;
 import gov.nist.secauto.metaschema.databind.io.BindingException;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModel;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 
 import edu.umd.cs.findbugs.annotations.NonNull;

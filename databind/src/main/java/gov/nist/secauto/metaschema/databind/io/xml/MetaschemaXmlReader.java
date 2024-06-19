@@ -26,6 +26,8 @@
 
 package gov.nist.secauto.metaschema.databind.io.xml;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.util.XmlEventUtil;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -44,8 +46,6 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelFieldScalar
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedField;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedNamed;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.info.AbstractModelInstanceReadHandler;
 import gov.nist.secauto.metaschema.databind.model.info.IFeatureScalarItemValueHandler;
 import gov.nist.secauto.metaschema.databind.model.info.IItemReadHandler;

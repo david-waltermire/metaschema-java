@@ -55,6 +55,7 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
 import gov.nist.secauto.metaschema.databind.io.DeserializationFeature;
 import gov.nist.secauto.metaschema.databind.io.IBoundLoader;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyConstraints;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.MetapathContext;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.MetaschemaMetaConstraints;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.MetaschemaMetapath;
@@ -174,7 +175,7 @@ public class BindingConstraintLoader
 
       List<ITargetedConstraints> targetedConstraints = new LinkedList<>();
       try {
-        for (Object constraintsObj : CollectionUtil.listOrEmpty(scope.getConstraints())) {
+        for (IValueConstraintsBase constraintsObj : CollectionUtil.listOrEmpty(scope.getConstraints())) {
           if (constraintsObj instanceof MetaschemaModuleConstraints.Scope.Assembly) {
             targetedConstraints.add(handleScopedAssembly(
                 (MetaschemaModuleConstraints.Scope.Assembly) constraintsObj,
@@ -263,8 +264,11 @@ public class BindingConstraintLoader
           .collect(Collectors.toList());
     }
 
+    AssemblyConstraints contextConstraints = contextObj.getConstraints();
     IModelConstrained constraints = new AssemblyConstraintSet();
-    ConstraintBindingSupport.parse(constraints, ObjectUtils.notNull(contextObj.getConstraints()), source);
+    if (contextConstraints != null) {
+      ConstraintBindingSupport.parse(constraints, contextConstraints, source);
+    }
     Context context = new Context(metapaths, constraints);
 
     List<Context> childContexts = CollectionUtil.listOrEmpty(contextObj.getMetapathContexts()).stream()

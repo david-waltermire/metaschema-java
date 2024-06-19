@@ -28,8 +28,8 @@ package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
 import gov.nist.secauto.metaschema.core.datatype.adapter.TokenAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.UriAdapter;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 
@@ -46,7 +46,7 @@ import java.net.URI;
     formalName = "Property",
     name = "property",
     moduleClass = MetaschemaModelModule.class)
-public class Property implements IBoundObject {
+public final class Property implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

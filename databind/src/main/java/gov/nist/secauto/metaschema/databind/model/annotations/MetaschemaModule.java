@@ -28,8 +28,8 @@ package gov.nist.secauto.metaschema.databind.model.annotations;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

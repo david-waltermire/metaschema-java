@@ -28,11 +28,10 @@ package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
 import gov.nist.secauto.metaschema.core.datatype.adapter.TokenAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.UriAdapter;
-import gov.nist.secauto.metaschema.core.datatype.adapter.UriReferenceAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
@@ -60,7 +59,7 @@ import java.util.List;
     name = "metaschema-meta-constraints",
     moduleClass = MetaschemaModelModule.class,
     rootName = "metaschema-meta-constraints")
-public class MetaschemaMetaConstraints implements IBoundObject {
+public final class MetaschemaMetaConstraints implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(

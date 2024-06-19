@@ -30,10 +30,10 @@ import gov.nist.secauto.metaschema.core.configuration.IConfiguration;
 import gov.nist.secauto.metaschema.core.configuration.IMutableConfiguration;
 import gov.nist.secauto.metaschema.core.metapath.IDocumentLoader;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.DefaultBindingContext;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import org.xml.sax.InputSource;
 

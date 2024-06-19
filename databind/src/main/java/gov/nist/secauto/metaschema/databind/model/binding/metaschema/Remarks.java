@@ -29,9 +29,9 @@ package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 import gov.nist.secauto.metaschema.core.datatype.adapter.TokenAdapter;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultilineAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFieldValue;
@@ -55,7 +55,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     description = "Any explanatory or helpful information to be provided about the remarks parent.",
     name = "remarks",
     moduleClass = MetaschemaModelModule.class)
-public class Remarks implements IBoundObject {
+public final class Remarks implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   /**

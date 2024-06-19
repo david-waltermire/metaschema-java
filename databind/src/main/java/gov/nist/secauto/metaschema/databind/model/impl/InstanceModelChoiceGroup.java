@@ -27,6 +27,7 @@
 package gov.nist.secauto.metaschema.databind.model.impl;
 
 import gov.nist.secauto.metaschema.core.model.AbstractChoiceGroupInstance;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IContainerModelSupport;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.CustomCollectors;
@@ -37,7 +38,6 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelChoiceGroup
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedField;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedNamed;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;

@@ -28,9 +28,9 @@ package gov.nist.secauto.metaschema.databind.io.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.io.IProblemHandler;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.IOException;
 

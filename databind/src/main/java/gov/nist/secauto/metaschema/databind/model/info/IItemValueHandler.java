@@ -26,8 +26,8 @@
 
 package gov.nist.secauto.metaschema.databind.model.info;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.io.BindingException;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.IOException;
 

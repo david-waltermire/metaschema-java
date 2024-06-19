@@ -26,8 +26,8 @@
 
 package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -40,7 +40,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Any Additional Content",
     name = "any",
     moduleClass = MetaschemaModelModule.class)
-public class Any implements IBoundObject {
+public final class Any implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   public Any() {

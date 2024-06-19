@@ -31,7 +31,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

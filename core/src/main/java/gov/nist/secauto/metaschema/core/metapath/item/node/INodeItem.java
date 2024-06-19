@@ -29,6 +29,7 @@ package gov.nist.secauto.metaschema.core.metapath.item.node;
 import gov.nist.secauto.metaschema.core.metapath.format.IPathFormatter;
 import gov.nist.secauto.metaschema.core.metapath.format.IPathSegment;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
+import gov.nist.secauto.metaschema.core.model.IResourceLocation;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.net.URI;
@@ -300,4 +301,7 @@ public interface INodeItem extends IItem, IPathSegment, INodeItemVisitable {
   default Stream<? extends IModelNodeItem<?, ?>> modelItems() {
     return getModelItems().stream().flatMap(Collection::stream);
   }
+
+  @Nullable
+  IResourceLocation getLocation();
 }

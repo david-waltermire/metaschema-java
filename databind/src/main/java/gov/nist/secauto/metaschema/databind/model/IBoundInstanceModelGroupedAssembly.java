@@ -27,6 +27,7 @@
 package gov.nist.secauto.metaschema.databind.model;
 
 import gov.nist.secauto.metaschema.core.model.IAssemblyInstanceGrouped;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;

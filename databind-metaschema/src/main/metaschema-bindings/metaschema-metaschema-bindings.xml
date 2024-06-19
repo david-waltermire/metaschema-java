@@ -25,7 +25,7 @@
 		</define-assembly-binding>
 		<define-assembly-binding name="field-constraints">
 			<java>
-				<implement-interface>gov.nist.secauto.metaschema.databind.model.metaschema.IValueConstraintsBase</implement-interface>
+				<implement-interface>gov.nist.secauto.metaschema.databind.model.metaschema.IValueTargetedConstraintsBase</implement-interface>
 			</java>
 		</define-assembly-binding>
 		<define-assembly-binding name="flag-allowed-values">

@@ -27,6 +27,7 @@
 package gov.nist.secauto.metaschema.core.metapath.item.node;
 
 import gov.nist.secauto.metaschema.core.model.IModule;
+import gov.nist.secauto.metaschema.core.model.IResourceLocation;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.net.URI;
@@ -65,4 +66,9 @@ class ModuleNodeItemImpl
     return model.get();
   }
 
+  @Override
+  public IResourceLocation getLocation() {
+    // no location
+    return null;
+  }
 }

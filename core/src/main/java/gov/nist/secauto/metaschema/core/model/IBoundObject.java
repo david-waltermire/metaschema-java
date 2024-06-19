@@ -24,14 +24,11 @@
  * OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
  */
 
-package gov.nist.secauto.metaschema.databind.model;
+package gov.nist.secauto.metaschema.core.model;
 
-public interface IMetaschemaData {
-  int getLine();
+import edu.umd.cs.findbugs.annotations.Nullable;
 
-  int getColumn();
-
-  long getCharOffset();
-
-  long getByteOffset();
+public interface IBoundObject {
+  @Nullable
+  IMetaschemaData getMetaschemaData();
 }

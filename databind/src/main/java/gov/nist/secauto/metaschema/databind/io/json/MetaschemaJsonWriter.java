@@ -28,6 +28,7 @@ package gov.nist.secauto.metaschema.databind.io.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
@@ -43,7 +44,6 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelFieldScalar
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedField;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedNamed;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IBoundProperty;
 import gov.nist.secauto.metaschema.databind.model.info.AbstractModelInstanceWriteHandler;
 import gov.nist.secauto.metaschema.databind.model.info.IFeatureComplexItemValueHandler;

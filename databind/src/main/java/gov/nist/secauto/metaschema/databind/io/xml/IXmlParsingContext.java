@@ -26,10 +26,10 @@
 
 package gov.nist.secauto.metaschema.databind.io.xml;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.io.IParsingContext;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModel;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import org.codehaus.stax2.XMLEventReader2;
 

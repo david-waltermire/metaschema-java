@@ -30,11 +30,11 @@ import gov.nist.secauto.metaschema.core.datatype.adapter.StringAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.TokenAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.UriAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.UriReferenceAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
@@ -68,7 +68,7 @@ import java.util.List;
     name = "metaschema-module-constraints",
     moduleClass = MetaschemaModelModule.class,
     rootName = "METASCHEMA-CONSTRAINTS")
-public class MetaschemaModuleConstraints implements IBoundObject {
+public final class MetaschemaModuleConstraints implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundField(
@@ -277,7 +277,7 @@ public class MetaschemaModuleConstraints implements IBoundObject {
             @BoundGroupedAssembly(useName = "flag", binding = Flag.class)
         },
         groupAs = @GroupAs(name = "constraints", inJson = JsonGroupAsBehavior.LIST))
-    private List<Object> _constraints;
+    private List<? extends IValueConstraintsBase> _constraints;
 
     @BoundField(
         formalName = "Remarks",
@@ -314,11 +314,11 @@ public class MetaschemaModuleConstraints implements IBoundObject {
       _metaschemaShortName = value;
     }
 
-    public List<Object> getConstraints() {
+    public List<? extends IValueConstraintsBase> getConstraints() {
       return _constraints;
     }
 
-    public void setConstraints(List<Object> value) {
+    public void setConstraints(List<? extends IValueConstraintsBase> value) {
       _constraints = value;
     }
 

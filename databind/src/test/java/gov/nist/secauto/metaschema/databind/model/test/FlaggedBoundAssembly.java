@@ -27,8 +27,8 @@
 package gov.nist.secauto.metaschema.databind.model.test;
 
 import gov.nist.secauto.metaschema.core.datatype.adapter.BooleanAdapter;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.JsonKey;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;

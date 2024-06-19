@@ -28,10 +28,10 @@ package gov.nist.secauto.metaschema.databind.io.yaml;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.io.json.DefaultJsonSerializer;
 import gov.nist.secauto.metaschema.databind.io.yaml.impl.YamlFactoryFactory;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 

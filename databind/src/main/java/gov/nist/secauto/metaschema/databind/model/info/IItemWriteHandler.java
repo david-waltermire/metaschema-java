@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.databind.model.info;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelFieldComplex;
 import gov.nist.secauto.metaschema.databind.model.IBoundFieldValue;
@@ -36,7 +37,6 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelFieldComple
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelFieldScalar;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedField;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.IOException;
 

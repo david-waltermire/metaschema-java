@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.databind.model;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IFieldInstanceGrouped;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;

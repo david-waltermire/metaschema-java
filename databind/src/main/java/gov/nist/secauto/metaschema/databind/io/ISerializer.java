@@ -28,8 +28,8 @@ package gov.nist.secauto.metaschema.databind.io;
 
 import gov.nist.secauto.metaschema.core.configuration.IConfiguration;
 import gov.nist.secauto.metaschema.core.configuration.IMutableConfiguration;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.File;
 import java.io.IOException;

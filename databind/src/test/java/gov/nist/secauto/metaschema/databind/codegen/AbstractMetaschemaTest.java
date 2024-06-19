@@ -28,6 +28,7 @@ package gov.nist.secauto.metaschema.databind.codegen;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IMetaschemaModule;
 import gov.nist.secauto.metaschema.core.model.MetaschemaException;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -37,7 +38,6 @@ import gov.nist.secauto.metaschema.databind.codegen.config.DefaultBindingConfigu
 import gov.nist.secauto.metaschema.databind.io.BindingException;
 import gov.nist.secauto.metaschema.databind.io.Format;
 import gov.nist.secauto.metaschema.databind.io.IDeserializer;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.metaschema.BindingModuleLoader;
 
 import org.apache.logging.log4j.LogManager;

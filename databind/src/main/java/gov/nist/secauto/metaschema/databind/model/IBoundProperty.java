@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.databind.model;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IJsonNamed;
 import gov.nist.secauto.metaschema.databind.io.BindingException;
 

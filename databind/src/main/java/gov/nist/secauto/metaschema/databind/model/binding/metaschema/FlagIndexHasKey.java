@@ -29,11 +29,11 @@ package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 import gov.nist.secauto.metaschema.core.datatype.adapter.TokenAdapter;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
@@ -58,7 +58,7 @@ import java.util.List;
     formalName = "Index Has Key Constraint",
     name = "flag-index-has-key",
     moduleClass = MetaschemaModelModule.class)
-public class FlagIndexHasKey implements IBoundObject, IConstraintBase {
+public final class FlagIndexHasKey implements IBoundObject, IConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

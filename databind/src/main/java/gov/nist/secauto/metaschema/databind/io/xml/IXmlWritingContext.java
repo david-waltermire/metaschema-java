@@ -26,9 +26,9 @@
 
 package gov.nist.secauto.metaschema.databind.io.xml;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.io.IWritingContext;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import org.codehaus.stax2.XMLStreamWriter2;
 

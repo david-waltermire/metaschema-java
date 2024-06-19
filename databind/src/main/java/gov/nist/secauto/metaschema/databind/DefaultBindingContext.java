@@ -28,6 +28,7 @@ package gov.nist.secauto.metaschema.databind;
 
 import gov.nist.secauto.metaschema.core.datatype.DataTypeService;
 import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.IModuleLoader;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -47,7 +48,6 @@ import gov.nist.secauto.metaschema.databind.io.yaml.DefaultYamlSerializer;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -106,7 +106,7 @@ public abstract class AbstractGroupedNamedModelInstanceTypeInfo<I extends INamed
 
       TypeSpec.Builder subClass = TypeSpec.classBuilder(itemTypeName);
       subClass.superclass(extendedClassName);
-      subClass.addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL);
+      subClass.addModifiers(Modifier.PUBLIC, Modifier.STATIC); // , Modifier.FINAL);
       // subClass.addField(
       // FieldSpec.builder(String.class, "DISCRIMINATOR", Modifier.PUBLIC,
       // Modifier.STATIC, Modifier.FINAL)

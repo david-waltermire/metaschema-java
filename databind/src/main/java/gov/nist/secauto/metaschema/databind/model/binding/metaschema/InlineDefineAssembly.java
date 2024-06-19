@@ -32,11 +32,11 @@ import gov.nist.secauto.metaschema.core.datatype.adapter.StringAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.TokenAdapter;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
@@ -63,7 +63,7 @@ import java.util.List;
     formalName = "Inline Assembly Definition",
     name = "inline-define-assembly",
     moduleClass = MetaschemaModelModule.class)
-public class InlineDefineAssembly implements IBoundObject {
+public final class InlineDefineAssembly implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

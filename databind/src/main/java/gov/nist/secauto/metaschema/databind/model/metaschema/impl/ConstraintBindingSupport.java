@@ -63,6 +63,7 @@ import gov.nist.secauto.metaschema.databind.model.binding.metaschema.TargetedMat
 import gov.nist.secauto.metaschema.databind.model.metaschema.IConstraintBase;
 import gov.nist.secauto.metaschema.databind.model.metaschema.IModelConstraintsBase;
 import gov.nist.secauto.metaschema.databind.model.metaschema.IValueConstraintsBase;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IValueTargetedConstraintsBase;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -97,6 +98,30 @@ public final class ConstraintBindingSupport {
         constraintSet.addConstraint(constraint);
       } else if (ruleObj instanceof FlagMatches) {
         IMatchesConstraint constraint = newMatches((FlagMatches) ruleObj, source);
+        constraintSet.addConstraint(constraint);
+      }
+    }
+  }
+
+  public static void parse(
+      @NonNull IValueConstrained constraintSet,
+      @NonNull IValueTargetedConstraintsBase constraints,
+      @NonNull ISource source) {
+    parseLet(constraintSet, constraints, source);
+
+    // parse rules
+    for (IConstraintBase ruleObj : constraints.getRules()) {
+      if (ruleObj instanceof TargetedAllowedValuesConstraint) {
+        IAllowedValuesConstraint constraint = newAllowedValues((TargetedAllowedValuesConstraint) ruleObj, source);
+        constraintSet.addConstraint(constraint);
+      } else if (ruleObj instanceof TargetedExpectConstraint) {
+        IExpectConstraint constraint = newExpect((TargetedExpectConstraint) ruleObj, source);
+        constraintSet.addConstraint(constraint);
+      } else if (ruleObj instanceof TargetedIndexHasKeyConstraint) {
+        IIndexHasKeyConstraint constraint = newIndexHasKey((TargetedIndexHasKeyConstraint) ruleObj, source);
+        constraintSet.addConstraint(constraint);
+      } else if (ruleObj instanceof TargetedMatchesConstraint) {
+        IMatchesConstraint constraint = newMatches((TargetedMatchesConstraint) ruleObj, source);
         constraintSet.addConstraint(constraint);
       }
     }
@@ -393,6 +418,9 @@ public final class ConstraintBindingSupport {
         break;
       case "INFORMATIONAL":
         retval = IConstraint.Level.INFORMATIONAL;
+        break;
+      case "DEBUG":
+        retval = IConstraint.Level.DEBUG;
         break;
       default:
         throw new UnsupportedOperationException(level);

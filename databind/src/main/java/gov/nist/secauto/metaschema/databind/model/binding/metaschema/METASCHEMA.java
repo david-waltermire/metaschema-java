@@ -34,11 +34,11 @@ import gov.nist.secauto.metaschema.core.datatype.adapter.UriAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.UriReferenceAdapter;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
@@ -77,7 +77,7 @@ import java.util.List;
     name = "METASCHEMA",
     moduleClass = MetaschemaModelModule.class,
     rootName = "METASCHEMA")
-public class METASCHEMA implements IBoundObject {
+public final class METASCHEMA implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   /**

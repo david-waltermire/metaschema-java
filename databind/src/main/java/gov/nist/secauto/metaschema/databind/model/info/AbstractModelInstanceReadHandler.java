@@ -26,10 +26,10 @@
 
 package gov.nist.secauto.metaschema.databind.model.info;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModel;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelNamed;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 

@@ -144,6 +144,7 @@ public final class AnnotationGenerator {
       @NonNull IFlagDefinition definition) {
     if (!definition.getConstraints().isEmpty()) {
       AnnotationSpec.Builder annotation = AnnotationSpec.builder(ValueConstraints.class);
+      assert annotation != null;
 
       applyAllowedValuesConstraints(annotation, definition.getAllowedValuesConstraints());
       applyIndexHasKeyConstraints(annotation, definition.getIndexHasKeyConstraints());
@@ -165,6 +166,7 @@ public final class AnnotationGenerator {
 
     if (!allowedValues.isEmpty() || !indexHasKey.isEmpty() || !matches.isEmpty() || !expects.isEmpty()) {
       AnnotationSpec.Builder annotation = AnnotationSpec.builder(ValueConstraints.class);
+      assert annotation != null;
 
       applyAllowedValuesConstraints(annotation, allowedValues);
       applyIndexHasKeyConstraints(annotation, indexHasKey);
@@ -194,8 +196,9 @@ public final class AnnotationGenerator {
     }
   }
 
-  private static void applyAllowedValuesConstraints(AnnotationSpec.Builder annotation,
-      List<? extends IAllowedValuesConstraint> constraints) {
+  private static void applyAllowedValuesConstraints(
+      @NonNull AnnotationSpec.Builder annotation,
+      @NonNull List<? extends IAllowedValuesConstraint> constraints) {
     for (IAllowedValuesConstraint constraint : constraints) {
       AnnotationSpec.Builder constraintAnnotation = AnnotationSpec.builder(AllowedValues.class);
       buildConstraint(AllowedValues.class, constraintAnnotation, constraint);
@@ -222,8 +225,9 @@ public final class AnnotationGenerator {
     }
   }
 
-  private static void applyIndexHasKeyConstraints(AnnotationSpec.Builder annotation,
-      List<? extends IIndexHasKeyConstraint> constraints) {
+  private static void applyIndexHasKeyConstraints(
+      @NonNull AnnotationSpec.Builder annotation,
+      @NonNull List<? extends IIndexHasKeyConstraint> constraints) {
     for (IIndexHasKeyConstraint constraint : constraints) {
       AnnotationSpec.Builder constraintAnnotation = AnnotationSpec.builder(IndexHasKey.class);
       buildConstraint(IndexHasKey.class, constraintAnnotation, constraint);
@@ -241,7 +245,8 @@ public final class AnnotationGenerator {
     }
   }
 
-  private static void buildKeyFields(@NonNull Builder constraintAnnotation,
+  private static void buildKeyFields(
+      @NonNull Builder constraintAnnotation,
       @NonNull List<? extends IKeyField> keyFields) {
     for (IKeyField key : keyFields) {
       AnnotationSpec.Builder keyAnnotation = AnnotationSpec.builder(KeyField.class);
@@ -265,8 +270,9 @@ public final class AnnotationGenerator {
     }
   }
 
-  private static void applyMatchesConstraints(AnnotationSpec.Builder annotation,
-      List<? extends IMatchesConstraint> constraints) {
+  private static void applyMatchesConstraints(
+      @NonNull AnnotationSpec.Builder annotation,
+      @NonNull List<? extends IMatchesConstraint> constraints) {
     for (IMatchesConstraint constraint : constraints) {
       AnnotationSpec.Builder constraintAnnotation = AnnotationSpec.builder(Matches.class);
       buildConstraint(Matches.class, constraintAnnotation, constraint);
@@ -289,8 +295,9 @@ public final class AnnotationGenerator {
     }
   }
 
-  private static void applyExpectConstraints(AnnotationSpec.Builder annotation,
-      List<? extends IExpectConstraint> constraints) {
+  private static void applyExpectConstraints(
+      @NonNull AnnotationSpec.Builder annotation,
+      @NonNull List<? extends IExpectConstraint> constraints) {
     for (IExpectConstraint constraint : constraints) {
       AnnotationSpec.Builder constraintAnnotation = AnnotationSpec.builder(Expect.class);
 
@@ -311,8 +318,9 @@ public final class AnnotationGenerator {
     }
   }
 
-  private static void applyIndexConstraints(AnnotationSpec.Builder annotation,
-      List<? extends IIndexConstraint> constraints) {
+  private static void applyIndexConstraints(
+      @NonNull AnnotationSpec.Builder annotation,
+      @NonNull List<? extends IIndexConstraint> constraints) {
     for (IIndexConstraint constraint : constraints) {
       AnnotationSpec.Builder constraintAnnotation = AnnotationSpec.builder(Index.class);
 
@@ -331,8 +339,9 @@ public final class AnnotationGenerator {
     }
   }
 
-  private static void applyUniqueConstraints(AnnotationSpec.Builder annotation,
-      List<? extends IUniqueConstraint> constraints) {
+  private static void applyUniqueConstraints(
+      @NonNull AnnotationSpec.Builder annotation,
+      @NonNull List<? extends IUniqueConstraint> constraints) {
     for (IUniqueConstraint constraint : constraints) {
       AnnotationSpec.Builder constraintAnnotation = ObjectUtils.notNull(AnnotationSpec.builder(IsUnique.class));
 

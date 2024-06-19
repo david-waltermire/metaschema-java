@@ -27,6 +27,7 @@
 package gov.nist.secauto.metaschema.databind.model;
 
 import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IFieldInstanceAbsolute;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
 import gov.nist.secauto.metaschema.databind.model.impl.DefinitionField;

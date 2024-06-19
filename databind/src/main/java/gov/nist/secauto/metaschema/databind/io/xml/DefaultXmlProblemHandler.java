@@ -26,10 +26,10 @@
 
 package gov.nist.secauto.metaschema.databind.io.xml;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.util.XmlEventUtil;
 import gov.nist.secauto.metaschema.databind.io.AbstractProblemHandler;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

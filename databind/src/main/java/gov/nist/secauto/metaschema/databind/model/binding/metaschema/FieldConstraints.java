@@ -26,17 +26,17 @@
 
 package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
-import gov.nist.secauto.metaschema.databind.model.metaschema.IConstraintBase;
-import gov.nist.secauto.metaschema.databind.model.metaschema.IValueConstraintsBase;
+import gov.nist.secauto.metaschema.databind.model.metaschema.ITargetedConstraintBase;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IValueTargetedConstraintsBase;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -51,7 +51,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "field-constraints",
     moduleClass = MetaschemaModelModule.class)
-public class FieldConstraints implements IBoundObject, IValueConstraintsBase {
+public final class FieldConstraints implements IBoundObject, IValueTargetedConstraintsBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(
@@ -75,7 +75,7 @@ public class FieldConstraints implements IBoundObject, IValueConstraintsBase {
               binding = TargetedMatchesConstraint.class)
       },
       groupAs = @GroupAs(name = "rules", inJson = JsonGroupAsBehavior.LIST))
-  private List<? extends IConstraintBase> _rules;
+  private List<? extends ITargetedConstraintBase> _rules;
 
   public FieldConstraints() {
     this(null);
@@ -128,11 +128,11 @@ public class FieldConstraints implements IBoundObject, IValueConstraintsBase {
   }
 
   @Override
-  public List<? extends IConstraintBase> getRules() {
+  public List<? extends ITargetedConstraintBase> getRules() {
     return _rules;
   }
 
-  public void setRules(List<? extends IConstraintBase> value) {
+  public void setRules(List<? extends ITargetedConstraintBase> value) {
     _rules = value;
   }
 

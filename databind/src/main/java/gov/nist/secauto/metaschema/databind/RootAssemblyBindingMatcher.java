@@ -26,9 +26,9 @@
 
 package gov.nist.secauto.metaschema.databind;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.IBindingContext.IBindingMatcher;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import javax.xml.namespace.QName;
 

@@ -29,8 +29,8 @@ package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 import gov.nist.secauto.metaschema.core.datatype.adapter.StringAdapter;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFieldValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaField;
@@ -48,7 +48,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Allowed Value Enumeration",
     name = "constraint-value-enum",
     moduleClass = MetaschemaModelModule.class)
-public class ConstraintValueEnum
+public final class ConstraintValueEnum
     extends AbstractAllowedValue
     implements IBoundObject {
   private final IMetaschemaData __metaschemaData;

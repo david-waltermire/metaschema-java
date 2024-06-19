@@ -29,11 +29,11 @@ package gov.nist.secauto.metaschema.databind.io.xml;
 import com.ctc.wstx.api.WstxOutputProperties;
 import com.ctc.wstx.stax.WstxOutputFactory;
 
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.io.AbstractSerializer;
 import gov.nist.secauto.metaschema.databind.io.SerializationFeature;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.codehaus.stax2.XMLStreamWriter2;

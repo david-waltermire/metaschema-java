@@ -28,6 +28,7 @@ package gov.nist.secauto.metaschema.databind.model.impl;
 
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.constraint.AssemblyConstraintSet;
 import gov.nist.secauto.metaschema.core.model.constraint.IModelConstrained;
 import gov.nist.secauto.metaschema.core.model.constraint.ISource;
@@ -41,7 +42,6 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelChoiceGroup
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelField;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelNamed;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
 import gov.nist.secauto.metaschema.databind.model.IBoundProperty;
 import gov.nist.secauto.metaschema.databind.model.annotations.AssemblyConstraints;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;

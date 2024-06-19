@@ -30,11 +30,11 @@ import gov.nist.secauto.metaschema.core.datatype.adapter.StringAdapter;
 import gov.nist.secauto.metaschema.core.datatype.adapter.TokenAdapter;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLineAdapter;
+import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-import gov.nist.secauto.metaschema.databind.model.IBoundObject;
-import gov.nist.secauto.metaschema.databind.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValue;
 import gov.nist.secauto.metaschema.databind.model.annotations.AllowedValues;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
@@ -59,8 +59,7 @@ import java.util.List;
     formalName = "Targeted Index Constraint",
     name = "targeted-index-constraint",
     moduleClass = MetaschemaModelModule.class)
-public class TargetedIndexConstraint
-    implements IBoundObject, ITargetedConstraintBase {
+public final class TargetedIndexConstraint implements IBoundObject, ITargetedConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

@@ -33,6 +33,7 @@ import java.util.Locale;
 import javax.xml.namespace.QName;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 public interface IDefinition extends INamedModelElement, IAttributable, IFeatureValueConstrained {
 
@@ -107,4 +108,8 @@ public interface IDefinition extends INamedModelElement, IAttributable, IFeature
         hashCode());
   }
 
+  @Nullable
+  default IResourceLocation getLocation(@NonNull Object itemValue) {
+    return itemValue instanceof IBoundObject ? ((IBoundObject) itemValue).getMetaschemaData() : null;
+  }
 }
