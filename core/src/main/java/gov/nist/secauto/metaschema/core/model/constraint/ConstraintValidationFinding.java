@@ -149,10 +149,9 @@ public class ConstraintValidationFinding implements IValidationFinding { // NOPM
     return severity;
   }
 
-  @SuppressWarnings("null")
   @Override
-  public @NonNull URI getDocumentUri() {
-    return getNode().getBaseUri();
+  public URI getDocumentUri() {
+    return getTarget().getBaseUri();
   }
 
   @NonNull

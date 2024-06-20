@@ -63,9 +63,9 @@ public interface IValidationFinding {
   /**
    * Get the document's URI.
    *
-   * @return the document's URI
+   * @return the document's URI or {@code null} if it is not known
    */
-  @NonNull
+  @Nullable
   URI getDocumentUri();
 
   /**

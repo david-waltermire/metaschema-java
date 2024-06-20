@@ -46,6 +46,7 @@ import gov.nist.secauto.metaschema.core.model.constraint.ValidationFeature;
 import gov.nist.secauto.metaschema.core.model.validation.IValidationResult;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.CustomCollectors;
+import gov.nist.secauto.metaschema.core.util.IVersionInfo;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.core.util.UriUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
@@ -268,9 +269,16 @@ public abstract class AbstractValidateContentCommand
 
       if (cmdLine.hasOption(OUTPUT_FILE_OPTION) && LOGGER.isInfoEnabled()) {
         Path sarifFile = Paths.get(cmdLine.getOptionValue(OUTPUT_FILE_OPTION));
+
+        IVersionInfo version
+            = getCallingContext().getCLIProcessor().getVersionInfos().get(CLIProcessor.COMMAND_VERSION);
+
         try {
-          SarifValidationHandler.instance().handleValidationResults(source, sarifFile, validationResult,
-              bindingContext);
+          SarifValidationHandler sarifHandler = new SarifValidationHandler(source, version);
+          sarifHandler.addFindings(validationResult.getFindings());
+          sarifHandler.write(sarifFile);
+
+          LOGGER.error("The file '{}' is invalid.", source);
         } catch (IOException ex) {
           return ExitCode.PROCESSING_ERROR.exit().withThrowable(ex);
         }

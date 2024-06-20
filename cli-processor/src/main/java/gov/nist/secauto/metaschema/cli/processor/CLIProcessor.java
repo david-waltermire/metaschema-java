@@ -110,12 +110,14 @@ public class CLIProcessor {
       SHOW_STACK_TRACE_OPTION,
       VERSION_OPTION);
 
+  public static final String COMMAND_VERSION = "http://csrc.nist.gov/ns/metaschema-java/cli/command-version";
+
   @NonNull
   private final List<ICommand> commands = new LinkedList<>();
   @NonNull
   private final String exec;
   @NonNull
-  private final List<IVersionInfo> versionInfos;
+  private final Map<String, IVersionInfo> versionInfos;
 
   public static void main(String... args) {
     System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
@@ -130,10 +132,10 @@ public class CLIProcessor {
 
   @SuppressWarnings("null")
   public CLIProcessor(@NonNull String exec) {
-    this(exec, List.of());
+    this(exec, Map.of());
   }
 
-  public CLIProcessor(@NonNull String exec, @NonNull List<IVersionInfo> versionInfos) {
+  public CLIProcessor(@NonNull String exec, @NonNull Map<String, IVersionInfo> versionInfos) {
     this.exec = exec;
     this.versionInfos = versionInfos;
     AnsiConsole.systemInstall();
@@ -155,7 +157,7 @@ public class CLIProcessor {
    * @return the versionInfo
    */
   @NonNull
-  public List<IVersionInfo> getVersionInfos() {
+  public Map<String, IVersionInfo> getVersionInfos() {
     return versionInfos;
   }
 
@@ -207,7 +209,6 @@ public class CLIProcessor {
     AnsiConsole.systemUninstall();
   }
 
-  @SuppressWarnings("resource")
   public static void handleQuiet() {
     LoggerContext ctx = (LoggerContext) LogManager.getContext(false); // NOPMD not closable here
     Configuration config = ctx.getConfiguration();
@@ -221,7 +222,7 @@ public class CLIProcessor {
 
   protected void showVersion() {
     @SuppressWarnings("resource") PrintStream out = AnsiConsole.out(); // NOPMD - not owner
-    getVersionInfos().stream().forEach(info -> {
+    getVersionInfos().values().stream().forEach(info -> {
       out.println(ansi()
           .bold().a(info.getName()).boldOff()
           .a(" ")
@@ -307,6 +308,11 @@ public class CLIProcessor {
       this.options = options;
       this.calledCommands = calledCommands;
       this.extraArgs = extraArgs;
+    }
+
+    @NonNull
+    public CLIProcessor getCLIProcessor() {
+      return CLIProcessor.this;
     }
 
     @Nullable

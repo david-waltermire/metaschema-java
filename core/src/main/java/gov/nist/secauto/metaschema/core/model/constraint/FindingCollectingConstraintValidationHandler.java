@@ -235,6 +235,7 @@ public class FindingCollectingConstraintValidationHandler
   public void handleIndexDuplicateViolation(IIndexConstraint constraint, INodeItem node) {
     addFinding(ConstraintValidationFinding.builder(constraint, node)
         .kind(Kind.FAIL)
+        .target(node)
         .message(newIndexDuplicateViolationMessage(constraint, node))
         .severity(Level.CRITICAL)
         .build());
@@ -245,6 +246,7 @@ public class FindingCollectingConstraintValidationHandler
     addFinding(ConstraintValidationFinding.builder(constraint, node)
         .severity(constraint.getLevel())
         .kind(toKind(constraint.getLevel()))
+        .target(target)
         .message(newIndexMissMessage(constraint, node, target, key))
         .build());
   }
@@ -255,6 +257,7 @@ public class FindingCollectingConstraintValidationHandler
     addFinding(ConstraintValidationFinding.builder(constraint, node)
         .severity(constraint.getLevel())
         .kind(toKind(constraint.getLevel()))
+        .target(target)
         .message(newGenericValidationViolationMessage(constraint, node, target, message))
         .build());
   }
@@ -262,6 +265,7 @@ public class FindingCollectingConstraintValidationHandler
   @Override
   public void handlePass(IConstraint constraint, INodeItem node, INodeItem target) {
     addFinding(ConstraintValidationFinding.builder(constraint, node)
+        .target(target)
         .severity(Level.NONE)
         .kind(Kind.PASS)
         .build());

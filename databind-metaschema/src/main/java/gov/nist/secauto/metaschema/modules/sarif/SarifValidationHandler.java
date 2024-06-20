@@ -26,35 +26,50 @@
 
 package gov.nist.secauto.metaschema.modules.sarif;
 
-import gov.nist.csrc.ns.oscal.metaschema.validation.results.x10.Location;
-import gov.nist.csrc.ns.oscal.metaschema.validation.results.x10.Message;
-import gov.nist.csrc.ns.oscal.metaschema.validation.results.x10.PhysicalLocation;
-import gov.nist.csrc.ns.oscal.metaschema.validation.results.x10.Region;
-import gov.nist.csrc.ns.oscal.metaschema.validation.results.x10.Result;
-import gov.nist.csrc.ns.oscal.metaschema.validation.results.x10.Run;
-import gov.nist.csrc.ns.oscal.metaschema.validation.results.x10.Sarif;
 import gov.nist.secauto.metaschema.core.model.IResourceLocation;
 import gov.nist.secauto.metaschema.core.model.constraint.ConstraintValidationFinding;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint.Level;
 import gov.nist.secauto.metaschema.core.model.validation.IValidationFinding;
-import gov.nist.secauto.metaschema.core.model.validation.IValidationResult;
 import gov.nist.secauto.metaschema.core.model.validation.JsonSchemaContentValidator.JsonValidationFinding;
 import gov.nist.secauto.metaschema.core.model.validation.XmlSchemaContentValidator.XmlValidationFinding;
+import gov.nist.secauto.metaschema.core.util.CollectionUtil;
+import gov.nist.secauto.metaschema.core.util.IVersionInfo;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.core.util.UriUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
 import gov.nist.secauto.metaschema.databind.io.Format;
 import gov.nist.secauto.metaschema.databind.io.SerializationFeature;
 
+import org.schemastore.json.sarif.x210.Artifact;
+import org.schemastore.json.sarif.x210.ArtifactLocation;
+import org.schemastore.json.sarif.x210.Location;
+import org.schemastore.json.sarif.x210.LogicalLocation;
+import org.schemastore.json.sarif.x210.Message;
+import org.schemastore.json.sarif.x210.PhysicalLocation;
+import org.schemastore.json.sarif.x210.Region;
+import org.schemastore.json.sarif.x210.ReportingDescriptor;
+import org.schemastore.json.sarif.x210.Result;
+import org.schemastore.json.sarif.x210.Run;
+import org.schemastore.json.sarif.x210.Sarif;
+import org.schemastore.json.sarif.x210.Tool;
+import org.schemastore.json.sarif.x210.ToolComponent;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 public final class SarifValidationHandler {
   private enum Kind {
@@ -97,33 +112,134 @@ public final class SarifValidationHandler {
     }
   }
 
-  private static final SarifValidationHandler INSTANCE = new SarifValidationHandler();
+  @NonNull
+  private final URI source;
+  @Nullable
+  private final IVersionInfo toolVersion;
+  private final AtomicInteger artifactIndex = new AtomicInteger(-1);
+  @NonNull
+  private final Map<URI, ArtifactRecord> artifacts = new LinkedHashMap<>();
+  @NonNull
+  private final Map<IConstraint, RuleRecord> rules = new LinkedHashMap<>();
+  @NonNull
+  private final List<IResult> results = new LinkedList<>();
 
-  @SuppressFBWarnings(value = "SING_SINGLETON_GETTER_NOT_SYNCHRONIZED",
-      justification = "both values are class initialized")
-  public static SarifValidationHandler instance() {
-    return INSTANCE;
-  }
-
-  private SarifValidationHandler() {
-    // disable construction
-  }
-
-  public boolean handleValidationResults(
+  public SarifValidationHandler(
       @NonNull URI source,
-      @NonNull Path outputFile,
-      @NonNull IValidationResult validationResult,
-      @NonNull IBindingContext bindingContext) throws IOException {
+      @Nullable IVersionInfo toolVersion) {
+    if (!source.isAbsolute()) {
+      throw new IllegalArgumentException(String.format("The source URI '%s' is not absolute.", source.toASCIIString()));
+    }
+
+    this.source = source;
+    this.toolVersion = toolVersion;
+  }
+
+  public URI getSource() {
+    return source;
+  }
+
+  public IVersionInfo getToolVersion() {
+    return toolVersion;
+  }
+
+  public void addFindings(@NonNull List<? extends IValidationFinding> findings) {
+    for (IValidationFinding finding : findings) {
+      assert finding != null;
+      addFinding(finding);
+    }
+  }
+
+  public void addFinding(@NonNull IValidationFinding finding) {
+    if (finding instanceof JsonValidationFinding) {
+      addJsonValidationFinding((JsonValidationFinding) finding);
+    } else if (finding instanceof XmlValidationFinding) {
+      addXmlValidationFinding((XmlValidationFinding) finding);
+    } else if (finding instanceof ConstraintValidationFinding) {
+      addConstraintValidationFinding((ConstraintValidationFinding) finding);
+    } else {
+      throw new IllegalStateException();
+    }
+  }
+
+  public URI relativize(@NonNull URI output, @NonNull URI artifact) throws IOException {
+    try {
+      return UriUtils.relativize(output, artifact, true);
+    } catch (URISyntaxException ex) {
+      throw new IOException(ex);
+    }
+  }
+
+  private RuleRecord getRuleRecord(@NonNull IConstraint constraint) {
+    RuleRecord retval = rules.get(constraint);
+    if (retval == null) {
+      retval = new RuleRecord(constraint);
+      rules.put(constraint, retval);
+    }
+    return retval;
+  }
+
+  private ArtifactRecord getArtifactRecord(@NonNull URI artifactUri) {
+    ArtifactRecord retval = artifacts.get(artifactUri);
+    if (retval == null) {
+      retval = new ArtifactRecord(artifactUri);
+      artifacts.put(artifactUri, retval);
+    }
+    return retval;
+  }
+
+  private void addJsonValidationFinding(@NonNull JsonValidationFinding finding) {
+    results.add(new SchemaResult(finding));
+  }
+
+  private void addXmlValidationFinding(@NonNull XmlValidationFinding finding) {
+    results.add(new SchemaResult(finding));
+  }
+
+  private void addConstraintValidationFinding(@NonNull ConstraintValidationFinding finding) {
+    results.add(new ConstraintResult(finding));
+  }
+
+  public void write(@NonNull Path outputFile) throws IOException {
+
+    URI output = outputFile.toUri();
 
     Sarif sarif = new Sarif();
     sarif.setVersion("2.1.0");
 
     Run run = new Run();
+
     sarif.addRun(run);
 
-    handleValidationFindings(validationResult.getFindings(), run);
+    Artifact artifact = new Artifact();
 
-    bindingContext.newSerializer(Format.JSON, Sarif.class)
+    artifact.setLocation(getArtifactRecord(source).generateArtifactLocation(output));
+
+    run.addArtifact(artifact);
+
+    for (IResult result : results) {
+      result.generateResults(output).forEach(run::addResult);
+    }
+
+    if (!rules.isEmpty() || toolVersion != null) {
+      Tool tool = new Tool();
+      ToolComponent driver = new ToolComponent();
+
+      IVersionInfo toolVersion = getToolVersion();
+      if (toolVersion != null) {
+        driver.setName(toolVersion.getName());
+        driver.setVersion(toolVersion.getVersion());
+      }
+
+      for (RuleRecord rule : rules.values()) {
+        driver.addRule(rule(rule));
+      }
+
+      tool.setDriver(driver);
+      run.setTool(tool);
+    }
+
+    IBindingContext.instance().newSerializer(Format.JSON, Sarif.class)
         .disableFeature(SerializationFeature.SERIALIZE_ROOT)
         .serialize(
             sarif,
@@ -131,236 +247,243 @@ public final class SarifValidationHandler {
             StandardOpenOption.CREATE,
             StandardOpenOption.WRITE,
             StandardOpenOption.TRUNCATE_EXISTING);
-
-    return validationResult.isPassing();
   }
 
-  public void handleValidationFindings(
-      @NonNull List<? extends IValidationFinding> findings,
-      @NonNull Run run) {
-
-    for (IValidationFinding finding : findings) {
-      if (finding instanceof JsonValidationFinding) {
-        run.addResult(handleJsonValidationFinding((JsonValidationFinding) finding));
-      } else if (finding instanceof XmlValidationFinding) {
-        run.addResult(handleXmlValidationFinding((XmlValidationFinding) finding));
-      } else if (finding instanceof ConstraintValidationFinding) {
-        handleConstraintValidationFinding((ConstraintValidationFinding) finding).stream()
-            .forEachOrdered(run::addResult);
-      } else {
-        throw new IllegalStateException();
-      }
-    }
-  }
-
-  private Result handleJsonValidationFinding(@NonNull JsonValidationFinding finding) {
-    Result result = new Result();
-
-    result.setKind(kind(finding).getLabel());
-    result.setLevel(level(finding.getSeverity()).getLabel());
-    message(finding, result);
-    location(finding, result);
-    // retval.setMessage(message(finding.getMessage()));
-    //
-    //
-    // getLogger(finding).log(
-    // ansi.a('[')
-    // .a(finding.getCause().getPointerToViolation())
-    // .reset()
-    // .a(']')
-    // .format(" %s [%s]",
-    // finding.getMessage(),
-    // finding.getDocumentUri().toString()));
-
-    return result;
-  }
-
-  @NonNull
-  private Kind kind(@NonNull IValidationFinding finding) {
-    IValidationFinding.Kind kind = finding.getKind();
-
-    Kind retval;
-    switch (kind) {
-    case FAIL:
-      retval = Kind.FAIL;
-      break;
-    case INFORMATIONAL:
-      retval = Kind.INFORMATIONAL;
-      break;
-    case NOT_APPLICABLE:
-      retval = Kind.NOT_APPLICABLE;
-      break;
-    case PASS:
-      retval = Kind.PASS;
-      break;
-    default:
-      throw new IllegalArgumentException(String.format("Invalid finding kind '%s'.", kind));
+  private ReportingDescriptor rule(RuleRecord rule) {
+    ReportingDescriptor retval = new ReportingDescriptor();
+    retval.setId(rule.getId());
+    String name = rule.getConstraint().getId();
+    if (name != null) {
+      retval.setName(name);
     }
     return retval;
   }
 
-  @NonNull
-  private SeverityLevel level(@NonNull Level severity) {
-    SeverityLevel retval;
-    switch (severity) {
-    case CRITICAL:
-    case ERROR:
-      retval = SeverityLevel.ERROR;
-      break;
-    case INFORMATIONAL:
-    case DEBUG:
-      retval = SeverityLevel.NOTE;
-      break;
-    case WARNING:
-      retval = SeverityLevel.WARNING;
-      break;
-    case NONE:
-      retval = SeverityLevel.NONE;
-      break;
-    default:
-      throw new IllegalArgumentException(String.format("Invalid severity '%s'.", severity));
+  private interface IResult {
+    @NonNull
+    IValidationFinding getFinding();
+
+    @NonNull
+    List<Result> generateResults(@NonNull URI output) throws IOException;
+  }
+
+  private abstract class AbstractResult<T extends IValidationFinding> implements IResult {
+    @NonNull
+    private final T finding;
+
+    protected AbstractResult(@NonNull T finding) {
+      this.finding = finding;
     }
-    return retval;
-  }
 
-  private void message(@NonNull IValidationFinding finding, @NonNull Result result) {
-    String message = finding.getMessage();
-    if (message != null) {
-      Message msg = new Message();
-      msg.setText(message);
-      result.setMessage(msg);
+    @Override
+    public T getFinding() {
+      return finding;
+    }
+
+    @NonNull
+    protected Kind kind(@NonNull IValidationFinding finding) {
+      IValidationFinding.Kind kind = finding.getKind();
+
+      Kind retval;
+      switch (kind) {
+      case FAIL:
+        retval = Kind.FAIL;
+        break;
+      case INFORMATIONAL:
+        retval = Kind.INFORMATIONAL;
+        break;
+      case NOT_APPLICABLE:
+        retval = Kind.NOT_APPLICABLE;
+        break;
+      case PASS:
+        retval = Kind.PASS;
+        break;
+      default:
+        throw new IllegalArgumentException(String.format("Invalid finding kind '%s'.", kind));
+      }
+      return retval;
+    }
+
+    @NonNull
+    protected SeverityLevel level(@NonNull Level severity) {
+      SeverityLevel retval;
+      switch (severity) {
+      case CRITICAL:
+      case ERROR:
+        retval = SeverityLevel.ERROR;
+        break;
+      case INFORMATIONAL:
+      case DEBUG:
+        retval = SeverityLevel.NOTE;
+        break;
+      case WARNING:
+        retval = SeverityLevel.WARNING;
+        break;
+      case NONE:
+        retval = SeverityLevel.NONE;
+        break;
+      default:
+        throw new IllegalArgumentException(String.format("Invalid severity '%s'.", severity));
+      }
+      return retval;
+    }
+
+    protected void message(@NonNull IValidationFinding finding, @NonNull Result result) {
+      String message = finding.getMessage();
+      if (message == null) {
+        message = "";
+      }
+      if (message != null) {
+        Message msg = new Message();
+        msg.setText(message);
+        result.setMessage(msg);
+      }
+    }
+
+    protected void location(@NonNull IValidationFinding finding, @NonNull Result result, @NonNull URI base)
+        throws IOException {
+      IResourceLocation location = finding.getLocation();
+      if (location != null) {
+        // region
+        Region region = new Region();
+
+        if (location.getLine() > -1) {
+          region.setStartLine(BigInteger.valueOf(location.getLine()));
+          region.setEndLine(BigInteger.valueOf(location.getLine()));
+        }
+        if (location.getColumn() > -1) {
+          region.setStartColumn(BigInteger.valueOf(location.getColumn()));
+          region.setEndColumn(BigInteger.valueOf(location.getColumn() + 1));
+        }
+        if (location.getByteOffset() > -1) {
+          region.setByteOffset(BigInteger.valueOf(location.getByteOffset()));
+          region.setByteLength(BigInteger.ZERO);
+        }
+        if (location.getCharOffset() > -1) {
+          region.setCharOffset(BigInteger.valueOf(location.getCharOffset()));
+          region.setCharLength(BigInteger.ZERO);
+        }
+
+        PhysicalLocation physical = new PhysicalLocation();
+
+        URI documentUri = finding.getDocumentUri();
+        if (documentUri != null) {
+          physical.setArtifactLocation(getArtifactRecord(documentUri).generateArtifactLocation(base));
+        }
+        physical.setRegion(region);
+
+        LogicalLocation logical = new LogicalLocation();
+
+        logical.setDecoratedName(finding.getPath());
+
+        Location loc = new Location();
+        loc.setPhysicalLocation(physical);
+        loc.setLogicalLocation(logical);
+        result.addLocation(loc);
+      }
     }
   }
 
-  private void location(@NonNull IValidationFinding finding, @NonNull Result result) {
-    IResourceLocation location = finding.getLocation();
-    if (location != null) {
-      Region region = new Region();
+  private class SchemaResult
+      extends AbstractResult<IValidationFinding> {
 
-      if (location.getLine() > -1) {
-        region.setStartLine(BigInteger.valueOf(location.getLine()));
-      }
-      if (location.getColumn() > -1) {
-        region.setStartColumn(BigInteger.valueOf(location.getColumn()));
-      }
-      if (location.getByteOffset() > -1) {
-        region.setByteOffset(BigInteger.valueOf(location.getByteOffset()));
-      }
-      if (location.getCharOffset() > -1) {
-        region.setCharOffset(BigInteger.valueOf(location.getCharOffset()));
-      }
-
-      PhysicalLocation physical = new PhysicalLocation();
-      physical.setRegion(region);
-
-      Location loc = new Location();
-      loc.setPhysicalLocation(physical);
-      result.setLocation(loc);
+    protected SchemaResult(@NonNull IValidationFinding finding) {
+      super(finding);
     }
-  }
 
-  private Result handleXmlValidationFinding(@NonNull XmlValidationFinding finding) {
-    Result result = new Result();
-
-    result.setKind(kind(finding).getLabel());
-    result.setLevel(level(finding.getSeverity()).getLabel());
-    message(finding, result);
-    location(finding, result);
-
-    // SAXParseException ex = finding.getCause();
-    //
-    // getLogger(finding).log(
-    // ansi.format("%s [%s{%d,%d}]",
-    // finding.getMessage(),
-    // finding.getDocumentUri().toString(),
-    // ex.getLineNumber(),
-    // ex.getColumnNumber()));
-
-    return result;
-  }
-
-  private List<Result> handleConstraintValidationFinding(@NonNull ConstraintValidationFinding finding) {
-    List<Result> retval = new LinkedList<>();
-
-    Kind kind = kind(finding);
-    SeverityLevel level = level(finding.getSeverity());
-
-    for (IConstraint constraint : finding.getConstraints()) {
+    @Override
+    public List<Result> generateResults(@NonNull URI output) throws IOException {
+      IValidationFinding finding = getFinding();
 
       Result result = new Result();
 
-      String id = constraint.getId();
-      if (id != null) {
-        result.setRuleId(id);
-      }
-      result.setKind(kind.getLabel());
-      result.setLevel(level.getLabel());
+      result.setKind(kind(finding).getLabel());
+      result.setLevel(level(finding.getSeverity()).getLabel());
       message(finding, result);
-      location(finding, result);
+      location(finding, result, output);
 
-      // getLogger(finding).log(
-      // ansi.format("[%s] %s", finding.getNode().getMetapath(),
-      // finding.getMessage()));
-
-      retval.add(result);
+      return CollectionUtil.singletonList(result);
     }
-    return retval;
   }
-  //
-  // @NonNull
-  // private LogBuilder getLogger(@NonNull IValidationFinding finding) {
-  // LogBuilder retval;
-  // switch (finding.getSeverity()) {
-  // case CRITICAL:
-  // retval = LOGGER.atFatal();
-  // break;
-  // case ERROR:
-  // retval = LOGGER.atError();
-  // break;
-  // case WARNING:
-  // retval = LOGGER.atWarn();
-  // break;
-  // case INFORMATIONAL:
-  // retval = LOGGER.atInfo();
-  // break;
-  // default:
-  // throw new IllegalArgumentException("Unknown level: " +
-  // finding.getSeverity().name());
-  // }
-  //
-  // assert retval != null;
-  //
-  // if (finding.getCause() != null && isLogExceptions()) {
-  // retval.withThrowable(finding.getCause());
-  // }
-  //
-  // return retval;
-  // }
-  //
-  // @SuppressWarnings("static-method")
-  // @NonNull
-  // private Ansi generatePreamble(@NonNull Level level) {
-  //
-  // switch (level) {
-  // case CRITICAL:
-  // ansi = ansi.fgRed().a("CRITICAL").reset();
-  // break;
-  // case ERROR:
-  // ansi = ansi.fgBrightRed().a("ERROR").reset();
-  // break;
-  // case WARNING:
-  // ansi = ansi.fgBrightYellow().a("WARNING").reset();
-  // break;
-  // case INFORMATIONAL:
-  // ansi = ansi.fgBrightBlue().a("INFO").reset();
-  // break;
-  // default:
-  // ansi = ansi().a(level.name()).reset();
-  // break;
-  // }
-  // ansi = ansi.a("] ").reset();
-  //
-  // assert ansi != null;
-  // return ansi;
-  // }
+
+  private class ConstraintResult
+      extends AbstractResult<ConstraintValidationFinding> {
+
+    protected ConstraintResult(@NonNull ConstraintValidationFinding finding) {
+      super(finding);
+    }
+
+    @Override
+    public List<Result> generateResults(@NonNull URI output) throws IOException {
+      ConstraintValidationFinding finding = getFinding();
+
+      List<Result> retval = new LinkedList<>();
+
+      Kind kind = kind(finding);
+      SeverityLevel level = level(finding.getSeverity());
+
+      for (IConstraint constraint : finding.getConstraints()) {
+        assert constraint != null;
+        RuleRecord rule = getRuleRecord(constraint);
+
+        Result result = new Result();
+
+        result.setRuleId(rule.getId());
+        result.setKind(kind.getLabel());
+        result.setLevel(level.getLabel());
+        message(finding, result);
+        location(finding, result, output);
+
+        retval.add(result);
+      }
+      return retval;
+    }
+  }
+
+  private static class RuleRecord {
+    @NonNull
+    private final String id;
+    @NonNull
+    private final IConstraint constraint;
+
+    public RuleRecord(@NonNull IConstraint constraint) {
+      this.id = ObjectUtils.notNull(UUID.randomUUID().toString());
+      this.constraint = constraint;
+    }
+
+    @NonNull
+    public String getId() {
+      return id;
+    }
+
+    public IConstraint getConstraint() {
+      return constraint;
+    }
+  }
+
+  private class ArtifactRecord {
+    private final URI uri;
+    private final int index;
+
+    public ArtifactRecord(@NonNull URI uri) {
+      this.uri = uri;
+      this.index = artifactIndex.addAndGet(1);
+    }
+
+    @NonNull
+    public URI getUri() {
+      return uri;
+    }
+
+    public int getIndex() {
+      return index;
+    }
+
+    public ArtifactLocation generateArtifactLocation(@NonNull URI baseUri) throws IOException {
+      ArtifactLocation location = new ArtifactLocation();
+      location.setUri(relativize(baseUri, source));
+      location.setIndex(BigInteger.valueOf(getIndex()));
+      return location;
+    }
+  }
 }

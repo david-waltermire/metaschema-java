@@ -41,10 +41,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 
 public interface IXmlParsingContext extends IParsingContext<XMLEventReader2, IXmlProblemHandler> {
 
-  // boolean readItems(
-  // @NonNull IBoundInstanceModel instance,
-  // @NonNull Object parentObject) throws IOException, XMLStreamException;
-
   /**
    * Parses XML into a bound object based on the provided {@code definition}.
    * <p>
@@ -65,6 +61,8 @@ public interface IXmlParsingContext extends IParsingContext<XMLEventReader2, IXm
    * Read the data associated with the {@code instance} and apply it to the
    * provided {@code parentObject}.
    *
+   * @param <T>
+   *          the item Java type
    * @param instance
    *          the instance to parse data for
    * @param parentObject

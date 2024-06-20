@@ -232,16 +232,13 @@ public final class ModelUtil {
 
   /**
    * Resolves an integer value by determining if an actual value is provided or
-   * the {@link Integer.MIN_VALUE}, which indicates that no actual value was
-   * provided.
+   * -2^31, which indicates that no actual value was provided.
    * <p>
-   * The integer value {@link Integer.MIN_VALUE} cannot be used, since this
-   * indicates no value.
+   * The integer value -2^31 cannot be used, since this indicates no value.
    *
    * @param value
    *          the integer value to resolve
-   * @return the integer value or {@code null} if the provided value was
-   *         {@link Integer.MIN_VALUE}
+   * @return the integer value or {@code null} if the provided value was -2^31
    */
   public static Integer resolveDefaultInteger(int value) {
     return value == Integer.MIN_VALUE ? null : value;
