@@ -143,7 +143,7 @@ public class BindingConstraintLoader
     } else if (constraintsDocument instanceof MetaschemaMetaConstraints) {
       MetaschemaMetaConstraints obj = (MetaschemaMetaConstraints) constraintsDocument;
 
-      List<ITargetedConstraints> targetedConstraints = CollectionUtil.listOrEmpty(obj.getMetapathContexts()).stream()
+      List<ITargetedConstraints> targetedConstraints = CollectionUtil.listOrEmpty(obj.getContexts()).stream()
           .flatMap(context -> parseContext(ObjectUtils.notNull(context), null, source)
               .getTargetedConstraints().stream())
           .collect(Collectors.toList());
@@ -271,7 +271,7 @@ public class BindingConstraintLoader
     }
     Context context = new Context(metapaths, constraints);
 
-    List<Context> childContexts = CollectionUtil.listOrEmpty(contextObj.getMetapathContexts()).stream()
+    List<Context> childContexts = CollectionUtil.listOrEmpty(contextObj.getContexts()).stream()
         .map(childObj -> parseContext(ObjectUtils.notNull(childObj), context, source))
         .collect(Collectors.toList());
 

@@ -67,11 +67,11 @@ public final class MetaschemaMetaConstraints implements IBoundObject {
   private DefinitionContext _definitionContext;
 
   @BoundAssembly(
-      useName = "metapath-context",
+      useName = "context",
       minOccurs = 1,
       maxOccurs = -1,
-      groupAs = @GroupAs(name = "metapath-contexts", inJson = JsonGroupAsBehavior.LIST))
-  private List<MetapathContext> _metapathContexts;
+      groupAs = @GroupAs(name = "contexts", inJson = JsonGroupAsBehavior.LIST))
+  private List<MetapathContext> _contexts;
 
   public MetaschemaMetaConstraints() {
     this(null);
@@ -94,12 +94,12 @@ public final class MetaschemaMetaConstraints implements IBoundObject {
     _definitionContext = value;
   }
 
-  public List<MetapathContext> getMetapathContexts() {
-    return _metapathContexts;
+  public List<MetapathContext> getContexts() {
+    return _contexts;
   }
 
-  public void setMetapathContexts(List<MetapathContext> value) {
-    _metapathContexts = value;
+  public void setContexts(List<MetapathContext> value) {
+    _contexts = value;
   }
 
   /**
@@ -109,12 +109,12 @@ public final class MetaschemaMetaConstraints implements IBoundObject {
    *          the item to add
    * @return {@code true}
    */
-  public boolean addMetapathContext(MetapathContext item) {
+  public boolean addContext(MetapathContext item) {
     MetapathContext value = ObjectUtils.requireNonNull(item, "item cannot be null");
-    if (_metapathContexts == null) {
-      _metapathContexts = new LinkedList<>();
+    if (_contexts == null) {
+      _contexts = new LinkedList<>();
     }
-    return _metapathContexts.add(value);
+    return _contexts.add(value);
   }
 
   /**
@@ -125,9 +125,9 @@ public final class MetaschemaMetaConstraints implements IBoundObject {
    *          the item to remove
    * @return {@code true} if the item was removed or {@code false} otherwise
    */
-  public boolean removeMetapathContext(MetapathContext item) {
+  public boolean removeContext(MetapathContext item) {
     MetapathContext value = ObjectUtils.requireNonNull(item, "item cannot be null");
-    return _metapathContexts != null && _metapathContexts.remove(value);
+    return _contexts != null && _contexts.remove(value);
   }
 
   @Override
