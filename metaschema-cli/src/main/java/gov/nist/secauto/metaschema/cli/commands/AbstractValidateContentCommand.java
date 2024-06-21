@@ -98,17 +98,23 @@ public abstract class AbstractValidateContentCommand
   @NonNull
   private static final Option CONSTRAINTS_OPTION = ObjectUtils.notNull(
       Option.builder("c")
-          .hasArg()
+          .hasArgs()
           .argName("URI")
           .desc("additional constraint definitions")
           .build());
   @NonNull
-  private static final Option OUTPUT_FILE_OPTION = ObjectUtils.notNull(
+  private static final Option SARIF_OUTPUT_FILE_OPTION = ObjectUtils.notNull(
       Option.builder("o")
           .hasArg()
           .argName("FILE")
           .desc("write SARIF results to the provided FILE")
           .numberOfArgs(1)
+          .build());
+  @NonNull
+  private static final Option SARIF_INCLUDE_PASS_OPTION = ObjectUtils.notNull(
+      Option.builder()
+          .longOpt("sarif-include-pass")
+          .desc("include pass results in SARIF")
           .build());
 
   @Override
@@ -122,7 +128,8 @@ public abstract class AbstractValidateContentCommand
     return List.of(
         AS_OPTION,
         CONSTRAINTS_OPTION,
-        OUTPUT_FILE_OPTION);
+        SARIF_OUTPUT_FILE_OPTION,
+        SARIF_INCLUDE_PASS_OPTION);
   }
 
   @Override
@@ -250,7 +257,7 @@ public abstract class AbstractValidateContentCommand
       }
 
       IMutableConfiguration<ValidationFeature<?>> configuration = new DefaultConfiguration<>();
-      if (cmdLine.hasOption(OUTPUT_FILE_OPTION)) {
+      if (cmdLine.hasOption(SARIF_OUTPUT_FILE_OPTION) && cmdLine.hasOption(SARIF_INCLUDE_PASS_OPTION)) {
         configuration.enableFeature(ValidationFeature.VALIDATE_GENERATE_PASS_FINDINGS);
       }
 
@@ -267,8 +274,8 @@ public abstract class AbstractValidateContentCommand
         return ExitCode.PROCESSING_ERROR.exit().withThrowable(ex);
       }
 
-      if (cmdLine.hasOption(OUTPUT_FILE_OPTION) && LOGGER.isInfoEnabled()) {
-        Path sarifFile = Paths.get(cmdLine.getOptionValue(OUTPUT_FILE_OPTION));
+      if (cmdLine.hasOption(SARIF_OUTPUT_FILE_OPTION) && LOGGER.isInfoEnabled()) {
+        Path sarifFile = Paths.get(cmdLine.getOptionValue(SARIF_OUTPUT_FILE_OPTION));
 
         IVersionInfo version
             = getCallingContext().getCLIProcessor().getVersionInfos().get(CLIProcessor.COMMAND_VERSION);
