@@ -277,8 +277,6 @@ public abstract class AbstractValidateContentCommand
           SarifValidationHandler sarifHandler = new SarifValidationHandler(source, version);
           sarifHandler.addFindings(validationResult.getFindings());
           sarifHandler.write(sarifFile);
-
-          LOGGER.error("The file '{}' is invalid.", source);
         } catch (IOException ex) {
           return ExitCode.PROCESSING_ERROR.exit().withThrowable(ex);
         }
@@ -288,12 +286,15 @@ public abstract class AbstractValidateContentCommand
         LoggingValidationHandler.instance().handleValidationResults(validationResult);
       }
 
-      if (validationResult.isPassing() && !cmdLine.hasOption(CLIProcessor.QUIET_OPTION) && LOGGER.isInfoEnabled()) {
-        LOGGER.info("The file '{}' is valid.", source);
+      if (validationResult.isPassing()) {
+        if (LOGGER.isInfoEnabled()) {
+          LOGGER.info("The file '{}' is valid.", source);
+        }
+      } else if (LOGGER.isErrorEnabled()) {
+        LOGGER.error("The file '{}' is invalid.", source);
       }
 
       return (validationResult.isPassing() ? ExitCode.OK : ExitCode.FAIL).exit();
     }
-
   }
 }

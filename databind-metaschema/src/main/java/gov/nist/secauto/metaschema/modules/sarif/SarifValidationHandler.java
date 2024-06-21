@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.modules.sarif;
 
+import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.model.IResourceLocation;
 import gov.nist.secauto.metaschema.core.model.constraint.ConstraintValidationFinding;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
@@ -46,6 +47,7 @@ import org.schemastore.json.sarif.x210.ArtifactLocation;
 import org.schemastore.json.sarif.x210.Location;
 import org.schemastore.json.sarif.x210.LogicalLocation;
 import org.schemastore.json.sarif.x210.Message;
+import org.schemastore.json.sarif.x210.MultiformatMessageString;
 import org.schemastore.json.sarif.x210.PhysicalLocation;
 import org.schemastore.json.sarif.x210.Region;
 import org.schemastore.json.sarif.x210.ReportingDescriptor;
@@ -252,9 +254,23 @@ public final class SarifValidationHandler {
   private ReportingDescriptor rule(RuleRecord rule) {
     ReportingDescriptor retval = new ReportingDescriptor();
     retval.setId(rule.getId());
-    String name = rule.getConstraint().getId();
+    IConstraint constraint = rule.getConstraint();
+    String name = constraint.getId();
     if (name != null) {
       retval.setName(name);
+    }
+
+    String formalName = constraint.getFormalName();
+    if (formalName != null) {
+      MultiformatMessageString text = new MultiformatMessageString();
+      text.setText(formalName);
+      retval.setShortDescription(text);
+    }
+    MarkupLine description = constraint.getDescription();
+    if (description != null) {
+      MultiformatMessageString text = new MultiformatMessageString();
+      text.setMarkdown(description.toMarkdown());
+      retval.setFullDescription(text);
     }
     return retval;
   }
