@@ -41,7 +41,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  */
 public final class InternalModelSource implements ISource {
   @NonNull
-  private static final Map<URI, ExternalModelSource> sources = new HashMap<>(); // NOPMD - intentional
+  private static final Map<URI, InternalModelSource> sources = new HashMap<>(); // NOPMD - intentional
   @NonNull
   private final URI modelUri;
 
@@ -57,10 +57,7 @@ public final class InternalModelSource implements ISource {
   public static ISource instance(@NonNull URI location) {
     ISource retval;
     synchronized (sources) {
-      retval = sources.get(location);
-      if (retval == null) {
-        retval = new InternalModelSource(location);
-      }
+      retval = sources.computeIfAbsent(location, (uri) -> new InternalModelSource(uri));
     }
     return retval;
   }
@@ -78,5 +75,10 @@ public final class InternalModelSource implements ISource {
   @Override
   public URI getSource() {
     return modelUri;
+  }
+
+  @Override
+  public String toString() {
+    return "internal:" + modelUri;
   }
 }

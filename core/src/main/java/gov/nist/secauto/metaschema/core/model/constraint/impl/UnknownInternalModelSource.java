@@ -68,4 +68,9 @@ public final class UnknownInternalModelSource implements ISource {
     // always null
     return null;
   }
+
+  @Override
+  public String toString() {
+    return "internal";
+  }
 }

@@ -58,10 +58,7 @@ public final class ExternalSource implements ISource {
   public static ISource instance(@NonNull URI location) {
     ISource retval;
     synchronized (sources) {
-      retval = sources.get(location);
-      if (retval == null) {
-        retval = new ExternalModelSource(location);
-      }
+      retval = sources.computeIfAbsent(location, (uri) -> new ExternalSource(uri));
     }
     return retval;
   }
@@ -79,5 +76,10 @@ public final class ExternalSource implements ISource {
   @Override
   public URI getSource() {
     return modelUri;
+  }
+
+  @Override
+  public String toString() {
+    return "external:" + modelUri;
   }
 }
