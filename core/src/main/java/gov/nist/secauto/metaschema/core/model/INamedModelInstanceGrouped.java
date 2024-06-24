@@ -84,4 +84,15 @@ public interface INamedModelInstanceGrouped extends INamedModelInstance {
         ? null
         : ObjectUtils.requireNonNull(getDefinition().getFlagInstanceByName(getContainingModule().toFlagQName(name)));
   }
+
+  @Override
+  default int getMinOccurs() {
+    return getParentContainer().getMinOccurs();
+  }
+
+  @Override
+  default int getMaxOccurs() {
+    return getParentContainer().getMaxOccurs();
+  }
+
 }

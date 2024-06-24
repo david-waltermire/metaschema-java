@@ -30,7 +30,7 @@ package gov.nist.secauto.metaschema.core.model;
  * This marker interface is used to identify a field or assembly instance that
  * is a member of an assembly's model.
  */
-public interface IModelInstance extends IInstance {
+public interface IModelInstance extends IGroupable {
   @Override
   IContainerModel getParentContainer();
 

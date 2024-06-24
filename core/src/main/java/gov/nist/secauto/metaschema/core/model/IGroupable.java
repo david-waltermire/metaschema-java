@@ -36,7 +36,7 @@ import javax.xml.namespace.QName;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-public interface IGroupable extends IInstanceAbsolute {
+public interface IGroupable extends IInstance {
 
   int DEFAULT_GROUP_AS_MIN_OCCURS = 0;
   int DEFAULT_GROUP_AS_MAX_OCCURS = 1;
