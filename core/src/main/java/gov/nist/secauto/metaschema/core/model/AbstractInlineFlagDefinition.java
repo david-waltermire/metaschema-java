@@ -30,6 +30,16 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+/**
+ * A base class for an assembly instance defined inline.
+ *
+ * @param <PARENT>
+ *          the Java type of the parent model container for this instance
+ * @param <DEFINITION>
+ *          the Java type of the related assembly definition
+ * @param <INSTANCE>
+ *          the expected Java type of an instance of this definition
+ */
 public abstract class AbstractInlineFlagDefinition<
     PARENT extends IModelDefinition,
     DEFINITION extends IFlagDefinition,
@@ -38,6 +48,12 @@ public abstract class AbstractInlineFlagDefinition<
     implements IFlagInstance, IFlagDefinition,
     IFeatureDefinitionInstanceInlined<DEFINITION, INSTANCE> {
 
+  /**
+   * Construct a new inline assembly definition.
+   *
+   * @param parent
+   *          the parent model containing this instance
+   */
   protected AbstractInlineFlagDefinition(@NonNull PARENT parent) {
     super(parent, name -> parent.getContainingModule().toFlagQName(name));
   }

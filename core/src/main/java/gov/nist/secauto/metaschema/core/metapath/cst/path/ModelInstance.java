@@ -34,6 +34,7 @@ import gov.nist.secauto.metaschema.core.metapath.cst.IExpressionVisitor;
 import gov.nist.secauto.metaschema.core.metapath.item.ItemUtils;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IModelNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -71,12 +72,12 @@ public class ModelInstance
   public ISequence<? extends IModelNodeItem<?, ?>> accept(
       DynamicContext dynamicContext,
       ISequence<?> focus) {
-    return ISequence.of(focus.stream()
+    return ISequence.of(ObjectUtils.notNull(focus.stream()
         .map(ItemUtils::checkItemIsNodeItemForStep)
         .flatMap(item -> {
           assert item != null;
           return match(item);
-        }));
+        })));
   }
 
   /**

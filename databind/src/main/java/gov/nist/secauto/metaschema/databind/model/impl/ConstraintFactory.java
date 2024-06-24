@@ -205,7 +205,7 @@ final class ConstraintFactory {
     applyRemarks(builder, constraint.remarks());
 
     applyAllowedValues(builder, constraint);
-    builder.allowedOther(constraint.allowOthers());
+    builder.allowsOther(constraint.allowOthers());
     builder.extensible(constraint.extensible());
 
     return builder.build();
@@ -271,7 +271,7 @@ final class ConstraintFactory {
 
   @NonNull
   static IIndexConstraint newIndexConstraint(@NonNull Index constraint, @NonNull ISource source) {
-    IIndexConstraint.Builder builder = IIndexConstraint.builder();
+    IIndexConstraint.Builder builder = IIndexConstraint.builder(constraint.name());
     applyId(builder, constraint.id());
     applyFormalName(builder, constraint.formalName());
     applyDescription(builder, constraint.description());
@@ -282,7 +282,6 @@ final class ConstraintFactory {
     applyProperties(builder, constraint.properties());
     applyRemarks(builder, constraint.remarks());
 
-    builder.name(constraint.name());
     applyKeyFields(builder, constraint.keyFields());
 
     return builder.build();
@@ -292,7 +291,7 @@ final class ConstraintFactory {
   static IIndexHasKeyConstraint newIndexHasKeyConstraint(
       @NonNull IndexHasKey constraint,
       @NonNull ISource source) {
-    IIndexHasKeyConstraint.Builder builder = IIndexHasKeyConstraint.builder();
+    IIndexHasKeyConstraint.Builder builder = IIndexHasKeyConstraint.builder(constraint.indexName());
     applyId(builder, constraint.id());
     applyFormalName(builder, constraint.formalName());
     applyDescription(builder, constraint.description());
@@ -303,7 +302,6 @@ final class ConstraintFactory {
     applyProperties(builder, constraint.properties());
     applyRemarks(builder, constraint.remarks());
 
-    builder.name(constraint.indexName());
     applyKeyFields(builder, constraint.keyFields());
 
     return builder.build();

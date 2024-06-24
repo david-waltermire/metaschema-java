@@ -86,6 +86,7 @@ import java.util.regex.Pattern;
 import javax.xml.namespace.QName;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
@@ -106,18 +107,8 @@ public abstract class AbstractMarkupWriter<T, E extends Throwable> // NOPMD not 
 
   static {
     ENTITY_MAP = new HashMap<>();
-    // special cases
+    // force writing of non-breaking spaces
     ENTITY_MAP.put("&npsb;", "&npsb;");
-    // ENTITY_MAP.put("&gt;", ">");
-    // normal cases
-    // ENTITY_MAP.put("&amp;", "&");
-    /*
-     * ENTITY_MAP.put("&lsquo;", "‘"); ENTITY_MAP.put("&rsquo;", "’");
-     * ENTITY_MAP.put("&hellip;", "…"); ENTITY_MAP.put("&mdash;", "—");
-     * ENTITY_MAP.put("&ndash;", "–"); ENTITY_MAP.put("&ldquo;", "“");
-     * ENTITY_MAP.put("&rdquo;", "”"); ENTITY_MAP.put("&laquo;", "«");
-     * ENTITY_MAP.put("&raquo;", "»");
-     */
   }
 
   @NonNull
@@ -129,33 +120,47 @@ public abstract class AbstractMarkupWriter<T, E extends Throwable> // NOPMD not 
   @NonNull
   private final ListOptions options;
 
-  public AbstractMarkupWriter(@NonNull String namespace, @NonNull ListOptions options, @NonNull T stream) {
+  /**
+   * Construct a new markup writer.
+   *
+   * @param namespace
+   *          the XHTML namespace to use for elements
+   * @param options
+   *          list production options
+   * @param stream
+   *          the stream to write to
+   */
+  protected AbstractMarkupWriter(@NonNull String namespace, @NonNull ListOptions options, @NonNull T stream) {
     this.namespace = namespace;
     this.options = options;
     this.stream = stream;
   }
 
   @NonNull
-  protected String getNamespace() {
+  private String getNamespace() {
     return namespace;
   }
 
-  protected ListOptions getOptions() {
+  private ListOptions getOptions() {
     return options;
   }
 
+  /**
+   * Get the underlying stream to write to.
+   *
+   * @return the stream
+   */
   @NonNull
   protected T getStream() {
     return stream;
   }
 
-  @Override
   @NonNull
-  public QName asQName(@NonNull String localName) {
+  private QName asQName(@NonNull String localName) {
     return new QName(getNamespace(), localName);
   }
 
-  protected void visitChildren(
+  private void visitChildren(
       @NonNull Node parentNode,
       @NonNull ChildHandler<T, E> childHandler) throws E {
     for (Node node : parentNode.getChildren()) {
@@ -164,7 +169,7 @@ public abstract class AbstractMarkupWriter<T, E extends Throwable> // NOPMD not 
     }
   }
 
-  protected void writePrecedingNewline(@NonNull Block node) throws E {
+  private void writePrecedingNewline(@NonNull Block node) throws E {
     Node prev = node.getPrevious();
     if (prev != null
         || !(node.getParent() instanceof com.vladsch.flexmark.util.ast.Document)) {
@@ -172,7 +177,7 @@ public abstract class AbstractMarkupWriter<T, E extends Throwable> // NOPMD not 
     }
   }
 
-  protected void writeTrailingNewline(@NonNull Block node) throws E {
+  private void writeTrailingNewline(@NonNull Block node) throws E {
     Node next = node.getNext();
     if (next != null && !next.isOrDescendantOfType(Block.class) // handled by preceding block
         || next == null && !(node.getParent() instanceof com.vladsch.flexmark.util.ast.Document)) {
@@ -180,12 +185,35 @@ public abstract class AbstractMarkupWriter<T, E extends Throwable> // NOPMD not 
     }
   }
 
+  /**
+   * Write an HTML element with the provided local name.
+   *
+   * @param localName
+   *          the element name
+   * @param node
+   *          the markup node related to the element
+   * @param attributes
+   *          attributes associated with the element to also write
+   * @param childHandler
+   *          a handler used to process child node content or {@code null}
+   * @throws E
+   *           if an error occurred while writing the markup
+   */
   @Override
-  public final void writeElement(
-      QName qname,
-      Node node,
-      Map<String, String> attributes,
-      ChildHandler<T, E> childHandler) throws E {
+  public void writeElement(
+      @NonNull String localName,
+      @NonNull Node node,
+      @NonNull Map<String, String> attributes,
+      @Nullable ChildHandler<T, E> childHandler) throws E {
+    QName qname = asQName(localName);
+    writeElement(qname, node, attributes, childHandler);
+  }
+
+  private void writeElement(
+      @NonNull QName qname,
+      @NonNull Node node,
+      @NonNull Map<String, String> attributes,
+      @Nullable ChildHandler<T, E> childHandler) throws E {
     if (node.hasChildren()) {
       writeElementStart(qname, attributes);
       if (childHandler != null) {
@@ -196,6 +224,65 @@ public abstract class AbstractMarkupWriter<T, E extends Throwable> // NOPMD not 
       writeEmptyElement(qname, attributes);
     }
   }
+
+  @Override
+  public void writeEmptyElement(
+      @NonNull String localName,
+      @NonNull Map<String, String> attributes) throws E {
+    QName qname = asQName(localName);
+    writeEmptyElement(qname, attributes);
+  }
+
+  /**
+   * Write an empty element with the provided qualified name and attributes.
+   *
+   * @param qname
+   *          the qualified name to use for the element name
+   * @param attributes
+   *          the attributes
+   * @throws E
+   *           if an error occurred while writing
+   */
+  protected abstract void writeEmptyElement(
+      @NonNull QName qname,
+      @NonNull Map<String, String> attributes) throws E;
+
+  /**
+   * Write a start element with the provided qualified name and no attributes.
+   *
+   * @param qname
+   *          the qualified name to use for the element name
+   * @throws E
+   *           if an error occurred while writing
+   */
+  private void writeElementStart(
+      @NonNull QName qname) throws E {
+    writeElementStart(qname, CollectionUtil.emptyMap());
+  }
+
+  /**
+   * Write a start element with the provided qualified name and attributes.
+   *
+   * @param qname
+   *          the qualified name to use for the element name
+   * @param attributes
+   *          the attributes
+   * @throws E
+   *           if an error occurred while writing
+   */
+  protected abstract void writeElementStart(
+      @NonNull QName qname,
+      @NonNull Map<String, String> attributes) throws E;
+
+  /**
+   * Write an end element with the provided qualified name.
+   *
+   * @param qname
+   *          the qualified name to use for the element name
+   * @throws E
+   *           if an error occurred while writing
+   */
+  protected abstract void writeElementEnd(@NonNull QName qname) throws E;
 
   @SuppressWarnings({
       "unchecked",
@@ -273,6 +360,14 @@ public abstract class AbstractMarkupWriter<T, E extends Throwable> // NOPMD not 
     }
   }
 
+  /**
+   * Write an HTML entity.
+   *
+   * @param text
+   *          the entity text
+   * @throws E
+   *           if an error occurred while writing
+   */
   protected void writeHtmlEntityInternal(@NonNull String text) throws E {
     writeText(text);
   }
@@ -659,7 +754,18 @@ public abstract class AbstractMarkupWriter<T, E extends Throwable> // NOPMD not 
   }
 
   @Override
-  public void writeList(QName qname, ListBlock node, ChildHandler<T, E> listItemHandler) throws E {
+  public void writeList(
+      @NonNull String localName,
+      @NonNull ListBlock node,
+      @NonNull ChildHandler<T, E> listItemHandler) throws E {
+    QName qname = asQName(localName);
+    writeList(qname, node, listItemHandler);
+  }
+
+  private void writeList(
+      @NonNull QName qname,
+      @NonNull ListBlock node,
+      @NonNull ChildHandler<T, E> listItemHandler) throws E {
     Map<String, String> attributes = new LinkedHashMap<>(); // NOPMD local use; thread-safe
     if (node instanceof OrderedList) {
       OrderedList ol = (OrderedList) node;
@@ -681,8 +787,9 @@ public abstract class AbstractMarkupWriter<T, E extends Throwable> // NOPMD not 
     writeTrailingNewline(node);
   }
 
-  @Override
-  public void writeListItem(ListItem node, ChildHandler<T, E> listItemHandler) throws E {
+  private void writeListItem(
+      @NonNull ListItem node,
+      @NonNull ChildHandler<T, E> listItemHandler) throws E {
     QName qname = asQName("li");
     writePrecedingNewline(node);
     writeElementStart(qname);
@@ -721,9 +828,17 @@ public abstract class AbstractMarkupWriter<T, E extends Throwable> // NOPMD not 
 
   }
 
+  /**
+   * Write a comment.
+   *
+   * @param text
+   *          the comment text
+   * @throws E
+   *           if an error occurred while writing
+   */
   protected abstract void writeComment(@NonNull CharSequence text) throws E;
 
-  protected static class NodeVisitorException
+  private static class NodeVisitorException
       extends IllegalStateException {
     /**
      * the serial version uid.

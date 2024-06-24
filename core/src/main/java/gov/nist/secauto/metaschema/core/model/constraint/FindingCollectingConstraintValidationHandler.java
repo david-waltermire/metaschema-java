@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.core.model.constraint;
 
+import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.MetapathException;
@@ -38,6 +39,7 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -176,12 +178,13 @@ public class FindingCollectingConstraintValidationHandler
       @NonNull IMatchesConstraint constraint,
       @NonNull INodeItem node,
       @NonNull INodeItem target,
-      @NonNull String value) {
+      @NonNull String value,
+      @NonNull Pattern pattern) {
     addFinding(ConstraintValidationFinding.builder(constraint, node)
         .severity(constraint.getLevel())
         .kind(toKind(constraint.getLevel()))
         .target(target)
-        .message(newMatchPatternViolationMessage(constraint, node, target, value))
+        .message(newMatchPatternViolationMessage(constraint, node, target, value, pattern))
         .build());
   }
 
@@ -191,12 +194,13 @@ public class FindingCollectingConstraintValidationHandler
       @NonNull INodeItem node,
       @NonNull INodeItem target,
       @NonNull String value,
+      @NonNull IDataTypeAdapter<?> adapter,
       @NonNull IllegalArgumentException cause) {
     addFinding(ConstraintValidationFinding.builder(constraint, node)
         .severity(constraint.getLevel())
         .kind(toKind(constraint.getLevel()))
         .target(target)
-        .message(newMatchDatatypeViolationMessage(constraint, node, target, value))
+        .message(newMatchDatatypeViolationMessage(constraint, node, target, value, adapter))
         .cause(cause)
         .build());
   }
@@ -252,13 +256,16 @@ public class FindingCollectingConstraintValidationHandler
   }
 
   @Override
-  public void handleGenericValidationViolation(IConstraint constraint, INodeItem node, INodeItem target,
+  public void handleMissingIndexViolation(
+      IIndexHasKeyConstraint constraint,
+      INodeItem node,
+      INodeItem target,
       String message) {
     addFinding(ConstraintValidationFinding.builder(constraint, node)
         .severity(constraint.getLevel())
         .kind(toKind(constraint.getLevel()))
         .target(target)
-        .message(newGenericValidationViolationMessage(constraint, node, target, message))
+        .message(newMissingIndexViolationMessage(constraint, node, target, message))
         .build());
   }
 

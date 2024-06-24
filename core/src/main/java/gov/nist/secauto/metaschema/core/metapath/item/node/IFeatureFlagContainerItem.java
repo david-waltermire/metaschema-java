@@ -48,6 +48,11 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  */
 public interface IFeatureFlagContainerItem extends INodeItem {
 
+  /**
+   * Get the model implementation that potentially contains flags.
+   *
+   * @return the model
+   */
   @NonNull
   FlagContainer getModel();
 
@@ -74,21 +79,42 @@ public interface IFeatureFlagContainerItem extends INodeItem {
   }
 
   /**
-   * Provides an abstract implementation of a lazy loaded collection of flags.
+   * Provides an abstract implementation of a model that contains a collection of
+   * flags.
    */
   class FlagContainer {
     @NonNull
     private final Map<QName, IFlagNodeItem> flags;
 
+    /**
+     * Initialize the container with the provided collection of flags.
+     *
+     * @param flags
+     *          a flag mapping of qualified name to corresponding
+     *          {@link IFlagNodeItem}
+     */
     protected FlagContainer(@NonNull Map<QName, IFlagNodeItem> flags) {
       this.flags = flags;
     }
 
+    /**
+     * Get a flag in this container using the associated flag qualified name.
+     *
+     * @param name
+     *          the qualified name of the flag
+     * @return the corresponding flag item or {@code null} if no flag had the
+     *         provided name
+     */
     @Nullable
     public IFlagNodeItem getFlagByName(@NonNull QName name) {
       return flags.get(name);
     }
 
+    /**
+     * Get the flags in this container.
+     *
+     * @return the flags
+     */
     @NonNull
     @SuppressWarnings("null")
     public Collection<IFlagNodeItem> getFlags() {

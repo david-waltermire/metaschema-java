@@ -38,8 +38,7 @@
  * ({@link gov.nist.secauto.metaschema.databind.model.binding.metaschema}). The
  * {@link gov.nist.secauto.metaschema.databind.model.metaschema.BindingConstraintLoader}
  * can be used to load any Metaschema module using this method. Once loaded, the
- * module can be registered with the binding context using
- * {@link gov.nist.secauto.metaschema.databind.IBindingContext#registerModule(gov.nist.secauto.metaschema.core.model.IModule, java.nio.file.Path)}.
+ * module can be registered with the binding context.
  * </ol>
  */
 

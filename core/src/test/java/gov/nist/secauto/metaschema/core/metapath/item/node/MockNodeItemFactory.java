@@ -51,6 +51,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 // TODO: Integrate with classes in gov.nist.secauto.metaschema.core.testing
+@SuppressWarnings("checkstyle:MissingJavadocMethodCheck")
 @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
 public class MockNodeItemFactory {
 
@@ -219,7 +220,9 @@ public class MockNodeItemFactory {
   }
 
   @NonNull
-  public IFieldNodeItem field(@NonNull QName name, @NonNull IAnyAtomicItem value,
+  public IFieldNodeItem field(
+      @NonNull QName name,
+      @NonNull IAnyAtomicItem value,
       @NonNull List<IFlagNodeItem> flags) {
     IFieldNodeItem retval = newMock(IFieldNodeItem.class, ObjectUtils.notNull(name.toString()));
 
@@ -244,7 +247,9 @@ public class MockNodeItemFactory {
   }
 
   @NonNull
-  public IAssemblyNodeItem assembly(@NonNull QName name, @NonNull List<IFlagNodeItem> flags,
+  public IAssemblyNodeItem assembly(
+      @NonNull QName name,
+      @NonNull List<IFlagNodeItem> flags,
       @NonNull List<IModelNodeItem<?, ?>> modelItems) {
     IAssemblyNodeItem retval = newMock(IAssemblyNodeItem.class, ObjectUtils.notNull(name.toString()));
 

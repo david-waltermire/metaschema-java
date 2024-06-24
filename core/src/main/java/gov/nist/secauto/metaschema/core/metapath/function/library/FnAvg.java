@@ -172,6 +172,7 @@ public final class FnAvg {
     return retval;
   }
 
+  @SuppressWarnings("PMD.UnnecessaryCast")
   @NonNull
   private static <T, R extends T> R average(
       @NonNull Collection<? extends T> items,

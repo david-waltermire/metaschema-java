@@ -114,8 +114,26 @@ public final class ArrayPut {
     return put(array, positionItem.asInteger().intValueExact(), member);
   }
 
+  /**
+   * An implementation of XPath 3.1 <a href=
+   * "https://www.w3.org/TR/xpath-functions-31/#func-array-put">array:put</a>.
+   *
+   * @param <T>
+   *          the type of items in the given Metapath array
+   * @param array
+   *          the target Metapath array
+   * @param position
+   *          the integer position of the item to replace
+   * @param member
+   *          the Metapath item to replace the identified array member with
+   * @return a new array containing the modification
+   * @throws ArrayException
+   *           if the position is not in the range of 1 to array:size
+   */
   @NonNull
-  public static <T extends ICollectionValue> IArrayItem<T> put(@NonNull IArrayItem<T> array, int position,
+  public static <T extends ICollectionValue> IArrayItem<T> put(
+      @NonNull IArrayItem<T> array,
+      int position,
       @NonNull T member) {
     List<T> copy = new ArrayList<>(array);
     try {

@@ -32,6 +32,7 @@ import gov.nist.secauto.metaschema.core.metapath.cst.IExpressionVisitor;
 import gov.nist.secauto.metaschema.core.metapath.item.ItemUtils;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDefinitionNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -48,6 +49,12 @@ public class Wildcard implements INameTestExpression {
   @Nullable
   private final Predicate<IDefinitionNodeItem<?, ?>> matcher;
 
+  /**
+   * Construct a new wildcard name test expression using the provided matcher.
+   *
+   * @param matcher
+   *          the matcher used to determine matching nodes
+   */
   public Wildcard(@Nullable Predicate<IDefinitionNodeItem<?, ?>> matcher) {
     this.matcher = matcher;
   }
@@ -69,13 +76,22 @@ public class Wildcard implements INameTestExpression {
             test.test((IDefinitionNodeItem<?, ?>) item);
       });
     }
-    return ISequence.of(nodes);
+    return ISequence.of(ObjectUtils.notNull(nodes));
   }
 
+  /**
+   * A wildcard matcher that matches a specific local name in any namespace.
+   */
   public static class MatchAnyNamespace implements Predicate<IDefinitionNodeItem<?, ?>> {
     @NonNull
     private final String localName;
 
+    /**
+     * Construct the matcher using the provided local name for matching.
+     *
+     * @param localName
+     *          the name used to match nodes
+     */
     public MatchAnyNamespace(@NonNull String localName) {
       this.localName = localName;
     }
@@ -86,10 +102,19 @@ public class Wildcard implements INameTestExpression {
     }
   }
 
+  /**
+   * A wildcard matcher that matches any local name in a specific namespace.
+   */
   public static class MatchAnyLocalName implements Predicate<IDefinitionNodeItem<?, ?>> {
     @NonNull
     private final String namespace;
 
+    /**
+     * Construct the matcher using the provided namespace for matching.
+     *
+     * @param namespace
+     *          the namespace used to match nodes
+     */
     public MatchAnyLocalName(@NonNull String namespace) {
       this.namespace = namespace;
     }

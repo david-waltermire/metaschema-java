@@ -56,6 +56,13 @@ public final class AssemblyBuilder
     super(ctx);
   }
 
+  /**
+   * Create a new builder using the provided mocking context.
+   *
+   * @param ctx
+   *          the mocking context
+   * @return the new builder
+   */
   @NonNull
   public static AssemblyBuilder builder(@NonNull Mockery ctx) {
     return new AssemblyBuilder(ctx).reset();
@@ -68,11 +75,25 @@ public final class AssemblyBuilder
     return this;
   }
 
+  /**
+   * Use the provided flag instances for built fields.
+   *
+   * @param flags
+   *          the flags to use
+   * @return this builder
+   */
   public AssemblyBuilder flags(@Nullable List<FlagBuilder> flags) {
     this.flags = flags == null ? CollectionUtil.emptyList() : flags;
     return this;
   }
 
+  /**
+   * Use the provided model instances for built fields.
+   *
+   * @param modelInstances
+   *          the model instances to use
+   * @return this builder
+   */
   public AssemblyBuilder modelInstances(@Nullable List<? extends IModelInstanceBuilder> modelInstances) {
     this.modelInstances = modelInstances == null ? CollectionUtil.emptyList() : modelInstances;
     return this;
@@ -86,6 +107,16 @@ public final class AssemblyBuilder
     return toInstance(parent, def);
   }
 
+  /**
+   * Build a mocked assembly instance, using the provided definition, as a child
+   * of the provided parent.
+   *
+   * @param parent
+   *          the parent containing the new instance
+   * @param definition
+   *          the definition to base the instance on
+   * @return the new mocked instance
+   */
   @NonNull
   public IAssemblyInstanceAbsolute toInstance(
       @NonNull IAssemblyDefinition parent,
@@ -97,6 +128,11 @@ public final class AssemblyBuilder
     return retval;
   }
 
+  /**
+   * Build a mocked assembly definition.
+   *
+   * @return the new mocked definition
+   */
   @SuppressWarnings("null")
   @NonNull
   public IAssemblyDefinition toDefinition() {

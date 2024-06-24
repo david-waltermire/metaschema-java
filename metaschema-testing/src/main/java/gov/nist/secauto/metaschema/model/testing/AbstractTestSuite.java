@@ -353,7 +353,6 @@ public abstract class AbstractTestSuite {
         Stream.concat(Stream.of(validateSchema), contentTests).sequential());
   }
 
-  @SuppressWarnings("unchecked")
   protected Path convertContent(
       @NonNull URI contentUri,
       @NonNull Path generationPath,

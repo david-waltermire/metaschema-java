@@ -84,6 +84,11 @@ public class ConstraintValidationFinding implements IValidationFinding { // NOPM
     return constraints.size() == 1 ? constraints.get(0).getId() : null;
   }
 
+  /**
+   * Get the constraints associated with the finding.
+   *
+   * @return the constraints
+   */
   @NonNull
   public List<? extends IConstraint> getConstraints() {
     return constraints;
@@ -94,16 +99,32 @@ public class ConstraintValidationFinding implements IValidationFinding { // NOPM
     return message;
   }
 
+  /**
+   * Get the context node used to evaluate the constraints.
+   *
+   * @return the context node
+   */
   @NonNull
   public INodeItem getNode() {
     return node;
   }
 
+  /**
+   * Get the target of the finding.
+   *
+   * @return the target node
+   */
   @NonNull
   public INodeItem getTarget() {
     return target;
   }
 
+  /**
+   * Get the subjects of the finding, which are resolved by evaluating the
+   * constraint target expression.
+   *
+   * @return the subject nodes
+   */
   @NonNull
   public List<? extends INodeItem> getSubjects() {
     return subjects;
@@ -154,11 +175,29 @@ public class ConstraintValidationFinding implements IValidationFinding { // NOPM
     return getTarget().getBaseUri();
   }
 
+  /**
+   * Construct a new finding builder.
+   *
+   * @param constraints
+   *          the constraints associated with this finding
+   * @param node
+   *          the context node used to evaluate the constraints
+   * @return a new builder
+   */
   @NonNull
   public static Builder builder(@NonNull List<? extends IConstraint> constraints, @NonNull INodeItem node) {
     return new Builder(constraints, node);
   }
 
+  /**
+   * Construct a new finding builder.
+   *
+   * @param constraint
+   *          the constraint associated with this finding
+   * @param node
+   *          the context node used to evaluate the constraints
+   * @return a new builder
+   */
   @NonNull
   public static Builder builder(@NonNull IConstraint constraint, @NonNull INodeItem node) {
     return new Builder(CollectionUtil.singletonList(constraint), node);
@@ -183,41 +222,88 @@ public class ConstraintValidationFinding implements IValidationFinding { // NOPM
       this.target = node;
     }
 
+    /**
+     * Use the provided target for the validation finding.
+     *
+     * @param target
+     *          the finding target
+     * @return this builder
+     */
     public Builder target(@NonNull INodeItem target) {
       this.target = target;
       return this;
     }
 
+    /**
+     * Use the provided message for the validation finding.
+     *
+     * @param message
+     *          the message target
+     * @return this builder
+     */
     @NonNull
     public Builder message(@NonNull String message) {
       this.message = message;
       return this;
     }
 
+    /**
+     * Use the provided subjects for the validation finding.
+     *
+     * @param subjects
+     *          the finding subjects
+     * @return this builder
+     */
     @NonNull
-    public Builder subjects(@NonNull List<? extends INodeItem> targets) {
-      this.subjects = CollectionUtil.unmodifiableList(targets);
+    public Builder subjects(@NonNull List<? extends INodeItem> subjects) {
+      this.subjects = CollectionUtil.unmodifiableList(subjects);
       return this;
     }
 
+    /**
+     * Use the provided cause for the validation finding.
+     *
+     * @param cause
+     *          the finding cause
+     * @return this builder
+     */
     @NonNull
     public Builder cause(@NonNull Throwable cause) {
       this.cause = cause;
       return this;
     }
 
+    /**
+     * Use the provided kind for the validation finding.
+     *
+     * @param kind
+     *          the finding kind
+     * @return this builder
+     */
     @NonNull
     public Builder kind(@NonNull Kind kind) {
       this.kind = kind;
       return this;
     }
 
+    /**
+     * Use the provided severity for the validation finding.
+     *
+     * @param severity
+     *          the finding severity
+     * @return this builder
+     */
     @NonNull
     public Builder severity(@NonNull Level severity) {
       this.severity = severity;
       return this;
     }
 
+    /**
+     * Generate the finding using the previously provided data.
+     *
+     * @return a new finding
+     */
     @NonNull
     public ConstraintValidationFinding build() {
       Level severity = ObjectUtils.notNull(this.severity == null ? constraints.stream()

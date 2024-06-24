@@ -346,12 +346,28 @@ public interface IModule extends IMetapathQueryable {
   @Nullable
   IAssemblyDefinition getExportedRootAssemblyDefinitionByName(QName name);
 
+  /**
+   * Used to parse a flag name reference to produce a qualified name.
+   *
+   * @param nameRef
+   *          the name reference
+   * @return the qualified name
+   */
   @NonNull
   default QName toFlagQName(@NonNull String nameRef) {
     // TODO: handle namespace prefix
     return new QName(nameRef);
   }
 
+  /**
+   * Used to parse a flag name reference to produce a qualified name.
+   *
+   * @param modelNamespace
+   *          the namespace to use or {@code null}
+   * @param nameRef
+   *          the name reference
+   * @return the qualified name
+   */
   @NonNull
   default QName toFlagQName(@Nullable String modelNamespace, @NonNull String nameRef) {
     // TODO: handle namespace prefix
@@ -360,11 +376,27 @@ public interface IModule extends IMetapathQueryable {
         : new QName(modelNamespace, nameRef);
   }
 
+  /**
+   * Used to parse a model name reference to produce a qualified name.
+   *
+   * @param nameRef
+   *          the name reference
+   * @return the qualified name
+   */
   @NonNull
   default QName toModelQName(@NonNull String nameRef) {
     return toModelQName(null, nameRef);
   }
 
+  /**
+   * Used to parse a flag name reference to produce a qualified name.
+   *
+   * @param modelNamespace
+   *          the namespace to use or {@code null}
+   * @param nameRef
+   *          the name reference
+   * @return the qualified name
+   */
   @NonNull
   default QName toModelQName(@Nullable String modelNamespace, @NonNull String nameRef) {
     // TODO: handle namespace prefix

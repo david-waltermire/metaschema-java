@@ -30,6 +30,16 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+/**
+ * A base class for a flag that is a member of a containing model.
+ *
+ * @param <PARENT>
+ *          the Java type of the parent model (i.e., assembly, field).
+ * @param <DEFINITION>
+ *          the Java type of the definition for this member flag
+ * @param <INSTANCE>
+ *          the Java type of the instance for this member flag
+ */
 public abstract class AbstractFlagInstance<
     PARENT extends IModelDefinition,
     DEFINITION extends IFlagDefinition,
@@ -37,6 +47,12 @@ public abstract class AbstractFlagInstance<
     extends AbstractNamedInstance<PARENT>
     implements IFlagInstance, IFeatureDefinitionReferenceInstance<DEFINITION, INSTANCE> {
 
+  /**
+   * Construct a new flag instance.
+   *
+   * @param parent
+   *          the parent model containing this instance
+   */
   protected AbstractFlagInstance(@NonNull PARENT parent) {
     super(parent, name -> parent.getContainingModule().toFlagQName(name));
   }

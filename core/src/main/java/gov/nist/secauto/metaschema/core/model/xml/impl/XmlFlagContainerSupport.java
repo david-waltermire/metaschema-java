@@ -54,6 +54,10 @@ import javax.xml.namespace.QName;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
+/**
+ * Supports parsing Metaschema assembly and field XMLBeans objects that contain
+ * flags.
+ */
 final class XmlFlagContainerSupport {
   @SuppressWarnings("PMD.UseConcurrentHashMap")
   @NonNull
@@ -107,6 +111,7 @@ final class XmlFlagContainerSupport {
    * @param container
    *          the field containing the flag
    */
+  @SuppressWarnings("PMD.OnlyOneReturn")
   static IContainerFlagSupport<IFlagInstance> newInstance(
       @NonNull GlobalFieldDefinitionType xmlField,
       @NonNull IFieldDefinition container) {
@@ -129,6 +134,7 @@ final class XmlFlagContainerSupport {
    * @param container
    *          the field containing the flag
    */
+  @SuppressWarnings("PMD.OnlyOneReturn")
   static IContainerFlagSupport<IFlagInstance> newInstance(
       @NonNull InlineFieldDefinitionType xmlField,
       @NonNull IFieldDefinition container) {
@@ -151,6 +157,7 @@ final class XmlFlagContainerSupport {
    * @param container
    *          the field containing the flag
    */
+  @SuppressWarnings("PMD.OnlyOneReturn")
   static IContainerFlagSupport<IFlagInstance> newInstance(
       @NonNull GroupedInlineFieldDefinitionType xmlField,
       @NonNull IFieldDefinition container,
@@ -173,6 +180,7 @@ final class XmlFlagContainerSupport {
    * @param container
    *          the field containing the flag
    */
+  @SuppressWarnings("PMD.OnlyOneReturn")
   static IContainerFlagSupport<IFlagInstance> newInstance(
       @NonNull GlobalAssemblyDefinitionType xmlAssembly,
       @NonNull IAssemblyDefinition container) {
@@ -195,6 +203,7 @@ final class XmlFlagContainerSupport {
    * @param container
    *          the field containing the flag
    */
+  @SuppressWarnings("PMD.OnlyOneReturn")
   static IContainerFlagSupport<IFlagInstance> newInstance(
       @NonNull InlineAssemblyDefinitionType xmlAssembly,
       @NonNull IAssemblyDefinition container) {
@@ -217,6 +226,7 @@ final class XmlFlagContainerSupport {
    * @param container
    *          the field containing the flag
    */
+  @SuppressWarnings("PMD.OnlyOneReturn")
   static IContainerFlagSupport<IFlagInstance> newInstance(
       @NonNull GroupedInlineAssemblyDefinitionType xmlAssembly,
       @NonNull IAssemblyDefinition container,

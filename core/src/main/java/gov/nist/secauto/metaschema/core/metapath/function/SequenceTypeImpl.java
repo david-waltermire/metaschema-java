@@ -28,6 +28,7 @@ package gov.nist.secauto.metaschema.core.metapath.function;
 
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.TypeSystem;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.Objects;
 
@@ -76,7 +77,7 @@ class SequenceTypeImpl implements ISequenceType {
         // occurrence
         .append(getOccurrence().getIndicator());
 
-    return builder.toString();
+    return ObjectUtils.notNull(builder.toString());
   }
 
   @Override

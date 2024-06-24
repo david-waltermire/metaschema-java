@@ -104,12 +104,24 @@ public class Let implements IExpression {
     return getReturnExpression().accept(subDynamicContext, focus);
   }
 
+  /**
+   * A Metapath expression that binds a variable name to an expresssion.
+   */
   public static class VariableDeclaration {
     @NonNull
     private final QName name;
     @NonNull
     private final IExpression boundExpression;
 
+    /**
+     * Construct a new variable declaration, binding the provided variable name to
+     * the bound expression.
+     *
+     * @param name
+     *          trhe variable name
+     * @param boundExpression
+     *          the bound expression
+     */
     public VariableDeclaration(@NonNull QName name, @NonNull IExpression boundExpression) {
       this.name = name;
       this.boundExpression = boundExpression;
@@ -135,17 +147,27 @@ public class Let implements IExpression {
       return boundExpression;
     }
 
+    /**
+     * Bind the variable name to the evaluation result of the bound expression.
+     *
+     * @param evaluationDynamicContext
+     *          the {@link DynamicContext} used to evaluate the bound expression
+     * @param focus
+     *          the evaluation focus to use to evaluate the bound expression
+     * @param boundDynamicContext
+     *          the {@link DynamicContext} the variable is bound to
+     */
     public void bind(
-        @NonNull DynamicContext evalContext,
+        @NonNull DynamicContext evaluationDynamicContext,
         @NonNull ISequence<?> focus,
-        @NonNull DynamicContext boundContext) {
+        @NonNull DynamicContext boundDynamicContext) {
 
-      ISequence<?> result = getBoundExpression().accept(evalContext, focus);
+      ISequence<?> result = getBoundExpression().accept(evaluationDynamicContext, focus);
 
       // ensure this sequence is list backed
       result.getValue();
 
-      boundContext.bindVariableValue(getName(), result);
+      boundDynamicContext.bindVariableValue(getName(), result);
     }
   }
 }

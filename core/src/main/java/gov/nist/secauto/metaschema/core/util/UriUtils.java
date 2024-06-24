@@ -129,6 +129,7 @@ public final class UriUtils {
    *          the URI to relativize against the base
    * @return the relativized URI
    */
+  @SuppressWarnings("PMD.CyclomaticComplexity")
   public static String prependRelativePath(String base, String target) {
 
     // Split paths into segments

@@ -97,10 +97,11 @@ public interface ISequence<ITEM extends IItem> extends List<ITEM>, IPrintable, I
   Stream<ITEM> stream();
 
   /**
-   * Retrieves the first item in a sequence. If the sequence is empty, a
-   * {@code null} result is returned. If requireSingleton is {@code true} and the
-   * sequence contains more than one item, a {@link TypeMetapathException} is
-   * thrown.
+   * Retrieves the first item in a sequence.
+   * <p>
+   * If the sequence is empty, a {@code null} result is returned. If
+   * requireSingleton is {@code true} and the sequence contains more than one
+   * item, a {@link TypeMetapathException} is thrown.
    *
    * @param <T>
    *          the item type to return derived from the provided sequence
@@ -119,10 +120,11 @@ public interface ISequence<ITEM extends IItem> extends List<ITEM>, IPrintable, I
   }
 
   /**
-   * Retrieves the first item in a sequence. If the sequence is empty, a
-   * {@code null} result is returned. If requireSingleton is {@code true} and the
-   * sequence contains more than one item, a {@link TypeMetapathException} is
-   * thrown.
+   * Retrieves the first item in a stream of items.
+   * <p>
+   * If the sequence is empty, a {@code null} result is returned. If
+   * requireSingleton is {@code true} and the sequence contains more than one
+   * item, a {@link TypeMetapathException} is thrown.
    *
    * @param <T>
    *          the item type to return derived from the provided sequence
@@ -148,11 +150,31 @@ public interface ISequence<ITEM extends IItem> extends List<ITEM>, IPrintable, I
         }).orElse(null);
   }
 
+  /**
+   * Retrieves the first item in this sequence.
+   * <p>
+   * If the sequence is empty, a {@code null} result is returned. If
+   * requireSingleton is {@code true} and the sequence contains more than one
+   * item, a {@link TypeMetapathException} is thrown.
+   *
+   * @param requireSingleton
+   *          if {@code true} then a {@link TypeMetapathException} is thrown if
+   *          the sequence contains more than one item
+   * @return {@code null} if the sequence is empty, or the item otherwise
+   * @throws TypeMetapathException
+   *           if the sequence contains more than one item and requireSingleton is
+   *           {@code true}
+   */
   @Nullable
   default ITEM getFirstItem(boolean requireSingleton) {
     return getFirstItem(this, requireSingleton);
   }
 
+  /**
+   * Get this sequence as a collection value.
+   *
+   * @return the collection value
+   */
   @NonNull
   default ICollectionValue toCollectionValue() {
     ICollectionValue retval;
@@ -161,9 +183,11 @@ public interface ISequence<ITEM extends IItem> extends List<ITEM>, IPrintable, I
       retval = empty();
       break;
     case 1:
+      // get the singleton item
       retval = ObjectUtils.notNull(stream().findFirst().get());
       break;
     default:
+      // get this sequence of 2 or more items
       retval = this;
     }
     return retval;

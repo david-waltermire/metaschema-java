@@ -48,7 +48,7 @@ import javax.xml.namespace.QName;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 public abstract class AbstractArrayItem<ITEM extends ICollectionValue>
-    extends ImmutableCollections.AbstractImmutableDelegatedCollection<ITEM>
+    extends ImmutableCollections.AbstractImmutableDelegatedList<ITEM>
     implements IArrayItem<ITEM> {
   @NonNull
   public static final QName QNAME = new QName("array");
@@ -65,6 +65,13 @@ public abstract class AbstractArrayItem<ITEM extends ICollectionValue>
   @NonNull
   private static final IArrayItem<?> EMPTY = new ArrayItemN<>();
 
+  /**
+   * Get an immutable array item that is empty.
+   *
+   * @param <T>
+   *          the item Java type
+   * @return the empty array item
+   */
   @SuppressWarnings("unchecked")
   @NonNull
   public static <T extends ICollectionValue> IArrayItem<T> empty() {

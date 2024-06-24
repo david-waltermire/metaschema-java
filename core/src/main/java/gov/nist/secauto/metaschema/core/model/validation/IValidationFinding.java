@@ -39,13 +39,34 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * completed content validation.
  */
 public interface IValidationFinding {
+  /**
+   * The finding type.
+   */
   enum Kind {
+    /**
+     * The finding does not apply to the intended purpose of the validation.
+     */
     NOT_APPLICABLE,
+    /**
+     * The finding represents a successful result.
+     */
     PASS,
+    /**
+     * The finding represents an unsuccessful result.
+     */
     FAIL,
+    /**
+     * The finding is providing information that does not indicate success or
+     * failure.
+     */
     INFORMATIONAL;
   }
 
+  /**
+   * Get the unique identifier for the finding.
+   *
+   * @return the identifier
+   */
   @Nullable
   String getIdentifier();
 
@@ -57,6 +78,11 @@ public interface IValidationFinding {
   @NonNull
   IConstraint.Level getSeverity();
 
+  /**
+   * Get the finding type.
+   *
+   * @return the finding type
+   */
   @NonNull
   Kind getKind();
 

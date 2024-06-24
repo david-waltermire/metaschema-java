@@ -24,42 +24,35 @@
  * OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
  */
 
-package gov.nist.secauto.metaschema.core.model;
+package gov.nist.secauto.metaschema.core.metapath.item.function;
 
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
+import gov.nist.secauto.metaschema.core.metapath.ICollectionValue;
+import gov.nist.secauto.metaschema.core.metapath.ISequence;
+import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 
-import javax.xml.namespace.QName;
+import java.util.stream.Stream;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import nl.talsmasoftware.lazy4j.Lazy;
 
-public abstract class AbstractDefinition
-    implements IDefinition {
-  @NonNull
-  private final Lazy<QName> qname;
-  @NonNull
-  private final Lazy<QName> definitionQName;
+/**
+ * A common interface for all key specifier implementations.
+ */
+public interface IKeySpecifier {
 
-  protected AbstractDefinition(@NonNull NameInitializer initializer) {
-    this.qname = ObjectUtils.notNull(Lazy.lazy(() -> initializer.apply(getEffectiveName())));
-    this.definitionQName = ObjectUtils.notNull(Lazy.lazy(() -> initializer.apply(getName())));
-  }
-
-  @SuppressWarnings("null")
-  @Override
-  public final QName getXmlQName() {
-    return qname.get();
-  }
-
-  @SuppressWarnings("null")
-  @Override
-  public final QName getDefinitionQName() {
-    return definitionQName.get();
-  }
-
-  @FunctionalInterface
-  public interface NameInitializer {
-    @NonNull
-    QName apply(@NonNull String name);
-  }
+  /**
+   * Perform a lookup on the provided target item.
+   *
+   * @param targetItem
+   *          the item to query
+   * @param dynamicContext
+   *          the dynamic context to use for expression evaluation
+   * @param focus
+   *          the focus item for expression evaluation
+   * @return a stream of collection values matching this key specifier
+   */
+  Stream<? extends ICollectionValue> lookup(
+      @NonNull IItem targetItem,
+      @NonNull DynamicContext dynamicContext,
+      @NonNull ISequence<?> focus);
 }

@@ -98,12 +98,12 @@ public enum Axis implements IExpression {
     if (outerFocus.isEmpty()) {
       retval = ISequence.empty();
     } else {
-      retval = ISequence.of(outerFocus.stream()
+      retval = ISequence.of(ObjectUtils.notNull(outerFocus.stream()
           .map(ItemUtils::checkItemIsNodeItemForStep)
           .flatMap(item -> {
             assert item != null;
             return execute(item);
-          }).distinct());
+          }).distinct()));
     }
     return retval;
   }

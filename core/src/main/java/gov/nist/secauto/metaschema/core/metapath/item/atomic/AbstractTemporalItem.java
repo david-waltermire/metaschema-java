@@ -30,10 +30,22 @@ import gov.nist.secauto.metaschema.core.metapath.item.function.IMapKey;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+/**
+ * A base class for temporal items.
+ *
+ * @param <TYPE>
+ *          the Java type of the wrapped value
+ */
 public abstract class AbstractTemporalItem<TYPE>
     extends AbstractAnyAtomicItem<TYPE>
     implements ITemporalItem {
 
+  /**
+   * Construct a new temporal item.
+   *
+   * @param value
+   *          the wrapped value
+   */
   protected AbstractTemporalItem(@NonNull TYPE value) {
     super(value);
   }
@@ -56,6 +68,7 @@ public abstract class AbstractTemporalItem<TYPE>
       return getKey().hashCode();
     }
 
+    @SuppressWarnings("PMD.OnlyOneReturn")
     @Override
     public boolean equals(Object obj) {
       if (this == obj) {
@@ -67,8 +80,7 @@ public abstract class AbstractTemporalItem<TYPE>
       }
 
       AbstractTemporalItem<?>.MapKey other = (AbstractTemporalItem<?>.MapKey) obj;
-      return hasTimezone() == other.getKey().hasTimezone()
-          && getKey().equals(other.getKey());
+      return getKey().compareTo(other.getKey()) == 0;
     }
   }
 }

@@ -40,7 +40,7 @@ public interface IContainerFlagSupport<FI extends IFlagInstance> {
    * Provides an empty instance.
    *
    * @param <T>
-   *          the Java type of the flag instance
+   *          the Java type of the flag instances
    * @return an empty instance
    */
   @SuppressWarnings("unchecked")
@@ -49,11 +49,28 @@ public interface IContainerFlagSupport<FI extends IFlagInstance> {
     return (IContainerFlagSupport<T>) EmptyFlagContainer.EMPTY;
   }
 
+  /**
+   * Create a new flag container without a JSON key.
+   *
+   * @param <T>
+   *          the Java type of the flag instances
+   * @return the flag container
+   */
   @NonNull
   static <T extends IFlagInstance> IFlagContainerBuilder<T> builder() {
     return new FlagContainerBuilder<>(null);
   }
 
+  /**
+   * Create a new flag container using the provided flag qualified name as the
+   * JSON key.
+   *
+   * @param <T>
+   *          the Java type of the flag instances
+   * @param jsonKey
+   *          the qualified name of the JSON key
+   * @return the flag container
+   */
   @NonNull
   static <T extends IFlagInstance> IFlagContainerBuilder<T> builder(@NonNull QName jsonKey) {
     return new FlagContainerBuilder<>(jsonKey);
@@ -67,6 +84,11 @@ public interface IContainerFlagSupport<FI extends IFlagInstance> {
   @NonNull
   Map<QName, FI> getFlagInstanceMap();
 
+  /**
+   * Get the JSON key flag instance.
+   *
+   * @return the flag instance or {@code null} if no JSON key is configured
+   */
   @Nullable
   FI getJsonKeyFlagInstance();
 }

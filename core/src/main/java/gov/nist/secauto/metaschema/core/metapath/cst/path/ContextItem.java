@@ -24,12 +24,13 @@
  * OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
  */
 
-package gov.nist.secauto.metaschema.core.metapath.cst;
+package gov.nist.secauto.metaschema.core.metapath.cst.path;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.DynamicMetapathException;
 import gov.nist.secauto.metaschema.core.metapath.ISequence;
-import gov.nist.secauto.metaschema.core.metapath.cst.path.AbstractPathExpression;
+import gov.nist.secauto.metaschema.core.metapath.cst.IExpression;
+import gov.nist.secauto.metaschema.core.metapath.cst.IExpressionVisitor;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
 
 import java.util.Collections;
@@ -37,6 +38,12 @@ import java.util.List;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+/**
+ * An implementation of the
+ * <a href="https://www.w3.org/TR/xpath-31/#id-context-item-expression">Context
+ * Item Expression</a> based on the current focus of the Metapath
+ * {@link DynamicContext}.
+ */
 public final class ContextItem
     extends AbstractPathExpression<INodeItem> {
   @NonNull

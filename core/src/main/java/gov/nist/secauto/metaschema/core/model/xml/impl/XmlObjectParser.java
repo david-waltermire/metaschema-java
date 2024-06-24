@@ -46,6 +46,14 @@ import javax.xml.namespace.QName;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
+/**
+ * Supports parsing Metaschema assembly and field XMLBeans objects that contain
+ * other Metaschema objects.
+ *
+ * @param <T>
+ *          the Java type of the state that is passed to the element parsing
+ *          handlers
+ */
 public class XmlObjectParser<T> {
   private static final XmlOptions XML_OPTIONS = new XmlOptions().setXPathUseSaxon(false).setXPathUseXmlBeans(true);
   private final Map<QName, Handler<T>> elementNameToHandlerMap;
@@ -107,12 +115,26 @@ public class XmlObjectParser<T> {
     return xpath;
   }
 
+  /**
+   * Get the resource location of the provided object.
+   *
+   * @param obj
+   *          the XMLBeans object to get the location for
+   * @return the resource location or {@code null} if the location is not known
+   */
   @SuppressWarnings({ "resource", "null" })
   @Nullable
   public static String toLocation(@NonNull XmlObject obj) {
     return toLocation(obj.newCursor());
   }
 
+  /**
+   * Get the resource location of the provided cursor.
+   *
+   * @param cursor
+   *          the XMLBeans cursor to get the location for
+   * @return the resource location or {@code null} if the location is not known
+   */
   @Nullable
   public static String toLocation(@NonNull XmlCursor cursor) {
     String retval = null;

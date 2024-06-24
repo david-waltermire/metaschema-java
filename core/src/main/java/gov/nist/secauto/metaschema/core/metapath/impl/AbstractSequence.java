@@ -35,13 +35,19 @@ import java.util.stream.Collectors;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 public abstract class AbstractSequence<ITEM extends IItem>
-    extends ImmutableCollections.AbstractImmutableDelegatedCollection<ITEM>
+    extends ImmutableCollections.AbstractImmutableDelegatedList<ITEM>
     implements ISequence<ITEM> {
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   @NonNull
   private static final ISequence<?> EMPTY = new SequenceN<>();
 
+  /**
+   * Get an immutable sequence that is empty.
+   *
+   * @param <T>
+   *          the item Java type
+   * @return the empty sequence
+   */
   @SuppressWarnings("unchecked")
   public static <T extends IItem> ISequence<T> empty() {
     return (ISequence<T>) EMPTY;

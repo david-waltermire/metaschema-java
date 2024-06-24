@@ -53,6 +53,7 @@ import javax.xml.namespace.QName;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 final class DefaultNodeItemFactory
     extends AbstractNodeItemFactory {
   @NonNull
@@ -134,7 +135,7 @@ final class DefaultNodeItemFactory
    *          the parent assembly containing model instances
    * @return a mapping of model instance name to model node item(s)
    */
-  @SuppressWarnings("PMD.UseConcurrentHashMap") // need an ordered map
+  @SuppressWarnings({ "PMD.UseConcurrentHashMap", "PMD.CognitiveComplexity" }) // need an ordered map
   @NonNull
   protected Map<QName, List<? extends IModelNodeItem<?, ?>>> generateModelItems(@NonNull IAssemblyNodeItem parent) {
     Map<QName, List<? extends IModelNodeItem<?, ?>>> retval = new LinkedHashMap<>();
@@ -147,13 +148,10 @@ final class DefaultNodeItemFactory
 
         Object instanceValue = namedInstance.getValue(parentValue);
         if (instanceValue != null) {
-          // the item values will be all non-null items
-          Stream<? extends Object> itemValues = namedInstance.getItemValues(instanceValue).stream();
-          AtomicInteger index = new AtomicInteger(); // NOPMD - intentional
-          List<IModelNodeItem<?, ?>> items = itemValues.map(itemValue -> {
-            assert itemValue != null;
-            return newModelItem(namedInstance, parent, index.incrementAndGet(), itemValue);
-          }).collect(Collectors.toUnmodifiableList());
+          List<IModelNodeItem<?, ?>> items = generateModelInstanceItems(
+              parent,
+              namedInstance,
+              ObjectUtils.notNull(namedInstance.getItemValues(instanceValue).stream()));
           retval.put(namedInstance.getXmlQName(), items);
         }
       } else if (instance instanceof IChoiceGroupInstance) {
@@ -177,12 +175,10 @@ final class DefaultNodeItemFactory
             INamedModelInstanceGrouped namedInstance = entry.getKey();
             assert namedInstance != null;
 
-            AtomicInteger index = new AtomicInteger(); // NOPMD - intentional
-            List<IModelNodeItem<?, ?>> items = entry.getValue().stream()
-                .map(itemValue -> {
-                  assert itemValue != null;
-                  return newModelItem(namedInstance, parent, index.incrementAndGet(), itemValue);
-                }).collect(Collectors.toUnmodifiableList());
+            List<IModelNodeItem<?, ?>> items = generateModelInstanceItems(
+                parent,
+                namedInstance,
+                ObjectUtils.notNull(entry.getValue().stream()));
             retval.put(namedInstance.getXmlQName(), items);
           }
         }
@@ -190,6 +186,19 @@ final class DefaultNodeItemFactory
 
     }
     return retval.isEmpty() ? CollectionUtil.emptyMap() : CollectionUtil.unmodifiableMap(retval);
+  }
+
+  private List<IModelNodeItem<?, ?>> generateModelInstanceItems(
+      @NonNull IAssemblyNodeItem parent,
+      @NonNull INamedModelInstance namedInstance,
+      @NonNull Stream<?> itemValues) {
+    AtomicInteger index = new AtomicInteger(); // NOPMD - intentional
+
+    // the item values will be all non-null items
+    return itemValues.map(itemValue -> {
+      assert itemValue != null;
+      return newModelItem(namedInstance, parent, index.incrementAndGet(), itemValue);
+    }).collect(Collectors.toUnmodifiableList());
   }
 
   @Override

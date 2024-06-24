@@ -34,10 +34,22 @@ import java.util.List;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 
+/**
+ * An implementation of the
+ * <a href="https://www.w3.org/TR/xpath-31/#id-array-constructors">Array Curly
+ * Constructor</a> supporting the creation of a Metapath {@link IArrayItem}.
+ */
 public class ArraySequenceConstructor implements IExpression {
   @Nullable
   private final IExpression expr;
 
+  /**
+   * Construct a new array constructor expression that uses the provided
+   * expression to initialize the array.
+   *
+   * @param expr
+   *          the expression used to produce the array members
+   */
   public ArraySequenceConstructor(@Nullable IExpression expr) {
     this.expr = expr;
   }

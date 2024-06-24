@@ -56,6 +56,13 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  */
 public interface IMapItem<VALUE extends ICollectionValue>
     extends IFunction, IItem, Map<IMapKey, VALUE>, IPrintable {
+  /**
+   * Get an empty, immutable map item.
+   *
+   * @param <V>
+   *          the value Java type
+   * @return an immutable map item
+   */
   @NonNull
   static <V extends ICollectionValue> IMapItem<V> empty() {
     return AbstractMapItem.empty();
@@ -149,6 +156,15 @@ public interface IMapItem<VALUE extends ICollectionValue>
     return ISequence.of(this);
   }
 
+  /**
+   * Get a new, immutable map item that contains the items in the provided map.
+   *
+   * @param <V>
+   *          the value Java type
+   * @param map
+   *          the map whose items are to be added to the new map
+   * @return a map item containing the specified entries
+   */
   @NonNull
   static <V extends ICollectionValue> IMapItem<V> ofCollection( // NOPMD - intentional
       @NonNull Map<IMapKey, V> map) {
@@ -159,9 +175,10 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * Returns an unmodifiable map item containing zero mappings.
    *
    * @param <V>
-   *          the value type
+   *          the value Java type
    * @return an empty {@code IMapItem}
    */
+  @SuppressWarnings("PMD.ShortMethodName")
   @NonNull
   static <V extends ICollectionValue> IMapItem<V> of() {
     return AbstractMapItem.empty();
@@ -171,17 +188,18 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * Returns an unmodifiable map item containing a single mapping.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param k1
    *          the mapping's key
    * @param v1
    *          the mapping's value
-   * @return a {@code Map} containing the specified mapping
+   * @return a map item containing the specified mapping
    * @throws NullPointerException
    *           if the key or the value is {@code null}
    */
+  @SuppressWarnings("PMD.ShortMethodName")
   @NonNull
   static <K extends IAnyAtomicItem, V extends ICollectionValue> IMapItem<V> of(@NonNull K k1, @NonNull V v1) {
     return new MapItemN<>(entry(k1, v1));
@@ -191,9 +209,9 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * Returns an unmodifiable map item containing two mappings.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param k1
    *          the first mapping's key
    * @param v1
@@ -202,12 +220,13 @@ public interface IMapItem<VALUE extends ICollectionValue>
    *          the second mapping's key
    * @param v2
    *          the second mapping's value
-   * @return a {@code Map} containing the specified mappings
+   * @return a map item containing the specified mappings
    * @throws IllegalArgumentException
    *           if the keys are duplicates
    * @throws NullPointerException
    *           if any key or value is {@code null}
    */
+  @SuppressWarnings("PMD.ShortMethodName")
   @NonNull
   static <K extends IAnyAtomicItem, V extends ICollectionValue> IMapItem<V> of(
       @NonNull K k1, @NonNull V v1,
@@ -221,9 +240,9 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * Returns an unmodifiable map item containing three mappings.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param k1
    *          the first mapping's key
    * @param v1
@@ -236,12 +255,13 @@ public interface IMapItem<VALUE extends ICollectionValue>
    *          the third mapping's key
    * @param v3
    *          the third mapping's value
-   * @return a {@code Map} containing the specified mappings
+   * @return a map item containing the specified mappings
    * @throws IllegalArgumentException
    *           if there are any duplicate keys
    * @throws NullPointerException
    *           if any key or value is {@code null}
    */
+  @SuppressWarnings("PMD.ShortMethodName")
   @NonNull
   static <K extends IAnyAtomicItem, V extends ICollectionValue>
       IMapItem<V> of(
@@ -258,9 +278,9 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * Returns an unmodifiable map item containing four mappings.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param k1
    *          the first mapping's key
    * @param v1
@@ -277,12 +297,13 @@ public interface IMapItem<VALUE extends ICollectionValue>
    *          the fourth mapping's key
    * @param v4
    *          the fourth mapping's value
-   * @return a {@code Map} containing the specified mappings
+   * @return a map item containing the specified mappings
    * @throws IllegalArgumentException
    *           if there are any duplicate keys
    * @throws NullPointerException
    *           if any key or value is {@code null}
    */
+  @SuppressWarnings("PMD.ShortMethodName")
   @NonNull
   static <K extends IAnyAtomicItem, V extends ICollectionValue>
       IMapItem<V> of(
@@ -301,9 +322,9 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * Returns an unmodifiable map item containing five mappings.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param k1
    *          the first mapping's key
    * @param v1
@@ -324,12 +345,13 @@ public interface IMapItem<VALUE extends ICollectionValue>
    *          the fifth mapping's key
    * @param v5
    *          the fifth mapping's value
-   * @return a {@code Map} containing the specified mappings
+   * @return a map item containing the specified mappings
    * @throws IllegalArgumentException
    *           if there are any duplicate keys
    * @throws NullPointerException
    *           if any key or value is {@code null}
    */
+  @SuppressWarnings("PMD.ShortMethodName")
   @NonNull
   static <K extends IAnyAtomicItem, V extends ICollectionValue>
       IMapItem<V> of(
@@ -350,9 +372,9 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * Returns an unmodifiable map item containing six mappings.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param k1
    *          the first mapping's key
    * @param v1
@@ -377,13 +399,16 @@ public interface IMapItem<VALUE extends ICollectionValue>
    *          the sixth mapping's key
    * @param v6
    *          the sixth mapping's value
-   * @return a {@code Map} containing the specified mappings
+   * @return a map item containing the specified mappings
    * @throws IllegalArgumentException
    *           if there are any duplicate keys
    * @throws NullPointerException
    *           if any key or value is {@code null}
    */
-  @SuppressWarnings("PMD.ExcessiveParameterList")
+  @SuppressWarnings({
+      "PMD.ExcessiveParameterList",
+      "PMD.ShortMethodName"
+  })
   @NonNull
   static <K extends IAnyAtomicItem, V extends ICollectionValue>
       IMapItem<V> of(
@@ -406,9 +431,9 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * Returns an unmodifiable map item containing seven mappings.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param k1
    *          the first mapping's key
    * @param v1
@@ -437,13 +462,16 @@ public interface IMapItem<VALUE extends ICollectionValue>
    *          the seventh mapping's key
    * @param v7
    *          the seventh mapping's value
-   * @return a {@code Map} containing the specified mappings
+   * @return a map item containing the specified mappings
    * @throws IllegalArgumentException
    *           if there are any duplicate keys
    * @throws NullPointerException
    *           if any key or value is {@code null}
    */
-  @SuppressWarnings("PMD.ExcessiveParameterList")
+  @SuppressWarnings({
+      "PMD.ExcessiveParameterList",
+      "PMD.ShortMethodName"
+  })
   @NonNull
   static <K extends IAnyAtomicItem, V extends ICollectionValue> IMapItem<V> of(
       @NonNull K k1, @NonNull V v1,
@@ -468,9 +496,9 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * <a href="#unmodifiable">Unmodifiable Maps</a> for details.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param k1
    *          the first mapping's key
    * @param v1
@@ -503,13 +531,16 @@ public interface IMapItem<VALUE extends ICollectionValue>
    *          the eighth mapping's key
    * @param v8
    *          the eighth mapping's value
-   * @return a {@code Map} containing the specified mappings
+   * @return a map item containing the specified mappings
    * @throws IllegalArgumentException
    *           if there are any duplicate keys
    * @throws NullPointerException
    *           if any key or value is {@code null}
    */
-  @SuppressWarnings("PMD.ExcessiveParameterList")
+  @SuppressWarnings({
+      "PMD.ExcessiveParameterList",
+      "PMD.ShortMethodName"
+  })
   @NonNull
   static <K extends IAnyAtomicItem, V extends ICollectionValue>
       IMapItem<V> of(
@@ -536,9 +567,9 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * Returns an unmodifiable map item containing nine mappings.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param k1
    *          the first mapping's key
    * @param v1
@@ -575,13 +606,16 @@ public interface IMapItem<VALUE extends ICollectionValue>
    *          the ninth mapping's key
    * @param v9
    *          the ninth mapping's value
-   * @return a {@code Map} containing the specified mappings
+   * @return a map item containing the specified mappings
    * @throws IllegalArgumentException
    *           if there are any duplicate keys
    * @throws NullPointerException
    *           if any key or value is {@code null}
    */
-  @SuppressWarnings("PMD.ExcessiveParameterList")
+  @SuppressWarnings({
+      "PMD.ExcessiveParameterList",
+      "PMD.ShortMethodName"
+  })
   @NonNull
   static <K extends IAnyAtomicItem, V extends ICollectionValue>
       IMapItem<V> of(
@@ -602,9 +636,9 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * Returns an unmodifiable map item containing ten mappings.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param k1
    *          the first mapping's key
    * @param v1
@@ -645,13 +679,16 @@ public interface IMapItem<VALUE extends ICollectionValue>
    *          the tenth mapping's key
    * @param v10
    *          the tenth mapping's value
-   * @return a {@code Map} containing the specified mappings
+   * @return a map item containing the specified mappings
    * @throws IllegalArgumentException
    *           if there are any duplicate keys
    * @throws NullPointerException
    *           if any key or value is {@code null}
    */
-  @SuppressWarnings("PMD.ExcessiveParameterList")
+  @SuppressWarnings({
+      "PMD.ExcessiveParameterList",
+      "PMD.ShortMethodName"
+  })
   @NonNull
   static <K extends IAnyAtomicItem, V extends ICollectionValue> IMapItem<V> of(
       @NonNull K k1, @NonNull V v1,
@@ -682,13 +719,13 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * the given entries. The entries themselves are not stored in the map.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param entries
    *          {@code Map.Entry}s containing the keys and values from which the map
    *          is populated
-   * @return a {@code Map} containing the specified mappings
+   * @return a map item containing the specified mappings
    * @throws IllegalArgumentException
    *           if there are any duplicate keys
    * @throws NullPointerException
@@ -712,7 +749,7 @@ public interface IMapItem<VALUE extends ICollectionValue>
    *          the key
    * @param value
    *          the value
-   * @return an {@code Entry} containing the specified key and value
+   * @return an {@code Map.Entry} containing the specified key and value
    * @throws NullPointerException
    *           if the key or value is {@code null}
    */
@@ -721,6 +758,19 @@ public interface IMapItem<VALUE extends ICollectionValue>
     return entry(key.asMapKey(), value);
   }
 
+  /**
+   * Returns an unmodifiable {@link Entry} containing the given key and value.
+   *
+   * @param <V>
+   *          the value's type
+   * @param key
+   *          the key
+   * @param value
+   *          the value
+   * @return an {@code Map.Entry} containing the specified key and value
+   * @throws NullPointerException
+   *           if the key or value is {@code null}
+   */
   @SuppressWarnings("null")
   @NonNull
   static <V extends ICollectionValue> Map.Entry<IMapKey, V> entry(@NonNull IMapKey key, @NonNull V value) {
@@ -734,12 +784,12 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * such modifications.
    *
    * @param <K>
-   *          the {@code Map}'s key type
+   *          the map item's key type
    * @param <V>
-   *          the {@code Map}'s value type
+   *          the map item's value type
    * @param map
-   *          a {@code Map} from which entries are drawn, must be non-null
-   * @return a {@code Map} containing the entries of the given {@code Map}
+   *          a map item from which entries are drawn, must be non-null
+   * @return a map item containing the entries of the given {@code Map}
    * @throws NullPointerException
    *           if map is null, or if it contains any null keys or values
    */

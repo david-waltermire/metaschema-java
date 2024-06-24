@@ -24,52 +24,41 @@
  * OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
  */
 
-package gov.nist.secauto.metaschema.core.datatype.markup.flexmark;
+package gov.nist.secauto.metaschema.core.metapath.item.node;
 
-import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.util.ast.NodeVisitorBase;
+import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 
-import gov.nist.secauto.metaschema.core.datatype.markup.IMarkupString;
-import gov.nist.secauto.metaschema.core.datatype.markup.flexmark.InsertAnchorExtension.InsertAnchorNode;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Predicate;
-
-import edu.umd.cs.findbugs.annotations.NonNull;
-
-public class InsertVisitor
-    extends NodeVisitorBase {
-  @NonNull
-  private final List<InsertAnchorNode> inserts
-      = new LinkedList<>();
-  @NonNull
-  private final Predicate<InsertAnchorNode> filter;
-
-  public InsertVisitor(
-      @NonNull Predicate<InsertAnchorNode> filter) {
-    this.filter = filter;
-  }
-
-  public InsertVisitor processNode(@NonNull IMarkupString<?> markup) {
-    visit(markup.getDocument());
-    return this;
-  }
+public abstract class AbstractRecursionPreventingNodeItemVisitor<CONTEXT, RESULT>
+    extends AbstractNodeItemVisitor<CONTEXT, RESULT> {
 
   @Override
-  protected void visit(Node node) {
-    if (node instanceof InsertAnchorNode) {
-      InsertAnchorNode insert = (InsertAnchorNode) node;
-      if (filter.test(insert)) {
-        inserts.add((InsertAnchorNode) node);
-      }
-    } else {
-      visitChildren(node);
-    }
+  public RESULT visitAssembly(IAssemblyNodeItem item, CONTEXT context) {
+    // only walk new records to avoid looping
+    // check if this item's definition is the same as an ancestor's
+    return isDecendant(item, item.getDefinition())
+        ? defaultResult()
+        : super.visitAssembly(item, context);
   }
 
-  @NonNull
-  public List<InsertAnchorNode> getInserts() {
-    return inserts;
+  /**
+   * Determines if the provided node is a descendant of the assembly definition.
+   *
+   * @param node
+   *          the node item to test
+   * @param assemblyDefinition
+   *          the assembly definition to determine as an ancestor of the node
+   * @return {@code true} if the assembly definition is the node's ancestor, or
+   *         {@code false} otherwise
+   */
+  protected boolean isDecendant(IAssemblyNodeItem node, IAssemblyDefinition assemblyDefinition) {
+    return node.ancestor()
+        .map(ancestor -> {
+          boolean retval = false;
+          if (ancestor instanceof IAssemblyNodeItem) {
+            IAssemblyDefinition ancestorDef = ((IAssemblyNodeItem) ancestor).getDefinition();
+            retval = ancestorDef.equals(assemblyDefinition);
+          }
+          return retval;
+        }).anyMatch(value -> value);
   }
 }

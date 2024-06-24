@@ -66,6 +66,14 @@ public abstract class AbstractMapItem<VALUE extends ICollectionValue>
   @NonNull
   private static final IMapItem<?> EMPTY = new MapItemN<>();
 
+  /**
+   * Get an immutable map item that is empty.
+   *
+   * @param <T>
+   *          the item Java type
+   * @return the empty map item
+   */
+
   @SuppressWarnings("unchecked")
   @NonNull
   public static <V extends ICollectionValue> IMapItem<V> empty() {

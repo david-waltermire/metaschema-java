@@ -66,14 +66,6 @@ public final class MapKeys {
     // disable construction
   }
 
-  /**
-   * An implementation of XPath 3.1 <a href=
-   * "https://www.w3.org/TR/xpath-functions-31/#func-map-size">map:size</a>.
-   *
-   * @param array
-   *          the arrays to join
-   * @return a new combined array
-   */
   @SuppressWarnings("unused")
   @NonNull
   private static ISequence<IAnyAtomicItem> execute(@NonNull IFunction function,
@@ -85,10 +77,16 @@ public final class MapKeys {
     return ISequence.of(keys(map));
   }
 
-  public static Stream<IAnyAtomicItem> keys(@NonNull IMapItem<?> map) {
-    return keys((Map<IMapKey, ?>) map);
-  }
-
+  /**
+   * An implementation of XPath 3.1 <a href=
+   * "https://www.w3.org/TR/xpath-functions-31/#func-map-keys">map:keys</a>.
+   *
+   * @param map
+   *          the map to get the keys for
+   * @return a stream of map keys
+   */
+  @SuppressWarnings("null")
+  @NonNull
   public static Stream<IAnyAtomicItem> keys(@NonNull Map<IMapKey, ?> map) {
     return map.keySet().stream()
         .map(IMapKey::getKey);

@@ -109,7 +109,7 @@ public final class MapPut {
       @NonNull IMapItem<V> map,
       @NonNull IAnyAtomicItem key,
       @NonNull V value) {
-    Map<IMapKey, V> copy = new HashMap<>(map);
+    @SuppressWarnings("PMD.UseConcurrentHashMap") Map<IMapKey, V> copy = new HashMap<>(map);
     copy.put(key.asMapKey(), value);
 
     return IMapItem.ofCollection(copy);

@@ -60,6 +60,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IFieldNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IFlagNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -70,7 +71,8 @@ import javax.xml.namespace.QName;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-public class TypeSystem {
+@SuppressWarnings("removal")
+public final class TypeSystem {
   private static final Map<Class<? extends IItem>, QName> ITEM_CLASS_TO_QNAME_MAP;
 
   static {
@@ -133,9 +135,16 @@ public class TypeSystem {
       retval = Stream.concat(retval, Arrays.stream(interfaces).flatMap(TypeSystem::getItemInterfaces));
     }
 
-    return retval;
+    return ObjectUtils.notNull(retval);
   }
 
+  /**
+   * Get the human-friendly data type name for the provided Metapath item class.
+   *
+   * @param clazz
+   *          the Metapath item class to get the name for
+   * @return the name or {@code null} if no name is registered for the item class
+   */
   public static String getName(@NonNull Class<? extends IItem> clazz) {
     Class<? extends IItem> itemClass = getItemInterfaces(clazz).findFirst().orElse(null);
 
@@ -144,7 +153,12 @@ public class TypeSystem {
   }
 
   private static String asPrefixedName(@NonNull QName qname) {
-    String prefix = StaticContext.getWellKnownPrefixForUri(qname.getNamespaceURI());
+    String namespace = qname.getNamespaceURI();
+    String prefix = namespace.isEmpty() ? null : StaticContext.getWellKnownPrefixForUri(namespace);
     return prefix == null ? qname.toString() : prefix + ":" + qname.getLocalPart();
+  }
+
+  private TypeSystem() {
+    // disable construction
   }
 }

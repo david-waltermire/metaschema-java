@@ -83,7 +83,7 @@ class DefaultConstraintValidatorTest {
     IAllowedValuesConstraint allowedValues = IAllowedValuesConstraint.builder()
         .source(ISource.modelSource())
         .allowedValue(IAllowedValue.of("other", MarkupLine.fromMarkdown("some documentation")))
-        .allowedOther(true)
+        .allowsOther(true)
         .build();
 
     DynamicContext dynamicContext = new DynamicContext();
@@ -129,12 +129,12 @@ class DefaultConstraintValidatorTest {
     IAllowedValuesConstraint allowedValues1 = IAllowedValuesConstraint.builder()
         .source(ISource.modelSource())
         .allowedValue(IAllowedValue.of("other", MarkupLine.fromMarkdown("some documentation")))
-        .allowedOther(true)
+        .allowsOther(true)
         .build();
     IAllowedValuesConstraint allowedValues2 = IAllowedValuesConstraint.builder()
         .source(ISource.modelSource())
         .allowedValue(IAllowedValue.of("other2", MarkupLine.fromMarkdown("some documentation")))
-        .allowedOther(true)
+        .allowsOther(true)
         .build();
 
     List<? extends IAllowedValuesConstraint> allowedValuesConstraints
@@ -184,12 +184,12 @@ class DefaultConstraintValidatorTest {
     IAllowedValuesConstraint allowedValues1 = IAllowedValuesConstraint.builder()
         .source(ISource.modelSource())
         .allowedValue(IAllowedValue.of("other", MarkupLine.fromMarkdown("some documentation")))
-        .allowedOther(true)
+        .allowsOther(true)
         .build();
     IAllowedValuesConstraint allowedValues2 = IAllowedValuesConstraint.builder()
         .source(ISource.modelSource())
         .allowedValue(IAllowedValue.of("other2", MarkupLine.fromMarkdown("some documentation")))
-        .allowedOther(false)
+        .allowsOther(false)
         .build();
 
     List<? extends IAllowedValuesConstraint> allowedValuesConstraints

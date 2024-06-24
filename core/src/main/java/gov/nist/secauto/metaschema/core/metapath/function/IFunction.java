@@ -259,7 +259,9 @@ public interface IFunction {
     private final EnumSet<FunctionProperty> properties = EnumSet.noneOf(FunctionProperty.class);
     @NonNull
     private final List<IArgument> arguments = new LinkedList<>();
+    @NonNull
     private Class<? extends IItem> returnType = IItem.class;
+    @NonNull
     private Occurrence returnOccurrence = Occurrence.ONE;
     private IFunctionExecutor functionHandler;
 
@@ -512,15 +514,6 @@ public interface IFunction {
      */
     @NonNull
     public IFunction build() {
-      ISequenceType sequenceType;
-      if (returnType == null) {
-        sequenceType = ISequenceType.EMPTY;
-      } else {
-        sequenceType = new SequenceTypeImpl(
-            returnType,
-            ObjectUtils.requireNonNull(returnOccurrence, "the return occurrence must not be null"));
-      }
-
       if (properties.contains(FunctionProperty.UNBOUNDED_ARITY) && arguments.isEmpty()) {
         throw new IllegalStateException("to allow unbounded arity, at least one argument must be provided");
       }
@@ -530,7 +523,7 @@ public interface IFunction {
           ObjectUtils.requireNonNull(namespace, "the namespace must not be null"),
           properties,
           new ArrayList<>(arguments),
-          sequenceType,
+          ISequenceType.of(returnType, returnOccurrence),
           ObjectUtils.requireNonNull(functionHandler, "the function handler must not be null"));
     }
   }

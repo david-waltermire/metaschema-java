@@ -49,6 +49,9 @@ import javax.xml.namespace.QName;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
+@SuppressWarnings({
+    "PMD.CouplingBetweenObjects"
+})
 public abstract class AbstractCSTVisitorBase
     extends AbstractAstVisitor<IExpression> {
 
@@ -131,6 +134,27 @@ public abstract class AbstractCSTVisitorBase
     return super.visit(tree);
   }
 
+  /**
+   * Parse the provided context as an n-ary phrase.
+   *
+   * @param <CONTEXT>
+   *          the Java type of the antlr context to parse
+   * @param <T>
+   *          the Java type of the child expressions produced by this parser
+   * @param <R>
+   *          the Java type of the outer expression produced by the parser
+   * @param context
+   *          the antlr context to parse
+   * @param startIndex
+   *          the child index to start parsing on
+   * @param step
+   *          the increment to advance while parsing child expressions
+   * @param parser
+   *          a binary function used to produce child expressions
+   * @param supplier
+   *          a function used to produce the other expression
+   * @return the outer expression or {@code null} if no children exist to parse
+   */
   @Nullable
   protected <CONTEXT extends ParserRuleContext, T extends IExpression, R extends IExpression>
       R nairyToCollection(

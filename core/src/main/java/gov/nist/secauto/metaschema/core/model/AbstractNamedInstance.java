@@ -26,7 +26,7 @@
 
 package gov.nist.secauto.metaschema.core.model;
 
-import gov.nist.secauto.metaschema.core.model.AbstractDefinition.NameInitializer;
+import gov.nist.secauto.metaschema.core.model.AbstractGlobalDefinition.NameInitializer;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import javax.xml.namespace.QName;

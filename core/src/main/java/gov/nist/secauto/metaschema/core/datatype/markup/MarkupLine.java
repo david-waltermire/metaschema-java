@@ -56,7 +56,7 @@ public final class MarkupLine
 
   @SuppressWarnings("null")
   @NonNull
-  protected static DataSet newParserOptions() {
+  private static DataSet newParserOptions() {
     MutableDataSet options = new MutableDataSet();
     // disable inline HTML
     options.set(Parser.HTML_BLOCK_PARSER, false);
@@ -66,18 +66,32 @@ public final class MarkupLine
 
     Collection<Extension> currentExtensions = Parser.EXTENSIONS.get(FlexmarkConfiguration.FLEXMARK_CONFIG);
     List<Extension> extensions = new LinkedList<>(currentExtensions);
-    extensions.add(SuppressPTagExtension.create());
+    extensions.add(SuppressPTagExtension.newInstance());
     Parser.EXTENSIONS.set(options, extensions);
 
     return FlexmarkConfiguration.newFlexmarkConfig(options);
   }
 
+  /**
+   * Convert the provided HTML string into markup.
+   *
+   * @param html
+   *          the HTML
+   * @return the markup instance
+   */
   @NonNull
   public static MarkupLine fromHtml(@NonNull String html) {
     return new MarkupLine(
         parseHtml(html, FLEXMARK_FACTORY.getFlexmarkHtmlConverter(), FLEXMARK_FACTORY.getMarkdownParser()));
   }
 
+  /**
+   * Convert the provided markdown string into markup.
+   *
+   * @param markdown
+   *          the markup
+   * @return the markup instance
+   */
   @NonNull
   public static MarkupLine fromMarkdown(@NonNull String markdown) {
     return new MarkupLine(parseMarkdown(markdown, FLEXMARK_FACTORY.getMarkdownParser()));
@@ -88,6 +102,12 @@ public final class MarkupLine
     return FLEXMARK_FACTORY;
   }
 
+  /**
+   * Construct a new single line markup instance.
+   *
+   * @param astNode
+   *          the parsed markup AST
+   */
   protected MarkupLine(@NonNull Document astNode) {
     super(astNode);
     Node child = astNode.getFirstChild();

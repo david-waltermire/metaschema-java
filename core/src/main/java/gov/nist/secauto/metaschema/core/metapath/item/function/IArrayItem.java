@@ -66,6 +66,13 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  */
 @SuppressWarnings("PMD.ShortMethodName")
 public interface IArrayItem<ITEM extends ICollectionValue> extends IFunction, IItem, List<ITEM>, IPrintable {
+  /**
+   * Get an empty, immutable array item.
+   *
+   * @param <T>
+   *          the item Java type
+   * @return an immutable map item
+   */
   @NonNull
   static <T extends ICollectionValue> IArrayItem<T> empty() {
     return AbstractArrayItem.empty();
@@ -216,6 +223,7 @@ public interface IArrayItem<ITEM extends ICollectionValue> extends IFunction, II
   static <T extends ICollectionValue> Collector<T, ?, IArrayItem<T>> toArrayItem() {
     return new Collector<T, List<T>, IArrayItem<T>>() {
 
+      @SuppressWarnings("null")
       @Override
       public Supplier<List<T>> supplier() {
         return ArrayList::new;
@@ -258,6 +266,15 @@ public interface IArrayItem<ITEM extends ICollectionValue> extends IFunction, II
         .flatMap(ICollectionValue::flatten);
   }
 
+  /**
+   * Get a new, immutable array item that contains the items in the provided list.
+   *
+   * @param <T>
+   *          the item Java type
+   * @param items
+   *          the list whose items are to be added to the new array
+   * @return an array item containing the specified entries
+   */
   @NonNull
   static <T extends ICollectionValue> IArrayItem<T> ofCollection( // NOPMD - intentional
       @NonNull List<T> items) {

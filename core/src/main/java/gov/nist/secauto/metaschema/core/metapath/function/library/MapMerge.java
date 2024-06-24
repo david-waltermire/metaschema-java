@@ -107,10 +107,12 @@ public final class MapMerge {
     USE_FIRST("use-first", (key, v1, v2) -> v1),
     USE_LAST("use-last", (key, v1, v2) -> v2),
     USE_ANY("use-any", (key, v1, v2) -> RANDOM.nextBoolean() ? v1 : v2),
-    COMBINE(
-        "combine",
-        (key, v1, v2) -> Stream.concat(v1.asSequence().stream(), v2.asSequence().stream())
-            .collect(ISequence.toSequence()));
+    @SuppressWarnings("null")
+    COMBINE("combine", (key, v1, v2) -> {
+      return Stream.concat(
+          v1.asSequence().stream(),
+          v2.asSequence().stream()).collect(ISequence.toSequence());
+    });
 
     private static final Map<String, Duplicates> BY_NAME;
 
@@ -120,7 +122,7 @@ public final class MapMerge {
     private final CustomCollectors.DuplicateHandler<IMapKey, ICollectionValue> duplicateHander;
 
     static {
-      Map<String, Duplicates> map = new HashMap<>();
+      @SuppressWarnings("PMD.UseConcurrentHashMap") Map<String, Duplicates> map = new HashMap<>();
       for (Duplicates value : values()) {
         map.put(value.getName(), value);
       }
@@ -176,7 +178,7 @@ public final class MapMerge {
 
   /**
    * An implementation of XPath 3.1 <a href=
-   * "https://www.w3.org/TR/xpath-functions-31/#func-array-flatten">array:flatten</a>.
+   * "https://www.w3.org/TR/xpath-functions-31/#func-map-merge">map:merge</a>.
    *
    * @param maps
    *          a collection of maps to merge
@@ -184,7 +186,7 @@ public final class MapMerge {
    *          settings that affect the merge behavior
    * @return a map containing the merged entries
    */
-  @SuppressWarnings("null")
+  @SuppressWarnings({ "null", "PMD.OnlyOneReturn" })
   @NonNull
   public static IMapItem<?> merge(@NonNull Collection<? extends Map<IMapKey, ? extends ICollectionValue>> maps,
       @NonNull Map<IMapKey, ? extends ICollectionValue> options) {

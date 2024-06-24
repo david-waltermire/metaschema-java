@@ -531,6 +531,7 @@ public abstract class AbstractAstVisitor<R> // NOPMD
    *          the provided expression context
    * @return the result
    */
+  @NonNull
   protected abstract R handleWildcard(@NonNull WildcardContext ctx);
 
   @Override

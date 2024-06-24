@@ -47,6 +47,7 @@ import java.util.Locale;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@SuppressWarnings({ "PMD.GodClass", "PMD.CyclomaticComplexity" })
 public final class ComparisonFunctions {
   /**
    * Comparison operators.

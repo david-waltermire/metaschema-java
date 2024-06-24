@@ -197,6 +197,12 @@ public class XmlAssemblyModelContainer
     container.getModelInstances().add(instance);
   }
 
+  /**
+   * Adds the provided instance to the tail of the model.
+   *
+   * @param instance
+   *          the instance to append
+   */
   public void append(@NonNull IFieldInstanceAbsolute instance) {
     QName key = instance.getXmlQName();
     getFieldInstanceMap().put(key, instance);
@@ -204,6 +210,12 @@ public class XmlAssemblyModelContainer
     getModelInstances().add(instance);
   }
 
+  /**
+   * Adds the provided instance to the tail of the model.
+   *
+   * @param instance
+   *          the instance to append
+   */
   public void append(@NonNull IAssemblyInstanceAbsolute instance) {
     QName key = instance.getXmlQName();
     getAssemblyInstanceMap().put(key, instance);
@@ -211,6 +223,12 @@ public class XmlAssemblyModelContainer
     getModelInstances().add(instance);
   }
 
+  /**
+   * Adds the provided instance to the tail of the model.
+   *
+   * @param instance
+   *          the instance to append
+   */
   public void append(@NonNull IChoiceInstance instance) {
     getChoiceInstances().add(instance);
     getModelInstances().add(instance);

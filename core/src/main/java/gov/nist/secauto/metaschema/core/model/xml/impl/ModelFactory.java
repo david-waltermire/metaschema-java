@@ -194,7 +194,7 @@ public final class ModelFactory {
 
     builder.allowedValues(toAllowedValues(xmlObject));
     if (xmlObject.isSetAllowOther()) {
-      builder.allowedOther(xmlObject.getAllowOther());
+      builder.allowsOther(xmlObject.getAllowOther());
     }
     if (xmlObject.isSetExtensible()) {
       builder.extensible(ObjectUtils.notNull(xmlObject.getExtensible()));
@@ -325,7 +325,7 @@ public final class ModelFactory {
   public static IIndexConstraint newIndexConstraint(
       @NonNull TargetedIndexConstraintType xmlObject,
       @NonNull ISource source) {
-    IIndexConstraint.Builder builder = IIndexConstraint.builder();
+    IIndexConstraint.Builder builder = IIndexConstraint.builder(ObjectUtils.requireNonNull(xmlObject.getName()));
 
     applyToBuilder(xmlObject, target(xmlObject.getTarget()), source, builder);
 
@@ -333,7 +333,6 @@ public final class ModelFactory {
       builder.remarks(remarks(ObjectUtils.notNull(xmlObject.getRemarks())));
     }
 
-    builder.name(ObjectUtils.requireNonNull(xmlObject.getName()));
     buildKeyFields(xmlObject, builder);
 
     return builder.build();
@@ -377,7 +376,8 @@ public final class ModelFactory {
       @NonNull IndexHasKeyConstraintType xmlObject,
       @NonNull String target,
       @NonNull ISource source) {
-    IIndexHasKeyConstraint.Builder builder = IIndexHasKeyConstraint.builder();
+    IIndexHasKeyConstraint.Builder builder
+        = IIndexHasKeyConstraint.builder(ObjectUtils.requireNonNull(xmlObject.getName()));
 
     applyToBuilder(xmlObject, target, source, builder);
 
@@ -385,7 +385,6 @@ public final class ModelFactory {
       builder.remarks(remarks(ObjectUtils.notNull(xmlObject.getRemarks())));
     }
 
-    builder.name(ObjectUtils.requireNonNull(xmlObject.getName()));
     buildKeyFields(xmlObject, builder);
 
     return builder.build();

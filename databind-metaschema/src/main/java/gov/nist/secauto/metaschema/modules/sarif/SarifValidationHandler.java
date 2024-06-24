@@ -326,11 +326,10 @@ public final class SarifValidationHandler {
       if (message == null) {
         message = "";
       }
-      if (message != null) {
-        Message msg = new Message();
-        msg.setText(message);
-        result.setMessage(msg);
-      }
+
+      Message msg = new Message();
+      msg.setText(message);
+      result.setMessage(msg);
     }
 
     protected void location(@NonNull IValidationFinding finding, @NonNull Result result, @NonNull URI base)

@@ -103,6 +103,20 @@ public final class ArrayGet {
     return get(target, positionItem.asInteger().intValue());
   }
 
+  /**
+   * An implementation of XPath 3.1 <a href=
+   * "https://www.w3.org/TR/xpath-functions-31/#func-array-get">array:get</a>.
+   *
+   * @param <T>
+   *          the type of items in the given Metapath array
+   * @param target
+   *          the array of Metapath items that is the target of retrieval
+   * @param position
+   *          the integer position of the item to retrieve
+   * @return the retrieved item
+   * @throws ArrayException
+   *           if the position is not in the range of 1 to array:size
+   */
   @NonNull
   public static <T extends ICollectionValue> T get(
       @NonNull List<T> target,

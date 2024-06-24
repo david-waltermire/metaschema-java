@@ -53,6 +53,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -217,72 +218,109 @@ public class XmlModule
 
       // handle definitions in this module
       // TODO: switch implementation to use the XmlObjectParser
-      {
-        // start with flag definitions
-        try (XmlCursor cursor = metaschemaNode.newCursor()) {
-          cursor.selectPath("declare namespace m='http://csrc.nist.gov/ns/oscal/metaschema/1.0';$this/m:define-flag");
+      try (XmlCursor cursor = metaschemaNode.newCursor()) {
+        assert cursor != null;
 
-          Map<QName, IFlagDefinition> flagDefinitions = new LinkedHashMap<>(); // NOPMD - intentional
-          while (cursor.toNextSelection()) {
-            GlobalFlagDefinitionType obj = ObjectUtils.notNull((GlobalFlagDefinitionType) cursor.getObject());
-            XmlGlobalFlagDefinition flag = new XmlGlobalFlagDefinition(obj, XmlModule.this); // NOPMD - intentional
-            if (LOGGER.isTraceEnabled()) {
-              LOGGER.trace("New flag definition '{}'", flag.toCoordinates());
-            }
-            flagDefinitions.put(flag.getDefinitionQName(), flag);
-          }
-          this.flagDefinitions
-              = flagDefinitions.isEmpty() ? Collections.emptyMap() : Collections.unmodifiableMap(flagDefinitions);
+        this.flagDefinitions = parseFlags(cursor);
+        this.fieldDefinitions = parseFields(cursor);
+        this.assemblyDefinitions = parseAssemblies(cursor);
+        this.rootAssemblyDefinitions = this.assemblyDefinitions.isEmpty()
+            ? Collections.emptyMap()
+            : Collections.unmodifiableMap(this.assemblyDefinitions.values().stream()
+                .filter(IAssemblyDefinition::isRoot)
+                .collect(Collectors.toMap(
+                    IAssemblyDefinition::getRootXmlQName,
+                    Function.identity(),
+                    (v1, v2) -> {
+                      throw new IllegalStateException(
+                          String.format("Duplicate root QName '%s' for root assemblies: %s and %s.",
+                              v1.getName(),
+                              v2.getName()));
+                    },
+                    LinkedHashMap::new)));
+      }
+    }
+
+    @SuppressWarnings({
+        "PMD.UseConcurrentHashMap",
+        "PMD.AvoidInstantiatingObjectsInLoops"
+    })
+    private Map<QName, IFlagDefinition> parseFlags(@NonNull XmlCursor cursor) {
+      cursor.push();
+
+      // start with flag definitions
+      cursor.selectPath("declare namespace m='http://csrc.nist.gov/ns/oscal/metaschema/1.0';$this/m:define-flag");
+
+      Map<QName, IFlagDefinition> flags = new LinkedHashMap<>();
+      while (cursor.toNextSelection()) {
+        GlobalFlagDefinitionType obj = ObjectUtils.notNull((GlobalFlagDefinitionType) cursor.getObject());
+        XmlGlobalFlagDefinition flag = new XmlGlobalFlagDefinition(obj, XmlModule.this);
+        if (LOGGER.isTraceEnabled()) {
+          LOGGER.trace("New flag definition '{}'", flag.toCoordinates());
         }
+        flags.put(flag.getDefinitionQName(), flag);
       }
 
-      {
-        // now field definitions
-        try (XmlCursor cursor = metaschemaNode.newCursor()) {
-          cursor.selectPath("declare namespace m='http://csrc.nist.gov/ns/oscal/metaschema/1.0';$this/m:define-field");
+      cursor.pop();
 
-          Map<QName, IFieldDefinition> fieldDefinitions = new LinkedHashMap<>(); // NOPMD - intentional
-          while (cursor.toNextSelection()) {
-            GlobalFieldDefinitionType obj = ObjectUtils.notNull((GlobalFieldDefinitionType) cursor.getObject());
-            XmlGlobalFieldDefinition field = new XmlGlobalFieldDefinition(obj, XmlModule.this); // NOPMD - intentional
-            if (LOGGER.isTraceEnabled()) {
-              LOGGER.trace("New field definition '{}'", field.toCoordinates());
-            }
-            fieldDefinitions.put(field.getDefinitionQName(), field);
-          }
-          this.fieldDefinitions
-              = fieldDefinitions.isEmpty() ? Collections.emptyMap() : Collections.unmodifiableMap(fieldDefinitions);
+      return flags.isEmpty()
+          ? Collections.emptyMap()
+          : Collections.unmodifiableMap(flags);
+    }
+
+    @SuppressWarnings({
+        "PMD.UseConcurrentHashMap",
+        "PMD.AvoidInstantiatingObjectsInLoops"
+    })
+    private Map<QName, IFieldDefinition> parseFields(@NonNull XmlCursor cursor) {
+      cursor.push();
+
+      // now field definitions
+      cursor.selectPath("declare namespace m='http://csrc.nist.gov/ns/oscal/metaschema/1.0';$this/m:define-field");
+
+      Map<QName, IFieldDefinition> fields = new LinkedHashMap<>();
+      while (cursor.toNextSelection()) {
+        GlobalFieldDefinitionType obj = ObjectUtils.notNull((GlobalFieldDefinitionType) cursor.getObject());
+        XmlGlobalFieldDefinition field = new XmlGlobalFieldDefinition(obj, XmlModule.this);
+        if (LOGGER.isTraceEnabled()) {
+          LOGGER.trace("New field definition '{}'", field.toCoordinates());
         }
+        fields.put(field.getDefinitionQName(), field);
       }
 
-      {
-        // finally assembly definitions
-        Map<QName, IAssemblyDefinition> assemblyDefinitions = new LinkedHashMap<>(); // NOPMD - intentional
-        Map<QName, IAssemblyDefinition> rootAssemblyDefinitions = new LinkedHashMap<>(); // NOPMD - intentional
+      cursor.pop();
 
-        try (XmlCursor cursor = metaschemaNode.newCursor()) {
-          cursor.selectPath(
-              "declare namespace m='http://csrc.nist.gov/ns/oscal/metaschema/1.0';$this/m:define-assembly");
+      return fields.isEmpty()
+          ? Collections.emptyMap()
+          : Collections.unmodifiableMap(fields);
+    }
 
-          while (cursor.toNextSelection()) {
-            GlobalAssemblyDefinitionType obj = ObjectUtils.notNull((GlobalAssemblyDefinitionType) cursor.getObject());
-            XmlGlobalAssemblyDefinition assembly = new XmlGlobalAssemblyDefinition(obj, XmlModule.this);
-            if (LOGGER.isTraceEnabled()) {
-              LOGGER.trace("New assembly definition '{}'", assembly.toCoordinates());
-            }
-            assemblyDefinitions.put(assembly.getDefinitionQName(), assembly);
-            if (assembly.isRoot()) {
-              rootAssemblyDefinitions.put(ObjectUtils.notNull(assembly.getRootXmlQName()), assembly);
-            }
-          }
+    @SuppressWarnings({
+        "PMD.UseConcurrentHashMap",
+        "PMD.AvoidInstantiatingObjectsInLoops"
+    })
+    private Map<QName, IAssemblyDefinition> parseAssemblies(XmlCursor cursor) {
+      cursor.push();
 
-          this.assemblyDefinitions
-              = assemblyDefinitions.isEmpty() ? Collections.emptyMap()
-                  : Collections.unmodifiableMap(assemblyDefinitions);
-          this.rootAssemblyDefinitions = rootAssemblyDefinitions.isEmpty() ? Collections.emptyMap()
-              : Collections.unmodifiableMap(rootAssemblyDefinitions);
+      // finally assembly definitions
+      cursor.selectPath(
+          "declare namespace m='http://csrc.nist.gov/ns/oscal/metaschema/1.0';$this/m:define-assembly");
+
+      Map<QName, IAssemblyDefinition> assemblies = new LinkedHashMap<>();
+      while (cursor.toNextSelection()) {
+        GlobalAssemblyDefinitionType obj = ObjectUtils.notNull((GlobalAssemblyDefinitionType) cursor.getObject());
+        XmlGlobalAssemblyDefinition assembly = new XmlGlobalAssemblyDefinition(obj, XmlModule.this);
+        if (LOGGER.isTraceEnabled()) {
+          LOGGER.trace("New assembly definition '{}'", assembly.toCoordinates());
         }
+        assemblies.put(assembly.getDefinitionQName(), assembly);
       }
+
+      cursor.pop();
+
+      return assemblies.isEmpty()
+          ? Collections.emptyMap()
+          : Collections.unmodifiableMap(assemblies);
     }
 
     public Map<QName, IFlagDefinition> getFlagDefinitionMap() {

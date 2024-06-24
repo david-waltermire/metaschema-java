@@ -34,6 +34,12 @@ public abstract class AbstractDecimalItem<TYPE>
     extends AbstractAnyAtomicItem<TYPE>
     implements IDecimalItem {
 
+  /**
+   * Construct a new item with the provided {@code value}.
+   *
+   * @param value
+   *          the value to wrap
+   */
   protected AbstractDecimalItem(@NonNull TYPE value) {
     super(value);
   }

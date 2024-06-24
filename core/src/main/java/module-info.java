@@ -88,7 +88,7 @@ module gov.nist.secauto.metaschema.core {
   requires flexmark.ext.escaped.character;
   requires flexmark.ext.gfm.strikethrough;
   requires flexmark.ext.superscript;
-  requires flexmark.ext.tables;
+  requires transitive flexmark.ext.tables;
   requires transitive flexmark.ext.typographic;
   requires transitive flexmark.html2md.converter;
   requires transitive flexmark.util.ast;
@@ -99,7 +99,7 @@ module gov.nist.secauto.metaschema.core {
   requires flexmark.util.format;
   requires flexmark.util.html;
   requires flexmark.util.misc;
-  requires flexmark.util.sequence;
+  requires transitive flexmark.util.sequence;
   requires flexmark.util.visitor;
 
   exports gov.nist.secauto.metaschema.core.configuration;

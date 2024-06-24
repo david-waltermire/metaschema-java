@@ -91,7 +91,7 @@ public final class MapFind {
    * An implementation of XPath 3.1 <a href=
    * "https://www.w3.org/TR/xpath-functions-31/#func-map-find">map:find</a>.
    *
-   * @param input
+   * @param items
    *          the item sequence to search for key matches
    * @param key
    *          the key for the item to retrieve
@@ -99,13 +99,23 @@ public final class MapFind {
    */
   @NonNull
   public static Stream<ICollectionValue> find(
-      @NonNull Collection<? extends IItem> input,
+      @NonNull Collection<? extends IItem> items,
       @NonNull IAnyAtomicItem key) {
-    return ObjectUtils.notNull(input.stream()
+    return ObjectUtils.notNull(items.stream()
         // handle item
         .flatMap(item -> find(ObjectUtils.notNull(item), key)));
   }
 
+  /**
+   * An implementation of XPath 3.1 <a href=
+   * "https://www.w3.org/TR/xpath-functions-31/#func-map-find">map:find</a>.
+   *
+   * @param item
+   *          the item to search for key matches
+   * @param key
+   *          the key for the item to retrieve
+   * @return the retrieved item
+   */
   @NonNull
   public static Stream<ICollectionValue> find(
       @NonNull IItem item,
@@ -143,14 +153,27 @@ public final class MapFind {
     return retval;
   }
 
+  /**
+   * An implementation of XPath 3.1 <a href=
+   * "https://www.w3.org/TR/xpath-functions-31/#func-map-find">map:find</a>.
+   * <p>
+   * This is a specialized method for processing an item that is a map item, which
+   * can be searched for a key in a much more efficient way.
+   *
+   * @param item
+   *          the item to search for key matches
+   * @param key
+   *          the key for the item to retrieve
+   * @return the retrieved item
+   */
   @NonNull
   public static Stream<ICollectionValue> find(
-      @NonNull IMapItem<?> map,
+      @NonNull IMapItem<?> item,
       @NonNull IAnyAtomicItem key) {
     return ObjectUtils.notNull(Stream.concat(
         // add matching value, if it exists
-        Stream.ofNullable(MapGet.get(map, key)),
-        map.values().stream()
+        Stream.ofNullable(MapGet.get(item, key)),
+        item.values().stream()
             // handle map values
             .flatMap(value -> find(ObjectUtils.notNull(value), key))));
   }

@@ -302,6 +302,11 @@ public interface INodeItem extends IItem, IPathSegment, INodeItemVisitable {
     return getModelItems().stream().flatMap(Collection::stream);
   }
 
+  /**
+   * Get the resource location information for the node, if known.
+   *
+   * @return the resource location information, or {@code null} if not known
+   */
   @Nullable
   IResourceLocation getLocation();
 }

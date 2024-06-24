@@ -134,7 +134,7 @@ public final class ArraySubarray {
    *          the target Metapath array
    * @param startItem
    *          the integer position of the item to start with (inclusive)
-   * @return a new array consisting of the items in the identified range
+   * @return a new array item consisting of the items in the identified range
    * @throws ArrayException
    *           if the position is not in the range of 1 to array:size
    */
@@ -159,7 +159,7 @@ public final class ArraySubarray {
    * @param lengthItem
    *          the integer count of items to include starting with the item at the
    *          start position
-   * @return a new array consisting of the items in the identified range
+   * @return a new array item consisting of the items in the identified range
    * @throws ArrayException
    *           if the length is negative or the position is not in the range of 1
    *           to array:size
@@ -173,13 +173,50 @@ public final class ArraySubarray {
     return subarray(array, startItem.asInteger().intValueExact(), lengthItem.asInteger().intValueExact());
   }
 
+  /**
+   * An implementation of XPath 3.1 <a href=
+   * "https://www.w3.org/TR/xpath-functions-31/#func-array-subarray">array:subarray</a>.
+   *
+   * @param <T>
+   *          the type of items in the given Metapath array
+   * @param array
+   *          the target Metapath array
+   * @param start
+   *          the integer position of the item to start with (inclusive)
+   * @return a new array item consisting of the items in the identified range
+   * @throws ArrayException
+   *           if the length is negative or the position is not in the range of 1
+   *           to array:size
+   */
   @NonNull
-  public static <T extends ICollectionValue> IArrayItem<T> subarray(@NonNull IArrayItem<T> array, int start) {
+  public static <T extends ICollectionValue> IArrayItem<T> subarray(
+      @NonNull IArrayItem<T> array,
+      int start) {
     return subarray(array, start, array.size() - start + 1);
   }
 
+  /**
+   * An implementation of XPath 3.1 <a href=
+   * "https://www.w3.org/TR/xpath-functions-31/#func-array-subarray">array:subarray</a>.
+   *
+   * @param <T>
+   *          the type of items in the given Metapath array
+   * @param array
+   *          the target Metapath array
+   * @param start
+   *          the integer position of the item to start with (inclusive)
+   * @param length
+   *          the integer count of items to include starting with the item at the
+   *          start position
+   * @return a new array item consisting of the items in the identified range
+   * @throws ArrayException
+   *           if the length is negative or the position is not in the range of 1
+   *           to array:size
+   */
   @NonNull
-  public static <T extends ICollectionValue> IArrayItem<T> subarray(@NonNull IArrayItem<T> array, int start,
+  public static <T extends ICollectionValue> IArrayItem<T> subarray(
+      @NonNull IArrayItem<T> array,
+      int start,
       int length) {
     if (length < 0) {
       throw new ArrayException(

@@ -77,17 +77,25 @@ public final class ArrayFlatten {
    * An implementation of XPath 3.1 <a href=
    * "https://www.w3.org/TR/xpath-functions-31/#func-array-flatten">array:flatten</a>.
    *
-   * @param input
+   * @param items
    *          the items to flatten
-   * @return the flattened items
+   * @return the stream of flattened items
    */
   @SuppressWarnings("null")
   @NonNull
-  public static Stream<IItem> flatten(@NonNull List<? extends IItem> input) {
-    return input.stream()
+  public static Stream<IItem> flatten(@NonNull List<? extends IItem> items) {
+    return items.stream()
         .flatMap(ArrayFlatten::flatten);
   }
 
+  /**
+   * An implementation of XPath 3.1 <a href=
+   * "https://www.w3.org/TR/xpath-functions-31/#func-array-flatten">array:flatten</a>.
+   *
+   * @param item
+   *          the item to flatten
+   * @return the stream of flattened items
+   */
   @SuppressWarnings("null")
   @NonNull
   public static Stream<IItem> flatten(@NonNull IItem item) {

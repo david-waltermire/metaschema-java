@@ -112,6 +112,20 @@ public final class ArrayRemove {
             .collect(Collectors.toSet())));
   }
 
+  /**
+   * An implementation of XPath 3.1 <a href=
+   * "https://www.w3.org/TR/xpath-functions-31/#func-array-remove">array:remove</a>.
+   *
+   * @param <T>
+   *          the type of items in the given Metapath array
+   * @param array
+   *          the target Metapath array
+   * @param positions
+   *          the integer position of the items to remove
+   * @return a new array containing the modification
+   * @throws ArrayException
+   *           if the position is not in the range of 1 to array:size
+   */
   @NonNull
   public static <T extends IItem> IArrayItem<T> remove(
       @NonNull IArrayItem<T> array,

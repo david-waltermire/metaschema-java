@@ -62,6 +62,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.node.IFieldNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IFlagNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IRootAssemblyNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.MockNodeItemFactory;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -84,13 +85,19 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 
 @SuppressWarnings("PMD.TooManyStaticImports")
 class BuildCstVisitorTest {
-  private static final URI NS_URI = URI.create("http://example.com/ns");
-  private static final String NS = NS_URI.toASCIIString();
-
+  @NonNull
+  private static final URI NS_URI = ObjectUtils.notNull(URI.create("http://example.com/ns"));
+  @NonNull
+  private static final String NS = ObjectUtils.notNull(NS_URI.toASCIIString());
+  @NonNull
   private static final QName ROOT = new QName(NS, "root");
+  @NonNull
   private static final QName FIELD1 = new QName(NS, "field1");
+  @NonNull
   private static final QName FIELD2 = new QName(NS, "field2");
+  @NonNull
   private static final QName UUID = new QName(NS, "uuid");
+  @NonNull
   private static final QName FLAG = new QName("flag");
 
   @RegisterExtension

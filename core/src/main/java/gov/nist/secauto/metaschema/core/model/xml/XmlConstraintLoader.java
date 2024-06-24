@@ -81,6 +81,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * every use. Any constraint set imported is also loaded and cached
  * automatically.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class XmlConstraintLoader
     extends AbstractLoader<IConstraintSet>
     implements IConstraintLoader {

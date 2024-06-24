@@ -47,6 +47,7 @@ import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
 import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -71,7 +72,10 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * <p>
  * This class is not thread safe.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
+@SuppressWarnings({
+    "PMD.CouplingBetweenObjects",
+    "PMD.GodClass" // provides validators for all types
+})
 public class DefaultConstraintValidator
     implements IConstraintValidator, IMutableConfiguration<ValidationFeature<?>> { // NOPMD - intentional
   private static final Logger LOGGER = LogManager.getLogger(DefaultConstraintValidator.class);
@@ -492,36 +496,43 @@ public class DefaultConstraintValidator
       @NonNull IMatchesConstraint constraint,
       @NonNull INodeItem node,
       @NonNull ISequence<? extends INodeItem> targets) {
-    IConstraintValidationHandler handler = getConstraintValidationHandler();
     targets.stream()
         .forEachOrdered(item -> {
           assert item != null;
           if (item.hasValue()) {
-            String value = FnData.fnDataItem(item).asString();
-
-            boolean violation = false;
-            Pattern pattern = constraint.getPattern();
-            if (pattern != null && !pattern.asMatchPredicate().test(value)) {
-              // failed pattern match
-              handler.handleMatchPatternViolation(constraint, node, item, value);
-              violation = true;
-            }
-
-            IDataTypeAdapter<?> adapter = constraint.getDataType();
-            if (adapter != null) {
-              try {
-                adapter.parse(value);
-              } catch (IllegalArgumentException ex) {
-                handler.handleMatchDatatypeViolation(constraint, node, item, value, ex);
-                violation = true;
-              }
-            }
-
-            if (!violation) {
-              handlePass(constraint, node, item);
-            }
+            validateMatchesItem(constraint, node, item);
           }
         });
+  }
+
+  private void validateMatchesItem(
+      @NonNull IMatchesConstraint constraint,
+      @NonNull INodeItem node,
+      @NonNull INodeItem item) {
+    String value = FnData.fnDataItem(item).asString();
+
+    IConstraintValidationHandler handler = getConstraintValidationHandler();
+    boolean valid = true;
+    Pattern pattern = constraint.getPattern();
+    if (pattern != null && !pattern.asMatchPredicate().test(value)) {
+      // failed pattern match
+      handler.handleMatchPatternViolation(constraint, node, item, value, pattern);
+      valid = false;
+    }
+
+    IDataTypeAdapter<?> adapter = constraint.getDataType();
+    if (adapter != null) {
+      try {
+        adapter.parse(value);
+      } catch (IllegalArgumentException ex) {
+        handler.handleMatchDatatypeViolation(constraint, node, item, value, adapter, ex);
+        valid = false;
+      }
+    }
+
+    if (valid) {
+      handlePass(constraint, node, item);
+    }
   }
 
   /**
@@ -625,16 +636,15 @@ public class DefaultConstraintValidator
 
     IConstraintValidationHandler handler = getConstraintValidationHandler();
     targets.stream()
-        .map(item -> (INodeItem) item)
         .forEachOrdered(item -> {
           assert item != null;
           if (item.hasValue()) {
             try {
               ISequence<?> result = metapath.evaluate(item, dynamicContext);
-              if (!FnBoolean.fnBoolean(result).toBoolean()) {
-                handler.handleExpectViolation(constraint, node, item, dynamicContext);
-              } else {
+              if (FnBoolean.fnBoolean(result).toBoolean()) {
                 handlePass(constraint, node, item);
+              } else {
+                handler.handleExpectViolation(constraint, node, item, dynamicContext);
               }
             } catch (MetapathException ex) {
               rethrowConstraintError(constraint, item, ex);
@@ -766,12 +776,11 @@ public class DefaultConstraintValidator
   public void finalizeValidation(DynamicContext dynamicContext) {
     // key references
     for (Map.Entry<String, List<KeyRef>> entry : indexNameToKeyRefMap.entrySet()) {
-      String indexName = entry.getKey();
+      String indexName = ObjectUtils.notNull(entry.getKey());
       IIndex index = indexNameToIndexMap.get(indexName);
 
       List<KeyRef> keyRefs = entry.getValue();
 
-      IConstraintValidationHandler handler = getConstraintValidationHandler();
       for (KeyRef keyRef : keyRefs) {
         IIndexHasKeyConstraint constraint = keyRef.getConstraint();
 
@@ -780,26 +789,37 @@ public class DefaultConstraintValidator
         for (INodeItem item : targets) {
           assert item != null;
 
-          try {
-            List<String> key = IIndex.toKey(item, constraint.getKeyFields(), dynamicContext);
-
-            if (index == null) {
-              handler.handleGenericValidationViolation(constraint, node, item,
-                  String.format("Key reference to undefined index with name '%s'", indexName));
-            } else {
-              INodeItem referencedItem = index.get(key);
-
-              if (referencedItem == null) {
-                handler.handleIndexMiss(constraint, node, item, key);
-              } else {
-                handlePass(constraint, node, item);
-              }
-            }
-          } catch (MetapathException ex) {
-            handler.handleKeyMatchError(constraint, node, item, ex);
-          }
+          validateKeyRef(constraint, node, item, indexName, index, dynamicContext);
         }
       }
+    }
+  }
+
+  private void validateKeyRef(
+      @NonNull IIndexHasKeyConstraint constraint,
+      @NonNull INodeItem contextNode,
+      @NonNull INodeItem item,
+      @NonNull String indexName,
+      @Nullable IIndex index,
+      @NonNull DynamicContext dynamicContext) {
+    IConstraintValidationHandler handler = getConstraintValidationHandler();
+    try {
+      List<String> key = IIndex.toKey(item, constraint.getKeyFields(), dynamicContext);
+
+      if (index == null) {
+        handler.handleMissingIndexViolation(constraint, contextNode, item, ObjectUtils.notNull(
+            String.format("Key reference to undefined index with name '%s'", indexName)));
+      } else {
+        INodeItem referencedItem = index.get(key);
+
+        if (referencedItem == null) {
+          handler.handleIndexMiss(constraint, contextNode, item, key);
+        } else {
+          handlePass(constraint, contextNode, item);
+        }
+      }
+    } catch (MetapathException ex) {
+      handler.handleKeyMatchError(constraint, contextNode, item, ex);
     }
   }
 
@@ -854,7 +874,7 @@ public class DefaultConstraintValidator
         IConstraintValidationHandler handler = getConstraintValidationHandler();
         for (Pair<IAllowedValuesConstraint, IDefinitionNodeItem<?, ?>> pair : constraints) {
           IAllowedValuesConstraint allowedValues = pair.getLeft();
-          IDefinitionNodeItem<?, ?> node = pair.getRight();
+          IDefinitionNodeItem<?, ?> node = ObjectUtils.notNull(pair.getRight());
           IAllowedValue matchingValue = allowedValues.getAllowedValue(value);
           if (matchingValue != null) {
             match = true;

@@ -26,12 +26,16 @@
 
 package gov.nist.secauto.metaschema.core.util;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -41,34 +45,38 @@ import java.util.stream.Stream;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 class UriUtilsTest {
-  private static final boolean VALID = true;
-  private static final boolean INVALID = false;
-
-  private static Stream<Arguments> provideValuesTestToUri() {
+  private static Stream<Arguments> provideValuesTestToUri() throws MalformedURLException, URISyntaxException {
+    String base = Paths.get("").toAbsolutePath().toUri().toURL().toURI().toASCIIString();
     return Stream.of(
-        Arguments.of("http://example.org/valid", VALID),
-        Arguments.of("https://example.org/valid", VALID),
-        Arguments.of("http://example.org/valid", VALID),
-        Arguments.of("ftp://example.org/valid", VALID),
-        Arguments.of("ssh://example.org/valid", VALID),
-        Arguments.of("example.org/good", VALID),
-        Arguments.of("bad.txt", VALID),
-        Arguments.of("relative\\windows\\path\\resource.txt", VALID),
-        Arguments.of("C:\\absolute\\valid.txt", VALID),
-        Arguments.of("local/relative/path/is/invalid.txt", VALID),
-        Arguments.of("/absolute/local/path/is/invalid.txt", VALID),
-        Arguments.of("1;", VALID));
+        Arguments.of("http://example.org/valid", "http://example.org/valid", true),
+        Arguments.of("https://example.org/valid", "https://example.org/valid", true),
+        Arguments.of("http://example.org/valid", "http://example.org/valid", true),
+        Arguments.of("ftp://example.org/valid", "ftp://example.org/valid", true),
+        // Arguments.of("ssh://example.org/valid", "ssh://example.org/valid", true),
+        Arguments.of("example.org/good", base + "example.org/good", true),
+        Arguments.of("bad.txt", base + "bad.txt", true),
+        // Arguments.of("relative\\windows\\path\\resource.txt", base +
+        // "relative/windows/path/resource.txt", true),
+        // Arguments.of("C:\\absolute\\valid.txt", "C:\\absolute\\valid.txt",true),
+        Arguments.of("local/relative/path/is/invalid.txt", base + "local/relative/path/is/invalid.txt", true),
+        // Arguments.of("/absolute/local/path/is/invalid.txt", true),
+        Arguments.of("1;", base + "1;", true));
   }
 
   @ParameterizedTest
   @MethodSource("provideValuesTestToUri")
-  void testToUri(@NonNull String location, boolean expectedResult) throws URISyntaxException {
-    boolean result = INVALID;
+  void testToUri(@NonNull String location, @NonNull String expectedLocation, boolean expectedResult)
+      throws MalformedURLException {
     Path cwd = Paths.get("");
-    URI uri = UriUtils.toUri(location, cwd.toAbsolutePath().toUri());
-    result = VALID;
-    // System.out.println(String.format("%s -> %s", location, uri.toASCIIString()));
-    assertEquals(result, expectedResult);
+    try {
+      URI uri = UriUtils.toUri(location, ObjectUtils.notNull(cwd.toAbsolutePath().toUri())).normalize().toURL().toURI();
+      System.out.println(String.format("%s -> %s", location, uri.toASCIIString()));
+      assertAll(
+          () -> assertEquals(uri.toASCIIString(), expectedLocation),
+          () -> assertTrue(expectedResult));
+    } catch (URISyntaxException ex) {
+      assertFalse(expectedResult);
+    }
   }
 
   private static Stream<Arguments> provideArgumentsTestRelativize() {

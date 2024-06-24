@@ -32,6 +32,7 @@ import gov.nist.secauto.metaschema.core.metapath.cst.IExpressionVisitor;
 import gov.nist.secauto.metaschema.core.metapath.item.ItemUtils;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDefinitionNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import javax.xml.namespace.QName;
 
@@ -42,6 +43,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * <a href="https://www.w3.org/TR/xpath-31/#dt-expanded-qname">expanded QName
  * name test</a>.
  */
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class NameTest
     implements INameTestExpression {
 
@@ -77,9 +79,9 @@ public class NameTest
   public ISequence<? extends INodeItem> accept(
       DynamicContext dynamicContext,
       ISequence<?> focus) {
-    return ISequence.of(focus.stream()
+    return ISequence.of(ObjectUtils.notNull(focus.stream()
         .map(ItemUtils::checkItemIsNodeItemForStep)
-        .filter(this::match));
+        .filter(this::match)));
   }
 
   @SuppressWarnings("PMD.UnusedPrivateMethod")

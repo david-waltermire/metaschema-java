@@ -35,6 +35,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.ItemUtils;
 import gov.nist.secauto.metaschema.core.metapath.item.node.ICycledAssemblyNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.stream.Stream;
 
@@ -92,7 +93,7 @@ public abstract class AbstractPathExpression<RESULT_TYPE extends IItem>
             matches = searchExpression(
                 expression,
                 dynamicContext,
-                ISequence.of(Stream.concat(flags, modelItems)));
+                ISequence.of(ObjectUtils.notNull(Stream.concat(flags, modelItems))));
           }
           return matches;
         });

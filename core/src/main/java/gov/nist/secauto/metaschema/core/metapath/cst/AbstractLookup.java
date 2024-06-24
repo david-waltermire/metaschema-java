@@ -26,206 +26,41 @@
 
 package gov.nist.secauto.metaschema.core.metapath.cst;
 
-import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
-import gov.nist.secauto.metaschema.core.metapath.ICollectionValue;
-import gov.nist.secauto.metaschema.core.metapath.ISequence;
-import gov.nist.secauto.metaschema.core.metapath.InvalidTypeMetapathException;
-import gov.nist.secauto.metaschema.core.metapath.function.library.ArrayGet;
-import gov.nist.secauto.metaschema.core.metapath.function.library.FnData;
-import gov.nist.secauto.metaschema.core.metapath.function.library.MapGet;
-import gov.nist.secauto.metaschema.core.metapath.item.IItem;
-import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
-import gov.nist.secauto.metaschema.core.metapath.item.atomic.IIntegerItem;
-import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
-import gov.nist.secauto.metaschema.core.metapath.item.function.ArrayException;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IArrayItem;
+import gov.nist.secauto.metaschema.core.metapath.item.function.IKeySpecifier;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IMapItem;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-
-import java.util.stream.Stream;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+/**
+ * An implementation of
+ * <a href="https://www.w3.org/TR/xpath-31/#id-lookup">Lookup Operators</a>
+ * supporting access to items in Metapath maps and arrays.
+ * <p>
+ * Provides support for various types of key- and index-based lookups related to
+ * {@link IMapItem} and {@link IArrayItem} objects.
+ */
 public abstract class AbstractLookup implements IExpression {
   @NonNull
   private final IKeySpecifier keySpecifier;
 
+  /**
+   * Construct a new lookup expression that uses the provided key specifier.
+   *
+   * @param keySpecifier
+   *          the key specifier that identifies how to lookup entries
+   */
   protected AbstractLookup(@NonNull IKeySpecifier keySpecifier) {
     this.keySpecifier = keySpecifier;
   }
 
+  /**
+   * Get the key specifier implementation.
+   *
+   * @return the key specifier
+   */
   @NonNull
   public IKeySpecifier getKeySpecifier() {
     return keySpecifier;
-  }
-
-  protected interface IKeySpecifier {
-
-    default Stream<? extends ICollectionValue> lookup(
-        @NonNull IItem item,
-        @NonNull DynamicContext dynamicContext,
-        @NonNull ISequence<?> focus) {
-      Stream<? extends ICollectionValue> result;
-      if (item instanceof IArrayItem) {
-        result = lookupInArray((IArrayItem<?>) item, dynamicContext, focus);
-      } else if (item instanceof IMapItem) {
-        result = lookupInMap((IMapItem<?>) item, dynamicContext, focus);
-      } else {
-        throw new InvalidTypeMetapathException(item,
-            String.format("Item type '%s' is not an array or map.", item.getClass().getName()));
-      }
-      return result;
-    }
-
-    @NonNull
-    Stream<? extends ICollectionValue> lookupInArray(
-        @NonNull IArrayItem<?> item,
-        @NonNull DynamicContext dynamicContext,
-        @NonNull ISequence<?> focus);
-
-    @NonNull
-    Stream<? extends ICollectionValue> lookupInMap(
-        @NonNull IMapItem<?> item,
-        @NonNull DynamicContext dynamicContext,
-        @NonNull ISequence<?> focus);
-  }
-
-  protected static class NCNameKeySpecifier implements IKeySpecifier {
-    @NonNull
-    private final String name;
-
-    public NCNameKeySpecifier(String name) {
-      this.name = name;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    @Override
-    public Stream<? extends IItem> lookupInArray(
-        IArrayItem<?> item,
-        DynamicContext dynamicContext,
-        ISequence<?> focus) {
-      throw new InvalidTypeMetapathException(item,
-          String.format("The key name-based lookup '%s' is not appropriate for an array.", getName()));
-    }
-
-    @Override
-    public Stream<? extends ICollectionValue> lookupInMap(
-        IMapItem<?> item,
-        DynamicContext dynamicContext,
-        ISequence<?> focus) {
-      return ObjectUtils.notNull(Stream.ofNullable(MapGet.get(item, IStringItem.valueOf(name))));
-    }
-  }
-
-  protected static class IntegerLiteralKeySpecifier implements IKeySpecifier {
-    private final int index;
-
-    public IntegerLiteralKeySpecifier(IIntegerItem literal) {
-      index = literal.asInteger().intValueExact();
-    }
-
-    @Override
-    public Stream<? extends ICollectionValue> lookupInArray(
-        IArrayItem<?> item,
-        DynamicContext dynamicContext,
-        ISequence<?> focus) {
-      try {
-        return ObjectUtils.notNull(Stream.ofNullable(ArrayGet.get(item, index)));
-      } catch (IndexOutOfBoundsException ex) {
-        throw new ArrayException(
-            ArrayException.INDEX_OUT_OF_BOUNDS,
-            String.format("The index %d is outside the range of values for the array size '%d'.",
-                index + 1,
-                item.size()),
-            ex);
-      }
-    }
-
-    @Override
-    public Stream<? extends ICollectionValue> lookupInMap(
-        IMapItem<?> item,
-        DynamicContext dynamicContext,
-        ISequence<?> focus) {
-      return ObjectUtils.notNull(Stream.ofNullable(MapGet.get(item, IIntegerItem.valueOf(index))));
-    }
-  }
-
-  protected static class WildcardKeySpecifier implements IKeySpecifier {
-
-    @Override
-    public Stream<? extends ICollectionValue> lookupInArray(
-        IArrayItem<?> item,
-        DynamicContext dynamicContext,
-        ISequence<?> focus) {
-      return ObjectUtils.notNull(item.stream());
-    }
-
-    @Override
-    public Stream<? extends ICollectionValue> lookupInMap(
-        IMapItem<?> item,
-        DynamicContext dynamicContext,
-        ISequence<?> focus) {
-      return ObjectUtils.notNull(item.values().stream());
-    }
-  }
-
-  public static class ParenthesizedExprKeySpecifier implements IKeySpecifier {
-    @NonNull
-    private final IExpression keyExpression;
-
-    public ParenthesizedExprKeySpecifier(@NonNull IExpression keyExpression) {
-      this.keyExpression = keyExpression;
-    }
-
-    public IExpression getKeyExpression() {
-      return keyExpression;
-    }
-
-    @Override
-    public Stream<ICollectionValue> lookupInArray(
-        IArrayItem<?> item,
-        DynamicContext dynamicContext,
-        ISequence<?> focus) {
-      ISequence<IAnyAtomicItem> keys = FnData.fnData(getKeyExpression().accept(dynamicContext, focus));
-
-      return ObjectUtils.notNull(keys.stream()
-          .flatMap(key -> {
-            if (key instanceof IIntegerItem) {
-              int index = ((IIntegerItem) key).asInteger().intValueExact();
-              try {
-                return Stream.ofNullable(ArrayGet.get(item, index));
-              } catch (IndexOutOfBoundsException ex) {
-                throw new ArrayException(
-                    ArrayException.INDEX_OUT_OF_BOUNDS,
-                    String.format("The index %d is outside the range of values for the array size '%d'.",
-                        index + 1,
-                        item.size()),
-                    ex);
-              }
-            }
-            throw new InvalidTypeMetapathException(item,
-                String.format("The key '%s' of type '%s' is not appropriate for an array lookup.",
-                    key.asString(),
-                    key.getClass().getName()));
-
-          }));
-    }
-
-    @Override
-    public Stream<ICollectionValue> lookupInMap(
-        IMapItem<?> item,
-        DynamicContext dynamicContext,
-        ISequence<?> focus) {
-      ISequence<? extends IAnyAtomicItem> keys
-          = ObjectUtils.requireNonNull(FnData.fnData(getKeyExpression().accept(dynamicContext, focus)));
-
-      return keys.stream()
-          .flatMap(key -> {
-            return Stream.ofNullable(MapGet.get(item, key));
-          });
-    }
   }
 }

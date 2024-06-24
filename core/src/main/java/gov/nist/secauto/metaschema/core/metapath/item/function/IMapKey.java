@@ -32,12 +32,11 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 
 public interface IMapKey {
 
+  /**
+   * Get the atomic item used as the key.
+   *
+   * @return the atomic item
+   */
   @NonNull
   IAnyAtomicItem getKey();
-
-  @Override
-  int hashCode();
-
-  @Override
-  boolean equals(Object obj);
 }

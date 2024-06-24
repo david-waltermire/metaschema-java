@@ -111,7 +111,7 @@ public final class DefaultExpectConstraint
   }
 
   @Override
-  public CharSequence generateMessage(@NonNull INodeItem item, @NonNull DynamicContext context) {
+  public String generateMessage(@NonNull INodeItem item, @NonNull DynamicContext context) {
     String message = getMessage();
 
     return message == null ? null
@@ -120,6 +120,6 @@ public final class DefaultExpectConstraint
           @NonNull String metapath = match.group(2);
           MetapathExpression expr = MetapathExpression.compile(metapath);
           return expr.evaluateAs(item, MetapathExpression.ResultType.STRING, context);
-        });
+        }).toString();
   }
 }

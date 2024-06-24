@@ -178,7 +178,7 @@ public final class ConstraintBindingSupport {
       @NonNull FlagAllowedValues obj,
       @NonNull ISource source) {
     IAllowedValuesConstraint.Builder builder = IAllowedValuesConstraint.builder()
-        .allowedOther(ModelSupport.yesOrNo(obj.getAllowOther()))
+        .allowsOther(ModelSupport.yesOrNo(obj.getAllowOther()))
         .extensible(extensible(obj.getExtensible()));
     applyCommonValues(obj, null, source, builder);
 
@@ -193,7 +193,7 @@ public final class ConstraintBindingSupport {
       @NonNull TargetedAllowedValuesConstraint obj,
       @NonNull ISource source) {
     IAllowedValuesConstraint.Builder builder = IAllowedValuesConstraint.builder()
-        .allowedOther(ModelSupport.yesOrNo(obj.getAllowOther()))
+        .allowsOther(ModelSupport.yesOrNo(obj.getAllowOther()))
         .extensible(extensible(ObjectUtils.requireNonNull(obj.getExtensible())));
     applyCommonValues(obj, obj.getTarget(), source, builder);
 
@@ -255,8 +255,7 @@ public final class ConstraintBindingSupport {
   private static IIndexHasKeyConstraint newIndexHasKey(
       @NonNull FlagIndexHasKey obj,
       @NonNull ISource source) {
-    IIndexHasKeyConstraint.Builder builder = IIndexHasKeyConstraint.builder()
-        .name(ObjectUtils.requireNonNull(obj.getName()));
+    IIndexHasKeyConstraint.Builder builder = IIndexHasKeyConstraint.builder(ObjectUtils.requireNonNull(obj.getName()));
     applyCommonValues(obj, null, source, builder);
     handleKeyConstraints(ObjectUtils.requireNonNull(obj.getKeyFields()), builder);
     return builder.build();
@@ -266,8 +265,7 @@ public final class ConstraintBindingSupport {
   private static IIndexHasKeyConstraint newIndexHasKey(
       @NonNull TargetedIndexHasKeyConstraint obj,
       @NonNull ISource source) {
-    IIndexHasKeyConstraint.Builder builder = IIndexHasKeyConstraint.builder()
-        .name(ObjectUtils.requireNonNull(obj.getName()));
+    IIndexHasKeyConstraint.Builder builder = IIndexHasKeyConstraint.builder(ObjectUtils.requireNonNull(obj.getName()));
     applyCommonValues(obj, obj.getTarget(), source, builder);
     handleKeyConstraints(ObjectUtils.requireNonNull(obj.getKeyFields()), builder);
     return builder.build();
@@ -319,8 +317,7 @@ public final class ConstraintBindingSupport {
   private static IIndexConstraint newIndex(
       @NonNull TargetedIndexConstraint obj,
       @NonNull ISource source) {
-    IIndexConstraint.Builder builder = IIndexConstraint.builder()
-        .name(ObjectUtils.requireNonNull(obj.getName()));
+    IIndexConstraint.Builder builder = IIndexConstraint.builder(ObjectUtils.requireNonNull(obj.getName()));
     applyCommonValues(obj, obj.getTarget(), source, builder);
     handleKeyConstraints(ObjectUtils.requireNonNull(obj.getKeyFields()), builder);
 

@@ -52,6 +52,14 @@ public class FlagContainerBuilder<T extends IFlagInstance> implements IFlagConta
   @NonNull
   private final List<T> flags;
 
+  /**
+   * Construct a new flag container using the provided flag qualified name as the
+   * JSON key.
+   *
+   * @param jsonKeyName
+   *          the qualified name of the JSON key or {@code null} if no JSON key is
+   *          configured
+   */
   public FlagContainerBuilder(@Nullable QName jsonKeyName) {
     this.jsonKeyName = jsonKeyName;
     this.flags = new LinkedList<>();

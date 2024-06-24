@@ -37,12 +37,35 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * Metapath expression.
  */
 public interface ITargetedConstraints extends IValueConstrained {
+  /**
+   * Get the Metapath expression used to identify the target of the constraint.
+   *
+   * @return the uncompiled Metapath expression
+   */
   @NonNull
   String getTargetExpression();
 
+  /**
+   * Apply the constraint to the provided definition.
+   *
+   * @param definition
+   *          the definition to apply the constraint to
+   */
   void target(@NonNull IFlagDefinition definition);
 
+  /**
+   * Apply the constraint to the provided definition.
+   *
+   * @param definition
+   *          the definition to apply the constraint to
+   */
   void target(@NonNull IFieldDefinition definition);
 
+  /**
+   * Apply the constraint to the provided definition.
+   *
+   * @param definition
+   *          the definition to apply the constraint to
+   */
   void target(@NonNull IAssemblyDefinition definition);
 }

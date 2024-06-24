@@ -35,21 +35,27 @@ import java.util.stream.Stream;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+/**
+ * A Metapath sequence supporting a singleton item.
+ *
+ * @param <ITEM>
+ *          the Java type of the items
+ */
 public class SingletonSequence<ITEM extends IItem>
     extends AbstractSequence<ITEM> {
   @NonNull
   private final ITEM item;
 
+  /**
+   * Construct a new sequence with the provided item.
+   *
+   * @param item
+   *          the item to add to the sequence
+   */
   public SingletonSequence(@NonNull ITEM item) {
     this.item = item;
   }
 
-  @NonNull
-  protected ITEM getItem() {
-    return item;
-  }
-
-  @SuppressWarnings("null")
   @Override
   public List<ITEM> getValue() {
     return CollectionUtil.singletonList(item);

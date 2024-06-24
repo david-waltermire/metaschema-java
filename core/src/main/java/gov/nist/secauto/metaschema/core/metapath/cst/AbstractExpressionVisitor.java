@@ -35,6 +35,7 @@ import gov.nist.secauto.metaschema.core.metapath.cst.math.Modulo;
 import gov.nist.secauto.metaschema.core.metapath.cst.math.Multiplication;
 import gov.nist.secauto.metaschema.core.metapath.cst.math.Subtraction;
 import gov.nist.secauto.metaschema.core.metapath.cst.path.Axis;
+import gov.nist.secauto.metaschema.core.metapath.cst.path.ContextItem;
 import gov.nist.secauto.metaschema.core.metapath.cst.path.Flag;
 import gov.nist.secauto.metaschema.core.metapath.cst.path.ModelInstance;
 import gov.nist.secauto.metaschema.core.metapath.cst.path.NameTest;

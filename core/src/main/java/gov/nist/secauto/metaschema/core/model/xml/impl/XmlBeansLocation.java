@@ -34,11 +34,25 @@ import org.apache.xmlbeans.XmlLineNumber;
 import org.apache.xmlbeans.XmlObject;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
-public class XmlBeansLocation implements IResourceLocation {
+/**
+ * Provides location information for an XMLBeans object.
+ */
+public final class XmlBeansLocation implements IResourceLocation {
   @NonNull
   private final XmlLineNumber lineNumber;
 
+  /**
+   * Get the location information for an XMLBeans object if the location is
+   * available.
+   *
+   * @param xmlObject
+   *          the XMLBeans object to get the location information for
+   * @return the location information or {@code null} if the location information
+   *         is unavailable
+   */
+  @Nullable
   public static IResourceLocation toLocation(@NonNull XmlObject xmlObject) {
     try (XmlCursor cursor = xmlObject.newCursor()) {
       XmlBookmark bookmark = cursor.getBookmark(XmlLineNumber.class);
@@ -46,7 +60,7 @@ public class XmlBeansLocation implements IResourceLocation {
     }
   }
 
-  public XmlBeansLocation(@NonNull XmlLineNumber lineNumber) {
+  private XmlBeansLocation(@NonNull XmlLineNumber lineNumber) {
     this.lineNumber = lineNumber;
   }
 

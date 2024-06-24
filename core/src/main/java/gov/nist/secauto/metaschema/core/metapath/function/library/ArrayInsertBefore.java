@@ -113,8 +113,26 @@ public final class ArrayInsertBefore {
     return insertBefore(array, positionItem.asInteger().intValueExact(), member);
   }
 
+  /**
+   * An implementation of XPath 3.1 <a href=
+   * "https://www.w3.org/TR/xpath-functions-31/#func-array-insert-before">array:insert-before</a>.
+   *
+   * @param <T>
+   *          the type of items in the given Metapath array
+   * @param array
+   *          the target Metapath array
+   * @param position
+   *          the integer position of the item to insert before
+   * @param member
+   *          the Metapath item to insert into the identified array
+   * @return a new array containing the modification
+   * @throws ArrayException
+   *           if the position is not in the range of 1 to array:size
+   */
   @NonNull
-  public static <T extends ICollectionValue> IArrayItem<T> insertBefore(@NonNull IArrayItem<T> array, int position,
+  public static <T extends ICollectionValue> IArrayItem<T> insertBefore(
+      @NonNull IArrayItem<T> array,
+      int position,
       @NonNull T member) {
     return ArrayJoin.join(ObjectUtils.notNull(List.of(
         ArraySubarray.subarray(array, 1, position - 1),

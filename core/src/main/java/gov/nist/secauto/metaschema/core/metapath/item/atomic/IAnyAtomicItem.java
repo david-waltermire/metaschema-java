@@ -28,6 +28,7 @@ package gov.nist.secauto.metaschema.core.metapath.item.atomic;
 
 import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
 import gov.nist.secauto.metaschema.core.metapath.IPrintable;
+import gov.nist.secauto.metaschema.core.metapath.item.function.IMapItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IMapKey;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
@@ -75,6 +76,11 @@ public interface IAnyAtomicItem extends IAtomicValuedItem, IPrintable {
   @NonNull
   String asString();
 
+  /**
+   * Get the atomic item value as a map key for use with an {@link IMapItem}.
+   *
+   * @return the map key
+   */
   @NonNull
   IMapKey asMapKey();
 

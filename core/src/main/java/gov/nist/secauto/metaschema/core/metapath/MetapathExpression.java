@@ -32,8 +32,8 @@ import gov.nist.secauto.metaschema.core.metapath.antlr.Metapath10Lexer;
 import gov.nist.secauto.metaschema.core.metapath.antlr.ParseTreePrinter;
 import gov.nist.secauto.metaschema.core.metapath.cst.BuildCSTVisitor;
 import gov.nist.secauto.metaschema.core.metapath.cst.CSTPrinter;
-import gov.nist.secauto.metaschema.core.metapath.cst.ContextItem;
 import gov.nist.secauto.metaschema.core.metapath.cst.IExpression;
+import gov.nist.secauto.metaschema.core.metapath.cst.path.ContextItem;
 import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.library.FnBoolean;
 import gov.nist.secauto.metaschema.core.metapath.function.library.FnData;
@@ -225,6 +225,11 @@ public class MetapathExpression {
     return expression;
   }
 
+  /**
+   * Get the static context used to compile this Metapath.
+   *
+   * @return the static context
+   */
   @NonNull
   protected StaticContext getStaticContext() {
     return staticContext;
@@ -351,7 +356,7 @@ public class MetapathExpression {
    *           if the provided sequence is incompatible with the requested result
    *           type
    */
-  @SuppressWarnings("PMD.NullAssignment") // for readability
+  @SuppressWarnings({ "PMD.NullAssignment", "PMD.CyclomaticComplexity" }) // for readability
   @Nullable
   protected <T> T toResultType(@NonNull ISequence<?> sequence, @NonNull ResultType resultType) {
     Object result;

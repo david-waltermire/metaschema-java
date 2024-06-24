@@ -48,6 +48,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * This implementation is inspired by the similar implementation provided by the
  * JDK.
  */
+@SuppressWarnings("PMD.MissingStaticMethodInNonInstantiatableClass")
 public final class ImmutableCollections {
 
   private ImmutableCollections() {
@@ -58,6 +59,12 @@ public final class ImmutableCollections {
     return new UnsupportedOperationException("method not supported");
   }
 
+  /**
+   * A base class for an immutable collection.
+   *
+   * @param <T>
+   *          the item Java type
+   */
   public abstract static class AbstractImmutableCollection<T>
       extends AbstractCollection<T> {
 
@@ -97,6 +104,12 @@ public final class ImmutableCollections {
     }
   }
 
+  /**
+   * A base class for an immutable list.
+   *
+   * @param <T>
+   *          the item Java type
+   */
   public abstract static class AbstractImmutableList<T>
       extends AbstractImmutableCollection<T>
       implements List<T> {
@@ -122,11 +135,22 @@ public final class ImmutableCollections {
     }
   }
 
-  public abstract static class AbstractImmutableDelegatedCollection<T>
+  /**
+   * A base class for an immutable list that wraps a list.
+   *
+   * @param <T>
+   *          the item Java type
+   */
+  public abstract static class AbstractImmutableDelegatedList<T>
       extends AbstractImmutableList<T> {
 
+    /**
+     * Get the wrapped list.
+     *
+     * @return the list
+     */
     @NonNull
-    public abstract List<T> getValue();
+    protected abstract List<T> getValue();
 
     @Override
     public T get(int index) {
@@ -179,6 +203,14 @@ public final class ImmutableCollections {
     }
   }
 
+  /**
+   * A base class for an immutable map.
+   *
+   * @param <K>
+   *          the map key Java type
+   * @param <V>
+   *          the map value Java type
+   */
   public abstract static class AbstractImmutableMap<K, V>
       extends AbstractMap<K, V> {
     @Override
@@ -247,11 +279,24 @@ public final class ImmutableCollections {
     }
   }
 
+  /**
+   * A base class for an immutable map that wraps a map.
+   *
+   * @param <K>
+   *          the map key Java type
+   * @param <V>
+   *          the map value Java type
+   */
   public abstract static class AbstractImmutableDelegatedMap<K, V>
       extends AbstractImmutableMap<K, V> {
 
+    /**
+     * Get the wrapped map.
+     *
+     * @return the map
+     */
     @NonNull
-    public abstract Map<K, V> getValue();
+    protected abstract Map<K, V> getValue();
 
     @Override
     public Set<Entry<K, V>> entrySet() {

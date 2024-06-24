@@ -10,7 +10,7 @@
 	<artifactId>metaschema-databind</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Metaschema Java Data/Object Binding and Code Generation</name>
+	<name>Metaschema Java Data Binding and Code Generation</name>
 	<description>A Metaschema binding-based parser and code generator for Java
 		objects supporting serialization of conformant XML, JSON, and YAML data.</description>
 

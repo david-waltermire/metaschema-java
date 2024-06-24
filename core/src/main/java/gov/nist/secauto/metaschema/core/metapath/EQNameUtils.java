@@ -33,7 +33,6 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
 
 public final class EQNameUtils {
   private static final Pattern URI_QUALIFIED_NAME = Pattern.compile("^Q\\{([^{}]*)\\}(.+)$");
@@ -44,16 +43,44 @@ public final class EQNameUtils {
     // disable construction
   }
 
+  /**
+   * Parse a name as a qualified name.
+   * <p>
+   * The name can be:
+   * <ul>
+   * <li>A URI qualified name of the form <code>Q{URI}name</code>, where the URI
+   * represents the namespace</li>
+   * <li>A lexical name of the forms <code>prefix:name</code> or
+   * <code>name</code>, where the prefix represents the namespace</li>
+   * </ul>
+   *
+   * @param name
+   *          the name to parse
+   * @param resolver
+   *          the prefix resolver to use to determine the namespace for a given
+   *          prefix
+   * @return the parsed qualified name
+   */
   @NonNull
   public static QName parseName(
       @NonNull String name,
-      @Nullable IEQNamePrefixResolver resolver) {
+      @NonNull IEQNamePrefixResolver resolver) {
     Matcher matcher = URI_QUALIFIED_NAME.matcher(name);
     return matcher.matches()
         ? newUriQualifiedName(matcher)
         : parseLexicalQName(name, resolver);
   }
 
+  /**
+   * Parse a URI qualified name.
+   * <p>
+   * The name is expected to be a URI qualified name of the form
+   * <code>{URI}name</code>, where the URI represents the namespace.
+   *
+   * @param name
+   *          the name to parse
+   * @return the parsed qualified name
+   */
   @NonNull
   public static QName parseUriQualifiedName(@NonNull String name) {
     Matcher matcher = URI_QUALIFIED_NAME.matcher(name);
@@ -69,10 +96,24 @@ public final class EQNameUtils {
     return new QName(matcher.group(1), matcher.group(2));
   }
 
+  /**
+   * Parse a lexical name as a qualified name.
+   * <p>
+   * The name is expected to be a lexical name of the forms
+   * <code>prefix:name</code> or <code>name</code>, where the prefix represents
+   * the namespace.
+   *
+   * @param name
+   *          the name to parse
+   * @param resolver
+   *          the prefix resolver to use to determine the namespace for a given
+   *          prefix
+   * @return the parsed qualified name
+   */
   @NonNull
   public static QName parseLexicalQName(
       @NonNull String name,
-      @Nullable IEQNamePrefixResolver resolver) {
+      @NonNull IEQNamePrefixResolver resolver) {
     Matcher matcher = LEXICAL_NAME.matcher(name);
     if (!matcher.matches()) {
       throw new IllegalArgumentException(
@@ -85,16 +126,33 @@ public final class EQNameUtils {
       prefix = XMLConstants.DEFAULT_NS_PREFIX;
     }
 
-    String namespace = resolver == null ? XMLConstants.NULL_NS_URI : resolver.resolve(prefix);
+    String namespace = resolver.resolve(prefix);
     return new QName(namespace, matcher.group(2), prefix);
   }
 
+  /**
+   * Determine if the name is a non-colonized name.
+   *
+   * @param name
+   *          the name to test
+   * @return {@code true} if the name is not colonized, or {@code false} otherwise
+   */
   public static boolean isNcName(@NonNull String name) {
     return NCNAME.matcher(name).matches();
   }
 
+  /**
+   * Provides a callback for resolving namespace prefixes.
+   */
   @FunctionalInterface
   public interface IEQNamePrefixResolver {
+    /**
+     * Get the URI string for the provided namespace prefix.
+     *
+     * @param prefix
+     *          the namespace prefix
+     * @return the URI string
+     */
     @NonNull
     String resolve(@NonNull String prefix);
   }

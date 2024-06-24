@@ -31,6 +31,7 @@ import gov.nist.secauto.metaschema.core.model.IResourceLocation;
 import org.apache.xmlbeans.XmlObject;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 public interface IXmlObjectBinding {
   /**
@@ -41,6 +42,13 @@ public interface IXmlObjectBinding {
   @NonNull
   XmlObject getXmlObject();
 
+  /**
+   * Get the location information for this object, if the location is available.
+   *
+   * @return the location information or {@code null} if the location information
+   *         is unavailable
+   */
+  @Nullable
   default IResourceLocation getLocation() {
     return XmlBeansLocation.toLocation(getXmlObject());
   }

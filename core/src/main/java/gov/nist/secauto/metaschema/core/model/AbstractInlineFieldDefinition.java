@@ -30,6 +30,20 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+/**
+ * A base class for an assembly instance defined inline.
+ *
+ * @param <PARENT>
+ *          the Java type of the parent model container for this instance
+ * @param <DEFINITION>
+ *          the Java type of the related assembly definition
+ * @param <INSTANCE>
+ *          the expected Java type of an instance of this definition
+ * @param <PARENT_DEFINITION>
+ *          the Java type of the containing assembly definition
+ * @param <FLAG>
+ *          the expected Java type of flag children
+ */
 public abstract class AbstractInlineFieldDefinition<
     PARENT extends IContainerModel,
     DEFINITION extends IFieldDefinition,
@@ -41,6 +55,12 @@ public abstract class AbstractInlineFieldDefinition<
     IFeatureContainerFlag<FLAG>,
     IFeatureDefinitionInstanceInlined<DEFINITION, INSTANCE> {
 
+  /**
+   * Construct a new inline assembly definition.
+   *
+   * @param parent
+   *          the parent model containing this instance
+   */
   protected AbstractInlineFieldDefinition(@NonNull PARENT parent) {
     super(parent);
   }

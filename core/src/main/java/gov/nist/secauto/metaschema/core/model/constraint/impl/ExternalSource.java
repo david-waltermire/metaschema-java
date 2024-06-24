@@ -27,6 +27,7 @@
 package gov.nist.secauto.metaschema.core.model.constraint.impl;
 
 import gov.nist.secauto.metaschema.core.model.constraint.ISource;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -58,7 +59,9 @@ public final class ExternalSource implements ISource {
   public static ISource instance(@NonNull URI location) {
     ISource retval;
     synchronized (sources) {
-      retval = sources.computeIfAbsent(location, (uri) -> new ExternalSource(uri));
+      retval = ObjectUtils.notNull(sources.computeIfAbsent(
+          location,
+          (uri) -> new ExternalSource(ObjectUtils.notNull(uri))));
     }
     return retval;
   }

@@ -169,7 +169,7 @@ public class AssemblyDefinitionJsonSchema
   protected void generateChoices(
       List<PropertyCollection> propertyChoices,
       @NonNull ObjectNode definitionNode,
-      @NonNull IJsonGenerationState state) throws IOException {
+      @NonNull IJsonGenerationState state) {
     ArrayNode anyOfdNode = ObjectUtils.notNull(JsonNodeFactory.instance.arrayNode());
     for (PropertyCollection propertyChoice : propertyChoices) {
       ObjectNode choiceDefinitionNode = ObjectUtils.notNull(JsonNodeFactory.instance.objectNode());

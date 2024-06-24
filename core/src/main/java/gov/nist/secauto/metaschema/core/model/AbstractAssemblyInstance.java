@@ -30,6 +30,18 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+/**
+ * A base class for an assembly that is a member of a containing model.
+ *
+ * @param <PARENT>
+ *          the Java type of the parent model container for this instance
+ * @param <DEFINITION>
+ *          the Java type of the related assembly definition
+ * @param <INSTANCE>
+ *          the Java type of the implementing instance type
+ * @param <PARENT_DEFINITION>
+ *          the Java type of the containing assembly definition
+ */
 public abstract class AbstractAssemblyInstance<
     PARENT extends IContainerModel,
     DEFINITION extends IAssemblyDefinition,
@@ -38,6 +50,13 @@ public abstract class AbstractAssemblyInstance<
     extends AbstractNamedModelInstance<PARENT, PARENT_DEFINITION>
     implements IAssemblyInstance, IFeatureDefinitionReferenceInstance<DEFINITION, INSTANCE> {
 
+  /**
+   * Construct a new assembly instance that is contained with the provided parent
+   * container.
+   *
+   * @param parent
+   *          the parent container for this instance
+   */
   protected AbstractAssemblyInstance(@NonNull PARENT parent) {
     super(parent);
   }

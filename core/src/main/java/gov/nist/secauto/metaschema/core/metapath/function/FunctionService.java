@@ -80,6 +80,11 @@ public final class FunctionService {
     return loader;
   }
 
+  /**
+   * Retrieve the collection of function signatures in this library as a stream.
+   *
+   * @return a stream of function signatures
+   */
   public Stream<IFunction> stream() {
     return this.library.stream();
   }

@@ -50,10 +50,21 @@ public abstract class AbstractModelBuilder<T extends AbstractModelBuilder<T>>
   private String namespace;
   private String name;
 
+  /**
+   * Construct a new builder using the provided mocking context.
+   *
+   * @param ctx
+   *          the mocking context
+   */
   protected AbstractModelBuilder(@NonNull Mockery ctx) {
     super(ctx);
   }
 
+  /**
+   * Reset the builder back to a default state.
+   *
+   * @return this builder
+   */
   @NonNull
   @SuppressWarnings("unchecked")
   public T reset() {
@@ -62,6 +73,13 @@ public abstract class AbstractModelBuilder<T extends AbstractModelBuilder<T>>
     return (T) this;
   }
 
+  /**
+   * Apply the provided namespace to use for names built using this builder.
+   *
+   * @param name
+   *          the namespace to use
+   * @return this builder
+   */
   @SuppressWarnings("unchecked")
   @NonNull
   public T namespace(@NonNull String name) {
@@ -69,6 +87,13 @@ public abstract class AbstractModelBuilder<T extends AbstractModelBuilder<T>>
     return (T) this;
   }
 
+  /**
+   * Apply the provided namespace to use for names built using this builder.
+   *
+   * @param name
+   *          the namespace to use
+   * @return this builder
+   */
   @SuppressWarnings("unchecked")
   @NonNull
   public T namespace(@NonNull URI name) {
@@ -76,6 +101,13 @@ public abstract class AbstractModelBuilder<T extends AbstractModelBuilder<T>>
     return (T) this;
   }
 
+  /**
+   * Apply the provided names to use for names built using this builder.
+   *
+   * @param name
+   *          the name to use
+   * @return this builder
+   */
   @SuppressWarnings("unchecked")
   @NonNull
   public T name(@NonNull String name) {
@@ -83,16 +115,39 @@ public abstract class AbstractModelBuilder<T extends AbstractModelBuilder<T>>
     return (T) this;
   }
 
+  /**
+   * Validate the data provided to this builder to ensure correct and required
+   * information is provided.
+   */
   protected void validate() {
     ObjectUtils.requireNonEmpty(name, "name");
   }
 
+  /**
+   * Apply expectations to the mocking context for the provided definition.
+   *
+   * @param definition
+   *          the definition to apply mocking expectations for
+   */
   protected void applyDefinition(@NonNull IDefinition definition) {
     applyModelElement(definition);
     applyNamed(definition);
     applyAttributable(definition);
   }
 
+  /**
+   * Apply expectations to the mocking context for the provided instance,
+   * definition, and parent definition.
+   *
+   * @param <DEF>
+   *          the Java type of the definition
+   * @param instance
+   *          the instance to apply mocking expectations for
+   * @param definition
+   *          the definition to apply mocking expectations for
+   * @param parent
+   *          the parent definition to apply mocking expectations for
+   */
   protected <DEF extends IDefinition> void applyNamedInstance(
       @NonNull INamedInstance instance,
       @NonNull DEF definition,
@@ -116,6 +171,13 @@ public abstract class AbstractModelBuilder<T extends AbstractModelBuilder<T>>
     });
   }
 
+  /**
+   * Apply expectations to the mocking context for the provided named model
+   * element.
+   *
+   * @param element
+   *          the named model element to apply mocking expectations for
+   */
   protected void applyNamed(@NonNull INamedModelElement element) {
     getContext().checking(new Expectations() {
       {
@@ -135,6 +197,13 @@ public abstract class AbstractModelBuilder<T extends AbstractModelBuilder<T>>
     });
   }
 
+  /**
+   * Apply expectations to the mocking context for the provided attributable
+   * element.
+   *
+   * @param element
+   *          the element to apply mocking expectations for
+   */
   protected void applyAttributable(@NonNull IAttributable element) {
     getContext().checking(new Expectations() {
       {
@@ -144,6 +213,12 @@ public abstract class AbstractModelBuilder<T extends AbstractModelBuilder<T>>
     });
   }
 
+  /**
+   * Apply expectations to the mocking context for the provided model element.
+   *
+   * @param element
+   *          the model element to apply mocking expectations for
+   */
   protected void applyModelElement(@NonNull IModelElement element) {
     getContext().checking(new Expectations() {
       {

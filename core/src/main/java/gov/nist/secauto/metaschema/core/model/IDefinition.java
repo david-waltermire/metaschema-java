@@ -108,6 +108,14 @@ public interface IDefinition extends INamedModelElement, IAttributable, IFeature
         hashCode());
   }
 
+  /**
+   * Get the resource location information for the provided item, if known.
+   *
+   * @param itemValue
+   *          the item to get the location information for
+   *
+   * @return the resource location information, or {@code null} if not known
+   */
   @Nullable
   default IResourceLocation getLocation(@NonNull Object itemValue) {
     return itemValue instanceof IBoundObject ? ((IBoundObject) itemValue).getMetaschemaData() : null;

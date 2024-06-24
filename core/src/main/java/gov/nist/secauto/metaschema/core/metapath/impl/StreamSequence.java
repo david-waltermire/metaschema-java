@@ -37,12 +37,25 @@ import java.util.stream.Stream;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+/**
+ * A Metapath sequence supporting an unbounded number of items backed initially
+ * by a stream.
+ *
+ * @param <ITEM>
+ *          the Java type of the items
+ */
 public class StreamSequence<ITEM extends IItem>
     extends AbstractSequence<ITEM> {
 
   private Stream<ITEM> stream;
   private List<ITEM> list;
 
+  /**
+   * Construct a new sequence using the provided item stream.
+   *
+   * @param stream
+   *          the items to add to the sequence
+   */
   public StreamSequence(@NonNull Stream<ITEM> stream) {
     Objects.requireNonNull(stream, "stream");
     this.stream = stream;
