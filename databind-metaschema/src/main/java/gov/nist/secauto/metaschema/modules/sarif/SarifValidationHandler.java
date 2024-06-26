@@ -119,6 +119,7 @@ public final class SarifValidationHandler {
   @Nullable
   private final IVersionInfo toolVersion;
   private final AtomicInteger artifactIndex = new AtomicInteger(-1);
+  private final AtomicInteger ruleIndex = new AtomicInteger(-1);
   @NonNull
   private final Map<URI, ArtifactRecord> artifacts = new LinkedHashMap<>();
   @NonNull
@@ -234,7 +235,7 @@ public final class SarifValidationHandler {
       }
 
       for (RuleRecord rule : rules.values()) {
-        driver.addRule(rule(rule));
+        driver.addRule(rule.generate());
       }
 
       tool.setDriver(driver);
@@ -249,30 +250,6 @@ public final class SarifValidationHandler {
             StandardOpenOption.CREATE,
             StandardOpenOption.WRITE,
             StandardOpenOption.TRUNCATE_EXISTING);
-  }
-
-  private ReportingDescriptor rule(RuleRecord rule) {
-    ReportingDescriptor retval = new ReportingDescriptor();
-    retval.setId(rule.getId());
-    IConstraint constraint = rule.getConstraint();
-    String name = constraint.getId();
-    if (name != null) {
-      retval.setName(name);
-    }
-
-    String formalName = constraint.getFormalName();
-    if (formalName != null) {
-      MultiformatMessageString text = new MultiformatMessageString();
-      text.setText(formalName);
-      retval.setShortDescription(text);
-    }
-    MarkupLine description = constraint.getDescription();
-    if (description != null) {
-      MultiformatMessageString text = new MultiformatMessageString();
-      text.setMarkdown(description.toMarkdown());
-      retval.setFullDescription(text);
-    }
-    return retval;
   }
 
   private interface IResult {
@@ -444,7 +421,12 @@ public final class SarifValidationHandler {
 
         Result result = new Result();
 
-        result.setRuleId(rule.getId());
+        String id = constraint.getId();
+        if (id != null) {
+          result.setRuleId(id);
+        }
+        result.setRuleIndex(BigInteger.valueOf(rule.getIndex()));
+        result.setGuid(rule.getGuid());
         result.setKind(kind.getLabel());
         result.setLevel(level.getLabel());
         message(finding, result);
@@ -456,25 +438,61 @@ public final class SarifValidationHandler {
     }
   }
 
-  private static class RuleRecord {
+  private class RuleRecord {
+    private final int index;
     @NonNull
-    private final String id;
+    private final UUID guid;
     @NonNull
     private final IConstraint constraint;
 
     public RuleRecord(@NonNull IConstraint constraint) {
-      this.id = ObjectUtils.notNull(UUID.randomUUID().toString());
+      this.guid = ObjectUtils.notNull(UUID.randomUUID());
       this.constraint = constraint;
+      this.index = ruleIndex.addAndGet(1);
+    }
+
+    public int getIndex() {
+      return index;
     }
 
     @NonNull
-    public String getId() {
-      return id;
+    public UUID getGuid() {
+      return guid;
     }
 
     public IConstraint getConstraint() {
       return constraint;
     }
+
+    @NonNull
+    private ReportingDescriptor generate() {
+      ReportingDescriptor retval = new ReportingDescriptor();
+      IConstraint constraint = getConstraint();
+      // String name = constraint.getId();
+      // if (name != null) {
+      // retval.setName(name);
+      // }
+
+      String id = constraint.getId();
+      if (id != null) {
+        retval.setId(id);
+      }
+      retval.setGuid(getGuid());
+      String formalName = constraint.getFormalName();
+      if (formalName != null) {
+        MultiformatMessageString text = new MultiformatMessageString();
+        text.setText(formalName);
+        retval.setShortDescription(text);
+      }
+      MarkupLine description = constraint.getDescription();
+      if (description != null) {
+        MultiformatMessageString text = new MultiformatMessageString();
+        text.setMarkdown(description.toMarkdown());
+        retval.setFullDescription(text);
+      }
+      return retval;
+    }
+
   }
 
   private class ArtifactRecord {
@@ -497,7 +515,7 @@ public final class SarifValidationHandler {
 
     public ArtifactLocation generateArtifactLocation(@NonNull URI baseUri) throws IOException {
       ArtifactLocation location = new ArtifactLocation();
-      location.setUri(relativize(baseUri, source));
+      location.setUri(relativize(baseUri, getUri()));
       location.setIndex(BigInteger.valueOf(getIndex()));
       return location;
     }
