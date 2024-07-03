@@ -127,17 +127,17 @@ public class DefaultBindingConfiguration implements IBindingConfiguration {
   }
 
   @Override
+  public @NonNull String getClassName(@NonNull IModule module) {
+    // TODO: make this configurable
+    return ClassUtils.toClassName(module.getShortName() + "Module");
+  }
+
+  @Override
   public List<String> getQualifiedSuperinterfaceClassNames(IModelDefinition definition) {
     IDefinitionBindingConfiguration config = getBindingConfigurationForDefinition(definition);
     return config == null
         ? CollectionUtil.emptyList()
         : config.getInterfacesToImplement();
-  }
-
-  @Override
-  public @NonNull String getClassName(@NonNull IModule module) {
-    // TODO: make this configurable
-    return ClassUtils.toClassName(module.getShortName() + "Module");
   }
 
   /**

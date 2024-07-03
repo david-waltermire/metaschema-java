@@ -35,6 +35,7 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.DefaultBindingContext;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
 
+import org.eclipse.jdt.annotation.Owning;
 import org.xml.sax.InputSource;
 
 import java.io.File;
@@ -168,6 +169,7 @@ public interface IBoundLoader extends IDocumentLoader, IMutableConfiguration<Des
    *           if an error occurred while reading the resource
    */
   @NonNull
+  @Owning
   ModelDetector.Result detectModel(@NonNull InputStream is, @NonNull Format format) throws IOException;
 
   /**

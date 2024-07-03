@@ -43,8 +43,11 @@ import gov.nist.secauto.metaschema.databind.io.yaml.impl.YamlFactoryFactory;
 
 import org.codehaus.stax2.XMLEventReader2;
 import org.codehaus.stax2.XMLInputFactory2;
+import org.eclipse.jdt.annotation.NotOwning;
+import org.eclipse.jdt.annotation.Owning;
 
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -122,23 +125,30 @@ public class ModelDetector {
    *           if an error occurred while reading the resource
    */
   @NonNull
-  public Result detect(@NonNull InputStream inputStream, @NonNull Format format)
+  @Owning
+  public Result detect(@NonNull @NotOwning InputStream inputStream, @NonNull Format format)
       throws IOException {
     byte[] buf = ObjectUtils.notNull(inputStream.readNBytes(getLookaheadLimit()));
 
     Class<? extends IBoundObject> clazz;
     try (InputStream bis = new ByteArrayInputStream(buf)) {
+      assert bis != null;
       switch (format) {
       case JSON:
-        clazz = detectModelJsonClass(ObjectUtils.notNull(
-            JsonFactoryFactory.instance().createParser(bis)));
+        try (JsonParser parser = JsonFactoryFactory.instance().createParser(bis)) {
+          assert parser != null;
+          clazz = detectModelJsonClass(parser);
+        }
         break;
       case YAML:
         YAMLFactory factory = YamlFactoryFactory.newParserFactoryInstance(getConfiguration());
-        clazz = detectModelJsonClass(ObjectUtils.notNull(factory.createParser(bis)));
+        try (JsonParser parser = factory.createParser(bis)) {
+          assert parser != null;
+          clazz = detectModelJsonClass(parser);
+        }
         break;
       case XML:
-        clazz = detectModelXmlClass(ObjectUtils.notNull(bis));
+        clazz = detectModelXmlClass(bis);
         break;
       default:
         throw new UnsupportedOperationException(
@@ -204,11 +214,11 @@ public class ModelDetector {
     return retval;
   }
 
-  public static final class Result {
+  public static final class Result implements Closeable {
     @NonNull
     private final Class<? extends IBoundObject> boundClass;
-    @NonNull
-    private final InputStream dataStream;
+    @Owning
+    private InputStream dataStream;
 
     private Result(
         @NonNull Class<? extends IBoundObject> clazz,
@@ -235,8 +245,15 @@ public class ModelDetector {
      * @return the stream
      */
     @NonNull
+    @Owning
     public InputStream getDataStream() {
-      return dataStream;
+      return ObjectUtils.requireNonNull(dataStream, "data stream already closed");
+    }
+
+    @Override
+    public void close() throws IOException {
+      this.dataStream.close();
+      this.dataStream = null;
     }
   }
 }

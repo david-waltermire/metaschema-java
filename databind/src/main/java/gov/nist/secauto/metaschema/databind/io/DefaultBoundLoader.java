@@ -37,6 +37,9 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
 import gov.nist.secauto.metaschema.databind.io.ModelDetector.Result;
 
+import org.eclipse.jdt.annotation.NotOwning;
+import org.eclipse.jdt.annotation.Owning;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -156,7 +159,8 @@ public class DefaultBoundLoader
   }
 
   @Override
-  public Result detectModel(InputStream is, Format format) throws IOException {
+  @Owning
+  public Result detectModel(@NotOwning InputStream is, Format format) throws IOException {
     return getModelDetector().detect(is, format);
   }
 
@@ -244,15 +248,17 @@ public class DefaultBoundLoader
   }
 
   @Override
-  public IDocumentNodeItem loadAsNodeItem(Format format, InputStream is, URI documentUri) throws IOException {
-    ModelDetector.Result modelMatch = detectModel(is, format);
+  public IDocumentNodeItem loadAsNodeItem(Format format, InputStream is, URI documentUri)
+      throws IOException {
+    try (ModelDetector.Result modelMatch = detectModel(is, format)) {
 
-    IDeserializer<?> deserializer = getDeserializer(
-        modelMatch.getBoundClass(),
-        format,
-        getConfiguration());
-    try (InputStream modelStream = modelMatch.getDataStream()) {
-      return (IDocumentNodeItem) deserializer.deserializeToNodeItem(modelStream, documentUri);
+      IDeserializer<?> deserializer = getDeserializer(
+          modelMatch.getBoundClass(),
+          format,
+          getConfiguration());
+      try (InputStream modelStream = modelMatch.getDataStream()) {
+        return (IDocumentNodeItem) deserializer.deserializeToNodeItem(modelStream, documentUri);
+      }
     }
   }
 

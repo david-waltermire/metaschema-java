@@ -170,6 +170,16 @@ public interface ITypeResolver {
   ClassName getClassName(@NonNull IModelDefinition definition);
 
   /**
+   * Get the name of the class associated with the provided Metaschema definition.
+   *
+   * @param typeInfo
+   *          the type information to get the class name for
+   * @return the class name information for the definition
+   */
+  @NonNull
+  ClassName getClassName(@NonNull INamedModelInstanceTypeInfo typeInfo);
+
+  /**
    * Get the name of the super interfaces associated with the provided Metaschema
    * definition.
    *
@@ -179,16 +189,6 @@ public interface ITypeResolver {
    */
   @NonNull
   List<ClassName> getSuperinterfaces(@NonNull IModelDefinition definition);
-
-  /**
-   * Get the name of the class associated with the provided Metaschema definition.
-   *
-   * @param typeInfo
-   *          the type information to get the class name for
-   * @return the class name information for the definition
-   */
-  @NonNull
-  ClassName getClassName(@NonNull INamedModelInstanceTypeInfo typeInfo);
 
   /**
    * Get the name of the class associated with the provided Metaschema definition

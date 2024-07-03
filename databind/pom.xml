@@ -89,6 +89,10 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+		    <groupId>org.eclipse.jdt</groupId>
+		    <artifactId>org.eclipse.jdt.annotation</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>

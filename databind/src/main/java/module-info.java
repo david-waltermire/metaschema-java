@@ -43,6 +43,7 @@ module gov.nist.secauto.metaschema.databind {
 
   requires flexmark.util.sequence;
   requires transitive com.google.auto.service;
+  requires org.eclipse.jdt.annotation;
 
   exports gov.nist.secauto.metaschema.databind;
   exports gov.nist.secauto.metaschema.databind.codegen;

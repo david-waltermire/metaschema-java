@@ -277,9 +277,9 @@ class DefaultTypeResolver implements ITypeResolver {
   @Override
   public List<ClassName> getSuperinterfaces(IModelDefinition definition) {
     List<String> classNames = bindingConfiguration.getQualifiedSuperinterfaceClassNames(definition);
-    return classNames.stream()
+    return ObjectUtils.notNull(classNames.stream()
         .map(ClassName::bestGuess)
-        .collect(Collectors.toUnmodifiableList());
+        .collect(Collectors.toUnmodifiableList()));
   }
 
   @Override
