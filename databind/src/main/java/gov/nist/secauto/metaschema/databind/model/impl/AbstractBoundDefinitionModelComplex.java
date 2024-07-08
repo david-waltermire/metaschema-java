@@ -139,7 +139,7 @@ public abstract class AbstractBoundDefinitionModelComplex<A extends Annotation>
 
   @Override
   public IBoundObject deepCopyItem(IBoundObject item, IBoundObject parentInstance) throws BindingException {
-    IBoundObject instance = newInstance(() -> item.getMetaschemaData());
+    IBoundObject instance = newInstance(item::getMetaschemaData);
 
     callBeforeDeserialize(instance, parentInstance);
 

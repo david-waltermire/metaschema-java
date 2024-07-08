@@ -338,7 +338,7 @@ public final class MetaschemaModuleConstraints implements IBoundObject {
     @MetaschemaAssembly(
         name = "assembly",
         moduleClass = MetaschemaModelModule.class)
-    public static final class Assembly implements IBoundObject, IModelConstraintsBase {
+    public static final class Assembly implements IModelConstraintsBase {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
@@ -414,7 +414,7 @@ public final class MetaschemaModuleConstraints implements IBoundObject {
     @MetaschemaAssembly(
         name = "field",
         moduleClass = MetaschemaModelModule.class)
-    public static final class Field implements IBoundObject, IValueConstraintsBase {
+    public static final class Field implements IValueConstraintsBase {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(

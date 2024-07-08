@@ -26,7 +26,6 @@
 
 package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
-import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -52,7 +51,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "flag-constraints",
     moduleClass = MetaschemaModelModule.class)
-public final class FlagConstraints implements IBoundObject, IValueConstraintsBase {
+public final class FlagConstraints implements IValueConstraintsBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(

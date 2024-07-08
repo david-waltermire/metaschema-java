@@ -26,7 +26,6 @@
 
 package gov.nist.secauto.metaschema.databind.model.binding.metaschema;
 
-import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -51,7 +50,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "field-constraints",
     moduleClass = MetaschemaModelModule.class)
-public final class FieldConstraints implements IBoundObject, IValueTargetedConstraintsBase {
+public final class FieldConstraints implements IValueTargetedConstraintsBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(
