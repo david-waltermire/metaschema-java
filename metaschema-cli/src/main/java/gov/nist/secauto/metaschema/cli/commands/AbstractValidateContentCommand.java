@@ -39,6 +39,7 @@ import gov.nist.secauto.metaschema.cli.processor.command.ExtraArgument;
 import gov.nist.secauto.metaschema.cli.util.LoggingValidationHandler;
 import gov.nist.secauto.metaschema.core.configuration.DefaultConfiguration;
 import gov.nist.secauto.metaschema.core.configuration.IMutableConfiguration;
+import gov.nist.secauto.metaschema.core.metapath.MetapathException;
 import gov.nist.secauto.metaschema.core.model.IConstraintLoader;
 import gov.nist.secauto.metaschema.core.model.MetaschemaException;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraintSet;
@@ -191,7 +192,7 @@ public abstract class AbstractValidateContentCommand
           try {
             URI constraintUri = ObjectUtils.requireNonNull(UriUtils.toUri(arg, cwd));
             constraintSets.add(constraintLoader.load(constraintUri));
-          } catch (IOException | MetaschemaException | URISyntaxException ex) {
+          } catch (IOException | MetaschemaException | MetapathException | URISyntaxException ex) {
             return ExitCode.IO_ERROR.exitMessage("Unable to load constraint set '" + arg + "'.").withThrowable(ex);
           }
         }
@@ -271,6 +272,8 @@ public abstract class AbstractValidateContentCommand
         return ExitCode.IO_ERROR.exitMessage(String.format("Unknown host for '%s'.", source)).withThrowable(ex);
 
       } catch (IOException ex) {
+        return ExitCode.IO_ERROR.exit().withThrowable(ex);
+      } catch (MetapathException ex) {
         return ExitCode.PROCESSING_ERROR.exit().withThrowable(ex);
       }
 
@@ -285,7 +288,7 @@ public abstract class AbstractValidateContentCommand
           sarifHandler.addFindings(validationResult.getFindings());
           sarifHandler.write(sarifFile);
         } catch (IOException ex) {
-          return ExitCode.PROCESSING_ERROR.exit().withThrowable(ex);
+          return ExitCode.IO_ERROR.exit().withThrowable(ex);
         }
       } else if (!validationResult.isPassing()) {
         LOGGER.info("Validation identified the following issues:", source);
