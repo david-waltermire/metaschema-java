@@ -97,16 +97,6 @@ public interface IFunction {
   }
 
   /**
-   * Retrieve the namespace of the function.
-   *
-   * @return the function's namespace
-   */
-  @NonNull
-  default String getNamespace() {
-    return ObjectUtils.notNull(getQName().getNamespaceURI());
-  }
-
-  /**
    * Retrieve the namespace qualified name of the function.
    *
    * @return the namespace qualified name
@@ -228,9 +218,8 @@ public interface IFunction {
    */
   @NonNull
   default String toSignature() {
-    return ObjectUtils.notNull(String.format("Q{%s}%s(%s) as %s",
-        getNamespace(),
-        getName(),
+    return ObjectUtils.notNull(String.format("%s(%s) as %s",
+        getQName(),
         getArguments().isEmpty() ? ""
             : getArguments().stream().map(IArgument::toSignature).collect(Collectors.joining(","))
                 + (isArityUnbounded() ? ", ..." : ""),

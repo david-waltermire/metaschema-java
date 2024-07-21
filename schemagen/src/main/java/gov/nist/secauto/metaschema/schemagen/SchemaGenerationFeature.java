@@ -45,7 +45,7 @@ public final class SchemaGenerationFeature<V>
    */
   @NonNull
   public static final SchemaGenerationFeature<Boolean> INLINE_DEFINITIONS
-      = new SchemaGenerationFeature<>(Boolean.class, false);
+      = new SchemaGenerationFeature<>("inline-definitions", Boolean.class, false);
 
   /**
    * If enabled, child definitions of a choice that are defined inline will be
@@ -55,12 +55,13 @@ public final class SchemaGenerationFeature<V>
    */
   @NonNull
   public static final SchemaGenerationFeature<Boolean> INLINE_CHOICE_DEFINITIONS
-      = new SchemaGenerationFeature<>(Boolean.class, false);
+      = new SchemaGenerationFeature<>("inline-choice-definitions", Boolean.class, false);
 
   private SchemaGenerationFeature(
+      @NonNull String name,
       @NonNull Class<V> valueClass,
       @NonNull V defaultValue) {
-    super(valueClass, defaultValue);
+    super(name, valueClass, defaultValue);
   }
 
 }

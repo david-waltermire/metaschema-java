@@ -60,7 +60,7 @@ import java.util.List;
     formalName = "Assembly Reference",
     name = "assembly-reference",
     moduleClass = MetaschemaModelModule.class)
-public final class AssemblyReference implements IBoundObject {
+public class AssemblyReference implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

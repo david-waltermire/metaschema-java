@@ -47,7 +47,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     description = "A Metapath expression identifying the model node that the constraints will be applied to.",
     name = "metaschema-metapath",
     moduleClass = MetaschemaModelModule.class)
-public final class MetaschemaMetapath implements IBoundObject {
+public class MetaschemaMetapath implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

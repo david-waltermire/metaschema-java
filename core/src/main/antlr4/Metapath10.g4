@@ -153,7 +153,7 @@ eqname : NCName | QName | URIQualifiedName
  | KW_ANCESTOR
  | KW_ANCESTOR_OR_SELF
  | KW_AND
-// | KW_ARRAY
+ | KW_ARRAY
 // | KW_AS
 // | KW_ATTRIBUTE
 // | KW_CAST
@@ -186,7 +186,7 @@ eqname : NCName | QName | URIQualifiedName
  | KW_LE
  | KW_LET
  | KW_LT
-// | KW_MAP
+ | KW_MAP
  | KW_MOD
 // | KW_NAMESPACE
 // | KW_NAMESPACE_NODE

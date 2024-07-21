@@ -62,4 +62,9 @@ public abstract class AbstractNamedModelInstance<
     // implementation is a possible path?
     return ObjectUtils.asType(getParentContainer().getOwningDefinition());
   }
+
+  @Override
+  public IModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
 }

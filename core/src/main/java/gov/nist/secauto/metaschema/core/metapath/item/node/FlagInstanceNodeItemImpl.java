@@ -39,7 +39,8 @@ import nl.talsmasoftware.lazy4j.Lazy;
  */
 class FlagInstanceNodeItemImpl
     extends AbstractFlagInstanceNodeItem
-    implements IFeatureNullableAtomicValuedItem {
+    implements IFeatureAtomicValuedItem,
+    IFeatureChildNodeItem {
 
   @NonNull
   private final Object value;

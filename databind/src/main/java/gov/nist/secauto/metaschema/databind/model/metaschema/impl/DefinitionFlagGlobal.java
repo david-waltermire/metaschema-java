@@ -34,15 +34,16 @@ import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
 import gov.nist.secauto.metaschema.core.model.AbstractGlobalFlagDefinition;
 import gov.nist.secauto.metaschema.core.model.IAttributable;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
-import gov.nist.secauto.metaschema.core.model.IMetaschemaModule;
 import gov.nist.secauto.metaschema.core.model.ModuleScopeEnum;
 import gov.nist.secauto.metaschema.core.model.constraint.ISource;
 import gov.nist.secauto.metaschema.core.model.constraint.IValueConstrained;
 import gov.nist.secauto.metaschema.core.model.constraint.ValueConstraintSet;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.IBoundDefinition;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FlagConstraints;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.util.Map;
 import java.util.Set;
@@ -52,7 +53,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import nl.talsmasoftware.lazy4j.Lazy;
 
 public class DefinitionFlagGlobal
-    extends AbstractGlobalFlagDefinition<IMetaschemaModule, IFlagInstance> {
+    extends AbstractGlobalFlagDefinition<IBindingMetaschemaModule, IFlagInstance> {
   @NonNull
   private final METASCHEMA.DefineFlag binding;
   @NonNull
@@ -84,7 +85,7 @@ public class DefinitionFlagGlobal
       @NonNull METASCHEMA.DefineFlag binding,
       @NonNull IBoundInstanceModelGroupedAssembly bindingInstance,
       int position,
-      @NonNull IMetaschemaModule module) {
+      @NonNull IBindingMetaschemaModule module) {
     super(module);
     this.binding = binding;
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
@@ -94,7 +95,7 @@ public class DefinitionFlagGlobal
       IValueConstrained retval = new ValueConstraintSet();
       FlagConstraints constraints = binding.getConstraint();
       if (constraints != null) {
-        ConstraintBindingSupport.parse(retval, constraints, ISource.modelSource(module.getLocation()));
+        ConstraintBindingSupport.parse(retval, constraints, ISource.modelSource(module));
       }
       return retval;
     }));
@@ -169,7 +170,7 @@ public class DefinitionFlagGlobal
     return ModelSupport.remarks(getBinding().getRemarks());
   }
 
-  @Override
+  @NonNull
   public INodeItem getNodeItem() {
     return boundNodeItem.get();
   }

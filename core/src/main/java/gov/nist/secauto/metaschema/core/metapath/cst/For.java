@@ -85,7 +85,7 @@ public class For implements IExpression {
   @Override
   public List<? extends IExpression> getChildren() {
     return ObjectUtils.notNull(
-        List.of(returnExpression));
+        List.of(getVariable().getBoundExpression(), returnExpression));
   }
 
   @Override
@@ -106,5 +106,11 @@ public class For implements IExpression {
       retval.addAll(getReturnExpression().accept(subDynamicContext, focus));
     }
     return ISequence.ofCollection(retval);
+  }
+
+  @SuppressWarnings("null")
+  @Override
+  public String toASTString() {
+    return String.format("%s[variable=%s]", getClass().getName(), getVariable().getName());
   }
 }

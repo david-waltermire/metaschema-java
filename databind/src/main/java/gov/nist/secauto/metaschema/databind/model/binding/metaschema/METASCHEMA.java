@@ -49,6 +49,9 @@ import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.Expect;
 import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
+import gov.nist.secauto.metaschema.databind.model.annotations.Index;
+import gov.nist.secauto.metaschema.databind.model.annotations.KeyField;
+import gov.nist.secauto.metaschema.databind.model.annotations.Let;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaField;
 import gov.nist.secauto.metaschema.databind.model.annotations.ValueConstraints;
@@ -76,8 +79,45 @@ import java.util.List;
     description = "A declaration of the Metaschema module.",
     name = "METASCHEMA",
     moduleClass = MetaschemaModelModule.class,
-    rootName = "METASCHEMA")
-public final class METASCHEMA implements IBoundObject {
+    rootName = "METASCHEMA",
+    valueConstraints = @ValueConstraints(lets = {
+        @Let(name = "all-imports",
+            target = "recurse-depth('for $import in ./import return doc(resolve-uri($import/@href))/METASCHEMA')"),
+        @Let(name = "deprecated-type-map",
+            target = "map { 'base64Binary':'base64','dateTime':'date-time','dateTime-with-timezone':'date-time-with-timezone','email':'email-address','nonNegativeInteger':'non-negative-integer','positiveInteger':'positive-integer' }") },
+        expect = {
+            @Expect(id = "metaschema-top-level-version-required",
+                formalName = "Require Schema Version for Top-Level Modules",
+                description = "A top-level module, a module that is not marked as @abstract='yes', must have a schema version specified.",
+                level = IConstraint.Level.WARNING, target = ".[not(@abstract) or @abstract='no']",
+                test = "schema-version",
+                message = "Unless marked as @abstract='yes', a Metaschema module (or an imported module) should have a schema version."),
+            @Expect(id = "metaschema-top-level-root-required",
+                formalName = "Require Root Assembly for Top-Level Modules",
+                description = "A top-level module, a module that is not marked as @abstract='yes', must have at least one assembly with a root-name.",
+                level = IConstraint.Level.WARNING, target = ".[not(@abstract) or @abstract='no']",
+                test = "exists($all-imports/define-assembly/root-name)",
+                message = "{ $all-imports/define-assembly/root-name } Unless marked as @abstract='yes', a Metaschema module (or an imported module) should have at least one assembly with a root-name."),
+            @Expect(id = "metaschema-import-href-available", formalName = "Import is Resolvable",
+                description = "Ensure each import has a resolvable @href.", level = IConstraint.Level.ERROR,
+                target = "import", test = "doc-available(resolve-uri(@href))",
+                message = "Unable to access a Metaschema module at '{{ resolve-uri(@href) }}'."),
+            @Expect(id = "metaschema-import-href-is-module", formalName = "Import is a Metaschema module",
+                description = "Ensure each import is a Metaschema module.", level = IConstraint.Level.ERROR,
+                target = "import", test = "doc(resolve-uri(@href))/METASCHEMA ! exists(.)",
+                message = "Unable the resource at '{{ resolve-uri(@href) }}' is not a Metaschema module."),
+            @Expect(id = "metaschema-deprecated-types", formalName = "Avoid Deprecated Data Type Use",
+                description = "Ensure that the data type specified is not one of the legacy Metaschema data types which have been deprecated (i.e. base64Binary, dateTime, dateTime-with-timezone, email, nonNegativeInteger, positiveInteger).",
+                level = IConstraint.Level.WARNING,
+                target = ".//matches/@datatype|.//(define-field|define-flag)/@as-type",
+                test = "not(.=('base64Binary','dateTime','dateTime-with-timezone','email','nonNegativeInteger','positiveInteger'))",
+                message = "Use of the type '{ . }' is deprecated. Use '{ $deprecated-type-map(.)}' instead.") }),
+    modelConstraints = @gov.nist.secauto.metaschema.databind.model.annotations.AssemblyConstraints(
+        index = @Index(id = "metaschema-short-name-unique", formalName = "Unique Module Short Names",
+            description = "Ensures that the current and all imported modules have a unique short name.",
+            level = IConstraint.Level.ERROR, target = "(.|$all-imports)", name = "metaschema-metadata-short-name-index",
+            keyFields = @KeyField(target = "@short-name"))))
+public class METASCHEMA implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   /**
@@ -286,7 +326,7 @@ public final class METASCHEMA implements IBoundObject {
       description = "Imports a set of Metaschema modules contained in another resource. Imports support the reuse of common information structures.",
       name = "import",
       moduleClass = MetaschemaModelModule.class)
-  public static final class Import implements IBoundObject {
+  public static class Import implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     /**
@@ -339,17 +379,14 @@ public final class METASCHEMA implements IBoundObject {
       description = "In XML, an element with structured element content. In JSON, an object with properties. Defined globally, an assembly can be assigned to appear in the `model` of any assembly (another assembly type, or itself), by `assembly` reference.",
       name = "define-assembly",
       moduleClass = MetaschemaModelModule.class)
-  public static final class DefineAssembly implements IBoundObject {
+  public static class DefineAssembly implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     @BoundFlag(
         formalName = "Global Assembly Name",
         name = "name",
         required = true,
-        typeAdapter = TokenAdapter.class,
-        valueConstraints = @ValueConstraints(
-            expect = @Expect(level = IConstraint.Level.WARNING, test = "not(.=$keywords)",
-                message = "Names cannot be non-delimiting terminal symbols in Metapath syntax.")))
+        typeAdapter = TokenAdapter.class)
     private String _name;
 
     @BoundFlag(
@@ -649,7 +686,7 @@ public final class METASCHEMA implements IBoundObject {
         description = "Provides a root name, for when the definition is used as the root of a node hierarchy.",
         name = "root-name",
         moduleClass = MetaschemaModelModule.class)
-    public static final class RootName implements IBoundObject {
+    public static class RootName implements IBoundObject {
       private final IMetaschemaData __metaschemaData;
 
       /**
@@ -707,17 +744,14 @@ public final class METASCHEMA implements IBoundObject {
       formalName = "Global Field Definition",
       name = "define-field",
       moduleClass = MetaschemaModelModule.class)
-  public static final class DefineField implements IBoundObject {
+  public static class DefineField implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     @BoundFlag(
         formalName = "Global Field Name",
         name = "name",
         required = true,
-        typeAdapter = TokenAdapter.class,
-        valueConstraints = @ValueConstraints(
-            expect = @Expect(level = IConstraint.Level.WARNING, test = "not(.=$keywords)",
-                message = "Names cannot be non-delimiting terminal symbols in Metapath syntax.")))
+        typeAdapter = TokenAdapter.class)
     private String _name;
 
     @BoundFlag(
@@ -768,7 +802,13 @@ public final class METASCHEMA implements IBoundObject {
                 @AllowedValue(value = "string", description = ""), @AllowedValue(value = "token", description = ""),
                 @AllowedValue(value = "uri", description = ""),
                 @AllowedValue(value = "uri-reference", description = ""),
-                @AllowedValue(value = "uuid", description = "") })))
+                @AllowedValue(value = "uuid", description = ""),
+                @AllowedValue(value = "base64Binary", description = ""),
+                @AllowedValue(value = "dateTime", description = ""),
+                @AllowedValue(value = "dateTime-with-timezone", description = ""),
+                @AllowedValue(value = "email", description = ""),
+                @AllowedValue(value = "nonNegativeInteger", description = ""),
+                @AllowedValue(value = "positiveInteger", description = "") })))
     private String _asType;
 
     @BoundFlag(
@@ -1062,17 +1102,14 @@ public final class METASCHEMA implements IBoundObject {
       formalName = "Global Flag Definition",
       name = "define-flag",
       moduleClass = MetaschemaModelModule.class)
-  public static final class DefineFlag implements IBoundObject {
+  public static class DefineFlag implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     @BoundFlag(
         formalName = "Global Flag Name",
         name = "name",
         required = true,
-        typeAdapter = TokenAdapter.class,
-        valueConstraints = @ValueConstraints(
-            expect = @Expect(level = IConstraint.Level.WARNING, test = "not(.=$keywords)",
-                message = "Names cannot be non-delimiting terminal symbols in Metapath syntax.")))
+        typeAdapter = TokenAdapter.class)
     private String _name;
 
     @BoundFlag(
@@ -1122,7 +1159,13 @@ public final class METASCHEMA implements IBoundObject {
                 @AllowedValue(value = "string", description = ""), @AllowedValue(value = "token", description = ""),
                 @AllowedValue(value = "uri", description = ""),
                 @AllowedValue(value = "uri-reference", description = ""),
-                @AllowedValue(value = "uuid", description = "") })))
+                @AllowedValue(value = "uuid", description = ""),
+                @AllowedValue(value = "base64Binary", description = ""),
+                @AllowedValue(value = "dateTime", description = ""),
+                @AllowedValue(value = "dateTime-with-timezone", description = ""),
+                @AllowedValue(value = "email", description = ""),
+                @AllowedValue(value = "nonNegativeInteger", description = ""),
+                @AllowedValue(value = "positiveInteger", description = "") })))
     private String _asType;
 
     @BoundFlag(

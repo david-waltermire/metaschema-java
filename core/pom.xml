@@ -136,6 +136,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+		    <groupId>com.github.seregamorph</groupId>
+		    <artifactId>hamcrest-more-matchers</artifactId>
+		    <scope>test</scope>
+		</dependency>
+        <dependency>
             <groupId>biz.aQute.bnd</groupId>
             <artifactId>biz.aQute.bnd.util</artifactId>
             <scope>provided</scope>
@@ -304,6 +309,7 @@
                                         <include>**/*.xsd</include>
                                         <include>**/*.dtd</include>
                                         <include>**/*.json</include>
+                                        <include>**/*.xml</include>
                                     </includes>
                                     <filtering>false</filtering>
                                 </resource>

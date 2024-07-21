@@ -26,12 +26,13 @@
 
 package gov.nist.secauto.metaschema.core.model;
 
-public interface IMetaschemaModule
+// TODO: remove
+public interface IMetaschemaModule<SELF extends IMetaschemaModule<SELF>>
     extends IModuleExtended<
-        IMetaschemaModule,
+        SELF,
         IModelDefinition,
         IFlagDefinition,
         IFieldDefinition,
         IAssemblyDefinition> {
-  // no additional methods
+  // No additional methods
 }

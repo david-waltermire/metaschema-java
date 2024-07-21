@@ -29,9 +29,9 @@ package gov.nist.secauto.metaschema.databind;
 import gov.nist.secauto.metaschema.core.configuration.IConfiguration;
 import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
-import gov.nist.secauto.metaschema.core.metapath.StaticContext;
+import gov.nist.secauto.metaschema.core.metapath.item.node.IDefinitionNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
-import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
+import gov.nist.secauto.metaschema.core.metapath.item.node.IRootAssemblyNodeItem;
 import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.constraint.DefaultConstraintValidator;
@@ -333,7 +333,7 @@ public interface IBindingContext {
 
   /**
    * Perform constraint validation on the provided bound object represented as an
-   * {@link INodeItem}.
+   * {@link IDocumentNodeItem}.
    *
    * @param nodeItem
    *          the node item to validate
@@ -346,18 +346,38 @@ public interface IBindingContext {
    *           if the provided class is not bound to a Module assembly or field
    */
   default IValidationResult validate(
-      @NonNull INodeItem nodeItem,
+      @NonNull IDocumentNodeItem nodeItem,
       @NonNull IBoundLoader loader,
       @Nullable IConfiguration<ValidationFeature<?>> config) {
+    IRootAssemblyNodeItem root = nodeItem.getRootAssemblyNodeItem();
+    return validate(root, loader, config);
+  }
+
+  /**
+   * Perform constraint validation on the provided bound object represented as an
+   * {@link IDefinitionNodeItem}.
+   *
+   * @param nodeItem
+   *          the node item to validate
+   * @param loader
+   *          a module loader used to load and resolve referenced resources
+   * @param config
+   *          the validation configuration
+   * @return the validation result
+   * @throws IllegalArgumentException
+   *           if the provided class is not bound to a Module assembly or field
+   */
+  default IValidationResult validate(
+      @NonNull IDefinitionNodeItem<?, ?> nodeItem,
+      @NonNull IBoundLoader loader,
+      @Nullable IConfiguration<ValidationFeature<?>> config) {
+
     FindingCollectingConstraintValidationHandler handler = new FindingCollectingConstraintValidationHandler();
     IConstraintValidator validator = newValidator(handler, config);
 
-    StaticContext staticContext = StaticContext.builder()
-        .defaultModelNamespace(nodeItem.getNamespace())
-        .build();
-
-    DynamicContext dynamicContext = new DynamicContext(staticContext);
+    DynamicContext dynamicContext = new DynamicContext(nodeItem.getStaticContext());
     dynamicContext.setDocumentLoader(loader);
+
     validator.validate(nodeItem, dynamicContext);
     validator.finalizeValidation(dynamicContext);
     return handler;

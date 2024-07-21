@@ -59,7 +59,7 @@ import java.util.List;
     formalName = "Allowed Values Constraint",
     name = "targeted-allowed-values-constraint",
     moduleClass = MetaschemaModelModule.class)
-public final class TargetedAllowedValuesConstraint implements IBoundObject, ITargetedConstraintBase {
+public class TargetedAllowedValuesConstraint implements IBoundObject, ITargetedConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

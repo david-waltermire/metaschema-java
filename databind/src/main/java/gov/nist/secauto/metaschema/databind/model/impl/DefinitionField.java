@@ -30,6 +30,7 @@ import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
 import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.constraint.AssemblyConstraintSet;
 import gov.nist.secauto.metaschema.core.model.constraint.IModelConstrained;
 import gov.nist.secauto.metaschema.core.model.constraint.ISource;
@@ -134,10 +135,13 @@ public final class DefinitionField
     }
     this.fieldValue = new FieldValue(field, BoundFieldValue.class, bindingContext);
     this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> new FlagContainerSupport(this, this::handleFlagInstance)));
+
+    IModule module = getContainingModule();
+
     this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
       IModelConstrained retval = new AssemblyConstraintSet();
       ValueConstraints valueAnnotation = getAnnotation().valueConstraints();
-      ConstraintSupport.parse(valueAnnotation, ISource.modelSource(), retval);
+      ConstraintSupport.parse(valueAnnotation, ISource.modelSource(module), retval);
       return retval;
     }));
     this.jsonProperties = ObjectUtils.notNull(Lazy.lazy(() -> {

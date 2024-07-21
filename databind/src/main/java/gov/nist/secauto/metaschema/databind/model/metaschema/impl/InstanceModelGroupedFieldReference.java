@@ -30,7 +30,6 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IAssemblyNodeItem;
 import gov.nist.secauto.metaschema.core.model.AbstractFieldInstance;
-import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IAttributable;
 import gov.nist.secauto.metaschema.core.model.IChoiceGroupInstance;
 import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
@@ -38,6 +37,9 @@ import gov.nist.secauto.metaschema.core.model.IFieldInstanceGrouped;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.util.Map;
 import java.util.Set;
@@ -50,8 +52,8 @@ public class InstanceModelGroupedFieldReference
         IChoiceGroupInstance,
         IFieldDefinition,
         IFieldInstanceGrouped,
-        IAssemblyDefinition>
-    implements IFieldInstanceGrouped {
+        IBindingDefinitionModelAssembly>
+    implements IFieldInstanceGrouped, IBindingInstance {
   @NonNull
   private final AssemblyModel.ChoiceGroup.Field binding;
   @NonNull
@@ -72,7 +74,7 @@ public class InstanceModelGroupedFieldReference
     this.definition = definition;
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getNodeItem())
+        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
   }
@@ -88,12 +90,17 @@ public class InstanceModelGroupedFieldReference
   }
 
   @Override
+  public IBindingMetaschemaModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
+
+  @Override
   public Map<IAttributable.Key, Set<String>> getProperties() {
     return properties;
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

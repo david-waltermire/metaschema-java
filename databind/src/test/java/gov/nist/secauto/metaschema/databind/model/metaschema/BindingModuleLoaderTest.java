@@ -24,32 +24,23 @@
  * OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
  */
 
-package gov.nist.secauto.metaschema.core.metapath.item.node;
+package gov.nist.secauto.metaschema.databind.model.metaschema;
 
-import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
-import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAtomicValuedItem;
-import gov.nist.secauto.metaschema.core.model.IValuedDefinition;
+import gov.nist.secauto.metaschema.core.model.IModule;
+import gov.nist.secauto.metaschema.core.model.MetaschemaException;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+import org.junit.jupiter.api.Test;
 
-interface IFeatureNullableAtomicValuedItem
-    extends IFeatureRequiredDataItem, IAtomicValuedItem {
+import java.io.IOException;
+import java.nio.file.Paths;
 
-  @NonNull
-  IValuedDefinition getDefinition();
+class BindingModuleLoaderTest {
 
-  @Nullable
-  Object getAtomicValue();
+  @Test
+  void test() throws MetaschemaException, IOException {
+    BindingModuleLoader loader = new BindingModuleLoader();
+    loader.allowEntityResolution();
 
-  @Nullable
-  default IAnyAtomicItem newAtomicItem() {
-    Object atomicValue = getAtomicValue();
-    IAnyAtomicItem retval = null;
-    if (atomicValue != null) {
-      IValuedDefinition def = getDefinition();
-      retval = def.getJavaTypeAdapter().newItem(atomicValue);
-    }
-    return retval;
+    IModule module = loader.load(Paths.get("src/test/resources/test-content/legacy-metaschema-data-types-module.xml"));
   }
 }

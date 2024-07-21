@@ -35,8 +35,10 @@ import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDefinitionNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
+import gov.nist.secauto.metaschema.core.model.IDefinition;
 import gov.nist.secauto.metaschema.core.model.INamedInstance;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingModelElement;
 
 import java.util.List;
 
@@ -94,8 +96,19 @@ public final class Model {
 
   public static INodeItem getModel(@NonNull IDefinitionNodeItem<?, ?> definitionNodeItem) {
     INamedInstance instance = definitionNodeItem.getInstance();
-    return instance != null
-        ? instance.getNodeItem()
-        : definitionNodeItem.getDefinition().getNodeItem();
+
+    INodeItem retval = null;
+    if (instance != null) {
+      if (instance instanceof IBindingModelElement) {
+        retval = ((IBindingModelElement) instance).getSourceNodeItem();
+      }
+    } else {
+      IDefinition definition = definitionNodeItem.getDefinition();
+      if (definition instanceof IBindingModelElement) {
+        retval = ((IBindingModelElement) definition).getSourceNodeItem();
+      }
+    }
+
+    return retval;
   }
 }

@@ -100,7 +100,7 @@ public class MockNodeItemFactory {
         allowing(document).ancestorOrSelf();
         will(returnValue(Stream.of(document)));
 
-        allowing(root).getName();
+        allowing(root).getQName();
         will(returnValue(rootName));
         allowing(root).getNodeItem();
         will(returnValue(root));
@@ -126,7 +126,7 @@ public class MockNodeItemFactory {
         will(returnValue(flags));
         flags.forEach(flag -> {
           // handle each flag child
-          allowing(item).getFlagByName(with(equal(flag.getName())));
+          allowing(item).getFlagByName(with(equal(flag.getQName())));
           will(returnValue(flag));
           // link parent
           allowing(flag).getParentNodeItem();
@@ -178,7 +178,7 @@ public class MockNodeItemFactory {
 
     Map<QName, List<IModelNodeItem<?, ?>>> retval = new LinkedHashMap<>(); // NOPMD - intentional
     for (IModelNodeItem<?, ?> item : modelItems) {
-      QName name = item.getName();
+      QName name = item.getQName();
       List<IModelNodeItem<?, ?>> namedItems = retval.get(name);
       if (namedItems == null) {
         namedItems = new LinkedList<>(); // NOPMD - intentional
@@ -195,7 +195,7 @@ public class MockNodeItemFactory {
 
     getContext().checking(new Expectations() {
       { // NOPMD - intentional
-        allowing(retval).getName();
+        allowing(retval).getQName();
         will(returnValue(name));
 
         allowing(retval).hasValue();
@@ -228,7 +228,7 @@ public class MockNodeItemFactory {
 
     getContext().checking(new Expectations() {
       { // NOPMD - intentional
-        allowing(retval).getName();
+        allowing(retval).getQName();
         will(returnValue(name));
 
         allowing(retval).hasValue();
@@ -255,7 +255,7 @@ public class MockNodeItemFactory {
 
     getContext().checking(new Expectations() {
       { // NOPMD - intentional
-        allowing(retval).getName();
+        allowing(retval).getQName();
         will(returnValue(name));
 
         allowing(retval).getNodeItem();

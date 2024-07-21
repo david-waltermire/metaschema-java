@@ -73,4 +73,9 @@ public abstract class AbstractInlineFlagDefinition<
   public PARENT getContainingDefinition() {
     return getParentContainer();
   }
+
+  @Override
+  public IModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
 }

@@ -49,7 +49,8 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 public interface IBoundInstanceFlag
     extends IFlagInstance, IBoundDefinitionFlag,
     IFeatureScalarItemValueHandler,
-    IBoundInstance<Object>, IFeatureDefinitionInstanceInlined<IBoundDefinitionFlag, IBoundInstanceFlag> {
+    IBoundInstance<Object>,
+    IFeatureDefinitionInstanceInlined<IBoundDefinitionFlag, IBoundInstanceFlag> {
 
   /**
    * Create a new bound flag instance.

@@ -55,7 +55,7 @@ public interface ILet {
       @NonNull String valueExpression,
       @NonNull ISource source) {
     try {
-      return of(name, MetapathExpression.compile(valueExpression), source);
+      return of(name, MetapathExpression.compile(valueExpression, source.getStaticContext()), source);
     } catch (MetapathException ex) {
       throw new MetapathException(
           String.format("Unable to compile the let expression '%s=%s'%s. %s",

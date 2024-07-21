@@ -27,6 +27,7 @@
 package gov.nist.secauto.metaschema.core.metapath.format;
 
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
+import gov.nist.secauto.metaschema.core.model.IMetapathQueryable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 /**
  * A named segment of a path that can be formatted.
  */
-public interface IPathSegment {
+public interface IPathSegment extends IMetapathQueryable {
   /**
    * Get the path for this node item using the provided formatter.
    *
@@ -86,5 +87,6 @@ public interface IPathSegment {
    *
    * @return the value or {@code} if no value is associated with this path segment
    */
+  @Override
   INodeItem getNodeItem();
 }

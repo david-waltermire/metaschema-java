@@ -31,6 +31,7 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
 import gov.nist.secauto.metaschema.core.model.AbstractInlineFlagDefinition;
 import gov.nist.secauto.metaschema.core.model.IBoundObject;
+import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.constraint.ISource;
 import gov.nist.secauto.metaschema.core.model.constraint.IValueConstrained;
 import gov.nist.secauto.metaschema.core.model.constraint.ValueConstraintSet;
@@ -38,6 +39,7 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModel;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
+import gov.nist.secauto.metaschema.databind.model.IBoundModule;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.JsonFieldValueKeyFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.JsonKey;
@@ -91,10 +93,12 @@ public class InstanceFlagInline
         containingDefinition.getBindingContext());
     this.defaultValue = ModelUtil.resolveDefaultValue(getAnnotation().defaultValue(), this.javaTypeAdapter);
 
+    IModule module = containingDefinition.getContainingModule();
+
     this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
       IValueConstrained retval = new ValueConstraintSet();
       ValueConstraints valueAnnotation = getAnnotation().valueConstraints();
-      ConstraintSupport.parse(valueAnnotation, ISource.modelSource(), retval);
+      ConstraintSupport.parse(valueAnnotation, ISource.modelSource(module), retval);
       return retval;
     }));
   }
@@ -119,6 +123,12 @@ public class InstanceFlagInline
   private BoundFlag getAnnotation() {
     return annotation;
   }
+
+  @Override
+  public IBoundModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
+
   // ------------------------------------------
   // - Start annotation driven code - CPD-OFF -
   // ------------------------------------------

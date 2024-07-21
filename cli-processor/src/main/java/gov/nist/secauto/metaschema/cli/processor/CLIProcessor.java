@@ -431,7 +431,7 @@ public class CLIProcessor {
         }
       } catch (RuntimeException ex) {
         retval = ExitCode.RUNTIME_ERROR
-            .exitMessage(String.format("An uncaught runtime error occured. %s", ex.getLocalizedMessage()))
+            .exitMessage(String.format("An uncaught runtime error occurred. %s", ex.getLocalizedMessage()))
             .withThrowable(ex);
       }
       return retval;

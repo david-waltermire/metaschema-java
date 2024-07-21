@@ -126,6 +126,9 @@
 <!--							<includes>-->
 <!--								<include>metaschema-module-metaschema.xml</include>-->
 <!--							</includes>-->
+<!--							<constraints>-->
+<!--								<constraint>${project.basedir}/../core/metaschema/schema/metaschema/metaschema-module-constraints.xml</constraint>-->
+<!--							</constraints>-->
 <!--						</configuration>-->
 <!--					</execution>-->
 					<execution>

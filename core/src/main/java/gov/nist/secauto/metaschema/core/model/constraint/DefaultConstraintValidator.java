@@ -638,6 +638,7 @@ public class DefaultConstraintValidator
     targets.stream()
         .forEachOrdered(item -> {
           assert item != null;
+
           if (item.hasValue()) {
             try {
               ISequence<?> result = metapath.evaluate(item, dynamicContext);

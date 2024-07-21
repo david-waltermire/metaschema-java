@@ -106,7 +106,7 @@ class XmlGlobalAssemblyDefinition
       IModelConstrained retval = new AssemblyConstraintSet();
       if (xmlObject.isSetConstraint()) {
         ConstraintXmlSupport.parse(retval, ObjectUtils.notNull(xmlObject.getConstraint()),
-            ISource.modelSource(module.getLocation()));
+            ISource.modelSource(module));
       }
       return retval;
     }));

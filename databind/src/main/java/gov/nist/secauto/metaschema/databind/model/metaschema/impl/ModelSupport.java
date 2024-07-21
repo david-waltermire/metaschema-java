@@ -48,6 +48,7 @@ import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA.
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.Property;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.Remarks;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.UseName;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.math.BigInteger;
 import java.net.URI;
@@ -238,10 +239,10 @@ public final class ModelSupport {
   @SuppressWarnings("unchecked")
   @Nullable
   public static <NODE extends IAssemblyNodeItem> NODE toNodeItem(
-      @NonNull IModule module,
-      @NonNull QName qname,
+      @NonNull IBindingMetaschemaModule module,
+      @NonNull QName definitionQName,
       int position) {
-    IDocumentNodeItem moduleNodeItem = module.getNodeItem();
-    return moduleNodeItem == null ? null : (NODE) moduleNodeItem.getModelItemsByName(qname).get(position);
+    IDocumentNodeItem moduleNodeItem = module.getSourceNodeItem();
+    return (NODE) moduleNodeItem.getModelItemsByName(definitionQName).get(position);
   }
 }

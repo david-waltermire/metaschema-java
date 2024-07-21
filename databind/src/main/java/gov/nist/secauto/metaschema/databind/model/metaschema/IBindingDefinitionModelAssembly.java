@@ -24,30 +24,10 @@
  * OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
  */
 
-package gov.nist.secauto.metaschema.databind.model;
+package gov.nist.secauto.metaschema.databind.model.metaschema;
 
-import gov.nist.secauto.metaschema.databind.model.info.IItemValueHandler;
+import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 
-import javax.xml.namespace.QName;
+public interface IBindingDefinitionModelAssembly extends IBindingDefinitionModel, IAssemblyDefinition {
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-
-/**
- * Represents a binding of Java data to a Metaschema module construct, i.e.
- * definition, instance, field value.
- *
- * @param <ITEM>
- *          the Java type for associated bound objects
- */
-public interface IBoundModuleElement<ITEM> extends IItemValueHandler<ITEM> {
-  /**
-   * Determine if the provided XML qualified name is associated with this
-   * property.
-   *
-   * @param qname
-   *          the XML qualified name of the property being parsed
-   * @return {@code true} if the instance will handle this name, or {@code false}
-   *         otherwise
-   */
-  boolean canHandleXmlQName(@NonNull QName qname);
 }

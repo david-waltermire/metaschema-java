@@ -40,12 +40,13 @@ public final class SerializationFeature<V>
    */
   @NonNull
   public static final SerializationFeature<Boolean> SERIALIZE_ROOT
-      = new SerializationFeature<>(Boolean.class, true);
+      = new SerializationFeature<>("serialize-root", Boolean.class, true);
 
   private SerializationFeature(
+      @NonNull String name,
       @NonNull Class<V> valueClass,
       @NonNull V defaultValue) {
-    super(valueClass, defaultValue);
+    super(name, valueClass, defaultValue);
   }
 
 }

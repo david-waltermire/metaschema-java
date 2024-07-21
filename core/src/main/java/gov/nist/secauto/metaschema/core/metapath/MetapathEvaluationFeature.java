@@ -45,11 +45,12 @@ public final class MetapathEvaluationFeature<V>
    */
   @NonNull
   public static final MetapathEvaluationFeature<Boolean> METAPATH_EVALUATE_PREDICATES
-      = new MetapathEvaluationFeature<>(Boolean.class, true);
+      = new MetapathEvaluationFeature<>("evaluate-predicates", Boolean.class, true);
 
   private MetapathEvaluationFeature(
+      @NonNull String name,
       @NonNull Class<V> valueClass,
       @NonNull V defaultValue) {
-    super(valueClass, defaultValue);
+    super(name, valueClass, defaultValue);
   }
 }

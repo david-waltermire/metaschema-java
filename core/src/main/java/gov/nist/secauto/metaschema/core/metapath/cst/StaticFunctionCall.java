@@ -96,7 +96,7 @@ public class StaticFunctionCall implements IExpression {
   @SuppressWarnings("null")
   @Override
   public String toASTString() {
-    return String.format("%s[name=%s]", getClass().getName(), getFunction().getName());
+    return String.format("%s[name=%s]", getClass().getName(), getFunction().getQName());
   }
 
   @Override

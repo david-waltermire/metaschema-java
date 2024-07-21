@@ -38,11 +38,12 @@ public final class ValidationFeature<V>
    */
   @NonNull
   public static final ValidationFeature<Boolean> VALIDATE_GENERATE_PASS_FINDINGS
-      = new ValidationFeature<>(Boolean.class, false);
+      = new ValidationFeature<>("include-pass-findings", Boolean.class, false);
 
   private ValidationFeature(
+      @NonNull String name,
       @NonNull Class<V> valueClass,
       @NonNull V defaultValue) {
-    super(valueClass, defaultValue);
+    super(name, valueClass, defaultValue);
   }
 }

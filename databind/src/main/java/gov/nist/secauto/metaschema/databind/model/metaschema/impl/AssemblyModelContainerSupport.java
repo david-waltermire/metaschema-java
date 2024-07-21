@@ -27,7 +27,6 @@
 package gov.nist.secauto.metaschema.databind.model.metaschema.impl;
 
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItemFactory;
-import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IAssemblyInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.IChoiceGroupInstance;
 import gov.nist.secauto.metaschema.core.model.IChoiceInstance;
@@ -47,6 +46,7 @@ import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyRef
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FieldReference;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.InlineDefineAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.InlineDefineField;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -92,7 +92,7 @@ class AssemblyModelContainerSupport
       IChoiceGroupInstance> of(
           @Nullable AssemblyModel binding,
           @NonNull IBoundInstanceModelAssembly bindingInstance,
-          @NonNull IAssemblyDefinition parent,
+          @NonNull IBindingDefinitionModelAssembly parent,
           @NonNull INodeItemFactory nodeItemFactory) {
     List<Object> instances;
     return binding == null || (instances = binding.getInstances()) == null || instances.isEmpty()
@@ -121,7 +121,7 @@ class AssemblyModelContainerSupport
   protected AssemblyModelContainerSupport(
       @NonNull AssemblyModel model,
       @NonNull IBoundInstanceModelAssembly modelInstance,
-      @NonNull IAssemblyDefinition parent,
+      @NonNull IBindingDefinitionModelAssembly parent,
       @NonNull INodeItemFactory nodeItemFactory) {
 
     // create temporary collections to store the child binding objects

@@ -50,7 +50,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "field-constraints",
     moduleClass = MetaschemaModelModule.class)
-public final class FieldConstraints implements IValueTargetedConstraintsBase {
+public class FieldConstraints implements IValueTargetedConstraintsBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(

@@ -131,10 +131,9 @@ public final class MpRecurseDepth {
       @NonNull ISequence<INodeItem> initialContext,
       @NonNull IStringItem recursionPath,
       @NonNull DynamicContext dynamicContext) {
-
     MetapathExpression recursionMetapath;
     try {
-      recursionMetapath = MetapathExpression.compile(recursionPath.asString());
+      recursionMetapath = MetapathExpression.compile(recursionPath.asString(), dynamicContext.getStaticContext());
     } catch (MetapathException ex) {
       throw new StaticMetapathException(StaticMetapathException.INVALID_PATH_GRAMMAR, ex.getMessage(), ex);
     }
@@ -143,9 +142,9 @@ public final class MpRecurseDepth {
   }
 
   /**
-   * Applies the {@code recursionMetapath} starting with the the items in the
-   * {@code initialContext} and also recursively to the resulting items returned
-   * by evaluating this path.
+   * Evaluates the {@code recursionMetapath} starting with the the items in the
+   * {@code initialContext} and also recursively using the resulting items
+   * returned by evaluating this path.
    *
    * @param initialContext
    *          the sequence containing the initial node items to evaluate the
@@ -164,10 +163,12 @@ public final class MpRecurseDepth {
 
     return ISequence.of(ObjectUtils.notNull(initialContext.stream()
         .flatMap(item -> {
-          @NonNull ISequence<INodeItem> metapathResult
-              = recursionMetapath.evaluate(item, dynamicContext);
+          @NonNull ISequence<INodeItem> metapathResult = recursionMetapath.evaluate(item, dynamicContext);
+          // ensure this is list backed
+          metapathResult.getValue();
+
           ISequence<INodeItem> result = recurseDepth(metapathResult, recursionMetapath, dynamicContext);
-          return ObjectUtils.notNull(Stream.concat(result.stream(), Stream.of(item)));
+          return ObjectUtils.notNull(Stream.concat(Stream.of(item), result.stream()));
         })));
   }
 }

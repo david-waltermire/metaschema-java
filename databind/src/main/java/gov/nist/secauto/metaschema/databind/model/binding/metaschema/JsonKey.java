@@ -49,7 +49,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     description = "Used in JSON (and similar formats) to identify a flag that will be used as the property name in an object hold a collection of sibling objects. Requires that siblings must never share `json-key` values.",
     name = "json-key",
     moduleClass = MetaschemaModelModule.class)
-public final class JsonKey implements IBoundObject {
+public class JsonKey implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   /**

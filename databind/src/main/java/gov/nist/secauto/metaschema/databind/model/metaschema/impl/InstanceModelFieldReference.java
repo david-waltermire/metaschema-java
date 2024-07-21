@@ -30,7 +30,6 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IAssemblyNodeItem;
 import gov.nist.secauto.metaschema.core.model.AbstractFieldInstance;
-import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IAttributable;
 import gov.nist.secauto.metaschema.core.model.IContainerModelAbsolute;
 import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
@@ -39,6 +38,9 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FieldReference;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.math.BigInteger;
 import java.util.Map;
@@ -53,8 +55,9 @@ public class InstanceModelFieldReference
         IContainerModelAbsolute,
         IFieldDefinition,
         IFieldInstanceAbsolute,
-        IAssemblyDefinition>
-    implements IFieldInstanceAbsolute, IFeatureInstanceModelGroupAs {
+        IBindingDefinitionModelAssembly>
+    implements IFieldInstanceAbsolute, IBindingInstance,
+    IFeatureInstanceModelGroupAs {
   @NonNull
   private final FieldReference binding;
   @NonNull
@@ -80,7 +83,7 @@ public class InstanceModelFieldReference
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
     this.groupAs = ModelSupport.groupAs(binding.getGroupAs(), parent.getOwningDefinition().getContainingModule());
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getNodeItem())
+        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
     this.defaultValue = ModelSupport.defaultValue(binding.getDefault(), definition.getJavaTypeAdapter());
@@ -97,6 +100,11 @@ public class InstanceModelFieldReference
   }
 
   @Override
+  public IBindingMetaschemaModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
+
+  @Override
   public Map<IAttributable.Key, Set<String>> getProperties() {
     return properties;
   }
@@ -107,7 +115,7 @@ public class InstanceModelFieldReference
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

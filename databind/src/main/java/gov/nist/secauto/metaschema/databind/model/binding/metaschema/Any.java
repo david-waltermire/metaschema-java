@@ -40,7 +40,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Any Additional Content",
     name = "any",
     moduleClass = MetaschemaModelModule.class)
-public final class Any implements IBoundObject {
+public class Any implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   public Any() {

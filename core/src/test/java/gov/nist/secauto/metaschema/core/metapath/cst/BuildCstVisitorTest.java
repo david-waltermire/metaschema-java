@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.core.metapath.cst;
 
+import static com.github.seregamorph.hamcrest.MoreMatchers.where;
 import static gov.nist.secauto.metaschema.core.metapath.TestUtils.bool;
 import static gov.nist.secauto.metaschema.core.metapath.TestUtils.integer;
 import static gov.nist.secauto.metaschema.core.metapath.TestUtils.string;
@@ -33,7 +34,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,6 +57,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IBooleanItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IUuidItem;
+import gov.nist.secauto.metaschema.core.metapath.item.node.IAssemblyNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IFieldNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IFlagNodeItem;
@@ -152,12 +153,10 @@ class BuildCstVisitorTest {
     assert field != null;
 
     // evaluate
-    ISequence<?> result = expr.evaluate(field);
+    ISequence<IFieldNodeItem> result = expr.evaluate(field);
     assertThat(result.getValue(), contains(
         allOf(
-            instanceOf(IFieldNodeItem.class),
-            hasProperty("name", equalTo(FIELD2))))); // NOPMD
-
+            where(IFieldNodeItem::getQName, equalTo(FIELD2))))); // NOPMD
   }
 
   @Test
@@ -177,7 +176,7 @@ class BuildCstVisitorTest {
 
     assertAll(
         () -> assertInstanceOf(IRootAssemblyNodeItem.class, result),
-        () -> assertEquals(ROOT, ((IRootAssemblyNodeItem) result).getName()));
+        () -> assertEquals(ROOT, ((IRootAssemblyNodeItem) result).getQName()));
   }
 
   @Test
@@ -226,11 +225,11 @@ class BuildCstVisitorTest {
     IDocumentNodeItem document = newTestDocument();
 
     // evaluate
-    ISequence<?> result = expr.evaluate(document);
+    ISequence<IAssemblyNodeItem> result = expr.evaluate(document);
     assertThat(result.getValue(), contains(
         allOf(
             instanceOf(IRootAssemblyNodeItem.class),
-            hasProperty("name", equalTo(ROOT)))));
+            where(IAssemblyNodeItem::getQName, equalTo(ROOT))))); // NOPMD
   }
 
   @Test
@@ -247,11 +246,11 @@ class BuildCstVisitorTest {
     assert field != null;
 
     // evaluate
-    ISequence<?> result = expr.evaluate(field);
+    ISequence<IFlagNodeItem> result = expr.evaluate(field);
     assertThat(result.getValue(), contains(
         allOf(
             instanceOf(IFlagNodeItem.class),
-            hasProperty("name", equalTo(FLAG)))));
+            where(IFlagNodeItem::getQName, equalTo(FLAG)))));
   }
 
   @Test
@@ -268,14 +267,14 @@ class BuildCstVisitorTest {
     assert root != null;
 
     // evaluate
-    ISequence<?> result = expr.evaluate(root);
+    ISequence<IFieldNodeItem> result = expr.evaluate(root);
     assertThat(result.getValue(), contains(
         allOf(
             instanceOf(IFieldNodeItem.class),
-            hasProperty("name", equalTo(FIELD1))), // NOPMD
+            where(IFieldNodeItem::getQName, equalTo(FIELD1))), // NOPMD
         allOf(
             instanceOf(IFieldNodeItem.class),
-            hasProperty("name", equalTo(FIELD2))))); // NOPMD
+            where(IFieldNodeItem::getQName, equalTo(FIELD2))))); // NOPMD
   }
 
   static Stream<Arguments> testComparison() {

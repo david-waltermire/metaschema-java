@@ -121,9 +121,7 @@ public class MetapathExpression {
    */
   @NonNull
   public static MetapathExpression compile(@NonNull String path) {
-    StaticContext context = StaticContext.builder().build();
-
-    return compile(path, context);
+    return compile(path, StaticContext.instance());
   }
 
   /**
@@ -171,7 +169,7 @@ public class MetapathExpression {
             }
             LOGGER.atDebug().log(String.format("Metapath AST:%n%s", os.toString(StandardCharsets.UTF_8)));
           } catch (IOException ex) {
-            LOGGER.atError().withThrowable(ex).log("An unexpected error occured while closing the steam.");
+            LOGGER.atError().withThrowable(ex).log("An unexpected error occurred while closing the steam.");
           }
         }
 
@@ -233,16 +231,6 @@ public class MetapathExpression {
   @NonNull
   protected StaticContext getStaticContext() {
     return staticContext;
-  }
-
-  /**
-   * Generate a new dynamic context.
-   *
-   * @return the generated dynamic context
-   */
-  @NonNull
-  public DynamicContext dynamicContext() {
-    return new DynamicContext(getStaticContext());
   }
 
   @Override
@@ -399,7 +387,7 @@ public class MetapathExpression {
    */
   @NonNull
   public <T extends IItem> ISequence<T> evaluate() {
-    return evaluate(null);
+    return evaluate((IItem) null);
   }
 
   /**
@@ -419,7 +407,7 @@ public class MetapathExpression {
   @NonNull
   public <T extends IItem> ISequence<T> evaluate(
       @Nullable IItem focus) {
-    return (ISequence<T>) evaluate(focus, dynamicContext());
+    return (ISequence<T>) evaluate(focus, new DynamicContext(getStaticContext()));
   }
 
   /**

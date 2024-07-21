@@ -37,7 +37,8 @@ class FieldInstanceNoValueNodeItemImpl
     extends AbstractInstanceNodeItem<IFieldDefinition, IFieldInstance, IAssemblyNodeItem>
     implements IFieldNodeItem,
     IFeatureNoDataAtomicValuedItem,
-    IFeatureFlagContainerItem {
+    IFeatureFlagContainerItem,
+    IFeatureChildNodeItem {
 
   @NonNull
   private final Lazy<FlagContainer> model;

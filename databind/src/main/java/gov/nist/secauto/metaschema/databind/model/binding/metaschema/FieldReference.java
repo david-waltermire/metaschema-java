@@ -62,7 +62,7 @@ import java.util.List;
     formalName = "Field Reference",
     name = "field-reference",
     moduleClass = MetaschemaModelModule.class)
-public final class FieldReference implements IBoundObject {
+public class FieldReference implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

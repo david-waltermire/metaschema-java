@@ -59,7 +59,7 @@ import java.util.List;
     formalName = "Expect Condition Constraint",
     name = "flag-expect",
     moduleClass = MetaschemaModelModule.class)
-public final class FlagExpect implements IBoundObject, IConstraintBase {
+public class FlagExpect implements IBoundObject, IConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

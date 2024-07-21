@@ -55,7 +55,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     description = "Any explanatory or helpful information to be provided about the remarks parent.",
     name = "remarks",
     moduleClass = MetaschemaModelModule.class)
-public final class Remarks implements IBoundObject {
+public class Remarks implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   /**

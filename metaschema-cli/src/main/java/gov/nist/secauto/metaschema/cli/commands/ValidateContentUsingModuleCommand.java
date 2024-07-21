@@ -27,7 +27,6 @@
 package gov.nist.secauto.metaschema.cli.commands;
 
 import gov.nist.secauto.metaschema.cli.processor.CLIProcessor.CallingContext;
-import gov.nist.secauto.metaschema.cli.processor.InvalidArgumentException;
 import gov.nist.secauto.metaschema.cli.processor.command.ICommandExecutor;
 import gov.nist.secauto.metaschema.core.configuration.DefaultConfiguration;
 import gov.nist.secauto.metaschema.core.configuration.IMutableConfiguration;
@@ -92,23 +91,6 @@ public class ValidateContentUsingModuleCommand
     retval.add(MetaschemaCommandSupport.METASCHEMA_OPTION);
 
     return CollectionUtil.unmodifiableCollection(retval);
-  }
-
-  @Override
-  public void validateOptions(CallingContext callingContext, CommandLine cmdLine) throws InvalidArgumentException {
-    // super.validateOptions(callingContext, cmdLine);
-    //
-    // String metaschemaName =
-    // cmdLine.getOptionValue(MetaschemaCommandSupport.METASCHEMA_OPTION);
-    // Path metaschema = Paths.get(metaschemaName);
-    // if (!Files.exists(metaschema)) {
-    // throw new InvalidArgumentException("The provided module '" + metaschema + "'
-    // does not exist.");
-    // }
-    // if (!Files.isReadable(metaschema)) {
-    // throw new InvalidArgumentException("The provided module '" + metaschema + "'
-    // is not readable.");
-    // }
   }
 
   @Override

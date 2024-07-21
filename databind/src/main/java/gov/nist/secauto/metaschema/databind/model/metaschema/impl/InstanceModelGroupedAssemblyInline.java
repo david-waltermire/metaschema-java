@@ -50,6 +50,9 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyConstraints;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.util.Map;
 import java.util.Set;
@@ -62,7 +65,7 @@ public class InstanceModelGroupedAssemblyInline
         IChoiceGroupInstance,
         IAssemblyDefinition,
         IAssemblyInstanceGrouped,
-        IAssemblyDefinition,
+        IBindingDefinitionModelAssembly,
         IFlagInstance,
         IModelInstanceAbsolute,
         INamedModelInstanceAbsolute,
@@ -70,7 +73,8 @@ public class InstanceModelGroupedAssemblyInline
         IAssemblyInstanceAbsolute,
         IChoiceInstance,
         IChoiceGroupInstance>
-    implements IAssemblyInstanceGrouped, IFeatureBindingContainerModelAssembly {
+    implements IAssemblyInstanceGrouped, IBindingInstance, IBindingDefinitionModelAssembly,
+    IFeatureBindingContainerModelAssembly {
   @NonNull
   private final AssemblyModel.ChoiceGroup.DefineAssembly binding;
   @NonNull
@@ -106,8 +110,8 @@ public class InstanceModelGroupedAssemblyInline
         getParentContainer().getJsonKeyFlagInstanceName())));
     this.modelContainer = ObjectUtils.notNull(Lazy.lazy(() -> AssemblyModelContainerSupport.of(
         binding.getModel(),
-        ObjectUtils
-            .requireNonNull(bindingInstance.getDefinition().getAssemblyInstanceByName(MODEL_QNAME)),
+        ObjectUtils.requireNonNull(bindingInstance.getDefinition()
+            .getAssemblyInstanceByName(MODEL_QNAME)),
         this,
         nodeItemFactory)));
     this.modelConstraints = ObjectUtils.notNull(Lazy.lazy(() -> {
@@ -117,12 +121,12 @@ public class InstanceModelGroupedAssemblyInline
         ConstraintBindingSupport.parse(
             retval,
             constraints,
-            ISource.modelSource(parent.getOwningDefinition().getContainingModule().getLocation()));
+            ISource.modelSource(parent.getOwningDefinition().getContainingModule()));
       }
       return retval;
     }));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getNodeItem())
+        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
   }
@@ -130,6 +134,11 @@ public class InstanceModelGroupedAssemblyInline
   @NonNull
   protected AssemblyModel.ChoiceGroup.DefineAssembly getBinding() {
     return binding;
+  }
+
+  @Override
+  public IBindingMetaschemaModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
   }
 
   @Override
@@ -159,7 +168,7 @@ public class InstanceModelGroupedAssemblyInline
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

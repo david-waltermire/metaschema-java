@@ -126,9 +126,10 @@ module gov.nist.secauto.metaschema.core {
   exports gov.nist.secauto.metaschema.core.datatype.markup.flexmark
       to gov.nist.secauto.metaschema.databind;
 
-  // make bundled schemas available for use
+  // make bundled schemas and related resources available for use
   opens schema.json;
   opens schema.xml;
+  opens schema.metaschema;
 
   // allow reflection on data types
   opens gov.nist.secauto.metaschema.core.datatype.markup;

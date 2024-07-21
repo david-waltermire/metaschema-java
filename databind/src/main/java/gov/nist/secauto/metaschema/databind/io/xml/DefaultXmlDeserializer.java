@@ -143,12 +143,12 @@ public class DefaultXmlDeserializer<CLASS extends IBoundObject>
 
   @Override
   protected final IDocumentNodeItem deserializeToNodeItemInternal(Reader reader, URI documentUri) throws IOException {
-    Object value = deserializeToValue(reader, documentUri);
+    Object value = deserializeToValueInternal(reader, documentUri);
     return INodeItemFactory.instance().newDocumentNodeItem(rootDefinition, documentUri, value);
   }
 
   @Override
-  public final CLASS deserializeToValue(Reader reader, URI documentUri) throws IOException {
+  public final CLASS deserializeToValueInternal(Reader reader, URI documentUri) throws IOException {
     // doesn't auto close the underlying reader
     try (AutoCloser<XMLEventReader2, XMLStreamException> closer = new AutoCloser<>(
         newXMLEventReader2(documentUri, reader), XMLEventReader::close)) {
@@ -168,7 +168,7 @@ public class DefaultXmlDeserializer<CLASS extends IBoundObject>
       return parser.read(rootDefinition);
     } catch (IOException | AssertionError ex) {
       throw new IOException(
-          String.format("An unexpected error occured during parsing: %s", ex.getMessage()),
+          String.format("An unexpected error occurred during parsing: %s", ex.getMessage()),
           ex);
     }
   }

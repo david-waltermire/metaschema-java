@@ -86,7 +86,7 @@ class MetapathExpressionTest {
   @Test
   void test() {
     MetapathExpression path = MetapathExpression.compile("2 eq 1 + 1");
-    ISequence<?> result = path.evaluate(null);
+    ISequence<?> result = path.evaluate();
     assertNotNull(result, "null result");
     assertTrue(!result.isEmpty(), "result was empty");
     assertEquals(1, result.size(), "unexpected size");

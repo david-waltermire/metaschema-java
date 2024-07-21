@@ -185,13 +185,13 @@ public abstract class AbstractModelBuilder<T extends AbstractModelBuilder<T>>
         will(returnValue(name));
         allowing(element).getUseName();
         will(returnValue(null));
+        allowing(element).getXmlQName();
+        will(returnValue(new QName(namespace, name)));
         allowing(element).getEffectiveName();
         will(returnValue(name));
         allowing(element).getFormalName();
         will(returnValue(null));
         allowing(element).getDescription();
-        will(returnValue(null));
-        allowing(element).getUseName();
         will(returnValue(null));
       }
     });

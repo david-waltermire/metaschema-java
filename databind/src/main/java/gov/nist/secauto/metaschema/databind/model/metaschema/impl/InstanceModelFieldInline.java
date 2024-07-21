@@ -31,7 +31,6 @@ import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IAssemblyNodeItem;
 import gov.nist.secauto.metaschema.core.model.AbstractInlineFieldDefinition;
-import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IAttributable;
 import gov.nist.secauto.metaschema.core.model.IContainerFlagSupport;
 import gov.nist.secauto.metaschema.core.model.IContainerModelAbsolute;
@@ -48,6 +47,10 @@ import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FieldConstr
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.InlineDefineField;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonKey;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonValueKeyFlag;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModel;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.math.BigInteger;
 import java.util.Map;
@@ -64,9 +67,10 @@ public class InstanceModelFieldInline
         IContainerModelAbsolute,
         IFieldDefinition,
         IFieldInstanceAbsolute,
-        IAssemblyDefinition,
+        IBindingDefinitionModelAssembly,
         IFlagInstance>
-    implements IFieldInstanceAbsolute, IFeatureInstanceModelGroupAs {
+    implements IFieldInstanceAbsolute, IBindingInstance, IBindingDefinitionModel,
+    IFeatureInstanceModelGroupAs {
   @NonNull
   private final InlineDefineField binding;
   @NonNull
@@ -94,7 +98,7 @@ public class InstanceModelFieldInline
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
     this.groupAs = ModelSupport.groupAs(binding.getGroupAs(), parent.getOwningDefinition().getContainingModule());
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getNodeItem())
+        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
     this.javaTypeAdapter = ModelSupport.dataType(binding.getAsType());
@@ -114,7 +118,7 @@ public class InstanceModelFieldInline
         ConstraintBindingSupport.parse(
             retval,
             constraints,
-            ISource.modelSource(parent.getOwningDefinition().getContainingModule().getLocation()));
+            ISource.modelSource(parent.getOwningDefinition().getContainingModule()));
       }
       return retval;
     }));
@@ -123,6 +127,11 @@ public class InstanceModelFieldInline
   @NonNull
   protected InlineDefineField getBinding() {
     return binding;
+  }
+
+  @Override
+  public IBindingMetaschemaModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
   }
 
   @Override
@@ -156,7 +165,7 @@ public class InstanceModelFieldInline
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

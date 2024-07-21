@@ -174,7 +174,7 @@ public abstract class AbstractNodeItemFactory implements INodeItemFactory, INode
     IAssemblyNodeItem retval = null;
 
     IAssemblyDefinition parentDefinition = parent.getDefinition();
-    if (parent.getName().equals(name) && parentDefinition.equals(definition)) {
+    if (parent.getQName().equals(name) && parentDefinition.equals(definition)) {
       retval = parent;
     } else {
       IAssemblyNodeItem ancestor = parent.getParentContentNodeItem();

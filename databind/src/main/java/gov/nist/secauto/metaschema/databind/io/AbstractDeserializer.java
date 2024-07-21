@@ -29,7 +29,8 @@ package gov.nist.secauto.metaschema.databind.io;
 import gov.nist.secauto.metaschema.core.configuration.IConfiguration;
 import gov.nist.secauto.metaschema.core.configuration.IMutableConfiguration;
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
-import gov.nist.secauto.metaschema.core.metapath.StaticContext;
+import gov.nist.secauto.metaschema.core.metapath.item.node.IDefinitionNodeItem;
+import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
 import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.constraint.DefaultConstraintValidator;
@@ -102,14 +103,7 @@ public abstract class AbstractDeserializer<CLASS extends IBoundObject>
     }
 
     if (isValidating()) {
-      DynamicContext dynamicContext = new DynamicContext(
-          StaticContext.builder()
-              .defaultModelNamespace(nodeItem.getNamespace())
-              .build());
-      dynamicContext.setDocumentLoader(getBindingContext().newBoundLoader());
-      DefaultConstraintValidator validator = new DefaultConstraintValidator(getConstraintValidationHandler());
-      validator.validate(nodeItem, dynamicContext);
-      validator.finalizeValidation(dynamicContext);
+      validate(nodeItem);
     }
     return nodeItem;
   }
@@ -127,6 +121,43 @@ public abstract class AbstractDeserializer<CLASS extends IBoundObject>
    */
   @NonNull
   protected abstract INodeItem deserializeToNodeItemInternal(@NonNull Reader reader, @NonNull URI documentUri)
+      throws IOException;
+
+  @Override
+  public final CLASS deserializeToValue(Reader reader, URI documentUri) throws IOException {
+    CLASS retval;
+
+    if (isValidating()) {
+      INodeItem nodeItem = deserializeToNodeItemInternal(reader, documentUri);
+      validate(nodeItem);
+      retval = ObjectUtils.asType(ObjectUtils.requireNonNull(nodeItem.getValue()));
+    } else {
+      retval = deserializeToValueInternal(reader, documentUri);
+    }
+    return retval;
+  }
+
+  private void validate(@NonNull INodeItem nodeItem) {
+    IDefinitionNodeItem<?, ?> definitionNodeItem;
+    if (nodeItem instanceof IDocumentNodeItem) {
+      definitionNodeItem = ((IDocumentNodeItem) nodeItem).getRootAssemblyNodeItem();
+    } else if (nodeItem instanceof IDefinitionNodeItem) {
+      definitionNodeItem = (IDefinitionNodeItem<?, ?>) nodeItem;
+    } else {
+      throw new UnsupportedOperationException(String.format(
+          "The node item type '%s' is not supported for validation.",
+          nodeItem.getClass().getName()));
+    }
+
+    DynamicContext dynamicContext = new DynamicContext(nodeItem.getStaticContext());
+    dynamicContext.setDocumentLoader(getBindingContext().newBoundLoader());
+    DefaultConstraintValidator validator = new DefaultConstraintValidator(getConstraintValidationHandler());
+    validator.validate(definitionNodeItem, dynamicContext);
+    validator.finalizeValidation(dynamicContext);
+  }
+
+  @NonNull
+  protected abstract CLASS deserializeToValueInternal(@NonNull Reader reader, @NonNull URI documentUri)
       throws IOException;
 
   @Override

@@ -51,7 +51,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "flag-constraints",
     moduleClass = MetaschemaModelModule.class)
-public final class FlagConstraints implements IValueConstraintsBase {
+public class FlagConstraints implements IValueConstraintsBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(

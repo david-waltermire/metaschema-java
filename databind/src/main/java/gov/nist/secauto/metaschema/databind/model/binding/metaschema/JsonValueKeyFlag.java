@@ -43,7 +43,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Flag Used as the Field Value's JSON Property Name",
     name = "json-value-key-flag",
     moduleClass = MetaschemaModelModule.class)
-public final class JsonValueKeyFlag implements IBoundObject {
+public class JsonValueKeyFlag implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

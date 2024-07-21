@@ -27,6 +27,7 @@
 package gov.nist.secauto.metaschema.core.model.xml;
 
 import gov.nist.secauto.metaschema.core.metapath.MetapathException;
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.model.AbstractLoader;
 import gov.nist.secauto.metaschema.core.model.IConstraintLoader;
 import gov.nist.secauto.metaschema.core.model.IModule;
@@ -176,29 +177,39 @@ public class XmlConstraintLoader
    *
    * @param xmlObject
    *          the XMLBeans object
-   * @param source
-   *          the source of the constraint content
+   * @param resource
+   *          the resource containing the constraint content
    * @return the scoped constraint definitions
    */
   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // intentional
   @NonNull
   protected List<IScopedContraints> parseScopedConstraints(
       @NonNull METASCHEMACONSTRAINTSDocument xmlObject,
-      @NonNull URI source) {
+      @NonNull URI resource) {
     List<IScopedContraints> scopedConstraints = new LinkedList<>();
-    ISource constraintSource = ISource.externalSource(source);
 
-    for (Scope scope : xmlObject.getMETASCHEMACONSTRAINTS().getScopeList()) {
+    StaticContext.Builder builder = StaticContext.builder()
+        .baseUri(resource);
+
+    METASCHEMACONSTRAINTSDocument.METASCHEMACONSTRAINTS constraints = xmlObject.getMETASCHEMACONSTRAINTS();
+
+    constraints.getNamespaceBindingList().stream()
+        .forEach(binding -> builder.namespace(
+            ObjectUtils.notNull(binding.getPrefix()), ObjectUtils.notNull(binding.getUri())));
+
+    ISource source = ISource.externalSource(builder.build());
+
+    for (Scope scope : constraints.getScopeList()) {
       assert scope != null;
 
       List<ITargetedConstraints> targetedConstraints = new LinkedList<>(); // NOPMD - intentional
       try {
-        SCOPE_PARSER.parse(scope, Pair.of(constraintSource, targetedConstraints));
+        SCOPE_PARSER.parse(scope, Pair.of(source, targetedConstraints));
       } catch (MetapathException | XmlValueNotSupportedException ex) {
         if (ex.getCause() instanceof MetapathException) {
           throw new MetapathException(
               String.format("Unable to compile a Metapath in '%s'. %s",
-                  constraintSource.getSource(),
+                  source.getSource(),
                   ex.getLocalizedMessage()),
               ex);
         }

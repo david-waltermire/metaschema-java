@@ -26,9 +26,10 @@
 
 package gov.nist.secauto.metaschema.core.model.constraint;
 
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
+import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.constraint.impl.ExternalSource;
 import gov.nist.secauto.metaschema.core.model.constraint.impl.InternalModelSource;
-import gov.nist.secauto.metaschema.core.model.constraint.impl.UnknownInternalModelSource;
 
 import java.net.URI;
 
@@ -53,28 +54,15 @@ public interface ISource {
   /**
    * Get the descriptor for a
    * {@link gov.nist.secauto.metaschema.core.model.constraint.ISource.SourceType#MODEL}
-   * source with no associated resource.
-   *
-   * @return the source descriptor
-   */
-  @NonNull
-  static ISource modelSource() {
-    return UnknownInternalModelSource.instance();
-  }
-
-  /**
-   * Get the descriptor for a
-   * {@link gov.nist.secauto.metaschema.core.model.constraint.ISource.SourceType#MODEL}
    * source with as associated resource.
    *
-   * @param location
-   *          the resource the constraint was defined in
-   *
+   * @param module
+   *          the Metaschema module the constraint was defined in
    * @return the source descriptor
    */
   @NonNull
-  static ISource modelSource(@Nullable URI location) {
-    return location == null ? modelSource() : InternalModelSource.instance(location);
+  static ISource modelSource(@NonNull IModule module) {
+    return InternalModelSource.instance(module);
   }
 
   /**
@@ -82,14 +70,15 @@ public interface ISource {
    * {@link gov.nist.secauto.metaschema.core.model.constraint.ISource.SourceType#EXTERNAL}
    * source with as associated resource.
    *
-   * @param location
-   *          the resource the constraint was defined in
+   * @param staticContext
+   *          the static Metapath context to use for compiling Metapath
+   *          expressions in this source
    *
    * @return the source descriptor
    */
   @NonNull
-  static ISource externalSource(@NonNull URI location) {
-    return ExternalSource.instance(location);
+  static ISource externalSource(@NonNull StaticContext staticContext) {
+    return ExternalSource.instance(staticContext);
   }
 
   /**
@@ -107,4 +96,12 @@ public interface ISource {
    */
   @Nullable
   URI getSource();
+
+  /**
+   * Get the static Metapath context to use when compiling Metapath expressions.
+   *
+   * @return the static Metapath context
+   */
+  @NonNull
+  StaticContext getStaticContext();
 }

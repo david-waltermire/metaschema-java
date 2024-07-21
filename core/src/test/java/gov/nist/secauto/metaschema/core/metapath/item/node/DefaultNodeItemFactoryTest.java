@@ -66,7 +66,7 @@ class DefaultNodeItemFactoryTest
     Collection<? extends IFlagNodeItem> flagItems = field.getFlags();
     assertThat(flagItems, containsInAnyOrder(
         allOf(
-            match("name", flag -> flag.getName(), equalTo(new QName(NS, "flag1"))),
+            match("name", flag -> flag.getQName(), equalTo(new QName(NS, "flag1"))),
             match("value", flag -> flag.getValue(), equalTo("flag1 value"))))); // NOPMD
   }
 
@@ -105,11 +105,11 @@ class DefaultNodeItemFactoryTest
     assertAll(
         () -> assertThat(flagItems, containsInAnyOrder(
             allOf(
-                match("name", flag -> flag.getName(), equalTo(new QName(NS, "flag1"))),
+                match("name", flag -> flag.getQName(), equalTo(new QName(NS, "flag1"))),
                 match("value", flag -> flag.getValue(), equalTo("flag1 value"))))),
         () -> assertThat(modelItems, containsInAnyOrder(
             allOf(
-                match("name", model -> model.getName(), equalTo(new QName(NS, "field1"))),
+                match("name", model -> model.getQName(), equalTo(new QName(NS, "field1"))),
                 match("value", model -> model.getValue(), equalTo("field1 value"))))));
   }
 

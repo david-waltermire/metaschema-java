@@ -48,7 +48,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "metapath-context",
     moduleClass = MetaschemaModelModule.class)
-public final class MetapathContext implements IBoundObject {
+public class MetapathContext implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(

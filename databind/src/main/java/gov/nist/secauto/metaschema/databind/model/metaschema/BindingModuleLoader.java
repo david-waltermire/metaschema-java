@@ -29,7 +29,6 @@ package gov.nist.secauto.metaschema.databind.model.metaschema;
 import gov.nist.secauto.metaschema.core.configuration.IConfiguration;
 import gov.nist.secauto.metaschema.core.configuration.IMutableConfiguration;
 import gov.nist.secauto.metaschema.core.model.AbstractModuleLoader;
-import gov.nist.secauto.metaschema.core.model.IMetaschemaModule;
 import gov.nist.secauto.metaschema.core.model.IModuleLoader;
 import gov.nist.secauto.metaschema.core.model.MetaschemaException;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
@@ -51,10 +50,9 @@ import java.util.stream.Collectors;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 public class BindingModuleLoader
-    extends AbstractModuleLoader<METASCHEMA, IMetaschemaModule>
+    extends AbstractModuleLoader<METASCHEMA, IBindingMetaschemaModule>
     implements IMutableConfiguration<DeserializationFeature<?>> {
-  @NonNull
-  private final IBoundLoader loader;
+  private IBoundLoader loader;
 
   // @NonNull
   // private final
@@ -76,14 +74,13 @@ public class BindingModuleLoader
    */
   public BindingModuleLoader(@NonNull List<IModuleLoader.IModulePostProcessor> modulePostProcessors) {
     super(modulePostProcessors);
-    this.loader = IBindingContext.instance().newBoundLoader();
   }
 
   @Override
-  protected IMetaschemaModule newModule(
+  protected IBindingMetaschemaModule newModule(
       URI resource,
       METASCHEMA binding,
-      List<? extends IMetaschemaModule> importedModules)
+      List<? extends IBindingMetaschemaModule> importedModules)
       throws MetaschemaException {
     return new BindingModule(
         resource,
@@ -107,7 +104,12 @@ public class BindingModuleLoader
   }
 
   protected IBoundLoader getLoader() {
-    return loader;
+    synchronized (this) {
+      if (this.loader == null) {
+        this.loader = IBindingContext.instance().newBoundLoader();
+      }
+      return this.loader;
+    }
   }
 
   @Override

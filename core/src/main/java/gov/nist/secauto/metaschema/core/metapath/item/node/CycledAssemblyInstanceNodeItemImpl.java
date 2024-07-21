@@ -38,7 +38,8 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 
 class CycledAssemblyInstanceNodeItemImpl
     extends AbstractInstanceNodeItem<IAssemblyDefinition, IAssemblyInstance, IAssemblyNodeItem>
-    implements ICycledAssemblyNodeItem, IFeatureNoDataItem {
+    implements ICycledAssemblyNodeItem, IFeatureNoDataValuedItem,
+    IFeatureChildNodeItem {
   @NonNull
   private final IAssemblyNodeItem cycledNodeItem;
 

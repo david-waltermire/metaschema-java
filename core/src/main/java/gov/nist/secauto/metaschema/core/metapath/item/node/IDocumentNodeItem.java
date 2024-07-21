@@ -28,17 +28,9 @@ package gov.nist.secauto.metaschema.core.metapath.item.node;
 
 import gov.nist.secauto.metaschema.core.metapath.format.IPathFormatter;
 
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.xml.namespace.QName;
-
 import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
 
-public interface IDocumentNodeItem extends INodeItem {
+public interface IDocumentNodeItem extends IDocumentBasedNodeItem {
   @Override
   default NodeItemType getNodeItemType() {
     return NodeItemType.DOCUMENT;
@@ -49,49 +41,13 @@ public interface IDocumentNodeItem extends INodeItem {
     return this;
   }
 
-  @Override
-  default IModelNodeItem<?, ?> getParentContentNodeItem() {
-    // there is no parent
-    return null;
-  }
-
-  @Override
-  default INodeItem getParentNodeItem() {
-    // there is no parent
-    return null;
-  }
-
   /**
-   * Get the URI associated with this document.
+   * Get the node item for the document root element.
    *
-   * @return the document's URI or {@code null} if unavailable
+   * @return the root node item
    */
-  @Nullable
-  URI getDocumentUri();
-
-  @Override
-  default URI getBaseUri() {
-    return getDocumentUri();
-  }
-
-  /**
-   * Get the root items having the provided {@code name}.
-   *
-   * @param name
-   *          the root item's name to retrieve
-   * @return a list of matching root items
-   */
-  default List<? extends IRootAssemblyNodeItem> getRootNodeItemByName(@NonNull QName name) {
-    List<? extends IModelNodeItem<?, ?>> result = getModelItemsByName(name);
-    return result.stream().flatMap(item -> {
-      IRootAssemblyNodeItem retval = null;
-      if (item instanceof IRootAssemblyNodeItem) {
-        retval = (IRootAssemblyNodeItem) item;
-      }
-
-      return retval == null ? null : Stream.of(retval);
-    }).collect(Collectors.toUnmodifiableList());
-  }
+  @NonNull
+  IRootAssemblyNodeItem getRootAssemblyNodeItem();
 
   @Override
   default String format(@NonNull IPathFormatter formatter) {
@@ -102,5 +58,4 @@ public interface IDocumentNodeItem extends INodeItem {
   default <CONTEXT, RESULT> RESULT accept(@NonNull INodeItemVisitor<CONTEXT, RESULT> visitor, CONTEXT context) {
     return visitor.visitDocument(this, context);
   }
-
 }

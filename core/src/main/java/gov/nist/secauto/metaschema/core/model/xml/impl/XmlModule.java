@@ -28,13 +28,14 @@ package gov.nist.secauto.metaschema.core.model.xml.impl;
 
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.model.AbstractModule;
 import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
 import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
-import gov.nist.secauto.metaschema.core.model.IMetaschemaModule;
 import gov.nist.secauto.metaschema.core.model.IModelDefinition;
 import gov.nist.secauto.metaschema.core.model.MetaschemaException;
+import gov.nist.secauto.metaschema.core.model.xml.IXmlMetaschemaModule;
 import gov.nist.secauto.metaschema.core.model.xml.xmlbeans.GlobalAssemblyDefinitionType;
 import gov.nist.secauto.metaschema.core.model.xml.xmlbeans.GlobalFieldDefinitionType;
 import gov.nist.secauto.metaschema.core.model.xml.xmlbeans.GlobalFlagDefinitionType;
@@ -52,7 +53,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -65,16 +65,16 @@ import nl.talsmasoftware.lazy4j.Lazy;
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class XmlModule
     extends AbstractModule<
-        IMetaschemaModule,
+        IXmlMetaschemaModule,
         IModelDefinition,
         IFlagDefinition,
         IFieldDefinition,
         IAssemblyDefinition>
-    implements IMetaschemaModule {
+    implements IXmlMetaschemaModule {
   private static final Logger LOGGER = LogManager.getLogger(XmlModule.class);
 
   @NonNull
-  private final URI location;
+  private final StaticContext staticContext;
   @NonNull
   private final METASCHEMADocument module;
   private final Lazy<Definitions> definitions;
@@ -84,7 +84,7 @@ public class XmlModule
    *
    * @param resource
    *          the resource from which the module was loaded
-   * @param moduleXml
+   * @param xmlObject
    *          the XML source of the module definition bound to Java objects
    * @param importedModules
    *          the modules imported by this module
@@ -93,20 +93,35 @@ public class XmlModule
    */
   public XmlModule( // NOPMD - unavoidable
       @NonNull URI resource,
-      @NonNull METASCHEMADocument moduleXml,
-      @NonNull List<? extends IMetaschemaModule> importedModules) throws MetaschemaException {
+      @NonNull METASCHEMADocument xmlObject,
+      @NonNull List<? extends IXmlMetaschemaModule> importedModules) throws MetaschemaException {
     super(importedModules);
-    this.location = ObjectUtils.requireNonNull(resource, "resource");
-    Objects.requireNonNull(moduleXml.getMETASCHEMA());
-    this.module = moduleXml;
 
-    this.definitions = Lazy.lazy(() -> new Definitions(ObjectUtils.requireNonNull(module.getMETASCHEMA())));
+    METASCHEMADocument.METASCHEMA moduleXml = ObjectUtils.requireNonNull(xmlObject.getMETASCHEMA());
+
+    StaticContext.Builder builder = StaticContext.builder()
+        .baseUri(resource)
+        .defaultModelNamespace(ObjectUtils.requireNonNull(moduleXml.getNamespace()));
+
+    moduleXml.getNamespaceBindingList().stream()
+        .forEach(binding -> builder.namespace(
+            ObjectUtils.notNull(binding.getPrefix()), ObjectUtils.notNull(binding.getUri())));
+
+    this.staticContext = builder.build();
+    this.module = xmlObject;
+
+    this.definitions = Lazy.lazy(() -> new Definitions(moduleXml));
+  }
+
+  @Override
+  public StaticContext getModuleStaticContext() {
+    return staticContext;
   }
 
   @NonNull
   @Override
   public URI getLocation() {
-    return location;
+    return ObjectUtils.notNull(staticContext.getBaseUri());
   }
 
   /**

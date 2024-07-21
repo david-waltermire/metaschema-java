@@ -59,7 +59,7 @@ import java.util.List;
     formalName = "Value Matches Constraint",
     name = "targeted-matches-constraint",
     moduleClass = MetaschemaModelModule.class)
-public final class TargetedMatchesConstraint implements IBoundObject, ITargetedConstraintBase {
+public class TargetedMatchesConstraint implements IBoundObject, ITargetedConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
@@ -113,7 +113,12 @@ public final class TargetedMatchesConstraint implements IBoundObject, ITargetedC
               @AllowedValue(value = "positive-integer", description = ""),
               @AllowedValue(value = "string", description = ""), @AllowedValue(value = "token", description = ""),
               @AllowedValue(value = "uri", description = ""), @AllowedValue(value = "uri-reference", description = ""),
-              @AllowedValue(value = "uuid", description = "") })))
+              @AllowedValue(value = "uuid", description = ""), @AllowedValue(value = "base64Binary", description = ""),
+              @AllowedValue(value = "dateTime", description = ""),
+              @AllowedValue(value = "dateTime-with-timezone", description = ""),
+              @AllowedValue(value = "email", description = ""),
+              @AllowedValue(value = "nonNegativeInteger", description = ""),
+              @AllowedValue(value = "positiveInteger", description = "") })))
   private String _datatype;
 
   @BoundFlag(

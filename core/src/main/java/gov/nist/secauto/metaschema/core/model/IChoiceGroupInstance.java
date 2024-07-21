@@ -51,17 +51,6 @@ public interface IChoiceGroupInstance
   }
 
   /**
-   * Retrieve the Metaschema assembly definition on which this instance is
-   * declared.
-   *
-   * @return the parent Metaschema assembly definition
-   */
-  @Override
-  default IAssemblyDefinition getContainingDefinition() {
-    return getOwningDefinition();
-  }
-
-  /**
    * Provides the Metaschema model type of "CHOICE".
    *
    * @return the model type

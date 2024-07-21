@@ -50,10 +50,10 @@ public interface IInstance extends IModelElement {
   @NonNull
   IContainer getParentContainer();
 
-  @Override
-  default IModule getContainingModule() {
-    return getContainingDefinition().getContainingModule();
-  }
+  // @Override
+  // default IModule getContainingModule() {
+  // return getContainingDefinition().getContainingModule();
+  // }
 
   /**
    * Generates a "coordinate" string for the provided information element

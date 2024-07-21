@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.core.metapath.item.node;
 
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IResourceLocation;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -41,9 +42,10 @@ class DocumentNodeItemImpl
   private final IRootAssemblyNodeItem root;
   @NonNull
   private final URI documentUri;
-
   @NonNull
   private final Lazy<ModelContainer> model;
+  @NonNull
+  private final StaticContext staticContext;
 
   public DocumentNodeItemImpl(
       @NonNull IAssemblyDefinition root,
@@ -53,16 +55,23 @@ class DocumentNodeItemImpl
     this.root = new RootAssemblyValuedNodeItemImpl(root, this, rootValue, generator);
     this.documentUri = documentUri;
     this.model = ObjectUtils.notNull(Lazy.lazy(generator.newDataModelSupplier(this.root)));
-  }
 
-  @NonNull
-  public IRootAssemblyNodeItem getRootAssemblyNodeItem() {
-    return root;
+    StaticContext.Builder builder = StaticContext.builder()
+        .baseUri(documentUri)
+        .defaultModelNamespace(ObjectUtils.requireNonNull(root.getXmlNamespace()));
+
+    // obj.getNamespaceBindingList().stream()
+    // .forEach(binding -> builder.namespace(
+    // ObjectUtils.notNull(binding.getPrefix()),
+    // ObjectUtils.notNull(binding.getUri())));
+
+    this.staticContext = builder.build();
   }
 
   @Override
-  public URI getNamespace() {
-    return ObjectUtils.notNull(URI.create(getRootAssemblyNodeItem().getName().getNamespaceURI()));
+  @NonNull
+  public IRootAssemblyNodeItem getRootAssemblyNodeItem() {
+    return root;
   }
 
   @Override
@@ -85,5 +94,10 @@ class DocumentNodeItemImpl
   @Override
   public IResourceLocation getLocation() {
     return getRootAssemblyNodeItem().getLocation();
+  }
+
+  @Override
+  public StaticContext getStaticContext() {
+    return staticContext;
   }
 }

@@ -114,7 +114,7 @@ class XmlInlineAssemblyDefinition
       IModelConstrained retval = new AssemblyConstraintSet();
       if (getXmlObject().isSetConstraint()) {
         ConstraintXmlSupport.parse(retval, ObjectUtils.notNull(getXmlObject().getConstraint()),
-            ISource.modelSource(ObjectUtils.requireNonNull(getContainingModule().getLocation())));
+            ISource.modelSource(getContainingModule()));
       }
       return retval;
     }));

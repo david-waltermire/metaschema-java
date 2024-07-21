@@ -40,6 +40,14 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  */
 public interface IConfigurationFeature<V> {
   /**
+   * Get the name of the configuration feature.
+   *
+   * @return the name
+   */
+  @NonNull
+  String getName();
+
+  /**
    * Get the default value of the configuration feature.
    *
    * @return the default value

@@ -290,9 +290,8 @@ public abstract class AbstractValidateContentCommand
         } catch (IOException ex) {
           return ExitCode.IO_ERROR.exit().withThrowable(ex);
         }
-      } else if (!validationResult.isPassing()) {
+      } else if (!validationResult.getFindings().isEmpty()) {
         LOGGER.info("Validation identified the following issues:", source);
-
         LoggingValidationHandler.instance().handleValidationResults(validationResult);
       }
 

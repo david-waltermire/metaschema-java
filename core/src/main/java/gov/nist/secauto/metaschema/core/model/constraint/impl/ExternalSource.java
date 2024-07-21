@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.core.model.constraint.impl;
 
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.model.constraint.ISource;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
@@ -45,29 +46,37 @@ public final class ExternalSource implements ISource {
   private static final Map<URI, ExternalSource> sources = new HashMap<>(); // NOPMD - intentional
 
   @NonNull
-  private final URI modelUri;
+  private final StaticContext staticContext;
 
   /**
    * Get a new instance of an external source associated with a resource
    * {@code location}.
    *
-   * @param location
-   *          the resource location containing a constraint
+   * @param staticContext
+   *          the static Metapath context to use for compiling Metapath
+   *          expressions in this source
    * @return the source
    */
   @NonNull
-  public static ISource instance(@NonNull URI location) {
+  public static ISource instance(@NonNull StaticContext staticContext) {
     ISource retval;
     synchronized (sources) {
       retval = ObjectUtils.notNull(sources.computeIfAbsent(
-          location,
-          (uri) -> new ExternalSource(ObjectUtils.notNull(uri))));
+          staticContext.getBaseUri(),
+          (uri) -> new ExternalSource(staticContext)));
     }
     return retval;
   }
 
-  private ExternalSource(@NonNull URI modelSource) {
-    this.modelUri = modelSource;
+  /**
+   * Construct a new source.
+   *
+   * @param staticContext
+   *          the static Metapath context to use for compiling Metapath
+   *          expressions in this source
+   */
+  private ExternalSource(@NonNull StaticContext staticContext) {
+    this.staticContext = staticContext;
   }
 
   @Override
@@ -75,14 +84,18 @@ public final class ExternalSource implements ISource {
     return SourceType.EXTERNAL;
   }
 
-  @NonNull
   @Override
   public URI getSource() {
-    return modelUri;
+    return staticContext.getBaseUri();
+  }
+
+  @Override
+  public StaticContext getStaticContext() {
+    return staticContext;
   }
 
   @Override
   public String toString() {
-    return "external:" + modelUri;
+    return "external:" + getSource();
   }
 }

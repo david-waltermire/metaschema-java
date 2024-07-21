@@ -28,18 +28,15 @@ package gov.nist.secauto.metaschema.core.model;
 
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.umd.cs.findbugs.annotations.NonNull;
 
 public interface IMetapathQueryable {
   /**
    * Get the Metapath node item for this Metaschema module construct, which can be
    * used to query it.
    *
-   * @return the node item if the implementation can be queried by a Metapath or
-   *         {@code null} otherwise
+   * @return the node item
    */
-  @Nullable
-  default INodeItem getNodeItem() {
-    return null;
-  }
+  @NonNull
+  INodeItem getNodeItem();
 }

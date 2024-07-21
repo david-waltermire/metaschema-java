@@ -38,9 +38,14 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * @param <ITEM>
  *          the Java type for associated bound objects
  */
-public interface IBoundInstance<ITEM> extends IBoundProperty<ITEM>, IInstance {
+public interface IBoundInstance<ITEM> extends IBoundProperty<ITEM>, IBoundModelElement, IInstance {
   @Override
   IBoundDefinitionModel<IBoundObject> getContainingDefinition();
+
+  @Override
+  default IBoundModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
 
   /**
    * {@inheritDoc}

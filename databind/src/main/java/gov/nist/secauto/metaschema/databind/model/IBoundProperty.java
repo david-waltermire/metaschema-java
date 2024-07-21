@@ -32,7 +32,7 @@ import gov.nist.secauto.metaschema.databind.io.BindingException;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-public interface IBoundProperty<ITEM> extends IBoundModuleElement<ITEM>, IFeatureJavaField, IJsonNamed {
+public interface IBoundProperty<ITEM> extends IBoundModelObject<ITEM>, IFeatureJavaField, IJsonNamed {
   /**
    * Copy this instance from one parent object to another.
    *

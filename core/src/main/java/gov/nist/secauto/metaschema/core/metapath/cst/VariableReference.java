@@ -30,7 +30,6 @@ import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.List;
 
@@ -85,7 +84,6 @@ public class VariableReference implements IExpression {
 
   @Override
   public ISequence<? extends IItem> accept(DynamicContext dynamicContext, ISequence<?> focus) {
-    return dynamicContext.getVariableValue(ObjectUtils.notNull(getName()));
+    return dynamicContext.getVariableValue(getName());
   }
-
 }

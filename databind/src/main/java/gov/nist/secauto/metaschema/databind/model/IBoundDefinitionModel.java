@@ -38,7 +38,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  *          the Java type for associated bound objects
  */
 public interface IBoundDefinitionModel<ITEM>
-    extends IBoundModuleElement<ITEM>, IFeatureContainerFlag<IBoundInstanceFlag> {
+    extends IBoundModelObject<ITEM>, IFeatureContainerFlag<IBoundInstanceFlag>, IBoundDefinition {
   /**
    * Get the binding context used for the definition.
    *

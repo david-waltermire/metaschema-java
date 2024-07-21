@@ -44,7 +44,6 @@ import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
-import gov.nist.secauto.metaschema.databind.model.annotations.Expect;
 import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.Matches;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
@@ -66,16 +65,14 @@ import java.util.List;
     formalName = "Inline Field Definition",
     name = "inline-define-field",
     moduleClass = MetaschemaModelModule.class)
-public final class InlineDefineField implements IBoundObject {
+public class InlineDefineField implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
       formalName = "Inline Field Name",
       name = "name",
       required = true,
-      typeAdapter = TokenAdapter.class,
-      valueConstraints = @ValueConstraints(expect = @Expect(level = IConstraint.Level.WARNING,
-          test = "not(.=$keywords)", message = "Names cannot be non-delimiting terminal symbols in Metapath syntax.")))
+      typeAdapter = TokenAdapter.class)
   private String _name;
 
   @BoundFlag(
@@ -113,7 +110,12 @@ public final class InlineDefineField implements IBoundObject {
               @AllowedValue(value = "positive-integer", description = ""),
               @AllowedValue(value = "string", description = ""), @AllowedValue(value = "token", description = ""),
               @AllowedValue(value = "uri", description = ""), @AllowedValue(value = "uri-reference", description = ""),
-              @AllowedValue(value = "uuid", description = "") })))
+              @AllowedValue(value = "uuid", description = ""), @AllowedValue(value = "base64Binary", description = ""),
+              @AllowedValue(value = "dateTime", description = ""),
+              @AllowedValue(value = "dateTime-with-timezone", description = ""),
+              @AllowedValue(value = "email", description = ""),
+              @AllowedValue(value = "nonNegativeInteger", description = ""),
+              @AllowedValue(value = "positiveInteger", description = "") })))
   private String _asType;
 
   @BoundFlag(

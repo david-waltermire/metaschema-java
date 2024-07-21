@@ -29,12 +29,15 @@ package gov.nist.secauto.metaschema.maven.plugin;
 import gov.nist.secauto.metaschema.core.model.IConstraintLoader;
 import gov.nist.secauto.metaschema.core.model.MetaschemaException;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraintSet;
+import gov.nist.secauto.metaschema.core.model.xml.ExternalConstraintsModulePostProcessor;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.metaschema.BindingConstraintLoader;
+import gov.nist.secauto.metaschema.databind.model.metaschema.BindingModuleLoader;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -50,6 +53,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public abstract class AbstractMetaschemaMojo
@@ -339,5 +343,31 @@ public abstract class AbstractMetaschemaMojo
       }
     }
     return generate;
+  }
+
+  /**
+   * Construct a new module loader based on the provided mojo configuration.
+   *
+   * @return the module loader
+   * @throws MojoExecutionException
+   *           if an error occurred while loading the configured constraints
+   */
+  @NonNull
+  protected BindingModuleLoader newModuleLoader() throws MojoExecutionException {
+
+    List<IConstraintSet> constraints;
+    try {
+      constraints = getConstraints();
+    } catch (MetaschemaException | IOException ex) {
+      throw new MojoExecutionException("Unable to load external constraints.", ex);
+    }
+
+    // generate Java sources based on provided metaschema sources
+    BindingModuleLoader loader = constraints.isEmpty()
+        ? new BindingModuleLoader()
+        : new BindingModuleLoader(
+            CollectionUtil.singletonList(new ExternalConstraintsModulePostProcessor(constraints)));
+    loader.allowEntityResolution();
+    return loader;
   }
 }

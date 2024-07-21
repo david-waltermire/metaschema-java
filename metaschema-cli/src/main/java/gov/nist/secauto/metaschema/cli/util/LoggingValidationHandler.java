@@ -29,6 +29,7 @@ package gov.nist.secauto.metaschema.cli.util;
 import static org.fusesource.jansi.Ansi.ansi;
 
 import gov.nist.secauto.metaschema.core.model.constraint.ConstraintValidationFinding;
+import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraint.Level;
 import gov.nist.secauto.metaschema.core.model.validation.IValidationFinding;
 import gov.nist.secauto.metaschema.core.model.validation.IValidationResult;
@@ -133,7 +134,7 @@ public final class LoggingValidationHandler {
     Ansi ansi = generatePreamble(finding.getSeverity());
 
     getLogger(finding).log(
-        ansi.format("[%s] %s", finding.getNode().getMetapath(), finding.getMessage()));
+        ansi.format("[%s] %s", finding.getTarget().getMetapath(), finding.getMessage()));
   }
 
   @NonNull

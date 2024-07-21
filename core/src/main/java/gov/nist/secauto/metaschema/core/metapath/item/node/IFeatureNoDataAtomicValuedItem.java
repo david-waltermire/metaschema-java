@@ -31,7 +31,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAtomicValuedItem;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-interface IFeatureNoDataAtomicValuedItem extends IFeatureNoDataItem, IAtomicValuedItem {
+public interface IFeatureNoDataAtomicValuedItem extends IFeatureNoDataValuedItem, IAtomicValuedItem {
 
   @Override
   @Nullable

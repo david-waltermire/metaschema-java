@@ -52,6 +52,9 @@ import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyConstraints;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.InlineDefineAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonKey;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.math.BigInteger;
 import java.util.Map;
@@ -65,7 +68,7 @@ public class InstanceModelAssemblyInline
         IContainerModelAbsolute,
         IAssemblyDefinition,
         IAssemblyInstanceAbsolute,
-        IAssemblyDefinition,
+        IBindingDefinitionModelAssembly,
         IFlagInstance,
         IModelInstanceAbsolute,
         INamedModelInstanceAbsolute,
@@ -73,7 +76,8 @@ public class InstanceModelAssemblyInline
         IAssemblyInstanceAbsolute,
         IChoiceInstance,
         IChoiceGroupInstance>
-    implements IAssemblyInstanceAbsolute, IFeatureInstanceModelGroupAs,
+    implements IAssemblyInstanceAbsolute, IBindingInstance, IBindingDefinitionModelAssembly,
+    IFeatureInstanceModelGroupAs,
     IFeatureBindingContainerModelAssembly {
   @NonNull
   private final InlineDefineAssembly binding;
@@ -122,7 +126,7 @@ public class InstanceModelAssemblyInline
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
     this.groupAs = ModelSupport.groupAs(binding.getGroupAs(), parent.getOwningDefinition().getContainingModule());
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getNodeItem())
+        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
     this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> {
@@ -146,7 +150,7 @@ public class InstanceModelAssemblyInline
         ConstraintBindingSupport.parse(
             retval,
             constraints,
-            ISource.modelSource(parent.getOwningDefinition().getContainingModule().getLocation()));
+            ISource.modelSource(parent.getOwningDefinition().getContainingModule()));
       }
       return retval;
     }));
@@ -156,6 +160,11 @@ public class InstanceModelAssemblyInline
   protected InlineDefineAssembly getBinding() {
     getContainingDefinition();
     return binding;
+  }
+
+  @Override
+  public IBindingMetaschemaModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
   }
 
   @Override
@@ -169,7 +178,7 @@ public class InstanceModelAssemblyInline
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

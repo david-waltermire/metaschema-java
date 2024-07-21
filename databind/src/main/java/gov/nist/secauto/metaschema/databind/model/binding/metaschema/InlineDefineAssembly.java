@@ -42,7 +42,6 @@ import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
-import gov.nist.secauto.metaschema.databind.model.annotations.Expect;
 import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.Matches;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
@@ -63,16 +62,14 @@ import java.util.List;
     formalName = "Inline Assembly Definition",
     name = "inline-define-assembly",
     moduleClass = MetaschemaModelModule.class)
-public final class InlineDefineAssembly implements IBoundObject {
+public class InlineDefineAssembly implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(
       formalName = "Inline Assembly Name",
       name = "name",
       required = true,
-      typeAdapter = TokenAdapter.class,
-      valueConstraints = @ValueConstraints(expect = @Expect(level = IConstraint.Level.WARNING,
-          test = "not(.=$keywords)", message = "Names cannot be non-delimiting terminal symbols in Metapath syntax.")))
+      typeAdapter = TokenAdapter.class)
   private String _name;
 
   @BoundFlag(

@@ -80,7 +80,7 @@ class XmlGlobalFlagDefinition
       IValueConstrained retval = new ValueConstraintSet();
       if (getXmlFlag().isSetConstraint()) {
         ConstraintXmlSupport.parse(retval, ObjectUtils.notNull(getXmlFlag().getConstraint()),
-            ISource.modelSource(ObjectUtils.requireNonNull(getContainingModule().getLocation())));
+            ISource.modelSource(module));
       }
       return retval;
     });

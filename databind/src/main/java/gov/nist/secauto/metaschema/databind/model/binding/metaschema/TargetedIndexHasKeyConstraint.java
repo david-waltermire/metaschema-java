@@ -59,7 +59,7 @@ import java.util.List;
     formalName = "Targeted Index Has Key Constraint",
     name = "targeted-index-has-key-constraint",
     moduleClass = MetaschemaModelModule.class)
-public final class TargetedIndexHasKeyConstraint implements IBoundObject, ITargetedConstraintBase {
+public class TargetedIndexHasKeyConstraint implements IBoundObject, ITargetedConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

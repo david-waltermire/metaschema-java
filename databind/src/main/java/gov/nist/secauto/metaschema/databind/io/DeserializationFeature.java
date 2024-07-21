@@ -42,14 +42,14 @@ public final class DeserializationFeature<V>
    */
   @NonNull
   public static final DeserializationFeature<Boolean> DESERIALIZE_VALIDATE_CONSTRAINTS
-      = new DeserializationFeature<>(Boolean.class, true);
+      = new DeserializationFeature<>("validate", Boolean.class, false);
 
   /**
    * If enabled, perform constraint validation on the deserialized bound objects.
    */
   @NonNull
   public static final DeserializationFeature<Boolean> DESERIALIZE_XML_ALLOW_ENTITY_RESOLUTION
-      = new DeserializationFeature<>(Boolean.class, false);
+      = new DeserializationFeature<>("allow-entity-resolution", Boolean.class, false);
 
   /**
    * If enabled, process the next JSON node as a field, whose name must match the
@@ -59,14 +59,14 @@ public final class DeserializationFeature<V>
    */
   @NonNull
   public static final DeserializationFeature<Boolean> DESERIALIZE_JSON_ROOT_PROPERTY
-      = new DeserializationFeature<>(Boolean.class, true);
+      = new DeserializationFeature<>("deserialize-root-property", Boolean.class, true);
 
   /**
    * Determines the max YAML codepoints that can be read.
    */
   @NonNull
   public static final DeserializationFeature<Integer> YAML_CODEPOINT_LIMIT
-      = new DeserializationFeature<>(Integer.class, YAML_CODEPOINT_LIMIT_DEFAULT);
+      = new DeserializationFeature<>("yaml-codepoint-limit", Integer.class, YAML_CODEPOINT_LIMIT_DEFAULT);
 
   /**
    * Determines how many bytes can be looked at to identify the format of a
@@ -74,11 +74,12 @@ public final class DeserializationFeature<V>
    */
   @NonNull
   public static final DeserializationFeature<Integer> FORMAT_DETECTION_LOOKAHEAD_LIMIT
-      = new DeserializationFeature<>(Integer.class, FORMAT_DETECTION_LOOKAHEAD);
+      = new DeserializationFeature<>("format-detection-lookahead-limit", Integer.class, FORMAT_DETECTION_LOOKAHEAD);
 
   private DeserializationFeature(
+      @NonNull String name,
       @NonNull Class<V> valueClass,
       @NonNull V defaultValue) {
-    super(valueClass, defaultValue);
+    super(name, valueClass, defaultValue);
   }
 }

@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.core.model.xml;
 
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.model.AbstractLoader;
 import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IConstraintLoader;
@@ -69,12 +70,19 @@ public class XmlMetaConstraintLoader
   @Override
   protected IConstraintSet parseResource(URI resource, Deque<URI> visitedResources) throws IOException {
 
-    ISource source = ISource.externalSource(resource);
-
     // parse this metaschema
     MetaschemaMetaConstraintsDocument xmlObject = parseConstraintSet(resource);
 
     MetaschemaMetaConstraintsDocument.MetaschemaMetaConstraints constraints = xmlObject.getMetaschemaMetaConstraints();
+
+    StaticContext.Builder builder = StaticContext.builder()
+        .baseUri(resource);
+
+    constraints.getNamespaceBindingList().stream()
+        .forEach(binding -> builder.namespace(
+            ObjectUtils.notNull(binding.getPrefix()), ObjectUtils.notNull(binding.getUri())));
+
+    ISource source = ISource.externalSource(builder.build());
 
     List<ITargetedConstraints> targetedConstraints = ObjectUtils.notNull(constraints.getContextList().stream()
         .flatMap(context -> parseContext(ObjectUtils.notNull(context), null, source).getTargetedConstraints().stream())

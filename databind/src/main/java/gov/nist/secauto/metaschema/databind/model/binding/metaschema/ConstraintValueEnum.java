@@ -48,7 +48,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Allowed Value Enumeration",
     name = "constraint-value-enum",
     moduleClass = MetaschemaModelModule.class)
-public final class ConstraintValueEnum
+public class ConstraintValueEnum
     extends AbstractAllowedValue
     implements IBoundObject {
   private final IMetaschemaData __metaschemaData;

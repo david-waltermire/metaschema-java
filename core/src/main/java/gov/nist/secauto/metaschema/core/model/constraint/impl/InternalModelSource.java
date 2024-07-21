@@ -26,6 +26,8 @@
 
 package gov.nist.secauto.metaschema.core.model.constraint.impl;
 
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
+import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.constraint.ISource;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
@@ -44,30 +46,29 @@ public final class InternalModelSource implements ISource {
   @NonNull
   private static final Map<URI, InternalModelSource> sources = new HashMap<>(); // NOPMD - intentional
   @NonNull
-  private final URI modelUri;
+  private final IModule module;
 
   /**
    * Get a new instance of an external source associated with a resource
    * {@code location}.
    *
-   * @param location
-   *          the resource location containing a constraint
+   * @param module
+   *          the Metaschema module containing a constraint
    * @return the source
    */
   @NonNull
-  public static ISource instance(@NonNull URI location) {
+  public static ISource instance(@NonNull IModule module) {
     ISource retval;
     synchronized (sources) {
       retval = ObjectUtils.notNull(sources.computeIfAbsent(
-          location,
-          (uri) -> new InternalModelSource(ObjectUtils.notNull(uri))));
+          module.getLocation(),
+          (uri) -> new InternalModelSource(module)));
     }
     return retval;
   }
 
-  private InternalModelSource(@NonNull URI modelSource) {
-    // reduce visibility
-    this.modelUri = modelSource;
+  private InternalModelSource(@NonNull IModule module) {
+    this.module = module;
   }
 
   @Override
@@ -77,11 +78,16 @@ public final class InternalModelSource implements ISource {
 
   @Override
   public URI getSource() {
-    return modelUri;
+    return module.getLocation();
   }
 
   @Override
   public String toString() {
-    return "internal:" + modelUri;
+    return "internal:" + getSource();
+  }
+
+  @Override
+  public StaticContext getStaticContext() {
+    return module.getModuleStaticContext();
   }
 }

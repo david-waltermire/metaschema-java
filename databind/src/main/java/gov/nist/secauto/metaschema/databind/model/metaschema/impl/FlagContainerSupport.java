@@ -30,13 +30,13 @@ import gov.nist.secauto.metaschema.core.model.IContainerFlagSupport;
 import gov.nist.secauto.metaschema.core.model.IFlagContainerBuilder;
 import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
-import gov.nist.secauto.metaschema.core.model.IModelDefinition;
 import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FlagReference;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.InlineDefineFlag;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModel;
 
 import java.util.List;
 
@@ -53,7 +53,7 @@ public final class FlagContainerSupport {
   public static IContainerFlagSupport<IFlagInstance> newFlagContainer(
       @Nullable List<Object> flags,
       @NonNull IBoundInstanceModelGroupedAssembly bindingInstance,
-      @NonNull IModelDefinition parent,
+      @NonNull IBindingDefinitionModel parent,
       @Nullable String jsonKeyName) {
     if (flags == null || flags.isEmpty()) {
       return IContainerFlagSupport.empty();
@@ -102,7 +102,7 @@ public final class FlagContainerSupport {
       @NonNull FlagReference obj,
       @NonNull IBoundInstanceModelGroupedAssembly objInstance,
       int position,
-      @NonNull IModelDefinition parent) {
+      @NonNull IBindingDefinitionModel parent) {
     IModule module = parent.getContainingModule();
 
     QName qname = module.toFlagQName(ObjectUtils.requireNonNull(obj.getRef()));

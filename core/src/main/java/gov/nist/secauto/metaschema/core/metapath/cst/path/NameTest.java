@@ -87,7 +87,7 @@ public class NameTest
   @SuppressWarnings("PMD.UnusedPrivateMethod")
   private boolean match(INodeItem item) {
     return item instanceof IDefinitionNodeItem
-        && getName().equals(((IDefinitionNodeItem<?, ?>) item).getName());
+        && getName().equals(((IDefinitionNodeItem<?, ?>) item).getQName());
   }
 
   @SuppressWarnings("null")

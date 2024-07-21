@@ -87,6 +87,7 @@ public class DefaultFunctionLibrary
     // https://www.w3.org/TR/xpath-functions-31/#func-doc
     registerFunction(FnDoc.SIGNATURE);
     // https://www.w3.org/TR/xpath-functions-31/#func-doc-available
+    registerFunction(FnDocumentAvailable.SIGNATURE);
     // https://www.w3.org/TR/xpath-functions-31/#func-document-uri
     registerFunction(FnDocumentUri.SIGNATURE_NO_ARG);
     registerFunction(FnDocumentUri.SIGNATURE_ONE_ARG);

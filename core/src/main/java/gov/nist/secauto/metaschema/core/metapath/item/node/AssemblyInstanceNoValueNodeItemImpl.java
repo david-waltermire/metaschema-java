@@ -36,8 +36,9 @@ import nl.talsmasoftware.lazy4j.Lazy;
 class AssemblyInstanceNoValueNodeItemImpl
     extends AbstractInstanceNodeItem<IAssemblyDefinition, IAssemblyInstance, IAssemblyNodeItem>
     implements IAssemblyNodeItem,
-    IFeatureNoDataItem,
-    IFeatureModelContainerItem {
+    IFeatureNoDataValuedItem,
+    IFeatureModelContainerItem,
+    IFeatureChildNodeItem {
 
   @NonNull
   private final Lazy<ModelContainer> model;

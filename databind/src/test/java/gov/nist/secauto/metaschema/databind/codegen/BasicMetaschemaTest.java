@@ -27,21 +27,35 @@
 package gov.nist.secauto.metaschema.databind.codegen;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
+import gov.nist.secauto.metaschema.core.metapath.ISequence;
+import gov.nist.secauto.metaschema.core.metapath.MetapathExpression;
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
+import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
 import gov.nist.secauto.metaschema.core.model.MetaschemaException;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+import gov.nist.secauto.metaschema.databind.IBindingContext;
 import gov.nist.secauto.metaschema.databind.io.BindingException;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA;
+import gov.nist.secauto.metaschema.databind.model.metaschema.BindingModuleLoader;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ReflectionUtils;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.xml.namespace.QName;
 
 class BasicMetaschemaTest
     extends AbstractMetaschemaTest {
@@ -67,7 +81,7 @@ class BasicMetaschemaTest
         "simple_with_uuid",
         "gov.nist.csrc.ns.metaschema.testing.simple.with.uuid.TopLevel",
         ObjectUtils.notNull(generationDir),
-        (obj) -> {
+        obj -> {
           try {
             assertEquals("5de455cf-2f8d-4da2-9182-323d433e1065", reflectMethod(obj, "getUuid").toString());
           } catch (NoSuchMethodException | SecurityException e) {
@@ -96,7 +110,7 @@ class BasicMetaschemaTest
         "fields_with_flags",
         "gov.nist.csrc.ns.metaschema.testing.fields.with.flags.TopLevel",
         ObjectUtils.notNull(generationDir),
-        (obj) -> {
+        obj -> {
           try {
             Assertions.assertEquals("test", reflectMethod(obj, "getId"));
             Object field1 = ReflectionUtils.invokeMethod(obj.getClass().getMethod("getComplexField1"), obj);
@@ -164,7 +178,7 @@ class BasicMetaschemaTest
         "assembly",
         "gov.nist.itl.metaschema.codegen.xml.example.assembly.TopLevel",
         ObjectUtils.notNull(generationDir),
-        (obj) -> {
+        obj -> {
           try {
             Assertions.assertEquals("test", reflectMethod(obj, "getId"));
           } catch (NoSuchMethodException | SecurityException e) {
@@ -180,6 +194,54 @@ class BasicMetaschemaTest
         "local-definitions",
         "gov.nist.csrc.ns.metaschema.testing.local.definitions.TopLevel",
         ObjectUtils.notNull(generationDir));
+  }
+
+  @Test
+  void testExistsWithVariable() throws IOException, URISyntaxException, MetaschemaException {
+
+    // IDocumentNodeItem moduleItem =
+    // IBindingContext.instance().newBoundLoader().loadAsNodeItem(
+    // new
+    // URI("https://raw.githubusercontent.com/usnistgov/OSCAL/main/src/metaschema/oscal_complete_metaschema.xml"));
+    //
+    // assert moduleItem != null;
+    //
+    // StaticContext staticContext = moduleItem..getStaticContext();
+
+    IBindingMetaschemaModule module = new BindingModuleLoader().load(
+        new URI("https://raw.githubusercontent.com/usnistgov/OSCAL/main/src/metaschema/oscal_complete_metaschema.xml"));
+
+    IDocumentNodeItem moduleItem = ObjectUtils.requireNonNull(module.getSourceNodeItem());
+    METASCHEMA moduleData = (METASCHEMA) moduleItem.getValue();
+    assert moduleItem != null;
+
+    StaticContext staticContext = moduleItem.getStaticContext();
+
+    DynamicContext dynamicContext = new DynamicContext(staticContext);
+    dynamicContext.setDocumentLoader(IBindingContext.instance().newBoundLoader());
+
+    MetapathExpression importsMetapath = MetapathExpression.compile(
+        "for $import in /METASCHEMA/import return doc(resolve-uri($import/@href))/METASCHEMA",
+        staticContext);
+
+    ISequence<?> imports = importsMetapath.evaluate(moduleItem, dynamicContext);
+
+    MetapathExpression allImportsExpression = MetapathExpression.compile(
+        "recurse-depth(/METASCHEMA,'for $import in ./import return doc(resolve-uri($import/@href))/METASCHEMA')",
+        staticContext);
+
+    ISequence<?> allImports = allImportsExpression.evaluate(moduleItem, dynamicContext);
+    allImports.getValue();
+
+    MetapathExpression path = MetapathExpression.compile("exists($all-imports/define-assembly/root-name)",
+        staticContext);
+
+    boolean result = ObjectUtils.requireNonNull(path.evaluateAs(
+        moduleItem,
+        MetapathExpression.ResultType.BOOLEAN,
+        dynamicContext.subContext().bindVariableValue(new QName("all-imports"), allImports)));
+
+    assertTrue(result, "no root");
   }
 
 }

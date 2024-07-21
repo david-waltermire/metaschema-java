@@ -62,7 +62,7 @@ import java.util.List;
     formalName = "Targeted Cardinality Constraint",
     name = "targeted-has-cardinality-constraint",
     moduleClass = MetaschemaModelModule.class)
-public final class TargetedHasCardinalityConstraint implements IBoundObject, ITargetedConstraintBase {
+public class TargetedHasCardinalityConstraint implements IBoundObject, ITargetedConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

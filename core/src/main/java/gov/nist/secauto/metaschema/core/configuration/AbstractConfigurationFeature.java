@@ -38,6 +38,8 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  */
 public abstract class AbstractConfigurationFeature<V> implements IConfigurationFeature<V> {
   @NonNull
+  private final String name;
+  @NonNull
   private final Class<V> valueClass;
   @NonNull
   private final V defaultValue;
@@ -45,16 +47,25 @@ public abstract class AbstractConfigurationFeature<V> implements IConfigurationF
   /**
    * Construct a new feature with a default value.
    *
+   * @param name
+   *          the name of the feature
    * @param valueClass
    *          the class of the feature's value
    * @param defaultValue
    *          the value's default
    */
   protected AbstractConfigurationFeature(
+      @NonNull String name,
       @NonNull Class<V> valueClass,
       @NonNull V defaultValue) {
+    this.name = name;
     this.valueClass = valueClass;
     this.defaultValue = defaultValue;
+  }
+
+  @Override
+  public String getName() {
+    return name;
   }
 
   @Override
@@ -65,5 +76,15 @@ public abstract class AbstractConfigurationFeature<V> implements IConfigurationF
   @Override
   public Class<V> getValueClass() {
     return valueClass;
+  }
+
+  @Override
+  public String toString() {
+    return new StringBuilder()
+        .append(getName())
+        .append('(')
+        .append(getDefault().toString())
+        .append(')')
+        .toString();
   }
 }

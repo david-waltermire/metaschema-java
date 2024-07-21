@@ -51,7 +51,7 @@ import java.util.List;
 @MetaschemaAssembly(
     name = "assembly-constraints",
     moduleClass = MetaschemaModelModule.class)
-public final class AssemblyConstraints implements IModelConstraintsBase {
+public class AssemblyConstraints implements IModelConstraintsBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(

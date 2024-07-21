@@ -58,7 +58,7 @@ import java.util.List;
     formalName = "Index Has Key Constraint",
     name = "flag-index-has-key",
     moduleClass = MetaschemaModelModule.class)
-public final class FlagIndexHasKey implements IBoundObject, IConstraintBase {
+public class FlagIndexHasKey implements IBoundObject, IConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

@@ -118,7 +118,7 @@ public final class DefaultExpectConstraint
         : ReplacementScanner.replaceTokens(message, METAPATH_VALUE_TEMPLATE_PATTERN, match -> {
           @SuppressWarnings("null")
           @NonNull String metapath = match.group(2);
-          MetapathExpression expr = MetapathExpression.compile(metapath);
+          MetapathExpression expr = MetapathExpression.compile(metapath, context.getStaticContext());
           return expr.evaluateAs(item, MetapathExpression.ResultType.STRING, context);
         }).toString();
   }

@@ -43,17 +43,6 @@ public interface IChoiceInstance extends IModelInstanceAbsolute, IContainerModel
     return ModelType.CHOICE;
   }
 
-  /**
-   * Retrieve the Metaschema assembly definition on which this instance is
-   * declared.
-   *
-   * @return the parent Metaschema assembly definition
-   */
-  @Override
-  default IAssemblyDefinition getContainingDefinition() {
-    return getParentContainer().getOwningDefinition();
-  }
-
   @Override
   default IAssemblyDefinition getOwningDefinition() {
     return getParentContainer().getOwningDefinition();

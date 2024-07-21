@@ -86,4 +86,9 @@ public abstract class AbstractFlagInstance<
         hashCode(),
         definition.hashCode());
   }
+
+  @Override
+  public IModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
 }

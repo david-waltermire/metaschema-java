@@ -39,6 +39,9 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAsse
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonKey;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.math.BigInteger;
 
@@ -47,11 +50,11 @@ import nl.talsmasoftware.lazy4j.Lazy;
 
 public class InstanceModelChoiceGroup
     extends AbstractChoiceGroupInstance<
-        IAssemblyDefinition,
+        IBindingDefinitionModelAssembly,
         INamedModelInstanceGrouped,
         IFieldInstanceGrouped,
         IAssemblyInstanceGrouped>
-    implements IFeatureInstanceModelGroupAs {
+    implements IFeatureInstanceModelGroupAs, IBindingInstance {
   @NonNull
   private final AssemblyModel.ChoiceGroup binding;
   @NonNull
@@ -69,7 +72,7 @@ public class InstanceModelChoiceGroup
       @NonNull AssemblyModel.ChoiceGroup binding,
       @NonNull IBoundInstanceModelGroupedAssembly bindingInstance,
       int position,
-      @NonNull IAssemblyDefinition parent,
+      @NonNull IBindingDefinitionModelAssembly parent,
       @NonNull INodeItemFactory nodeItemFactory) {
     super(parent);
     this.binding = binding;
@@ -80,7 +83,7 @@ public class InstanceModelChoiceGroup
         this,
         nodeItemFactory)));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getNodeItem())
+        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
   }
@@ -88,6 +91,11 @@ public class InstanceModelChoiceGroup
   @NonNull
   protected AssemblyModel.ChoiceGroup getBinding() {
     return binding;
+  }
+
+  @Override
+  public IBindingMetaschemaModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
   }
 
   @Override
@@ -105,7 +113,7 @@ public class InstanceModelChoiceGroup
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

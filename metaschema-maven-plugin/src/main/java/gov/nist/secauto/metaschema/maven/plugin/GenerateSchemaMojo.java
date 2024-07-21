@@ -31,11 +31,9 @@ import gov.nist.secauto.metaschema.core.configuration.IConfiguration;
 import gov.nist.secauto.metaschema.core.configuration.IMutableConfiguration;
 import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.MetaschemaException;
-import gov.nist.secauto.metaschema.core.model.constraint.IConstraintSet;
-import gov.nist.secauto.metaschema.core.model.xml.ExternalConstraintsModulePostProcessor;
-import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.metaschema.BindingModuleLoader;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 import gov.nist.secauto.metaschema.schemagen.ISchemaGenerator;
 import gov.nist.secauto.metaschema.schemagen.SchemaGenerationFeature;
 import gov.nist.secauto.metaschema.schemagen.json.JsonSchemaGenerator;
@@ -283,30 +281,28 @@ public class GenerateSchemaMojo
         throw new MojoExecutionException("Unable to create output directory: " + outputDir);
       }
 
-      List<IConstraintSet> constraints;
-      try {
-        constraints = getConstraints();
-      } catch (MetaschemaException | IOException ex) {
-        throw new MojoExecutionException("Unable to load external constraints.", ex);
-      }
+      BindingModuleLoader loader = newModuleLoader();
 
       // generate Java sources based on provided metaschema sources
-      final BindingModuleLoader loader = constraints.isEmpty()
-          ? new BindingModuleLoader()
-          : new BindingModuleLoader(
-              CollectionUtil.singletonList(new ExternalConstraintsModulePostProcessor(constraints)));
-      loader.allowEntityResolution();
       final Set<IModule> modules = new HashSet<>();
       for (File source : getModuleSources().collect(Collectors.toList())) {
         if (getLog().isInfoEnabled()) {
           getLog().info("Using metaschema source: " + source.getPath());
         }
-        IModule module;
+        IBindingMetaschemaModule module;
         try {
           module = loader.load(source);
         } catch (MetaschemaException | IOException ex) {
           throw new MojoExecutionException("Loading of metaschema failed", ex);
         }
+
+        // IValidationResult result = IBindingContext.instance().validate(
+        // module.getSourceNodeItem(),
+        // IBindingContext.instance().newBoundLoader(),
+        // null);
+        //
+        // LoggingValidationHandler.instance().handleValidationResults(validationResult);
+
         modules.add(module);
       }
 

@@ -41,8 +41,9 @@ import nl.talsmasoftware.lazy4j.Lazy;
 class FieldInstanceNodeItemImpl
     extends AbstractInstanceNodeItem<IFieldDefinition, IFieldInstance, IAssemblyNodeItem>
     implements IFieldNodeItem,
-    IFeatureNullableAtomicValuedItem,
-    IFeatureFlagContainerItem {
+    IFeatureAtomicValuedItem,
+    IFeatureFlagContainerItem,
+    IFeatureChildNodeItem {
 
   private final int position;
 

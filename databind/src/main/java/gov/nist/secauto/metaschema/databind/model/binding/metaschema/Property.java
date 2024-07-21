@@ -46,7 +46,7 @@ import java.net.URI;
     formalName = "Property",
     name = "property",
     moduleClass = MetaschemaModelModule.class)
-public final class Property implements IBoundObject {
+public class Property implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

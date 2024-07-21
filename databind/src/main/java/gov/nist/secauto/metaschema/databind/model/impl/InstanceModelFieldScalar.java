@@ -30,6 +30,7 @@ import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
 import gov.nist.secauto.metaschema.core.model.AbstractInlineFieldDefinition;
+import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.constraint.ISource;
 import gov.nist.secauto.metaschema.core.model.constraint.IValueConstrained;
 import gov.nist.secauto.metaschema.core.model.constraint.ValueConstraintSet;
@@ -39,6 +40,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelField;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelFieldScalar;
+import gov.nist.secauto.metaschema.databind.model.IBoundModule;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
@@ -136,17 +138,29 @@ public final class InstanceModelFieldScalar
         annotation.typeAdapter(),
         containingDefinition.getBindingContext());
     this.defaultValue = ModelUtil.resolveDefaultValue(annotation.defaultValue(), this.javaTypeAdapter);
+
+    IModule module = getContainingModule();
+
     this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
       IValueConstrained retval = new ValueConstraintSet();
       ValueConstraints valueAnnotation = annotation.valueConstraints();
-      ConstraintSupport.parse(valueAnnotation, ISource.modelSource(), retval);
+      ConstraintSupport.parse(valueAnnotation, ISource.modelSource(module), retval);
       return retval;
     }));
   }
 
+  // ------------------------------------------
+  // - Start annotation driven code - CPD-OFF -
+  // ------------------------------------------
+
   @Override
   public IBindingContext getBindingContext() {
     return getContainingDefinition().getBindingContext();
+  }
+
+  @Override
+  public IBoundModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
   }
 
   @Override
@@ -191,10 +205,6 @@ public final class InstanceModelFieldScalar
   public IGroupAs getGroupAs() {
     return groupAs;
   }
-
-  // ------------------------------------------
-  // - Start annotation driven code - CPD-OFF -
-  // ------------------------------------------
 
   @Override
   public String getFormalName() {

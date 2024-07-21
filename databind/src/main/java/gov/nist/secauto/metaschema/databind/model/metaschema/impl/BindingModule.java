@@ -28,13 +28,14 @@ package gov.nist.secauto.metaschema.databind.model.metaschema.impl;
 
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
+import gov.nist.secauto.metaschema.core.metapath.item.node.IModuleNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItemFactory;
 import gov.nist.secauto.metaschema.core.model.AbstractModule;
 import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
 import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
-import gov.nist.secauto.metaschema.core.model.IMetaschemaModule;
 import gov.nist.secauto.metaschema.core.model.IModelDefinition;
 import gov.nist.secauto.metaschema.core.model.MetaschemaException;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -42,6 +43,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.net.URI;
 import java.util.Collection;
@@ -59,18 +61,20 @@ import nl.talsmasoftware.lazy4j.Lazy;
 
 public class BindingModule
     extends AbstractModule<
-        IMetaschemaModule,
+        IBindingMetaschemaModule,
         IModelDefinition,
         IFlagDefinition,
         IFieldDefinition,
         IAssemblyDefinition>
-    implements IMetaschemaModule {
+    implements IBindingMetaschemaModule {
   @NonNull
-  private final URI location;
+  private final StaticContext staticContext;
   @NonNull
   private final METASCHEMA binding;
   @NonNull
-  private final Lazy<IDocumentNodeItem> nodeItem;
+  private final Lazy<IDocumentNodeItem> documentNodeItem;
+  @NonNull
+  private final Lazy<IModuleNodeItem> moduleNodeItem;
   @NonNull
   private final Map<QName, IFlagDefinition> flagDefinitions;
   @NonNull
@@ -100,10 +104,22 @@ public class BindingModule
       @NonNull URI resource,
       @NonNull IBoundDefinitionModelAssembly rootDefinition,
       @NonNull METASCHEMA binding,
-      @NonNull List<? extends IMetaschemaModule> importedModules) throws MetaschemaException {
+      @NonNull List<? extends IBindingMetaschemaModule> importedModules) throws MetaschemaException {
     super(importedModules);
-    this.location = ObjectUtils.requireNonNull(resource, "resource");
+
     this.binding = binding;
+
+    StaticContext.Builder builder = StaticContext.builder()
+        .baseUri(resource)
+        .defaultModelNamespace(getXmlNamespace());
+
+    // obj.getNamespaceBindingList().stream()
+    // .forEach(binding -> builder.namespace(
+    // ObjectUtils.notNull(binding.getPrefix()),
+    // ObjectUtils.notNull(binding.getUri())));
+
+    this.staticContext = builder.build();
+
     this.flagDefinitions = new LinkedHashMap<>();
     this.fieldDefinitions = new LinkedHashMap<>();
     this.assemblyDefinitions = new LinkedHashMap<>();
@@ -116,6 +132,7 @@ public class BindingModule
 
     IBoundInstanceModelChoiceGroup instance = ObjectUtils.requireNonNull(
         rootDefinition.getChoiceGroupInstanceByName("definitions"));
+
     INodeItemFactory nodeItemFactory = INodeItemFactory.instance();
     for (Object obj : binding.getDefinitions()) {
       IBoundInstanceModelGroupedAssembly objInstance
@@ -156,24 +173,36 @@ public class BindingModule
                 resource.toASCIIString()));
       }
     }
-    this.nodeItem
+    this.documentNodeItem
         = ObjectUtils.notNull(Lazy.lazy(() -> nodeItemFactory.newDocumentNodeItem(rootDefinition, resource, binding)));
+    this.moduleNodeItem
+        = ObjectUtils.notNull(Lazy.lazy(() -> nodeItemFactory.newModuleNodeItem(this)));
   }
 
-  @NonNull
-  public METASCHEMA getBinding() {
+  @Override
+  public final METASCHEMA getBinding() {
     return binding;
   }
 
   @Override
-  public IDocumentNodeItem getNodeItem() {
-    return ObjectUtils.notNull(nodeItem.get());
+  public IDocumentNodeItem getSourceNodeItem() {
+    return ObjectUtils.notNull(documentNodeItem.get());
+  }
+
+  @Override
+  public IModuleNodeItem getModuleNodeItem() {
+    return ObjectUtils.notNull(moduleNodeItem.get());
+  }
+
+  @Override
+  public final StaticContext getModuleStaticContext() {
+    return staticContext;
   }
 
   @Override
   @NonNull
-  public URI getLocation() {
-    return location;
+  public final URI getLocation() {
+    return ObjectUtils.notNull(getModuleStaticContext().getBaseUri());
   }
 
   @Override
@@ -209,7 +238,7 @@ public class BindingModule
   }
 
   @Override
-  public URI getXmlNamespace() {
+  public final URI getXmlNamespace() {
     URI retval = getBinding().getNamespace();
     if (retval == null) {
       throw new IllegalStateException(

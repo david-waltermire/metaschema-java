@@ -24,4 +24,9 @@
  * OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
  */
 
+/**
+ * Implementation classes exposing a Metaschema module parsed using the
+ * Metaschema module binding as a Metaschema module.
+ */
+
 package gov.nist.secauto.metaschema.databind.model.metaschema.impl;

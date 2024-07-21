@@ -38,6 +38,9 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyReference;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.math.BigInteger;
 import java.util.Map;
@@ -51,8 +54,9 @@ public class InstanceModelAssemblyReference
         IContainerModelAbsolute,
         IAssemblyDefinition,
         IAssemblyInstanceAbsolute,
-        IAssemblyDefinition>
-    implements IAssemblyInstanceAbsolute, IFeatureInstanceModelGroupAs {
+        IBindingDefinitionModelAssembly>
+    implements IAssemblyInstanceAbsolute, IBindingInstance,
+    IFeatureInstanceModelGroupAs {
   @NonNull
   private final AssemblyReference binding;
   @NonNull
@@ -91,7 +95,7 @@ public class InstanceModelAssemblyReference
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
     this.groupAs = ModelSupport.groupAs(binding.getGroupAs(), parent.getOwningDefinition().getContainingModule());
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getNodeItem())
+        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingModule().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
   }
@@ -107,6 +111,11 @@ public class InstanceModelAssemblyReference
   }
 
   @Override
+  public IBindingMetaschemaModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
+
+  @Override
   public Map<IAttributable.Key, Set<String>> getProperties() {
     return properties;
   }
@@ -117,7 +126,7 @@ public class InstanceModelAssemblyReference
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

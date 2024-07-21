@@ -40,7 +40,7 @@ class AssemblyOrphanedDefinitionNodeItemImpl
     extends AbstractOrphanedDefinitionNodeItem<IAssemblyDefinition, IAssemblyInstance>
     implements IAssemblyNodeItem,
     IFeatureOrhpanedDefinitionModelNodeItem<IAssemblyDefinition, IAssemblyInstance>,
-    IFeatureModelContainerItem, IFeatureNoDataItem {
+    IFeatureModelContainerItem, IFeatureNoDataValuedItem {
   @NonNull
   private final Lazy<ModelContainer> model;
 

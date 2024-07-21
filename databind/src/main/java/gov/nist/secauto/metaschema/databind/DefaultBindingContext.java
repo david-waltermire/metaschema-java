@@ -48,6 +48,7 @@ import gov.nist.secauto.metaschema.databind.io.yaml.DefaultYamlSerializer;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelComplex;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -61,6 +62,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.namespace.QName;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * The implementation of a {@link IBindingContext} provided by this library.
@@ -106,17 +108,21 @@ public class DefaultBindingContext implements IBindingContext {
    * @param modulePostProcessors
    *          a list of module post processors to call after loading a module
    */
+  @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
   public DefaultBindingContext(@NonNull List<IModuleLoader.IModulePostProcessor> modulePostProcessors) {
     // only allow extended classes
     moduleLoaderStrategy = new PostProcessingModuleLoaderStrategy(this, modulePostProcessors);
+    registerBindingMatcher(METASCHEMA.class);
   }
 
   /**
    * Construct a new binding context.
    */
+  @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
   public DefaultBindingContext() {
     // only allow extended classes
     moduleLoaderStrategy = new SimpleModuleLoaderStrategy(this);
+    registerBindingMatcher(METASCHEMA.class);
   }
 
   @NonNull
@@ -166,7 +172,7 @@ public class DefaultBindingContext implements IBindingContext {
   }
 
   @Override
-  public IBoundDefinitionModelComplex getBoundDefinitionForClass(@NonNull Class<? extends IBoundObject> clazz) {
+  public final IBoundDefinitionModelComplex getBoundDefinitionForClass(@NonNull Class<? extends IBoundObject> clazz) {
     return moduleLoaderStrategy.getBoundDefinitionForClass(clazz);
   }
 

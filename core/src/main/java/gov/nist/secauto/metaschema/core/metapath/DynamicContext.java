@@ -299,9 +299,12 @@ public class DynamicContext { // NOPMD - intentional data class
    *          the name of the variable to bind
    * @param boundValue
    *          the value to bind to the variable
+   * @return this dynamic context
    */
-  public void bindVariableValue(@NonNull QName name, @NonNull ISequence<?> boundValue) {
+  @NonNull
+  public DynamicContext bindVariableValue(@NonNull QName name, @NonNull ISequence<?> boundValue) {
     letVariableMap.put(name, boundValue);
+    return this;
   }
 
   private class CachingLoader implements IDocumentLoader {

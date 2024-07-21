@@ -131,7 +131,7 @@ public class DefaultJsonDeserializer<CLASS extends IBoundObject>
   }
 
   @Override
-  public CLASS deserializeToValue(@NonNull Reader reader, @NonNull URI documentUri) throws IOException {
+  public CLASS deserializeToValueInternal(@NonNull Reader reader, @NonNull URI documentUri) throws IOException {
     try (JsonParser jsonParser = newJsonParser(reader)) {
       MetaschemaJsonReader parser = new MetaschemaJsonReader(jsonParser);
       IBoundDefinitionModelAssembly definition = getDefinition();

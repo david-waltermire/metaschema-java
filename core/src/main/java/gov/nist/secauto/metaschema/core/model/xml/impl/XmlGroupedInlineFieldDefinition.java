@@ -92,7 +92,7 @@ public class XmlGroupedInlineFieldDefinition
       IValueConstrained retval = new ValueConstraintSet();
       if (getXmlObject().isSetConstraint()) {
         ConstraintXmlSupport.parse(retval, ObjectUtils.notNull(getXmlObject().getConstraint()),
-            ISource.modelSource(ObjectUtils.requireNonNull(getContainingModule().getLocation())));
+            ISource.modelSource(getContainingModule()));
       }
       return retval;
     }));

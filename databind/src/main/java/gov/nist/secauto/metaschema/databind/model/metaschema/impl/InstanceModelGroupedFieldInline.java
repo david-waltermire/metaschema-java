@@ -29,9 +29,8 @@ package gov.nist.secauto.metaschema.databind.model.metaschema.impl;
 import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
-import gov.nist.secauto.metaschema.core.metapath.item.node.IFieldNodeItem;
+import gov.nist.secauto.metaschema.core.metapath.item.node.IAssemblyNodeItem;
 import gov.nist.secauto.metaschema.core.model.AbstractInlineFieldDefinition;
-import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IAttributable;
 import gov.nist.secauto.metaschema.core.model.IChoiceGroupInstance;
 import gov.nist.secauto.metaschema.core.model.IContainerFlagSupport;
@@ -46,6 +45,10 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAsse
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FieldConstraints;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonValueKeyFlag;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModel;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.util.Map;
 import java.util.Set;
@@ -61,9 +64,9 @@ public class InstanceModelGroupedFieldInline
         IChoiceGroupInstance,
         IFieldDefinition,
         IFieldInstanceGrouped,
-        IAssemblyDefinition,
+        IBindingDefinitionModelAssembly,
         IFlagInstance>
-    implements IFieldInstanceGrouped {
+    implements IFieldInstanceGrouped, IBindingInstance, IBindingDefinitionModel {
   @NonNull
   private final AssemblyModel.ChoiceGroup.DefineField binding;
   @NonNull
@@ -77,7 +80,7 @@ public class InstanceModelGroupedFieldInline
   @NonNull
   private final Lazy<IValueConstrained> valueConstraints;
   @NonNull
-  private final Lazy<IFieldNodeItem> boundNodeItem;
+  private final Lazy<IAssemblyNodeItem> boundNodeItem;
 
   public InstanceModelGroupedFieldInline(
       @NonNull AssemblyModel.ChoiceGroup.DefineField binding,
@@ -101,12 +104,12 @@ public class InstanceModelGroupedFieldInline
         ConstraintBindingSupport.parse(
             retval,
             constraints,
-            ISource.modelSource(parent.getOwningDefinition().getContainingModule().getLocation()));
+            ISource.modelSource(parent.getOwningDefinition().getContainingModule()));
       }
       return retval;
     }));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IFieldNodeItem) ObjectUtils.notNull(getContainingDefinition().getNodeItem())
+        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
   }
@@ -114,6 +117,11 @@ public class InstanceModelGroupedFieldInline
   @NonNull
   protected AssemblyModel.ChoiceGroup.DefineField getBinding() {
     return binding;
+  }
+
+  @Override
+  public IBindingMetaschemaModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
   }
 
   @Override
@@ -132,7 +140,7 @@ public class InstanceModelGroupedFieldInline
   }
 
   @Override
-  public IFieldNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

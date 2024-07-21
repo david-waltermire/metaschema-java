@@ -27,6 +27,7 @@
 package gov.nist.secauto.metaschema.databind.model.metaschema;
 
 import gov.nist.secauto.metaschema.core.metapath.MetapathException;
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.model.AbstractLoader;
 import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IConstraintLoader;
@@ -110,7 +111,15 @@ public class BindingConstraintLoader
 
     Object constraintsDocument = loader.load(resource);
 
-    ISource source = ISource.externalSource(resource);
+    StaticContext.Builder builder = StaticContext.builder()
+        .baseUri(resource);
+
+    // obj.getNamespaceBindingList().stream()
+    // .forEach(binding -> builder.namespace(
+    // ObjectUtils.notNull(binding.getPrefix()),
+    // ObjectUtils.notNull(binding.getUri())));
+
+    ISource source = ISource.externalSource(builder.build());
 
     IConstraintSet retval;
     if (constraintsDocument instanceof MetaschemaModuleConstraints) {

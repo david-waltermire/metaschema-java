@@ -47,7 +47,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
     formalName = "Group As",
     name = "group-as",
     moduleClass = MetaschemaModelModule.class)
-public final class GroupingAs implements IBoundObject {
+public class GroupingAs implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

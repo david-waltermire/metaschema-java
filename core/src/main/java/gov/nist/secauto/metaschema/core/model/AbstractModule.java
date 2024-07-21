@@ -154,8 +154,8 @@ public abstract class AbstractModule<
       @SuppressWarnings("unused") @NonNull QName key,
       @NonNull DEF oldDef,
       @NonNull DEF newDef) {
-    if (!oldDef.equals(newDef) && LOGGER.isWarnEnabled()) {
-      LOGGER.warn("The {} '{}' from metaschema '{}' is shadowing '{}' from metaschema '{}'",
+    if (!oldDef.equals(newDef) && LOGGER.isInfoEnabled()) {
+      LOGGER.info("The {} '{}' from metaschema '{}' is shadowing '{}' from metaschema '{}'",
           newDef.getModelType().name().toLowerCase(Locale.ROOT),
           newDef.getName(),
           newDef.getContainingModule().getShortName(),

@@ -40,7 +40,6 @@ import gov.nist.secauto.metaschema.core.model.IContainerFlagSupport;
 import gov.nist.secauto.metaschema.core.model.IContainerModelAssemblySupport;
 import gov.nist.secauto.metaschema.core.model.IFieldInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
-import gov.nist.secauto.metaschema.core.model.IMetaschemaModule;
 import gov.nist.secauto.metaschema.core.model.IModelInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.INamedModelInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.ModuleScopeEnum;
@@ -52,6 +51,8 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAsse
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyConstraints;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonKey;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.util.Map;
 import java.util.Set;
@@ -61,7 +62,7 @@ import nl.talsmasoftware.lazy4j.Lazy;
 
 public class DefinitionAssemblyGlobal
     extends AbstractGlobalAssemblyDefinition<
-        IMetaschemaModule,
+        IBindingMetaschemaModule,
         IAssemblyInstance,
         IFlagInstance,
         IModelInstanceAbsolute,
@@ -69,7 +70,8 @@ public class DefinitionAssemblyGlobal
         IFieldInstanceAbsolute,
         IAssemblyInstanceAbsolute,
         IChoiceInstance,
-        IChoiceGroupInstance> {
+        IChoiceGroupInstance>
+    implements IBindingDefinitionModelAssembly {
   @NonNull
   private final METASCHEMA.DefineAssembly binding;
   @NonNull
@@ -109,7 +111,7 @@ public class DefinitionAssemblyGlobal
       @NonNull METASCHEMA.DefineAssembly binding,
       @NonNull IBoundInstanceModelGroupedAssembly bindingInstance,
       int position,
-      @NonNull IMetaschemaModule module,
+      @NonNull IBindingMetaschemaModule module,
       @NonNull INodeItemFactory nodeItemFactory) {
     super(module);
     this.binding = binding;
@@ -131,7 +133,7 @@ public class DefinitionAssemblyGlobal
       IModelConstrained retval = new AssemblyConstraintSet();
       AssemblyConstraints constraints = getBinding().getConstraint();
       if (constraints != null) {
-        ConstraintBindingSupport.parse(retval, constraints, ISource.modelSource(module.getLocation()));
+        ConstraintBindingSupport.parse(retval, constraints, ISource.modelSource(module));
       }
       return retval;
     }));
@@ -168,7 +170,7 @@ public class DefinitionAssemblyGlobal
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

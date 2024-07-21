@@ -35,7 +35,6 @@ import gov.nist.secauto.metaschema.core.model.IAttributable;
 import gov.nist.secauto.metaschema.core.model.IContainerFlagSupport;
 import gov.nist.secauto.metaschema.core.model.IFieldInstance;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
-import gov.nist.secauto.metaschema.core.model.IMetaschemaModule;
 import gov.nist.secauto.metaschema.core.model.ModuleScopeEnum;
 import gov.nist.secauto.metaschema.core.model.constraint.ISource;
 import gov.nist.secauto.metaschema.core.model.constraint.IValueConstrained;
@@ -46,6 +45,8 @@ import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FieldConstr
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonKey;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.JsonValueKeyFlag;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModel;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.util.Map;
 import java.util.Set;
@@ -55,7 +56,8 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import nl.talsmasoftware.lazy4j.Lazy;
 
 public class DefinitionFieldGlobal
-    extends AbstractGlobalFieldDefinition<IMetaschemaModule, IFieldInstance, IFlagInstance> {
+    extends AbstractGlobalFieldDefinition<IBindingMetaschemaModule, IFieldInstance, IFlagInstance>
+    implements IBindingDefinitionModel {
   @NonNull
   private final METASCHEMA.DefineField binding;
   @NonNull
@@ -75,7 +77,7 @@ public class DefinitionFieldGlobal
       @NonNull METASCHEMA.DefineField binding,
       @NonNull IBoundInstanceModelGroupedAssembly bindingInstance,
       int position,
-      @NonNull IMetaschemaModule module) {
+      @NonNull IBindingMetaschemaModule module) {
     super(module);
     this.binding = binding;
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
@@ -93,7 +95,7 @@ public class DefinitionFieldGlobal
       IValueConstrained retval = new ValueConstraintSet();
       FieldConstraints constraints = binding.getConstraint();
       if (constraints != null) {
-        ConstraintBindingSupport.parse(retval, constraints, ISource.modelSource(module.getLocation()));
+        ConstraintBindingSupport.parse(retval, constraints, ISource.modelSource(module));
       }
       return retval;
     }));
@@ -134,7 +136,7 @@ public class DefinitionFieldGlobal
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

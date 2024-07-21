@@ -35,7 +35,7 @@ import gov.nist.secauto.metaschema.core.model.IAttributable;
 import gov.nist.secauto.metaschema.core.model.IFeatureValueless;
 import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
-import gov.nist.secauto.metaschema.core.model.IModelDefinition;
+import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.constraint.ISource;
 import gov.nist.secauto.metaschema.core.model.constraint.IValueConstrained;
 import gov.nist.secauto.metaschema.core.model.constraint.ValueConstraintSet;
@@ -43,6 +43,9 @@ import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FlagConstraints;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.InlineDefineFlag;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModel;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.util.Map;
 import java.util.Set;
@@ -53,10 +56,10 @@ import nl.talsmasoftware.lazy4j.Lazy;
 
 public class InstanceFlagInline
     extends AbstractInlineFlagDefinition<
-        IModelDefinition,
+        IBindingDefinitionModel,
         IFlagDefinition,
         IFlagInstance>
-    implements IFeatureValueless {
+    implements IFeatureValueless, IBindingInstance {
   @NonNull
   private final InlineDefineFlag binding;
   @NonNull
@@ -74,22 +77,25 @@ public class InstanceFlagInline
       @NonNull InlineDefineFlag binding,
       @NonNull IBoundInstanceModelGroupedAssembly bindingInstance,
       int position,
-      @NonNull IModelDefinition parent) {
+      @NonNull IBindingDefinitionModel parent) {
     super(parent);
     this.binding = binding;
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
     this.javaTypeAdapter = ModelSupport.dataType(binding.getAsType());
     this.defaultValue = ModelSupport.defaultValue(binding.getDefault(), this.javaTypeAdapter);
+
+    IModule module = parent.getContainingModule();
+
     this.valueConstraints = ObjectUtils.notNull(Lazy.lazy(() -> {
       IValueConstrained retval = new ValueConstraintSet();
       FlagConstraints constraints = binding.getConstraint();
       if (constraints != null) {
-        ConstraintBindingSupport.parse(retval, constraints, ISource.modelSource());
+        ConstraintBindingSupport.parse(retval, constraints, ISource.modelSource(module));
       }
       return retval;
     }));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingModule().getNodeItem())
+        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(parent.getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
   }
@@ -99,6 +105,11 @@ public class InstanceFlagInline
     return binding;
   }
 
+  @Override
+  public IBindingMetaschemaModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
+
   @SuppressWarnings("null")
   @Override
   public IValueConstrained getConstraintSupport() {
@@ -106,7 +117,7 @@ public class InstanceFlagInline
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 
@@ -154,4 +165,8 @@ public class InstanceFlagInline
   public boolean isRequired() {
     return ModelSupport.yesOrNo(getBinding().getRequired());
   }
+
+  // =================================
+  // IAssemnblyNodeItem implementation
+  // =================================
 }

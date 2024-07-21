@@ -38,6 +38,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelChoiceGroup
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedField;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedNamed;
+import gov.nist.secauto.metaschema.databind.model.IBoundModule;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
@@ -160,6 +161,10 @@ public final class InstanceModelChoiceGroup
                 CustomCollectors.identity())))));
   }
 
+  // ------------------------------------------
+  // - Start annotation driven code - CPD-OFF -
+  // ------------------------------------------
+
   @Override
   public Field getField() {
     return javaField;
@@ -180,10 +185,6 @@ public final class InstanceModelChoiceGroup
   public IModelInstanceCollectionInfo<IBoundObject> getCollectionInfo() {
     return collectionInfo.get();
   }
-
-  // ------------------------------------------
-  // - Start annotation driven code - CPD-OFF -
-  // ------------------------------------------
 
   /**
    * Get the mapping of XML qualified names bound to a distinct grouped model
@@ -251,6 +252,11 @@ public final class InstanceModelChoiceGroup
   @Override
   public IBoundDefinitionModelAssembly getOwningDefinition() {
     return getParentContainer();
+  }
+
+  @Override
+  public IBoundModule getContainingModule() {
+    return getOwningDefinition().getContainingModule();
   }
 
   @Override

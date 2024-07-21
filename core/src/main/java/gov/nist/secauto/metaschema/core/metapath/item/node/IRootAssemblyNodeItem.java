@@ -28,6 +28,7 @@ package gov.nist.secauto.metaschema.core.metapath.item.node;
 
 import gov.nist.secauto.metaschema.core.metapath.format.IPathFormatter;
 import gov.nist.secauto.metaschema.core.model.IAssemblyInstance;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import javax.xml.namespace.QName;
 
@@ -37,7 +38,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * A marker interface used to expose root node functionality for an assembly
  * node that has root information.
  */
-public interface IRootAssemblyNodeItem extends IAssemblyNodeItem {
+public interface IRootAssemblyNodeItem extends IAssemblyNodeItem, IFeatureChildNodeItem {
 
   /**
    * Get the name of this node.
@@ -45,7 +46,9 @@ public interface IRootAssemblyNodeItem extends IAssemblyNodeItem {
    * This overrides the default behavior using the root name for the assembly.
    */
   @Override
-  QName getName();
+  default QName getQName() {
+    return ObjectUtils.requireNonNull(getDefinition().getRootXmlQName());
+  }
 
   /**
    * Get the parent document node item for this root.

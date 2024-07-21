@@ -133,21 +133,6 @@ public interface IConstraint extends IAttributable, IDescribable {
    * Based on the provided {@code contextNodeItem}, find all nodes matching the
    * target expression.
    *
-   * @param contextNodeItem
-   *          the node item to evaluate the target expression against
-   * @return the matching nodes as a sequence
-   * @see #getTarget()
-   */
-  @NonNull
-  default ISequence<? extends IDefinitionNodeItem<?, ?>> matchTargets(
-      @NonNull IDefinitionNodeItem<?, ?> contextNodeItem) {
-    return MetapathExpression.compile(getTarget()).evaluate(contextNodeItem);
-  }
-
-  /**
-   * Based on the provided {@code contextNodeItem}, find all nodes matching the
-   * target expression.
-   *
    * @param item
    *          the node item to evaluate the target expression against
    * @param dynamicContext

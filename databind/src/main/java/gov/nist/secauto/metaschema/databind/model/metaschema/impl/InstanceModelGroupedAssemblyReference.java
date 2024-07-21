@@ -37,6 +37,9 @@ import gov.nist.secauto.metaschema.core.model.IChoiceGroupInstance;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.util.Map;
 import java.util.Set;
@@ -49,8 +52,8 @@ public class InstanceModelGroupedAssemblyReference
         IChoiceGroupInstance,
         IAssemblyDefinition,
         IAssemblyInstanceGrouped,
-        IAssemblyDefinition>
-    implements IAssemblyInstanceGrouped {
+        IBindingDefinitionModelAssembly>
+    implements IAssemblyInstanceGrouped, IBindingInstance {
   @NonNull
   private final AssemblyModel.ChoiceGroup.Assembly binding;
   @NonNull
@@ -71,7 +74,7 @@ public class InstanceModelGroupedAssemblyReference
     this.definition = definition;
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getNodeItem())
+        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
   }
@@ -87,12 +90,17 @@ public class InstanceModelGroupedAssemblyReference
   }
 
   @Override
+  public IBindingMetaschemaModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
+
+  @Override
   public Map<IAttributable.Key, Set<String>> getProperties() {
     return properties;
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

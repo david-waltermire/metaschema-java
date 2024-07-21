@@ -34,10 +34,12 @@ import gov.nist.secauto.metaschema.core.model.IAttributable;
 import gov.nist.secauto.metaschema.core.model.IFeatureValueless;
 import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
-import gov.nist.secauto.metaschema.core.model.IModelDefinition;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.FlagReference;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModel;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 
 import java.util.Map;
 import java.util.Set;
@@ -48,9 +50,9 @@ import nl.talsmasoftware.lazy4j.Lazy;
 
 public class InstanceFlagReference
     extends AbstractFlagInstance<
-        IModelDefinition,
+        IBindingDefinitionModel,
         IFlagDefinition, IFlagInstance>
-    implements IFeatureValueless {
+    implements IFeatureValueless, IBindingInstance {
   @NonNull
   private final FlagReference binding;
   @NonNull
@@ -67,14 +69,14 @@ public class InstanceFlagReference
       @NonNull IBoundInstanceModelGroupedAssembly bindingInstance,
       int position,
       @NonNull IFlagDefinition definition,
-      @NonNull IModelDefinition parent) {
+      @NonNull IBindingDefinitionModel parent) {
     super(parent);
     this.binding = binding;
     this.definition = definition;
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
     this.defaultValue = ModelSupport.defaultValue(binding.getDefault(), definition.getJavaTypeAdapter());
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingModule().getNodeItem())
+        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(parent.getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
   }
@@ -85,7 +87,12 @@ public class InstanceFlagReference
   }
 
   @Override
-  public IAssemblyNodeItem getNodeItem() {
+  public IBindingMetaschemaModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
+
+  @Override
+  public IAssemblyNodeItem getSourceNodeItem() {
     return boundNodeItem.get();
   }
 

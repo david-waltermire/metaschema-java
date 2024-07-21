@@ -33,6 +33,7 @@ import gov.nist.secauto.metaschema.core.datatype.adapter.UriReferenceAdapter;
 import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
+import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
@@ -40,8 +41,11 @@ import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
+import gov.nist.secauto.metaschema.databind.model.annotations.Expect;
 import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
+import gov.nist.secauto.metaschema.databind.model.annotations.Let;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
+import gov.nist.secauto.metaschema.databind.model.annotations.ValueConstraints;
 import gov.nist.secauto.metaschema.databind.model.metaschema.IModelConstraintsBase;
 import gov.nist.secauto.metaschema.databind.model.metaschema.ITargetedConstraintBase;
 import gov.nist.secauto.metaschema.databind.model.metaschema.IValueConstraintsBase;
@@ -67,8 +71,15 @@ import java.util.List;
     description = "Defines constraint rules to be applied to an existing set of Metaschema module-based models.",
     name = "metaschema-module-constraints",
     moduleClass = MetaschemaModelModule.class,
-    rootName = "METASCHEMA-CONSTRAINTS")
-public final class MetaschemaModuleConstraints implements IBoundObject {
+    rootName = "METASCHEMA-CONSTRAINTS",
+    valueConstraints = @ValueConstraints(lets = @Let(name = "deprecated-type-map",
+        target = "map { 'base64Binary':'base64','dateTime':'date-time','dateTime-with-timezone':'date-time-with-timezone','email':'email-address','nonNegativeInteger':'non-negative-integer','positiveInteger':'positive-integer' }"),
+        expect = @Expect(id = "metaschema-deprecated-types", formalName = "Avoid Deprecated Data Type Use",
+            description = "Ensure that the data type specified is not one of the legacy Metaschema data types which have been deprecated (i.e. base64Binary, dateTime, dateTime-with-timezone, email, nonNegativeInteger, positiveInteger).",
+            level = IConstraint.Level.WARNING, target = ".//matches/@datatype|.//(define-field|define-flag)/@as-type",
+            test = "not(.=('base64Binary','dateTime','dateTime-with-timezone','email','nonNegativeInteger','positiveInteger'))",
+            message = "Use of the type '{ . }' is deprecated. Use '{ $deprecated-type-map(.)}' instead.")))
+public class MetaschemaModuleConstraints implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundField(
@@ -209,7 +220,7 @@ public final class MetaschemaModuleConstraints implements IBoundObject {
       description = "Declares a set of Metaschema constraints from an out-of-line resource to import, supporting composition of constraint sets.",
       name = "import",
       moduleClass = MetaschemaModelModule.class)
-  public static final class Import implements IBoundObject {
+  public static class Import implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     /**
@@ -253,7 +264,7 @@ public final class MetaschemaModuleConstraints implements IBoundObject {
   @MetaschemaAssembly(
       name = "scope",
       moduleClass = MetaschemaModelModule.class)
-  public static final class Scope implements IBoundObject {
+  public static class Scope implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     @BoundFlag(
@@ -338,7 +349,7 @@ public final class MetaschemaModuleConstraints implements IBoundObject {
     @MetaschemaAssembly(
         name = "assembly",
         moduleClass = MetaschemaModelModule.class)
-    public static final class Assembly implements IModelConstraintsBase {
+    public static class Assembly implements IModelConstraintsBase {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
@@ -414,7 +425,7 @@ public final class MetaschemaModuleConstraints implements IBoundObject {
     @MetaschemaAssembly(
         name = "field",
         moduleClass = MetaschemaModelModule.class)
-    public static final class Field implements IValueConstraintsBase {
+    public static class Field implements IValueConstraintsBase {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
@@ -484,7 +495,7 @@ public final class MetaschemaModuleConstraints implements IBoundObject {
     @MetaschemaAssembly(
         name = "flag",
         moduleClass = MetaschemaModelModule.class)
-    public static final class Flag implements IBoundObject, IValueConstraintsBase {
+    public static class Flag implements IBoundObject, IValueConstraintsBase {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(

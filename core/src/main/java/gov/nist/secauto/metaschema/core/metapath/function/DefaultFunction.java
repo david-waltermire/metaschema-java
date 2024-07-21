@@ -317,7 +317,7 @@ public class DefaultFunction
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getNamespace(), getArguments(), handler, properties, result);
+    return Objects.hash(getQName(), getArguments(), handler, properties, result);
   }
 
   @Override
@@ -332,8 +332,7 @@ public class DefaultFunction
       return false; // NOPMD - readability
     }
     DefaultFunction other = (DefaultFunction) obj;
-    return Objects.equals(getName(), other.getName())
-        && Objects.equals(getNamespace(), other.getNamespace())
+    return Objects.equals(getQName(), other.getQName())
         && Objects.equals(getArguments(), other.getArguments())
         && Objects.equals(handler, other.handler)
         && Objects.equals(properties, other.properties)

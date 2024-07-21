@@ -58,7 +58,7 @@ import java.util.List;
     formalName = "Allowed Values Constraint",
     name = "flag-allowed-values",
     moduleClass = MetaschemaModelModule.class)
-public final class FlagAllowedValues implements IBoundObject, IConstraintBase {
+public class FlagAllowedValues implements IBoundObject, IConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

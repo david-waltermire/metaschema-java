@@ -60,7 +60,7 @@ import java.util.List;
     formalName = "Flag Reference",
     name = "flag-reference",
     moduleClass = MetaschemaModelModule.class)
-public final class FlagReference implements IBoundObject {
+public class FlagReference implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

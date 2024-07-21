@@ -80,8 +80,10 @@ class DefaultConstraintValidatorTest {
 
     IFlagDefinition flagDefinition = context.mock(IFlagDefinition.class);
 
+    ISource source = context.mock(ISource.class);
+
     IAllowedValuesConstraint allowedValues = IAllowedValuesConstraint.builder()
-        .source(ISource.modelSource())
+        .source(source)
         .allowedValue(IAllowedValue.of("other", MarkupLine.fromMarkdown("some documentation")))
         .allowsOther(true)
         .build();
@@ -126,13 +128,15 @@ class DefaultConstraintValidatorTest {
 
     IFlagDefinition flagDefinition = context.mock(IFlagDefinition.class);
 
+    ISource source = context.mock(ISource.class);
+
     IAllowedValuesConstraint allowedValues1 = IAllowedValuesConstraint.builder()
-        .source(ISource.modelSource())
+        .source(source)
         .allowedValue(IAllowedValue.of("other", MarkupLine.fromMarkdown("some documentation")))
         .allowsOther(true)
         .build();
     IAllowedValuesConstraint allowedValues2 = IAllowedValuesConstraint.builder()
-        .source(ISource.modelSource())
+        .source(source)
         .allowedValue(IAllowedValue.of("other2", MarkupLine.fromMarkdown("some documentation")))
         .allowsOther(true)
         .build();
@@ -181,13 +185,15 @@ class DefaultConstraintValidatorTest {
 
     IFlagDefinition flagDefinition = context.mock(IFlagDefinition.class);
 
+    ISource source = context.mock(ISource.class);
+
     IAllowedValuesConstraint allowedValues1 = IAllowedValuesConstraint.builder()
-        .source(ISource.modelSource())
+        .source(source)
         .allowedValue(IAllowedValue.of("other", MarkupLine.fromMarkdown("some documentation")))
         .allowsOther(true)
         .build();
     IAllowedValuesConstraint allowedValues2 = IAllowedValuesConstraint.builder()
-        .source(ISource.modelSource())
+        .source(source)
         .allowedValue(IAllowedValue.of("other2", MarkupLine.fromMarkdown("some documentation")))
         .allowsOther(false)
         .build();

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<METASCHEMA xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://csrc.nist.gov/ns/oscal/metaschema/1.0 ../../../../../core/metaschema/schema/xml/metaschema.xsd"
+  xmlns="http://csrc.nist.gov/ns/oscal/metaschema/1.0">
+  <schema-name>A module to test detection of legacy data type use</schema-name>
+  <schema-version>1.0</schema-version>
+  <short-name>legacy-data-types</short-name>
+  <namespace>http://csrc.nist.gov/ns/metaschema/testing/legacy-data-types</namespace>
+  <json-base-uri>http://csrc.nist.gov/ns/metaschema/testing/legacy-data-types</json-base-uri>
+  
+  <define-assembly name="top-level">
+    <formal-name>Root</formal-name>
+    <description>Root assembly</description>
+    <root-name>top-level</root-name>
+    <define-flag name="dateTime" as-type="dateTime" required="yes"/>
+    <define-flag name="dateTime-with-timezone" as-type="dateTime-with-timezone" required="yes"/>
+    <define-flag name="email" as-type="email" required="yes"/>
+    <define-flag name="nonNegativeInteger" as-type="nonNegativeInteger" required="yes"/>
+    <define-flag name="positiveInteger" as-type="positiveInteger" required="yes"/>
+    <model>
+    	<define-field name="base64Binary" as-type="base64Binary"/>
+    </model>
+  </define-assembly>
+</METASCHEMA>

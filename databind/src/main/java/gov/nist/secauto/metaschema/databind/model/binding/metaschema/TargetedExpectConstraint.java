@@ -59,7 +59,7 @@ import java.util.List;
     formalName = "Expect Condition Constraint",
     name = "targeted-expect-constraint",
     moduleClass = MetaschemaModelModule.class)
-public final class TargetedExpectConstraint implements IBoundObject, ITargetedConstraintBase {
+public class TargetedExpectConstraint implements IBoundObject, ITargetedConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

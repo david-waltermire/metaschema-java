@@ -94,8 +94,8 @@ public abstract class AbstractExitStatus implements ExitStatus {
     }
 
     if (logBuilder != null) {
-      Throwable throwable = getThrowable();
       if (showStackTrace && throwable != null) {
+        Throwable throwable = getThrowable();
         logBuilder.withThrowable(throwable);
       }
 
@@ -109,7 +109,7 @@ public abstract class AbstractExitStatus implements ExitStatus {
       } else if (showStackTrace && throwable != null) {
         // log the throwable
         logBuilder.log();
-      } // otherwise there is nothing to log
+      }
     }
   }
 

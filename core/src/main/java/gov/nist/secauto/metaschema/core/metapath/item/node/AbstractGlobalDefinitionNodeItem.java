@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.core.metapath.item.node;
 
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.model.IDefinition;
 import gov.nist.secauto.metaschema.core.model.INamedInstance;
 
@@ -67,4 +68,8 @@ abstract class AbstractGlobalDefinitionNodeItem<D extends IDefinition, I extends
     return getMetaschemaNodeItem().getDocumentUri();
   }
 
+  @Override
+  public StaticContext getStaticContext() {
+    return getMetaschemaNodeItem().getStaticContext();
+  }
 }

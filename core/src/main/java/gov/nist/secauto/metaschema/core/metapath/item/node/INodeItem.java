@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.core.metapath.item.node;
 
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.metapath.format.IPathFormatter;
 import gov.nist.secauto.metaschema.core.metapath.format.IPathSegment;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -120,14 +121,6 @@ public interface INodeItem extends IItem, IPathSegment, INodeItemVisitable {
    * @return the base URI or {@code null} if it is unknown
    */
   URI getBaseUri();
-
-  /**
-   * Get the default namespace for the node.
-   *
-   * @return the URI
-   */
-  @NonNull
-  URI getNamespace();
 
   /**
    * Get the path for this node item as a Metapath.
@@ -309,4 +302,12 @@ public interface INodeItem extends IItem, IPathSegment, INodeItemVisitable {
    */
   @Nullable
   IResourceLocation getLocation();
+
+  /**
+   * Get the static context to use to query this node item.
+   *
+   * @return the static context
+   */
+  @NonNull
+  StaticContext getStaticContext();
 }

@@ -96,7 +96,7 @@ final class DefaultNodeItemFactory
   public Supplier<ModelContainer> newDataModelSupplier(IRootAssemblyNodeItem item) {
     return () -> {
       Map<QName, List<? extends IModelNodeItem<?, ?>>> modelItems = CollectionUtil.singletonMap(
-          item.getName(),
+          item.getQName(),
           CollectionUtil.singletonList(item));
       return new ModelContainer(CollectionUtil.emptyMap(), modelItems);
     };
@@ -137,7 +137,8 @@ final class DefaultNodeItemFactory
    */
   @SuppressWarnings({ "PMD.UseConcurrentHashMap", "PMD.CognitiveComplexity" }) // need an ordered map
   @NonNull
-  protected Map<QName, List<? extends IModelNodeItem<?, ?>>> generateModelItems(@NonNull IAssemblyNodeItem parent) {
+  protected Map<QName, List<? extends IModelNodeItem<?, ?>>> generateModelItems(
+      @NonNull IAssemblyNodeItem parent) {
     Map<QName, List<? extends IModelNodeItem<?, ?>>> retval = new LinkedHashMap<>();
 
     Object parentValue = parent.getValue();
@@ -212,7 +213,7 @@ final class DefaultNodeItemFactory
               .map(def -> newFlagNodeItem(ObjectUtils.notNull(def), item))
               .collect(
                   Collectors.toMap(
-                      IFlagNodeItem::getName,
+                      IFlagNodeItem::getQName,
                       Function.identity(),
                       (v1, v2) -> v2,
                       LinkedHashMap::new))));
@@ -227,7 +228,7 @@ final class DefaultNodeItemFactory
           = ObjectUtils.notNull(Stream.concat(fieldStream, assemblyStream)
               .collect(
                   Collectors.collectingAndThen(
-                      Collectors.groupingBy(IModelNodeItem::getName),
+                      Collectors.groupingBy(IModelNodeItem::getQName),
                       Collections::unmodifiableMap)));
       return new ModelContainer(flags, modelItems);
     };

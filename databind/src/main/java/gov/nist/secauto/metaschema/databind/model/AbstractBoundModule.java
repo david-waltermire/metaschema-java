@@ -26,6 +26,7 @@
 
 package gov.nist.secauto.metaschema.databind.model;
 
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.model.AbstractModule;
 import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
@@ -155,6 +156,13 @@ public abstract class AbstractBoundModule
         .collect(Collectors.toUnmodifiableMap(
             IBoundDefinitionModelField::getDefinitionQName,
             Function.identity()))));
+  }
+
+  @Override
+  public StaticContext getModuleStaticContext() {
+    return StaticContext.builder()
+        .defaultModelNamespace(getXmlNamespace())
+        .build();
   }
 
   @Override

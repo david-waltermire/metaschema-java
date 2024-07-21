@@ -29,9 +29,6 @@ package gov.nist.secauto.metaschema.core.metapath.item.node;
 import gov.nist.secauto.metaschema.core.model.IDefinition;
 import gov.nist.secauto.metaschema.core.model.INamedInstance;
 import gov.nist.secauto.metaschema.core.model.IResourceLocation;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-
-import java.net.URI;
 
 import javax.xml.namespace.QName;
 
@@ -40,21 +37,16 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 
 public interface IDefinitionNodeItem<D extends IDefinition, I extends INamedInstance> extends INodeItem {
   /**
-   * Get the name of the node item.
+   * Get the name of this node.
    *
-   * @return the item's name
+   * @return the qualified name
    */
   @NonNull
-  default QName getName() {
+  default QName getQName() {
     I instance = getInstance();
     return instance == null
         ? getDefinition().getXmlQName()
         : instance.getXmlQName();
-  }
-
-  @Override
-  default URI getNamespace() {
-    return ObjectUtils.notNull(URI.create(getName().getNamespaceURI()));
   }
 
   /**

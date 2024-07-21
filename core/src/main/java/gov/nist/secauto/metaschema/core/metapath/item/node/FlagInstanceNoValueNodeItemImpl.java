@@ -32,7 +32,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 
 class FlagInstanceNoValueNodeItemImpl
     extends AbstractFlagInstanceNodeItem
-    implements IFeatureNoDataAtomicValuedItem {
+    implements IFeatureNoDataAtomicValuedItem, IFeatureChildNodeItem {
 
   public FlagInstanceNoValueNodeItemImpl(
       @NonNull IFlagInstance instance,

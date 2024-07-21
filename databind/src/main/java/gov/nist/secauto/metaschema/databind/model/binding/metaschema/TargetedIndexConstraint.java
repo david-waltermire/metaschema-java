@@ -59,7 +59,7 @@ import java.util.List;
     formalName = "Targeted Index Constraint",
     name = "targeted-index-constraint",
     moduleClass = MetaschemaModelModule.class)
-public final class TargetedIndexConstraint implements IBoundObject, ITargetedConstraintBase {
+public class TargetedIndexConstraint implements IBoundObject, ITargetedConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

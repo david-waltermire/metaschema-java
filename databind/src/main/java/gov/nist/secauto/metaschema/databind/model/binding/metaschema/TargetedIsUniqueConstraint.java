@@ -59,7 +59,7 @@ import java.util.List;
     formalName = "Targeted Unique Constraint",
     name = "targeted-is-unique-constraint",
     moduleClass = MetaschemaModelModule.class)
-public final class TargetedIsUniqueConstraint implements IBoundObject, ITargetedConstraintBase {
+public class TargetedIsUniqueConstraint implements IBoundObject, ITargetedConstraintBase {
   private final IMetaschemaData __metaschemaData;
 
   @BoundFlag(

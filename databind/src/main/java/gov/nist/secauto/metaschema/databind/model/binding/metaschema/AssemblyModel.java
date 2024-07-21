@@ -44,7 +44,6 @@ import gov.nist.secauto.metaschema.databind.model.annotations.BoundChoiceGroup;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundGroupedAssembly;
-import gov.nist.secauto.metaschema.databind.model.annotations.Expect;
 import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.Matches;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
@@ -128,7 +127,7 @@ public class AssemblyModel implements IBoundObject {
       formalName = "Choice",
       name = "choice",
       moduleClass = MetaschemaModelModule.class)
-  public static final class Choice implements IBoundObject {
+  public static class Choice implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     @BoundChoiceGroup(
@@ -190,7 +189,7 @@ public class AssemblyModel implements IBoundObject {
       formalName = "Choice Grouping",
       name = "choice-group",
       moduleClass = MetaschemaModelModule.class)
-  public static final class ChoiceGroup implements IBoundObject {
+  public static class ChoiceGroup implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     @BoundFlag(
@@ -327,7 +326,7 @@ public class AssemblyModel implements IBoundObject {
         formalName = "Grouping Assembly Reference",
         name = "assembly",
         moduleClass = MetaschemaModelModule.class)
-    public static final class Assembly implements IBoundObject {
+    public static class Assembly implements IBoundObject {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
@@ -510,17 +509,14 @@ public class AssemblyModel implements IBoundObject {
         formalName = "Inline Assembly Definition",
         name = "define-assembly",
         moduleClass = MetaschemaModelModule.class)
-    public static final class DefineAssembly implements IBoundObject {
+    public static class DefineAssembly implements IBoundObject {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
           formalName = "Inline Assembly Name",
           name = "name",
           required = true,
-          typeAdapter = TokenAdapter.class,
-          valueConstraints = @ValueConstraints(
-              expect = @Expect(level = IConstraint.Level.WARNING, test = "not(.=$keywords)",
-                  message = "Names cannot be non-delimiting terminal symbols in Metapath syntax.")))
+          typeAdapter = TokenAdapter.class)
       private String _name;
 
       @BoundFlag(
@@ -767,7 +763,7 @@ public class AssemblyModel implements IBoundObject {
         formalName = "Grouping Field Reference",
         name = "field",
         moduleClass = MetaschemaModelModule.class)
-    public static final class Field implements IBoundObject {
+    public static class Field implements IBoundObject {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
@@ -985,17 +981,14 @@ public class AssemblyModel implements IBoundObject {
         formalName = "Inline Field Definition",
         name = "define-field",
         moduleClass = MetaschemaModelModule.class)
-    public static final class DefineField implements IBoundObject {
+    public static class DefineField implements IBoundObject {
       private final IMetaschemaData __metaschemaData;
 
       @BoundFlag(
           formalName = "Inline Field Name",
           name = "name",
           required = true,
-          typeAdapter = TokenAdapter.class,
-          valueConstraints = @ValueConstraints(
-              expect = @Expect(level = IConstraint.Level.WARNING, test = "not(.=$keywords)",
-                  message = "Names cannot be non-delimiting terminal symbols in Metapath syntax.")))
+          typeAdapter = TokenAdapter.class)
       private String _name;
 
       @BoundFlag(
@@ -1035,7 +1028,13 @@ public class AssemblyModel implements IBoundObject {
                   @AllowedValue(value = "string", description = ""), @AllowedValue(value = "token", description = ""),
                   @AllowedValue(value = "uri", description = ""),
                   @AllowedValue(value = "uri-reference", description = ""),
-                  @AllowedValue(value = "uuid", description = "") })))
+                  @AllowedValue(value = "uuid", description = ""),
+                  @AllowedValue(value = "base64Binary", description = ""),
+                  @AllowedValue(value = "dateTime", description = ""),
+                  @AllowedValue(value = "dateTime-with-timezone", description = ""),
+                  @AllowedValue(value = "email", description = ""),
+                  @AllowedValue(value = "nonNegativeInteger", description = ""),
+                  @AllowedValue(value = "positiveInteger", description = "") })))
       private String _asType;
 
       @BoundFlag(

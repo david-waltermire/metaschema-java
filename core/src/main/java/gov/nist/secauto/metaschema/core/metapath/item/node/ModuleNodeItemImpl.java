@@ -50,7 +50,7 @@ class ModuleNodeItemImpl
     this.model = ObjectUtils.notNull(Lazy.lazy(generator.newMetaschemaModelSupplier(this)));
   }
 
-  @Override
+  @NonNull
   public URI getNamespace() {
     return getModule().getXmlNamespace();
   }

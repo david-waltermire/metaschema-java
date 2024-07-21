@@ -61,4 +61,20 @@ public abstract class AbstractChoiceGroupInstance<
   protected AbstractChoiceGroupInstance(@NonNull PARENT parent) {
     super(parent);
   }
+
+  /**
+   * Retrieve the Metaschema assembly definition on which this instance is
+   * declared.
+   *
+   * @return the parent Metaschema assembly definition
+   */
+  @Override
+  public PARENT getContainingDefinition() {
+    return getParentContainer();
+  }
+
+  @Override
+  public IModule getContainingModule() {
+    return getParentContainer().getContainingModule();
+  }
 }

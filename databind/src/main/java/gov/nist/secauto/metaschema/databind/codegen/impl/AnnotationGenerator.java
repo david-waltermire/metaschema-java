@@ -50,6 +50,7 @@ import gov.nist.secauto.metaschema.core.model.constraint.IExpectConstraint;
 import gov.nist.secauto.metaschema.core.model.constraint.IIndexConstraint;
 import gov.nist.secauto.metaschema.core.model.constraint.IIndexHasKeyConstraint;
 import gov.nist.secauto.metaschema.core.model.constraint.IKeyField;
+import gov.nist.secauto.metaschema.core.model.constraint.ILet;
 import gov.nist.secauto.metaschema.core.model.constraint.IMatchesConstraint;
 import gov.nist.secauto.metaschema.core.model.constraint.IUniqueConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -62,6 +63,7 @@ import gov.nist.secauto.metaschema.databind.model.annotations.Index;
 import gov.nist.secauto.metaschema.databind.model.annotations.IndexHasKey;
 import gov.nist.secauto.metaschema.databind.model.annotations.IsUnique;
 import gov.nist.secauto.metaschema.databind.model.annotations.KeyField;
+import gov.nist.secauto.metaschema.databind.model.annotations.Let;
 import gov.nist.secauto.metaschema.databind.model.annotations.Matches;
 import gov.nist.secauto.metaschema.databind.model.annotations.ValueConstraints;
 
@@ -71,7 +73,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
+
+import javax.xml.namespace.QName;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -142,10 +147,13 @@ public final class AnnotationGenerator {
   public static void buildValueConstraints(
       @NonNull AnnotationSpec.Builder builder,
       @NonNull IFlagDefinition definition) {
-    if (!definition.getConstraints().isEmpty()) {
+
+    Map<QName, ? extends ILet> lets = definition.getLetExpressions();
+    if (!lets.isEmpty() || !definition.getConstraints().isEmpty()) {
       AnnotationSpec.Builder annotation = AnnotationSpec.builder(ValueConstraints.class);
       assert annotation != null;
 
+      applyLetAssignments(annotation, lets);
       applyAllowedValuesConstraints(annotation, definition.getAllowedValuesConstraints());
       applyIndexHasKeyConstraints(annotation, definition.getIndexHasKeyConstraints());
       applyMatchesConstraints(annotation, definition.getMatchesConstraints());
@@ -159,15 +167,18 @@ public final class AnnotationGenerator {
       @NonNull AnnotationSpec.Builder builder,
       @NonNull IModelDefinition definition) {
 
+    Map<QName, ? extends ILet> lets = definition.getLetExpressions();
     List<? extends IAllowedValuesConstraint> allowedValues = definition.getAllowedValuesConstraints();
     List<? extends IIndexHasKeyConstraint> indexHasKey = definition.getIndexHasKeyConstraints();
     List<? extends IMatchesConstraint> matches = definition.getMatchesConstraints();
     List<? extends IExpectConstraint> expects = definition.getExpectConstraints();
 
-    if (!allowedValues.isEmpty() || !indexHasKey.isEmpty() || !matches.isEmpty() || !expects.isEmpty()) {
+    if (!lets.isEmpty() || !allowedValues.isEmpty() || !indexHasKey.isEmpty() || !matches.isEmpty()
+        || !expects.isEmpty()) {
       AnnotationSpec.Builder annotation = AnnotationSpec.builder(ValueConstraints.class);
       assert annotation != null;
 
+      applyLetAssignments(annotation, lets);
       applyAllowedValuesConstraints(annotation, allowedValues);
       applyIndexHasKeyConstraints(annotation, indexHasKey);
       applyMatchesConstraints(annotation, matches);
@@ -193,6 +204,24 @@ public final class AnnotationGenerator {
       applyHasCardinalityConstraints(definition, annotation, cardinality);
 
       builder.addMember("modelConstraints", "$L", annotation.build());
+    }
+  }
+
+  private static void applyLetAssignments(
+      @NonNull AnnotationSpec.Builder annotation,
+      @NonNull Map<QName, ? extends ILet> lets) {
+    for (ILet let : lets.values()) {
+      AnnotationSpec.Builder letAnnotation = AnnotationSpec.builder(Let.class);
+      letAnnotation.addMember("name", "$S", let.getName());
+      letAnnotation.addMember("target", "$S", let.getValueExpression().getPath());
+
+      // TODO: Support remarks
+      // MarkupMultiline remarks = let.getRemarks();
+      // if (remarks != null) {
+      // constraintAnnotation.addMember("remarks", "$S", remarks.toMarkdown());
+      // }
+
+      annotation.addMember("lets", "$L", letAnnotation.build());
     }
   }
 

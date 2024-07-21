@@ -26,52 +26,51 @@
 
 package gov.nist.secauto.metaschema.cli.commands;
 
-import gov.nist.secauto.metaschema.cli.processor.CLIProcessor;
 import gov.nist.secauto.metaschema.cli.processor.CLIProcessor.CallingContext;
-import gov.nist.secauto.metaschema.cli.processor.ExitCode;
-import gov.nist.secauto.metaschema.cli.processor.ExitStatus;
-import gov.nist.secauto.metaschema.cli.processor.InvalidArgumentException;
-import gov.nist.secauto.metaschema.cli.processor.command.AbstractTerminalCommand;
-import gov.nist.secauto.metaschema.cli.processor.command.DefaultExtraArgument;
-import gov.nist.secauto.metaschema.cli.processor.command.ExtraArgument;
 import gov.nist.secauto.metaschema.cli.processor.command.ICommandExecutor;
-import gov.nist.secauto.metaschema.cli.util.LoggingValidationHandler;
+import gov.nist.secauto.metaschema.core.configuration.DefaultConfiguration;
+import gov.nist.secauto.metaschema.core.configuration.IMutableConfiguration;
+import gov.nist.secauto.metaschema.core.model.IModule;
+import gov.nist.secauto.metaschema.core.model.MetaschemaException;
+import gov.nist.secauto.metaschema.core.model.constraint.IConstraintSet;
+import gov.nist.secauto.metaschema.core.model.util.JsonUtil;
 import gov.nist.secauto.metaschema.core.model.util.XmlUtil;
-import gov.nist.secauto.metaschema.core.model.validation.IContentValidator;
-import gov.nist.secauto.metaschema.core.model.validation.IValidationResult;
+import gov.nist.secauto.metaschema.core.model.xml.ExternalConstraintsModulePostProcessor;
 import gov.nist.secauto.metaschema.core.model.xml.ModuleLoader;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
-import gov.nist.secauto.metaschema.core.util.UriUtils;
+import gov.nist.secauto.metaschema.databind.DefaultBindingContext;
+import gov.nist.secauto.metaschema.databind.IBindingContext;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.METASCHEMA;
+import gov.nist.secauto.metaschema.databind.model.binding.metaschema.MetaschemaModelModule;
+import gov.nist.secauto.metaschema.schemagen.ISchemaGenerator;
+import gov.nist.secauto.metaschema.schemagen.ISchemaGenerator.SchemaFormat;
+import gov.nist.secauto.metaschema.schemagen.SchemaGenerationFeature;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.xml.sax.SAXException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.transform.Source;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 public class ValidateModuleCommand
-    extends AbstractTerminalCommand {
+    extends AbstractValidateContentCommand {
   private static final Logger LOGGER = LogManager.getLogger(ValidateModuleCommand.class);
   @NonNull
   private static final String COMMAND = "validate";
-  @NonNull
-  private static final List<ExtraArgument> EXTRA_ARGUMENTS;
-
-  static {
-    EXTRA_ARGUMENTS = ObjectUtils.notNull(List.of(
-        new DefaultExtraArgument("Module file to validate", true)));
-  }
 
   @Override
   public String getName() {
@@ -84,71 +83,64 @@ public class ValidateModuleCommand
   }
 
   @Override
-  public List<ExtraArgument> getExtraArguments() {
-    return EXTRA_ARGUMENTS;
+  public ICommandExecutor newExecutor(CallingContext callingContext, CommandLine commandLine) {
+    return new ValidateModuleCommandExecutor(callingContext, commandLine);
   }
 
-  @NonNull
-  protected List<Source> getXmlSchemaSources() throws IOException {
-    List<Source> retval = new LinkedList<>();
-    retval.add(XmlUtil.getStreamSource(
-        ObjectUtils.requireNonNull(
-            ModuleLoader.class.getResource("/schema/xml/metaschema.xsd"),
-            "Unable to load '/schema/xml/metaschema.xsd' on the classpath")));
-    return CollectionUtil.unmodifiableList(retval);
-  }
+  private final class ValidateModuleCommandExecutor
+      extends AbstractValidationCommandExecutor {
+    private Path tempDir;
 
-  @Override
-  public void validateOptions(CallingContext callingContext, CommandLine cmdLine) throws InvalidArgumentException {
-    List<String> extraArgs = cmdLine.getArgList();
-    if (extraArgs.size() != 1) {
-      throw new InvalidArgumentException("The source to validate must be provided.");
-    }
-  }
-
-  @Override
-  public ICommandExecutor newExecutor(CallingContext callingContext, CommandLine cmdLine) {
-    return ICommandExecutor.using(callingContext, cmdLine, this::executeCommand);
-  }
-
-  @SuppressWarnings({ "PMD.OnlyOneReturn", "unused" }) // readability
-  @NonNull
-  protected ExitStatus executeCommand(CallingContext callingContext, CommandLine cmdLine) {
-    URI cwd = Paths.get("").toAbsolutePath().toUri();
-    List<String> extraArgs = cmdLine.getArgList();
-    String targetName = extraArgs.get(0);
-    URI target;
-
-    try {
-      target = UriUtils.toUri(targetName, cwd);
-    } catch (URISyntaxException ex) {
-      return ExitCode.PROCESSING_ERROR
-          .exitMessage(String.format("The target '%s' cannot be loaded as it is not a valid file or URL.", targetName));
+    private ValidateModuleCommandExecutor(
+        @NonNull CallingContext callingContext,
+        @NonNull CommandLine commandLine) {
+      super(callingContext, commandLine);
     }
 
-    assert target != null;
-
-    IValidationResult schemaValidationResult;
-    try {
-      List<Source> schemaSources = getXmlSchemaSources();
-      schemaValidationResult = IContentValidator.validateWithXmlSchema(
-          ObjectUtils.notNull(target),
-          schemaSources);
-    } catch (IOException | SAXException ex) {
-      return ExitCode.PROCESSING_ERROR.exit().withThrowable(ex);
-    }
-
-    if (!schemaValidationResult.isPassing()) {
-      if (LOGGER.isErrorEnabled()) {
-        LOGGER.error("The file '{}' has validation issue(s). The issues are:", target);
+    private Path getTempDir() throws IOException {
+      if (tempDir == null) {
+        tempDir = Files.createTempDirectory("validation-");
+        tempDir.toFile().deleteOnExit();
       }
-      LoggingValidationHandler.instance().handleValidationResults(schemaValidationResult);
-      return ExitCode.FAIL.exit();
+      return tempDir;
     }
 
-    if (schemaValidationResult.isPassing() && !cmdLine.hasOption(CLIProcessor.QUIET_OPTION) && LOGGER.isInfoEnabled()) {
-      LOGGER.info("The file '{}' is valid.", target);
+    @Override
+    protected IBindingContext getBindingContext(Set<IConstraintSet> constraintSets)
+        throws MetaschemaException, IOException {
+      IBindingContext retval;
+      if (constraintSets.isEmpty()) {
+        retval = IBindingContext.instance();
+      } else {
+        ExternalConstraintsModulePostProcessor postProcessor
+            = new ExternalConstraintsModulePostProcessor(constraintSets);
+        retval = new DefaultBindingContext(CollectionUtil.singletonList(postProcessor));
+      }
+      retval.getBoundDefinitionForClass(METASCHEMA.class);
+      return retval;
     }
-    return ExitCode.OK.exit();
+
+    @Override
+    public List<Source> getXmlSchemas(@NonNull URL targetResource) throws IOException {
+      List<Source> retval = new LinkedList<>();
+      retval.add(XmlUtil.getStreamSource(
+          ObjectUtils.requireNonNull(
+              ModuleLoader.class.getResource("/schema/xml/metaschema.xsd"),
+              "Unable to load '/schema/xml/metaschema.xsd' on the classpath")));
+      return CollectionUtil.unmodifiableList(retval);
+    }
+
+    @Override
+    public JSONObject getJsonSchema(@NonNull JSONObject json) throws IOException {
+      IModule module = IBindingContext.instance().registerModule(MetaschemaModelModule.class);
+
+      Path schemaFile = Files.createTempFile(getTempDir(), "schema-", ".json");
+      assert schemaFile != null;
+      IMutableConfiguration<SchemaGenerationFeature<?>> configuration = new DefaultConfiguration<>();
+      ISchemaGenerator.generateSchema(module, schemaFile, SchemaFormat.JSON, configuration);
+      try (BufferedReader reader = ObjectUtils.notNull(Files.newBufferedReader(schemaFile, StandardCharsets.UTF_8))) {
+        return JsonUtil.toJsonObject(reader);
+      }
+    }
   }
 }

@@ -36,6 +36,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundDefinitionModelFieldComp
 import gov.nist.secauto.metaschema.databind.model.IBoundFieldValue;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceFlag;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelFieldComplex;
+import gov.nist.secauto.metaschema.databind.model.IBoundModule;
 import gov.nist.secauto.metaschema.databind.model.IBoundProperty;
 import gov.nist.secauto.metaschema.databind.model.IGroupAs;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
@@ -177,6 +178,10 @@ public final class InstanceModelFieldComplex
     }));
   }
 
+  // ------------------------------------------
+  // - Start annotation driven code - CPD-OFF -
+  // ------------------------------------------
+
   @Override
   public Field getField() {
     return javaField;
@@ -204,6 +209,11 @@ public final class InstanceModelFieldComplex
   }
 
   @Override
+  public IBoundModule getContainingModule() {
+    return getContainingDefinition().getContainingModule();
+  }
+
+  @Override
   public Object getDefaultValue() {
     return defaultValue.get();
   }
@@ -212,10 +222,6 @@ public final class InstanceModelFieldComplex
   public Map<String, IBoundProperty<?>> getJsonProperties() {
     return ObjectUtils.notNull(jsonProperties.get());
   }
-
-  // ------------------------------------------
-  // - Start annotation driven code - CPD-OFF -
-  // ------------------------------------------
 
   @Override
   public IGroupAs getGroupAs() {

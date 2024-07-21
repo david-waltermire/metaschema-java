@@ -28,6 +28,7 @@ package gov.nist.secauto.metaschema.databind.model.test;
 
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
+import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
 import gov.nist.secauto.metaschema.databind.model.AbstractBoundModule;
@@ -54,6 +55,18 @@ import edu.umd.cs.findbugs.annotations.NonNull;
     })
 public class TestMetaschema
     extends AbstractBoundModule {
+  @NonNull
+  private static final URI XML_NAMESPACE
+      = ObjectUtils.requireNonNull(URI.create("https://csrc.nist.gov/ns/test/xml"));
+
+  @NonNull
+  private static final URI JSON_BASE_URI
+      = ObjectUtils.requireNonNull(URI.create("https://csrc.nist.gov/ns/test/json"));
+
+  @NonNull
+  private static final StaticContext STATIC_CONTEXT = StaticContext.builder()
+      .defaultModelNamespace(XML_NAMESPACE)
+      .build();
 
   public TestMetaschema(
       @NonNull List<? extends AbstractBoundModule> importedModules,
@@ -83,12 +96,11 @@ public class TestMetaschema
 
   @Override
   public URI getXmlNamespace() {
-    return ObjectUtils.notNull(URI.create("https://csrc.nist.gov/ns/test/xml"));
+    return XML_NAMESPACE;
   }
 
   @Override
   public URI getJsonBaseUri() {
-    return ObjectUtils.notNull(URI.create("https://csrc.nist.gov/ns/test/json"));
+    return JSON_BASE_URI;
   }
-
 }

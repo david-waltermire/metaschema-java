@@ -24,32 +24,9 @@
  * OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
  */
 
-package gov.nist.secauto.metaschema.core.metapath.item.node;
-
-import gov.nist.secauto.metaschema.core.metapath.item.IItem;
-
-import edu.umd.cs.findbugs.annotations.Nullable;
-
 /**
- * This mixin interface represents an item that has no associated data.
- * <p>
- * This will occur when an {@link IItem} represents a Metaschema definition or
- * instance that is not associated with data. This is typical when constructing
- * items for querying a Metaschema directly, instead of content which will
- * always have data.
+ * Provides schema resources for XML schema and Metaschema data types.
  */
-interface IFeatureNoDataItem extends IItem {
 
-  @Override
-  @Nullable
-  default Object getValue() {
-    // no value
-    return null;
-  }
-
-  @Override
-  default boolean hasValue() {
-    // no value
-    return false;
-  }
-}
+@Deprecated
+package schema.metaschema;

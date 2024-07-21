@@ -31,12 +31,16 @@ import gov.nist.secauto.metaschema.core.datatype.adapter.UriAdapter;
 import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IMetaschemaData;
 import gov.nist.secauto.metaschema.core.model.JsonGroupAsBehavior;
+import gov.nist.secauto.metaschema.core.model.constraint.IConstraint;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundAssembly;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundField;
 import gov.nist.secauto.metaschema.databind.model.annotations.BoundFlag;
+import gov.nist.secauto.metaschema.databind.model.annotations.Expect;
 import gov.nist.secauto.metaschema.databind.model.annotations.GroupAs;
+import gov.nist.secauto.metaschema.databind.model.annotations.Let;
 import gov.nist.secauto.metaschema.databind.model.annotations.MetaschemaAssembly;
+import gov.nist.secauto.metaschema.databind.model.annotations.ValueConstraints;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -58,8 +62,15 @@ import java.util.List;
     description = "Defines constraint rules to be applied to an existing set of Metaschema module-based models.",
     name = "metaschema-meta-constraints",
     moduleClass = MetaschemaModelModule.class,
-    rootName = "metaschema-meta-constraints")
-public final class MetaschemaMetaConstraints implements IBoundObject {
+    rootName = "metaschema-meta-constraints",
+    valueConstraints = @ValueConstraints(lets = @Let(name = "deprecated-type-map",
+        target = "map { 'base64Binary':'base64','dateTime':'date-time','dateTime-with-timezone':'date-time-with-timezone','email':'email-address','nonNegativeInteger':'non-negative-integer','positiveInteger':'positive-integer' }"),
+        expect = @Expect(id = "metaschema-deprecated-types", formalName = "Avoid Deprecated Data Type Use",
+            description = "Ensure that the data type specified is not one of the legacy Metaschema data types which have been deprecated (i.e. base64Binary, dateTime, dateTime-with-timezone, email, nonNegativeInteger, positiveInteger).",
+            level = IConstraint.Level.WARNING, target = ".//matches/@datatype|.//(define-field|define-flag)/@as-type",
+            test = "not(.=('base64Binary','dateTime','dateTime-with-timezone','email','nonNegativeInteger','positiveInteger'))",
+            message = "Use of the type '{ . }' is deprecated. Use '{ $deprecated-type-map(.)}' instead.")))
+public class MetaschemaMetaConstraints implements IBoundObject {
   private final IMetaschemaData __metaschemaData;
 
   @BoundAssembly(
@@ -138,7 +149,7 @@ public final class MetaschemaMetaConstraints implements IBoundObject {
   @MetaschemaAssembly(
       name = "definition-context",
       moduleClass = MetaschemaModelModule.class)
-  public static final class DefinitionContext implements IBoundObject {
+  public static class DefinitionContext implements IBoundObject {
     private final IMetaschemaData __metaschemaData;
 
     @BoundFlag(
