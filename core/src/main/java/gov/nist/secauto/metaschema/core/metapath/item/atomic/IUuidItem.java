@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-public interface IUuidItem extends IAnyAtomicItem {
+public interface IUuidItem extends IStringItem {
 
   /**
    * Construct a new item using the provided {@code value}.
@@ -78,7 +78,7 @@ public interface IUuidItem extends IAnyAtomicItem {
   }
 
   @Override
-  default int compareTo(IAnyAtomicItem item) {
-    return compareTo(cast(item));
+  default int compareTo(IAnyAtomicItem other) {
+    return compareTo(other.asStringItem());
   }
 }

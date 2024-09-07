@@ -36,6 +36,23 @@ class UuidItemImpl
     return new MapKey();
   }
 
+  @Override
+  public String asString() {
+    return asUuid().toString();
+  }
+
+  @Override
+  public int hashCode() {
+    return asString().hashCode();
+  }
+
+  @SuppressWarnings("PMD.OnlyOneReturn")
+  @Override
+  public boolean equals(Object obj) {
+    return this == obj
+        || (obj instanceof IStringItem && compareTo((IStringItem) obj) == 0);
+  }
+
   private final class MapKey implements IMapKey {
     @Override
     public IUuidItem getKey() {
