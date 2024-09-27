@@ -3,9 +3,11 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-package gov.nist.secauto.metaschema.core.metapath.function;
+package gov.nist.secauto.metaschema.core.metapath.type;
 
+import gov.nist.secauto.metaschema.core.metapath.ICollectionValue;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
+import gov.nist.secauto.metaschema.core.metapath.type.impl.SequenceTypeImpl;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -30,6 +32,11 @@ public interface ISequenceType {
     @Override
     public String toSignature() {
       return "()";
+    }
+
+    @Override
+    public boolean matches(ICollectionValue item) {
+      return false;
     }
   };
 
@@ -79,4 +86,6 @@ public interface ISequenceType {
    */
   @NonNull
   String toSignature();
+
+  boolean matches(@NonNull ICollectionValue item);
 }

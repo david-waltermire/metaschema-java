@@ -8,7 +8,7 @@ package gov.nist.secauto.metaschema.core.metapath.cst;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import gov.nist.secauto.metaschema.core.metapath.EQNameUtils;
-import gov.nist.secauto.metaschema.core.metapath.EQNameUtils.IEQNamePrefixResolver;
+import gov.nist.secauto.metaschema.core.metapath.EQNameUtils.PrefixToNamespaceResolver;
 import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -81,7 +81,7 @@ class EQNameUtilsTest {
   void test(
       @NonNull String eqname,
       @NonNull QName expected,
-      @NonNull IEQNamePrefixResolver resolver) {
+      @NonNull PrefixToNamespaceResolver resolver) {
 
     QName actual = EQNameUtils.parseName(eqname, resolver);
     assertEquals(expected, actual);

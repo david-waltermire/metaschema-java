@@ -9,6 +9,8 @@ import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.MetapathException;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
+import gov.nist.secauto.metaschema.core.metapath.type.ISequenceType;
+import gov.nist.secauto.metaschema.core.metapath.type.Occurrence;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.net.URI;
@@ -27,7 +29,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 /**
  * A common interface for all Metapath functions.
  */
-public interface IFunction {
+public interface IFunction extends IItem {
   /**
    * Details specific characteristics of a function.
    */

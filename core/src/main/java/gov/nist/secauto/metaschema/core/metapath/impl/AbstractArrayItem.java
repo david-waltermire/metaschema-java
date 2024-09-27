@@ -10,11 +10,11 @@ import gov.nist.secauto.metaschema.core.metapath.ICollectionValue;
 import gov.nist.secauto.metaschema.core.metapath.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
-import gov.nist.secauto.metaschema.core.metapath.function.ISequenceType;
-import gov.nist.secauto.metaschema.core.metapath.function.Occurrence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IIntegerItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IArrayItem;
+import gov.nist.secauto.metaschema.core.metapath.type.ISequenceType;
+import gov.nist.secauto.metaschema.core.metapath.type.Occurrence;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.EnumSet;

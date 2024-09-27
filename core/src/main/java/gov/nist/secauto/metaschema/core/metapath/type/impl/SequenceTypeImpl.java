@@ -3,17 +3,19 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-package gov.nist.secauto.metaschema.core.metapath.function;
+package gov.nist.secauto.metaschema.core.metapath.type.impl;
 
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
-import gov.nist.secauto.metaschema.core.metapath.item.TypeSystem;
+import gov.nist.secauto.metaschema.core.metapath.type.ISequenceType;
+import gov.nist.secauto.metaschema.core.metapath.type.Occurrence;
+import gov.nist.secauto.metaschema.core.metapath.type.TypeSystem;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.Objects;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-class SequenceTypeImpl implements ISequenceType {
+public class SequenceTypeImpl implements ISequenceType {
   private final Class<? extends IItem> type;
   private final Occurrence occurrence;
 

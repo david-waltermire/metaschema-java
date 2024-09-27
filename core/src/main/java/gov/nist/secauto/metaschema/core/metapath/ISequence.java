@@ -11,6 +11,8 @@ import gov.nist.secauto.metaschema.core.metapath.impl.SingletonSequence;
 import gov.nist.secauto.metaschema.core.metapath.impl.StreamSequence;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IArrayItem;
+import gov.nist.secauto.metaschema.core.metapath.type.InvalidTypeMetapathException;
+import gov.nist.secauto.metaschema.core.metapath.type.TypeMetapathException;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.ArrayList;

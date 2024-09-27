@@ -3,7 +3,9 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-package gov.nist.secauto.metaschema.core.metapath;
+package gov.nist.secauto.metaschema.core.metapath.type;
+
+import gov.nist.secauto.metaschema.core.metapath.AbstractCodedMetapathException;
 
 /**
  * MPTY: Exceptions related to Metapath type errors.

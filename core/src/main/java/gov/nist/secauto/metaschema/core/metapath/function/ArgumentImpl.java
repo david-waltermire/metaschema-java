@@ -5,6 +5,8 @@
 
 package gov.nist.secauto.metaschema.core.metapath.function;
 
+import gov.nist.secauto.metaschema.core.metapath.type.ISequenceType;
+
 import java.util.Objects;
 
 import edu.umd.cs.findbugs.annotations.NonNull;

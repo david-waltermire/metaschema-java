@@ -7,6 +7,7 @@ package gov.nist.secauto.metaschema.core.metapath.item;
 
 import gov.nist.secauto.metaschema.core.metapath.ICollectionValue;
 import gov.nist.secauto.metaschema.core.metapath.ISequence;
+import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IArrayItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IMapItem;
@@ -107,6 +108,11 @@ public class DefaultItemWriter implements IItemWriter {
     writer.append(node.asString());
   }
 
+  @Override
+  public void writeFunction(IFunction function) {
+    writer.append(function.toSignature());
+  }
+
   /**
    * Write the provided collection value.
    *
@@ -141,6 +147,11 @@ public class DefaultItemWriter implements IItemWriter {
     @Override
     public void visit(IAnyAtomicItem node) {
       writeAtomicValue(node);
+    }
+
+    @Override
+    public void visit(IFunction function) {
+      writeFunction(function);
     }
   }
 }

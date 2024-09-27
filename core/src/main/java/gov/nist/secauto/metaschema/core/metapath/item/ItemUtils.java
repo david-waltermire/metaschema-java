@@ -5,8 +5,8 @@
 
 package gov.nist.secauto.metaschema.core.metapath.item;
 
-import gov.nist.secauto.metaschema.core.metapath.TypeMetapathException;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
+import gov.nist.secauto.metaschema.core.metapath.type.TypeMetapathException;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
