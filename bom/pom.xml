@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.1.0 http://maven.apache.org/xsd/maven-4.1.0.xsd">
+    <modelVersion>4.1.0</modelVersion>
+    <parent>
+        <groupId>dev.metaschema.java</groupId>
+        <artifactId>metaschema-framework</artifactId>
+        <version>1.2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>metaschema-bom</artifactId>
+    <packaging>bom</packaging>
+
+    <name>Metaschema Java BOM</name>
+    <description>Bill of Materials pom for managing the set of compatible Metaschema Java components.</description>
+
+    <dependencyManagement>
+        <dependencies>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>metaschema-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>metaschema-databind</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>metaschema-databind-modules</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>metaschema-schema-generator</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>metaschema-testing</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>cli-processor</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+            <dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>metaschema-cli</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+            <dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>metaschema-maven-plugin</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+        </dependencies>
+    </dependencyManagement>
+</project> 

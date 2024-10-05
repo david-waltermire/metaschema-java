@@ -752,6 +752,7 @@
 		</plugins>
 	</reporting>
 	<modules>
+		<module>bom</module>
 		<module>core</module>
 		<module>databind</module>
 		<module>schemagen</module>
