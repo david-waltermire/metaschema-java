@@ -26,7 +26,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 
 /**
  * Implements <a href=
- * "https://www.w3.org/TR/xpath-functions-30/#func-substring">fn:substring</a>.
+ * "https://www.w3.org/TR/xpath-functions-31/#func-substring">fn:substring</a>.
  */
 public final class FnSubstring {
   @NonNull
