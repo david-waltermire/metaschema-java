@@ -45,15 +45,14 @@ public final class FnSubstring {
           .name("start")
           // Review if xs:double to IIntegerItem data-type mapping appropriate?
           .type(IDecimalItem.class)
-          .zeroOrOne()
+          .one()
           .build())
       .argument(IArgument.builder()
           .name("length")
           // Review if xs:double to IIntegerItem data-type mapping appropriate?
           .type(IDecimalItem.class)
-          .zeroOrOne()
+          .one()
           .build())
-      .allowUnboundedArity(true)
       .returnType(IStringItem.class)
       .returnOne()
       .functionHandler(FnSubstring::execute)
