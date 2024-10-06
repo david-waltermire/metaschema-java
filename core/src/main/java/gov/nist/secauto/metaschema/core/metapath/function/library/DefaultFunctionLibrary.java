@@ -153,6 +153,7 @@ public class DefaultFunctionLibrary
     registerFunction(FnString.SIGNATURE_NO_ARG);
     registerFunction(FnString.SIGNATURE_ONE_ARG);
     // P0: https://www.w3.org/TR/xpath-functions-31/#func-string
+    registerFunction(FnSubstring.SIGNATURE_TWO_ARG);
     registerFunction(FnSubstring.SIGNATURE_THREE_ARG);
     // P1: https://www.w3.org/TR/xpath-functions-31/#func-string-join
     // P1: https://www.w3.org/TR/xpath-functions-31/#func-string-length
