@@ -13,6 +13,7 @@ import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
+import gov.nist.secauto.metaschema.core.metapath.item.atomic.IDecimalItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IIntegerItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -93,8 +94,8 @@ public final class FnSubstring {
       IItem focus) {
 
     IStringItem sourceString = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0).getFirstItem(true)));
-    IIntegerItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
-    IIntegerItem length = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(2).getFirstItem(true)));
+    IDecimalItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
+    IDecimalItem length = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(2).getFirstItem(true)));
     return ISequence.of(substring(sourceString, start, length));
   }
 
@@ -111,7 +112,7 @@ public final class FnSubstring {
    * @return the atomized result
    */
   @NonNull
-  public static IStringItem substring(@NonNull IStringItem sourceString, @NonNull IIntegerItem start, @NonNull IIntegerItem length) {
+  public static IStringItem substring(@NonNull IStringItem sourceString, @NonNull IDecimalItem start, @NonNull IDecimalItem length) {
     int startIndex = start.asInteger().intValue() - 1;
     int endIndex = startIndex + length.asInteger().intValue();
     return IStringItem.valueOf(sourceString.toString().substring(startIndex, endIndex));
