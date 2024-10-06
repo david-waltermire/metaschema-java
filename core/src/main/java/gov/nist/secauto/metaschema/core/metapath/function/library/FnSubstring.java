@@ -50,7 +50,7 @@ public final class FnSubstring {
           .build())
       .returnType(IStringItem.class)
       .returnOne()
-      .functionHandler(FnSubstring::execute)
+      .functionHandler(FnSubstring::executeTwoArg)
       .build();
 
   static final IFunction SIGNATURE_THREE_ARG = IFunction.builder()
@@ -78,7 +78,7 @@ public final class FnSubstring {
           .build())
       .returnType(IStringItem.class)
       .returnOne()
-      .functionHandler(FnSubstring::execute)
+      .functionHandler(FnSubstring::executeThreeArg)
       .build();
 
   private FnSubstring() {
@@ -105,7 +105,7 @@ public final class FnSubstring {
 
   @SuppressWarnings("unused")
   @NonNull
-  private static ISequence<IStringItem> execute(
+  private static ISequence<IStringItem> executeThreeArg(
       @NonNull IFunction function,
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
