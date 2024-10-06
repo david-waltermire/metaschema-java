@@ -113,8 +113,14 @@ public final class FnSubstring {
    */
   @NonNull
   public static IStringItem substring(@NonNull IStringItem sourceString, @NonNull IDecimalItem start, @NonNull IDecimalItem length) {
+    String sourceStringData = sourceString.toString();
+
+    if (sourceStringData.length() == 0) {
+      return IStringItem.valueOf("");
+    }
+
     int startIndex = start.asInteger().intValue() - 1;
     int endIndex = startIndex + length.asInteger().intValue();
-    return IStringItem.valueOf(sourceString.toString().substring(startIndex, endIndex));
+    return IStringItem.valueOf(sourceStringData.substring(startIndex, endIndex));
   }
 }

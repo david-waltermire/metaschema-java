@@ -25,6 +25,9 @@ class FnSubstringTest
   private static Stream<Arguments> provideValues() { // NOPMD - false positive
     return Stream.of(
         Arguments.of(
+            string(""),
+            "substring((), 1, 3)"),  
+        Arguments.of(
             ISequence.of(string("ada")),
             "substring('metadata', 4, 3)"));
   }
