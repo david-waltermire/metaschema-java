@@ -95,7 +95,7 @@ public final class FnSubstring {
     IStringItem sourceString = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0).getFirstItem(true)));
     IIntegerItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
     IIntegerItem length = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(2).getFirstItem(true)));
-    return ISequence.of(su1bstring(sourceString, start, length));
+    return ISequence.of(substring(sourceString, start, length));
   }
 
   /**
