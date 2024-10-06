@@ -22,7 +22,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.atomic.INumericItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IPositiveIntegerItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
 
-@SuppressWarnings({ "removal", "deprecation" })
+@SuppressWarnings( "removal")
 @AutoService(IFunctionLibrary.class)
 public class DefaultFunctionLibrary
     extends FunctionLibrary {
@@ -30,6 +30,7 @@ public class DefaultFunctionLibrary
   /**
    * Initialize the built-in function library.
    */
+  @SuppressWarnings("deprecation")
   public DefaultFunctionLibrary() { // NOPMD - intentional
     // https://www.w3.org/TR/xpath-functions-31/#func-abs
     registerFunction(FnAbs.SIGNATURE);
@@ -53,7 +54,8 @@ public class DefaultFunctionLibrary
     // https://www.w3.org/TR/xpath-functions-31/#func-count
     registerFunction(FnCount.SIGNATURE);
     // P2: https://www.w3.org/TR/xpath-functions-31/#func-current-date
-    // P2: https://www.w3.org/TR/xpath-functions-31/#func-current-dateTime
+    // https://www.w3.org/TR/xpath-functions-31/#func-current-dateTime
+    registerFunction(FnCurrentDateTime.SIGNATURE);
     // P2: https://www.w3.org/TR/xpath-functions-31/#func-current-time
     // https://www.w3.org/TR/xpath-functions-31/#func-data
     registerFunction(FnData.SIGNATURE_NO_ARG);
