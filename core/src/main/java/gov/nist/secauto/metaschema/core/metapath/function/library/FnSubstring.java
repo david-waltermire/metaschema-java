@@ -97,7 +97,11 @@ public final class FnSubstring {
     }
 
     IDecimalItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
-    return ISequence.of(fnSubstring(sourceString, start, IDecimalItem.valueOf(sourceString.toString().length())));
+
+    int startIndex = start.round().asInteger().intValue();
+    int endIndex = (sourceString.toString().length() - startIndex) + 1;
+
+    return ISequence.of(fnSubstring(sourceString, startIndex, endIndex));
   }
 
   @SuppressWarnings("unused")
@@ -116,7 +120,11 @@ public final class FnSubstring {
 
     IDecimalItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
     IDecimalItem length = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(2).getFirstItem(true)));
-    return ISequence.of(fnSubstring(sourceString, start, length));
+
+    int startIndex = start.round().asInteger().intValue();
+    int endIndex = length.round().asInteger().intValue();
+
+    return ISequence.of(fnSubstring(sourceString, startIndex, endIndex));
   }
 
   /**
@@ -134,14 +142,39 @@ public final class FnSubstring {
   @NonNull
   public static IStringItem fnSubstring(@NonNull IStringItem sourceString, @NonNull IDecimalItem start,
       @NonNull IDecimalItem length) {
+
+    int startIndex = start.round().asInteger().intValue();
+    int endIndex = length.round().asInteger().intValue();
+    return fnSubstring(sourceString, startIndex, endIndex);
+  }
+
+    /**
+   * An implementation of XPath 3.1 <a href=
+   * "https://www.w3.org/TR/xpath-functions-31/#func-substring">fn:substring</a>.
+   *
+   * @param sourceString
+   *
+   * @param start
+   *
+   * @param length
+   *
+   * @return the atomized result
+   */
+  @NonNull
+  public static IStringItem fnSubstring(@NonNull IStringItem sourceString, @NonNull int start,
+      @NonNull int length) {
     String sourceStringData = sourceString.toString();
 
     if (sourceStringData.length() == 0) {
       return IStringItem.valueOf("");
     }
 
-    int startIndex = start.round().asInteger().intValue() - 1;
-    int endIndex = startIndex + length.round().asInteger().intValue();
-    return IStringItem.valueOf(sourceStringData.substring(startIndex, endIndex));
+    if (start <= 0) {
+      start = 0;
+    } else {
+      start--;
+    }
+
+    return IStringItem.valueOf(sourceStringData.substring(start, (start + length)));
   }
 }

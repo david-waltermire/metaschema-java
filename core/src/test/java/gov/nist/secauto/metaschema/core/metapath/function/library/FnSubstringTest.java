@@ -25,15 +25,40 @@ class FnSubstringTest
     extends ExpressionTestBase {
   private static Stream<Arguments> provideValues() { // NOPMD - false positive
     return Stream.of(
-        // Arguments.of(
-        //     string(" car"),
-        //     "substring('motor car', 6)"),
         Arguments.of(
-            string(""),
-            "substring((), 1, 3)"),
+            string(" car"),
+            "substring('motor car', 6)"),
         Arguments.of(
             string("ada"),
-            "substring('metadata', 4, 3)"));
+            "substring('metadata', 4, 3)"),
+        Arguments.of(
+            string("234"),
+            "substring('12345', 1.5, 2.6)"),
+        Arguments.of(
+            string("12"),
+            "substring('12345', 0, 3)"),
+        Arguments.of(
+            string(""),
+            "substring('12345', 5, -3)"),
+        Arguments.of(
+            string("1"),
+            "substring('12345', -3, 5)"),
+        // Arguments.of(
+        //     string(""),
+        //     "substring('12345', 0 div 0E0, 3)"),
+        // Arguments.of(
+        //     string(""),
+        //     "substring('12345', 1, 0 div 0E0)"),
+        Arguments.of(
+            string(""),
+            "substring((), 1, 3)")
+        // Arguments.of(
+        //     string("12345"),
+        //     "substring('12345', -42, 1 div 0E0)"),
+        // Arguments.of(
+        //     string("12345"),
+        //     "substring('12345', -1 div 0E0, 1 div 0E0)")
+        );
   }
 
   @ParameterizedTest
