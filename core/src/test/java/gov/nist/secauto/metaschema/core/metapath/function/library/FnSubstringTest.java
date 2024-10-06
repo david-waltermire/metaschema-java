@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import gov.nist.secauto.metaschema.core.metapath.ExpressionTestBase;
 import gov.nist.secauto.metaschema.core.metapath.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.MetapathExpression;
+import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -24,21 +25,24 @@ class FnSubstringTest
     extends ExpressionTestBase {
   private static Stream<Arguments> provideValues() { // NOPMD - false positive
     return Stream.of(
+        // Arguments.of(
+        //     string(" car"),
+        //     "substring('motor car', 6)"),
         Arguments.of(
             string(""),
-            "substring((), 1, 3)"),  
+            "substring((), 1, 3)"),
         Arguments.of(
-            ISequence.of(string("ada")),
+            string("ada"),
             "substring('metadata', 4, 3)"));
   }
 
   @ParameterizedTest
   @MethodSource("provideValues")
-  void testExpression(@NonNull ISequence<?> expected, @NonNull String metapath) {
+  void testExpression(@NonNull IStringItem expected, @NonNull String metapath) {
     assertEquals(
         expected,
         MetapathExpression.compile(metapath)
-            .evaluateAs(null, MetapathExpression.ResultType.SEQUENCE, newDynamicContext()));
+            .evaluateAs(null, MetapathExpression.ResultType.ITEM, newDynamicContext()));
   }
 
 }

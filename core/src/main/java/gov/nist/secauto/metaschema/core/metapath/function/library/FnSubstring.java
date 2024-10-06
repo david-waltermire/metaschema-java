@@ -87,16 +87,39 @@ public final class FnSubstring {
 
   @SuppressWarnings("unused")
   @NonNull
+  private static ISequence<IStringItem> executeTwoArg(
+      @NonNull IFunction function,
+      @NonNull List<ISequence<?>> arguments,
+      @NonNull DynamicContext dynamicContext,
+      IItem focus) {
+
+    IStringItem sourceString = FunctionUtils.asTypeOrNull(arguments.get(0).getFirstItem(true));
+
+    if (sourceString == null) {
+      return ISequence.of(IStringItem.valueOf(""));
+    }
+
+    IDecimalItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
+    return ISequence.of(fnSubstring(sourceString, start, IDecimalItem.valueOf(sourceString.toString().length())));
+  }
+
+  @SuppressWarnings("unused")
+  @NonNull
   private static ISequence<IStringItem> execute(
       @NonNull IFunction function,
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    IStringItem sourceString = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0).getFirstItem(true)));
+    IStringItem sourceString = FunctionUtils.asTypeOrNull(arguments.get(0).getFirstItem(true));
+
+    if (sourceString == null) {
+      return ISequence.of(IStringItem.valueOf(""));
+    }
+
     IDecimalItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
     IDecimalItem length = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(2).getFirstItem(true)));
-    return ISequence.of(substring(sourceString, start, length));
+    return ISequence.of(fnSubstring(sourceString, start, length));
   }
 
   /**
@@ -104,23 +127,24 @@ public final class FnSubstring {
    * "https://www.w3.org/TR/xpath-functions-31/#func-substring">fn:substring</a>.
    *
    * @param sourceString
-   * 
+   *
    * @param start
-   * 
+   *
    * @param length
-   *          
+   *
    * @return the atomized result
    */
   @NonNull
-  public static IStringItem substring(@NonNull IStringItem sourceString, @NonNull IDecimalItem start, @NonNull IDecimalItem length) {
+  public static IStringItem fnSubstring(@NonNull IStringItem sourceString, @NonNull IDecimalItem start,
+      @NonNull IDecimalItem length) {
     String sourceStringData = sourceString.toString();
 
     if (sourceStringData.length() == 0) {
       return IStringItem.valueOf("");
     }
 
-    int startIndex = start.asInteger().intValue() - 1;
-    int endIndex = startIndex + length.asInteger().intValue();
+    int startIndex = start.round().asInteger().intValue() - 1;
+    int endIndex = startIndex + length.round().asInteger().intValue();
     return IStringItem.valueOf(sourceStringData.substring(startIndex, endIndex));
   }
 }
