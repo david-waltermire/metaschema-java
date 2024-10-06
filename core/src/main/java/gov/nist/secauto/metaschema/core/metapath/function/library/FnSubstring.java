@@ -44,7 +44,6 @@ public final class FnSubstring {
           .build())
       .argument(IArgument.builder()
           .name("start")
-          // Review if xs:double to IIntegerItem data-type mapping appropriate?
           .type(IDecimalItem.class)
           .one()
           .build())
@@ -66,13 +65,11 @@ public final class FnSubstring {
           .build())
       .argument(IArgument.builder()
           .name("start")
-          // Review if xs:double to IIntegerItem data-type mapping appropriate?
           .type(IDecimalItem.class)
           .one()
           .build())
       .argument(IArgument.builder()
           .name("length")
-          // Review if xs:double to IIntegerItem data-type mapping appropriate?
           .type(IDecimalItem.class)
           .one()
           .build())
