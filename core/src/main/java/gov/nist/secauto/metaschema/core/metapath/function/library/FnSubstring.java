@@ -30,6 +30,28 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  */
 public final class FnSubstring {
   @NonNull
+  static final IFunction SIGNATURE_TWO_ARG = IFunction.builder()
+      .name("substring")
+      .namespace(MetapathConstants.NS_METAPATH_FUNCTIONS)
+      .deterministic()
+      .contextIndependent()
+      .focusIndependent()
+      .argument(IArgument.builder()
+          .name("sourceString")
+          .type(IStringItem.class)
+          .zeroOrOne()
+          .build())
+      .argument(IArgument.builder()
+          .name("start")
+          // Review if xs:double to IIntegerItem data-type mapping appropriate?
+          .type(IDecimalItem.class)
+          .one()
+          .build())
+      .returnType(IStringItem.class)
+      .returnOne()
+      .functionHandler(FnSubstring::execute)
+      .build();
+
   static final IFunction SIGNATURE_THREE_ARG = IFunction.builder()
       .name("substring")
       .namespace(MetapathConstants.NS_METAPATH_FUNCTIONS)
@@ -73,7 +95,7 @@ public final class FnSubstring {
     IStringItem sourceString = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0).getFirstItem(true)));
     IIntegerItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
     IIntegerItem length = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(2).getFirstItem(true)));
-    return ISequence.of(substring(sourceString, start, length));
+    return ISequence.of(su1bstring(sourceString, start, length));
   }
 
   /**
