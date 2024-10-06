@@ -44,13 +44,13 @@ public final class FnSubstring {
       .argument(IArgument.builder()
           .name("start")
           // Review if xs:double to IIntegerItem data-type mapping appropriate?
-          .type(IIntegerItem.class)
+          .type(IDecimalItem.class)
           .zeroOrOne()
           .build())
       .argument(IArgument.builder()
           .name("length")
           // Review if xs:double to IIntegerItem data-type mapping appropriate?
-          .type(IIntegerItem.class)
+          .type(IDecimalItem.class)
           .zeroOrOne()
           .build())
       .allowUnboundedArity(true)
