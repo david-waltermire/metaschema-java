@@ -99,9 +99,11 @@ public final class FnSubstring {
     IDecimalItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
 
     int startIndex = start.round().asInteger().intValue();
-    int endIndex = (sourceString.toString().length() - startIndex) + 1;
 
-    return ISequence.of(fnSubstring(sourceString, startIndex, endIndex));
+    return ISequence.of(fnSubstring(
+      sourceString.asString(),
+      startIndex,
+      sourceString.toString().length() - Math.max(startIndex,1) + 1));
   }
 
   @SuppressWarnings("unused")
@@ -121,31 +123,10 @@ public final class FnSubstring {
     IDecimalItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
     IDecimalItem length = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(2).getFirstItem(true)));
 
-    int startIndex = start.round().asInteger().intValue();
-    int endIndex = length.round().asInteger().intValue();
-
-    return ISequence.of(fnSubstring(sourceString, startIndex, endIndex));
-  }
-
-  /**
-   * An implementation of XPath 3.1 <a href=
-   * "https://www.w3.org/TR/xpath-functions-31/#func-substring">fn:substring</a>.
-   *
-   * @param sourceString
-   *
-   * @param start
-   *
-   * @param length
-   *
-   * @return the atomized result
-   */
-  @NonNull
-  public static IStringItem fnSubstring(@NonNull IStringItem sourceString, @NonNull IDecimalItem start,
-      @NonNull IDecimalItem length) {
-
-    int startIndex = start.round().asInteger().intValue();
-    int endIndex = length.round().asInteger().intValue();
-    return fnSubstring(sourceString, startIndex, endIndex);
+    return ISequence.of(fnSubstring(
+      sourceString.asString(),
+      start.round().asInteger().intValue(),
+      length.round().asInteger().intValue()));
   }
 
     /**
@@ -161,20 +142,21 @@ public final class FnSubstring {
    * @return the atomized result
    */
   @NonNull
-  public static IStringItem fnSubstring(@NonNull IStringItem sourceString, @NonNull int start,
-      @NonNull int length) {
-    String sourceStringData = sourceString.toString();
+  public static IStringItem fnSubstring(
+    @NonNull String source,
+    @NonNull int start,
+    @NonNull int length) {
+    int sourceLength = source.length();
 
-    if (sourceStringData.length() == 0) {
-      return IStringItem.valueOf("");
-    }
+    // XPath uses 1-based indexing, so subtract 1 for 0-based Java indexing
+    int startIndex = Math.max(start, 1);
 
-    if (start <= 0) {
-      start = 0;
-    } else {
-      start--;
-    }
-
-    return IStringItem.valueOf(sourceStringData.substring(start, (start + length)));
+    // Handle negative or zero length
+    int endIndex = length <= 1 ? startIndex : Math.min(startIndex + length, sourceLength);
+    
+    // Ensure startIndex is not greater than endIndex
+    startIndex = Math.min(startIndex, endIndex);
+    
+    return IStringItem.valueOf(source.substring(startIndex-1, endIndex));
   }
 }

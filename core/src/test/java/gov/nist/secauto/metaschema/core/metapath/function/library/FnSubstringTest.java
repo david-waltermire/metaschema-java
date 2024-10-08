@@ -43,21 +43,21 @@ class FnSubstringTest
         Arguments.of(
             string("1"),
             "substring('12345', -3, 5)"),
-        // Arguments.of(
-        //     string(""),
-        //     "substring('12345', 0 div 0E0, 3)"),
-        // Arguments.of(
-        //     string(""),
-        //     "substring('12345', 1, 0 div 0E0)"),
         Arguments.of(
             string(""),
-            "substring((), 1, 3)")
-        // Arguments.of(
-        //     string("12345"),
-        //     "substring('12345', -42, 1 div 0E0)"),
-        // Arguments.of(
-        //     string("12345"),
-        //     "substring('12345', -1 div 0E0, 1 div 0E0)")
+            "substring('12345', 0 div 0E0, 3)"),
+        Arguments.of(
+            string(""),
+            "substring('12345', 1, 0 div 0E0)"),
+        Arguments.of(
+            string(""),
+            "substring((), 1, 3)"),
+        Arguments.of(
+            string("12345"),
+            "substring('12345', -42, 1 div 0E0)"),
+        Arguments.of(
+            string("12345"),
+            "substring('12345', -1 div 0E0, 1 div 0E0)")
         );
   }
 
