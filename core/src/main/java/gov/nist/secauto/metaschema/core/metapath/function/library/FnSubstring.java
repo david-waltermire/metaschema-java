@@ -12,22 +12,16 @@ import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
-import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IDecimalItem;
-import gov.nist.secauto.metaschema.core.metapath.item.atomic.IIntegerItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 /**
- * Implements <a href=
- * "https://www.w3.org/TR/xpath-functions-31/#func-substring">fn:substring</a>.
+ * Implements <a href= "https://www.w3.org/TR/xpath-functions-31/#func-substring">fn:substring</a>.
  */
 public final class FnSubstring {
   @NonNull
@@ -101,9 +95,9 @@ public final class FnSubstring {
     int startIndex = start.round().asInteger().intValue();
 
     return ISequence.of(fnSubstring(
-      sourceString.asString(),
-      startIndex,
-      sourceString.toString().length() - Math.max(startIndex,1) + 1));
+        sourceString.asString(),
+        startIndex,
+        sourceString.toString().length() - Math.max(startIndex, 1) + 1));
   }
 
   @SuppressWarnings("unused")
@@ -124,14 +118,14 @@ public final class FnSubstring {
     IDecimalItem length = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(2).getFirstItem(true)));
 
     return ISequence.of(fnSubstring(
-      sourceString.asString(),
-      start.round().asInteger().intValue(),
-      length.round().asInteger().intValue()));
+        sourceString.asString(),
+        start.round().asInteger().intValue(),
+        length.round().asInteger().intValue()));
   }
 
-    /**
-   * An implementation of XPath 3.1 <a href=
-   * "https://www.w3.org/TR/xpath-functions-31/#func-substring">fn:substring</a>.
+  /**
+   * An implementation of XPath 3.1
+   * <a href= "https://www.w3.org/TR/xpath-functions-31/#func-substring">fn:substring</a>.
    *
    * @param sourceString
    *
@@ -143,20 +137,20 @@ public final class FnSubstring {
    */
   @NonNull
   public static IStringItem fnSubstring(
-    @NonNull String source,
-    @NonNull int start,
-    @NonNull int length) {
+      @NonNull String source,
+      int start,
+      int length) {
     int sourceLength = source.length();
 
     // XPath uses 1-based indexing, so subtract 1 for 0-based Java indexing
     int startIndex = Math.max(start, 1);
 
     // Handle negative or zero length
-    int endIndex = length <= 1 ? startIndex : Math.min(startIndex + length, sourceLength);
-    
+    int endIndex = length <= 0 ? startIndex : Math.min(start + length, sourceLength + 1);
+
     // Ensure startIndex is not greater than endIndex
     startIndex = Math.min(startIndex, endIndex);
-    
-    return IStringItem.valueOf(source.substring(startIndex-1, endIndex));
+
+    return IStringItem.valueOf(source.substring(startIndex - 1, endIndex - 1));
   }
 }
