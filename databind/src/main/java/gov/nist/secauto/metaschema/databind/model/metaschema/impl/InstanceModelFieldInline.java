@@ -103,7 +103,7 @@ public class InstanceModelFieldInline
   }
 
   @NonNull
-  protected InlineDefineField getBinding() {
+  private InlineDefineField getBinding() {
     return binding;
   }
 
@@ -144,7 +144,7 @@ public class InstanceModelFieldInline
 
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
-    return boundNodeItem.get();
+    return ObjectUtils.notNull(boundNodeItem.get());
   }
 
   // ---------------------------------------

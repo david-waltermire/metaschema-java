@@ -54,9 +54,28 @@ public class FlagInstanceTypeInfoImpl
       FieldSpec.Builder fieldBuilder) {
     super.buildField(typeBuilder, fieldBuilder);
 
-    AnnotationSpec.Builder annotation = AnnotationSpec.builder(BoundFlag.class);
-
     IFlagInstance instance = getInstance();
+
+    fieldBuilder.addAnnotation(buildBoundFlagAnnotation(instance).build());
+
+    IModelDefinition parent = instance.getContainingDefinition();
+    IFlagInstance jsonKey = parent.getJsonKey();
+    if (instance.equals(jsonKey)) {
+      fieldBuilder.addAnnotation(JsonKey.class);
+    }
+
+    if (parent instanceof IFieldDefinition) {
+      IFieldDefinition parentField = (IFieldDefinition) parent;
+
+      if (parentField.hasJsonValueKeyFlagInstance() && instance.equals(parentField.getJsonValueKeyFlagInstance())) {
+        fieldBuilder.addAnnotation(JsonFieldValueKeyFlag.class);
+      }
+    }
+    return CollectionUtil.emptySet();
+  }
+
+  private static AnnotationSpec.Builder buildBoundFlagAnnotation(@NonNull IFlagInstance instance) {
+    AnnotationSpec.Builder annotation = AnnotationSpec.builder(BoundFlag.class);
 
     String formalName = instance.getEffectiveFormalName();
     if (formalName != null) {
@@ -97,21 +116,6 @@ public class FlagInstanceTypeInfoImpl
 
     AnnotationGenerator.buildValueConstraints(annotation, definition);
 
-    fieldBuilder.addAnnotation(annotation.build());
-
-    IModelDefinition parent = instance.getContainingDefinition();
-    IFlagInstance jsonKey = parent.getJsonKey();
-    if (instance.equals(jsonKey)) {
-      fieldBuilder.addAnnotation(JsonKey.class);
-    }
-
-    if (parent instanceof IFieldDefinition) {
-      IFieldDefinition parentField = (IFieldDefinition) parent;
-
-      if (parentField.hasJsonValueKeyFlagInstance() && instance.equals(parentField.getJsonValueKeyFlagInstance())) {
-        fieldBuilder.addAnnotation(JsonFieldValueKeyFlag.class);
-      }
-    }
-    return CollectionUtil.emptySet();
+    return annotation;
   }
 }

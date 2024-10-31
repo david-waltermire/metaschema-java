@@ -146,8 +146,9 @@ public class MetaschemaXmlReader
       ItemReadHandler handler = new ItemReadHandler(ObjectUtils.notNull(event.asStartElement()));
       Object value = definition.readItem(null, handler);
       if (value == null) {
+        event = reader.peek();
         throw new IOException(String.format("Unable to read data%s",
-            XmlEventUtil.generateLocationMessage(reader.peek())));
+            event == null ? "" : XmlEventUtil.generateLocationMessage(event)));
       }
 
       return ObjectUtils.asType(value);

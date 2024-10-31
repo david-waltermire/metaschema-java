@@ -116,9 +116,9 @@ public final class ModuleCompilerHelper {
     IProduction production = JavaGenerator.generate(module, classDir, bindingConfiguration);
     List<IGeneratedClass> classesToCompile = production.getGeneratedClasses().collect(Collectors.toList());
 
-    List<Path> classes = classesToCompile.stream()
+    List<Path> classes = ObjectUtils.notNull(classesToCompile.stream()
         .map(IGeneratedClass::getClassFile)
-        .collect(Collectors.toUnmodifiableList());
+        .collect(Collectors.toUnmodifiableList()));
 
     JavaCompilerSupport compiler = new JavaCompilerSupport(classDir);
 
@@ -128,7 +128,7 @@ public final class ModuleCompilerHelper {
       ModuleDescriptor descriptor = databindModule.getDescriptor();
       if (descriptor != null) {
         // add the databind module to the task
-        compiler.addRootModule(descriptor.name());
+        compiler.addRootModule(ObjectUtils.notNull(descriptor.name()));
         usingModule = true;
       }
     }

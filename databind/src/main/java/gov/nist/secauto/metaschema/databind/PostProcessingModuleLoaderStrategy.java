@@ -58,7 +58,7 @@ public class PostProcessingModuleLoaderStrategy
 
   @Override
   public void postProcessModule(IModule module, IBindingContext bindingContext) {
-    processModule(module, bindingContext);
+    processModule(module);
     delegate.postProcessModule(module, bindingContext);
   }
 
@@ -68,7 +68,7 @@ public class PostProcessingModuleLoaderStrategy
     postProcessedModulesLock.lock();
     try {
       // process before registering
-      processModule(module, bindingContext);
+      processModule(module);
 
       boundModule = delegate.registerModule(module, bindingContext);
 
@@ -80,7 +80,7 @@ public class PostProcessingModuleLoaderStrategy
     return boundModule;
   }
 
-  protected void processModule(IModule module, IBindingContext bindingContext) {
+  private void processModule(@NonNull IModule module) {
     postProcessedModulesLock.lock();
     try {
       if (!postProcessedModules.contains(module)) {

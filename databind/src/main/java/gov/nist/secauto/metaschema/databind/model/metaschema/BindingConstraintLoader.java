@@ -153,10 +153,11 @@ public class BindingConstraintLoader
 
       ISource source = ISource.externalSource(builder.build());
 
-      List<ITargetedConstraints> targetedConstraints = CollectionUtil.listOrEmpty(obj.getContexts()).stream()
+      List<ITargetedConstraints> targetedConstraints = ObjectUtils.notNull(CollectionUtil.listOrEmpty(obj.getContexts())
+          .stream()
           .flatMap(context -> parseContext(ObjectUtils.notNull(context), null, source)
               .getTargetedConstraints().stream())
-          .collect(Collectors.toList());
+          .collect(Collectors.toList()));
       retval.add(new MetaConstraintSet(targetedConstraints));
 
       retval = CollectionUtil.unmodifiableList(retval);
@@ -263,17 +264,17 @@ public class BindingConstraintLoader
 
     List<String> metapaths;
     if (parent == null) {
-      metapaths = CollectionUtil.listOrEmpty(contextObj.getMetapaths()).stream()
+      metapaths = ObjectUtils.notNull(CollectionUtil.listOrEmpty(contextObj.getMetapaths()).stream()
           .map(MetaschemaMetapath::getTarget)
-          .collect(Collectors.toList());
+          .collect(Collectors.toList()));
     } else {
       List<String> parentMetapaths = parent.getMetapaths().stream()
           .collect(Collectors.toList());
-      metapaths = CollectionUtil.listOrEmpty(contextObj.getMetapaths()).stream()
+      metapaths = ObjectUtils.notNull(CollectionUtil.listOrEmpty(contextObj.getMetapaths()).stream()
           .map(MetaschemaMetapath::getTarget)
           .flatMap(childPath -> parentMetapaths.stream()
               .map(parentPath -> parentPath + '/' + childPath))
-          .collect(Collectors.toList());
+          .collect(Collectors.toList()));
     }
 
     AssemblyConstraints contextConstraints = contextObj.getConstraints();
@@ -283,9 +284,9 @@ public class BindingConstraintLoader
     }
     Context context = new Context(metapaths, constraints);
 
-    List<Context> childContexts = CollectionUtil.listOrEmpty(contextObj.getContexts()).stream()
+    List<Context> childContexts = ObjectUtils.notNull(CollectionUtil.listOrEmpty(contextObj.getContexts()).stream()
         .map(childObj -> parseContext(ObjectUtils.notNull(childObj), context, source))
-        .collect(Collectors.toList());
+        .collect(Collectors.toList()));
 
     context.addAll(childContexts);
 

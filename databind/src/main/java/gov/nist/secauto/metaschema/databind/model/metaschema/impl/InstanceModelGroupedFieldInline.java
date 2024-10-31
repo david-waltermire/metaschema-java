@@ -93,7 +93,7 @@ public class InstanceModelGroupedFieldInline
   }
 
   @NonNull
-  protected AssemblyModel.ChoiceGroup.DefineField getBinding() {
+  private AssemblyModel.ChoiceGroup.DefineField getBinding() {
     return binding;
   }
 
@@ -119,7 +119,7 @@ public class InstanceModelGroupedFieldInline
 
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
-    return boundNodeItem.get();
+    return ObjectUtils.notNull(boundNodeItem.get());
   }
 
   @Override

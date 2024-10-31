@@ -68,7 +68,7 @@ public class InstanceModelChoiceGroup
   }
 
   @NonNull
-  protected AssemblyModel.ChoiceGroup getBinding() {
+  private AssemblyModel.ChoiceGroup getBinding() {
     return binding;
   }
 
@@ -93,7 +93,7 @@ public class InstanceModelChoiceGroup
 
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
-    return boundNodeItem.get();
+    return ObjectUtils.notNull(boundNodeItem.get());
   }
 
   // ---------------------------------------

@@ -8,6 +8,7 @@ package gov.nist.secauto.metaschema.databind.model;
 import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
 import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IFieldInstanceAbsolute;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
 import gov.nist.secauto.metaschema.databind.model.impl.DefinitionField;
 import gov.nist.secauto.metaschema.databind.model.impl.InstanceModelFieldComplex;
@@ -42,8 +43,8 @@ public interface IBoundInstanceModelField<ITEM> extends IBoundInstanceModelNamed
     IBoundInstanceModelField<?> retval;
     if (IBoundObject.class.isAssignableFrom(itemType)) {
       IBindingContext bindingContext = containingDefinition.getBindingContext();
-      IBoundDefinitionModel<?> definition
-          = bindingContext.getBoundDefinitionForClass(itemType.asSubclass(IBoundObject.class));
+      IBoundDefinitionModel<?> definition = bindingContext.getBoundDefinitionForClass(
+          ObjectUtils.notNull(itemType.asSubclass(IBoundObject.class)));
       if (definition == null) {
         throw new IllegalStateException(String.format(
             "The field '%s' on class '%s' is not bound to a Metaschema field",

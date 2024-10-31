@@ -106,7 +106,7 @@ public class InstanceModelAssemblyReference
 
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
-    return boundNodeItem.get();
+    return ObjectUtils.notNull(boundNodeItem.get());
   }
 
   // ---------------------------------------

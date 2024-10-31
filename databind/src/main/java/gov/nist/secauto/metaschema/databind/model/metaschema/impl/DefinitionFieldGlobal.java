@@ -114,7 +114,7 @@ public class DefinitionFieldGlobal
 
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
-    return boundNodeItem.get();
+    return ObjectUtils.notNull(boundNodeItem.get());
   }
 
   // ---------------------------------------

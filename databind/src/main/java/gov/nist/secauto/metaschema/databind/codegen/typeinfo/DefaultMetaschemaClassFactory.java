@@ -231,8 +231,8 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
   }
 
   /**
-   * Creates and configures a builder, for a Module module, that can be used to
-   * generate a Java class.
+   * Creates and configures a builder for a module that can be used to generate a
+   * Java class.
    *
    * @param module
    *          a parsed Module module
@@ -251,51 +251,7 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
         .addModifiers(Modifier.FINAL);
 
     builder.superclass(AbstractBoundModule.class);
-
-    AnnotationSpec.Builder moduleAnnotation = AnnotationSpec.builder(MetaschemaModule.class);
-
-    ITypeResolver typeResolver = getTypeResolver();
-    for (IFieldDefinition definition : module.getFieldDefinitions()) {
-      if (definition.hasChildren()) {
-        moduleAnnotation.addMember("fields", "$T.class", typeResolver.getClassName(definition));
-      }
-    }
-
-    for (IAssemblyDefinition definition : module.getAssemblyDefinitions()) {
-      moduleAnnotation.addMember(
-          "assemblies",
-          "$T.class",
-          typeResolver.getClassName(ObjectUtils.notNull(definition)));
-    }
-
-    for (IModule moduleImport : module.getImportedModules()) {
-      moduleAnnotation.addMember(
-          "imports",
-          "$T.class",
-          typeResolver.getClassName(ObjectUtils.notNull(moduleImport)));
-    }
-
-    Map<String, String> bindings = module.getNamespaceBindings();
-    if (!bindings.isEmpty()) {
-      for (Map.Entry<String, String> binding : bindings.entrySet()) {
-        moduleAnnotation.addMember(
-            "nsBindings",
-            "$L",
-            AnnotationSpec.builder(NsBinding.class)
-                .addMember("prefix", "$S", binding.getKey())
-                .addMember("uri", "$S", binding.getValue())
-                .build());
-      }
-    }
-
-    {
-      MarkupMultiline remarks = module.getRemarks();
-      if (remarks != null) {
-        moduleAnnotation.addMember("remarks", "$S", remarks.toMarkdown());
-      }
-    }
-
-    builder.addAnnotation(moduleAnnotation.build());
+    builder.addAnnotation(buildModuleAnnotation(module).build());
 
     builder.addField(
         FieldSpec.builder(MarkupLine.class, "NAME", Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
@@ -475,6 +431,50 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
       builder.addType(childClass);
     }
     return ObjectUtils.notNull(builder);
+  }
+
+  private AnnotationSpec.Builder buildModuleAnnotation(@NonNull IModule module) {
+    AnnotationSpec.Builder retval = AnnotationSpec.builder(MetaschemaModule.class);
+
+    ITypeResolver typeResolver = getTypeResolver();
+    for (IFieldDefinition definition : module.getFieldDefinitions()) {
+      if (definition.hasChildren()) {
+        retval.addMember("fields", "$T.class", typeResolver.getClassName(definition));
+      }
+    }
+
+    for (IAssemblyDefinition definition : module.getAssemblyDefinitions()) {
+      retval.addMember(
+          "assemblies",
+          "$T.class",
+          typeResolver.getClassName(ObjectUtils.notNull(definition)));
+    }
+
+    for (IModule moduleImport : module.getImportedModules()) {
+      retval.addMember(
+          "imports",
+          "$T.class",
+          typeResolver.getClassName(ObjectUtils.notNull(moduleImport)));
+    }
+
+    Map<String, String> bindings = module.getNamespaceBindings();
+    if (!bindings.isEmpty()) {
+      for (Map.Entry<String, String> binding : bindings.entrySet()) {
+        retval.addMember(
+            "nsBindings",
+            "$L",
+            AnnotationSpec.builder(NsBinding.class)
+                .addMember("prefix", "$S", binding.getKey())
+                .addMember("uri", "$S", binding.getValue())
+                .build());
+      }
+    }
+
+    MarkupMultiline remarks = module.getRemarks();
+    if (remarks != null) {
+      retval.addMember("remarks", "$S", remarks.toMarkdown());
+    }
+    return retval;
   }
 
   /**

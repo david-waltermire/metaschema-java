@@ -431,7 +431,7 @@ public class MetaschemaJsonReader
     IBoundObject item = definition.newInstance(
         JsonLocation.NA.equals(location)
             ? null
-            : () -> new MetaschemaData(location));
+            : () -> new MetaschemaData(ObjectUtils.requireNonNull(location)));
 
     try {
       // call pre-parse initialization hook

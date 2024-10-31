@@ -64,7 +64,7 @@ public class InstanceModelGroupedFieldReference
   }
 
   @NonNull
-  protected AssemblyModel.ChoiceGroup.Field getBinding() {
+  private AssemblyModel.ChoiceGroup.Field getBinding() {
     return binding;
   }
 
@@ -80,7 +80,7 @@ public class InstanceModelGroupedFieldReference
 
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
-    return boundNodeItem.get();
+    return ObjectUtils.notNull(boundNodeItem.get());
   }
 
   @Override

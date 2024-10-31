@@ -148,6 +148,6 @@ public class DefinitionFlagGlobal
 
   @NonNull
   public INodeItem getNodeItem() {
-    return boundNodeItem.get();
+    return ObjectUtils.notNull(boundNodeItem.get());
   }
 }

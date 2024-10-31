@@ -74,7 +74,7 @@ public class InstanceModelFieldReference
   }
 
   @NonNull
-  protected FieldReference getBinding() {
+  private FieldReference getBinding() {
     return binding;
   }
 
@@ -95,7 +95,7 @@ public class InstanceModelFieldReference
 
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
-    return boundNodeItem.get();
+    return ObjectUtils.notNull(boundNodeItem.get());
   }
 
   // ---------------------------------------

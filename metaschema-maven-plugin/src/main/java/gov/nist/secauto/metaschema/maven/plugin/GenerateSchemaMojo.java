@@ -10,10 +10,8 @@ import gov.nist.secauto.metaschema.core.configuration.IConfiguration;
 import gov.nist.secauto.metaschema.core.configuration.IMutableConfiguration;
 import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.MetaschemaException;
-import gov.nist.secauto.metaschema.core.model.validation.IValidationResult;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.IBindingContext;
-import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
 import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingModuleLoader;
 import gov.nist.secauto.metaschema.schemagen.ISchemaGenerator;
 import gov.nist.secauto.metaschema.schemagen.SchemaGenerationFeature;
@@ -27,18 +25,15 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -233,7 +228,7 @@ public class GenerateSchemaMojo
   public void execute() throws MojoExecutionException {
     File staleFile = getStaleFile();
     try {
-      staleFile = staleFile.getCanonicalFile();
+      staleFile = ObjectUtils.notNull(staleFile.getCanonicalFile());
     } catch (IOException ex) {
       if (getLog().isWarnEnabled()) {
         getLog().warn("Unable to resolve canonical path to stale file. Treating it as not existing.", ex);
@@ -256,71 +251,12 @@ public class GenerateSchemaMojo
     }
 
     if (generate) {
-      File outputDir = getOutputDirectory();
-      if (getLog().isDebugEnabled()) {
-        getLog().debug(String.format("Using outputDirectory: %s", outputDir.getPath()));
-      }
-
-      if (!outputDir.exists() && !outputDir.mkdirs()) {
-        throw new MojoExecutionException("Unable to create output directory: " + outputDir);
-      }
-
-      IBindingContext bindingContext;
-      try {
-        bindingContext = newBindingContext();
-      } catch (MetaschemaException | IOException ex) {
-        throw new MojoExecutionException("Failed to create the binding context", ex);
-      }
-
-      IBindingModuleLoader loader = bindingContext.newModuleLoader();
-      loader.allowEntityResolution();
-
-      // generate Java sources based on provided metaschema sources
-      final Set<IModule> modules = new HashSet<>();
-      for (File source : getModuleSources().collect(Collectors.toList())) {
-        assert source != null;
-        if (getLog().isInfoEnabled()) {
-          getLog().info("Using metaschema source: " + source.getPath());
-        }
-        IBindingMetaschemaModule module;
-        try {
-          module = loader.load(source);
-        } catch (MetaschemaException | IOException ex) {
-          throw new MojoExecutionException("Loading of metaschema failed", ex);
-        }
-
-        IValidationResult result = bindingContext.validate(
-            module.getSourceNodeItem(),
-            loader.getBindingContext().newBoundLoader(),
-            null);
-
-        new LoggingValidationHandler().handleResults(result);
-
-        // ensure we get the version of the module with the constraints applied
-        modules.add(module);
-      }
-
-      generate(modules);
-
-      // create the stale file
-      if (!staleFileDirectory.exists() && !staleFileDirectory.mkdirs()) {
-        throw new MojoExecutionException("Unable to create output directory: " + staleFileDirectory);
-      }
-      try (OutputStream os
-          = Files.newOutputStream(staleFile.toPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE,
-              StandardOpenOption.TRUNCATE_EXISTING)) {
-        os.close();
-        if (getLog().isInfoEnabled()) {
-          getLog().info("Created stale file: " + staleFile);
-        }
-      } catch (IOException ex) {
-        throw new MojoExecutionException("Failed to write stale file: " + staleFile.getPath(), ex);
-      }
+      performGeneration();
+      createStaleFile(staleFile);
 
       // for m2e
       getBuildContext().refresh(getOutputDirectory());
     }
-
     // // add generated sources to Maven
     // try {
     // getMavenProject()..addCompileSourceRoot(getOutputDirectory().getCanonicalFile().getPath());
@@ -328,5 +264,37 @@ public class GenerateSchemaMojo
     // throw new MojoExecutionException("Unable to add output directory to maven
     // sources.", ex);
     // }
+  }
+
+  private void performGeneration() throws MojoExecutionException {
+    File outputDir = getOutputDirectory();
+    if (getLog().isDebugEnabled()) {
+      getLog().debug(String.format("Using outputDirectory: %s", outputDir.getPath()));
+    }
+
+    if (!outputDir.exists() && !outputDir.mkdirs()) {
+      throw new MojoExecutionException("Unable to create output directory: " + outputDir);
+    }
+
+    IBindingContext bindingContext;
+    try {
+      bindingContext = newBindingContext();
+    } catch (MetaschemaException | IOException ex) {
+      throw new MojoExecutionException("Failed to create the binding context", ex);
+    }
+
+    IBindingModuleLoader loader = bindingContext.newModuleLoader();
+    loader.allowEntityResolution();
+
+    // generate schemas based on provided metaschema sources
+    Set<IModule> modules;
+    try {
+      modules = getModulesToGenerateFor(bindingContext);
+    } catch (Exception ex) {
+      throw new MojoExecutionException("Loading of metaschema modules failed", ex);
+    }
+
+    generate(modules);
+
   }
 }

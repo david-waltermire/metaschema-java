@@ -158,13 +158,12 @@ public class InstanceModelAssemblyInline
 
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
-    return boundNodeItem.get();
+    return ObjectUtils.notNull(boundNodeItem.get());
   }
 
-  @SuppressWarnings("null")
   @Override
   public IContainerFlagSupport<IFlagInstance> getFlagContainer() {
-    return flagContainer.get();
+    return ObjectUtils.notNull(flagContainer.get());
   }
 
   @Override

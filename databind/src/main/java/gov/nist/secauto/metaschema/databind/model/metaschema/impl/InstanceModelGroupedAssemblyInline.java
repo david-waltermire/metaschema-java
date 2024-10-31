@@ -111,7 +111,7 @@ public class InstanceModelGroupedAssemblyInline
   }
 
   @NonNull
-  protected AssemblyModel.ChoiceGroup.DefineAssembly getBinding() {
+  private AssemblyModel.ChoiceGroup.DefineAssembly getBinding() {
     return binding;
   }
 
@@ -148,7 +148,7 @@ public class InstanceModelGroupedAssemblyInline
 
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
-    return boundNodeItem.get();
+    return ObjectUtils.notNull(boundNodeItem.get());
   }
 
   // ---------------------------------------

@@ -17,7 +17,6 @@ import gov.nist.secauto.metaschema.core.model.IModelInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.INamedModelInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.IBoundInstanceModelGroupedAssembly;
-import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel;
 import gov.nist.secauto.metaschema.databind.model.binding.metaschema.AssemblyModel.Choice;
 import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingDefinitionModelAssembly;
 import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingInstance;
@@ -35,8 +34,6 @@ public class InstanceModelChoice
         IAssemblyInstanceAbsolute>
     implements IBindingInstance {
   @NonNull
-  private final AssemblyModel.Choice binding;
-  @NonNull
   private final Lazy<IContainerModelSupport<
       IModelInstanceAbsolute,
       INamedModelInstanceAbsolute,
@@ -52,7 +49,6 @@ public class InstanceModelChoice
       @NonNull IBindingDefinitionModelAssembly parent,
       @NonNull INodeItemFactory nodeItemFactory) {
     super(parent);
-    this.binding = binding;
     this.modelContainer = ObjectUtils.notNull(Lazy.lazy(() -> ChoiceModelContainerSupport.of(
         binding,
         bindingInstance,
@@ -62,11 +58,6 @@ public class InstanceModelChoice
         Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getXmlQName())
             .get(position)));
-  }
-
-  @NonNull
-  protected AssemblyModel.Choice getBinding() {
-    return binding;
   }
 
   @Override
@@ -85,7 +76,7 @@ public class InstanceModelChoice
 
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
-    return boundNodeItem.get();
+    return ObjectUtils.notNull(boundNodeItem.get());
   }
 
   @Override

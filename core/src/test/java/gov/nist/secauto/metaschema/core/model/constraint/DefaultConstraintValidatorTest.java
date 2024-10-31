@@ -30,8 +30,6 @@ import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
 import gov.nist.secauto.metaschema.core.model.ISource;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 
-import org.jmock.api.Invocation;
-import org.jmock.lib.action.CustomAction;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -70,8 +68,6 @@ class DefaultConstraintValidatorTest {
         .allowsOther(true)
         .build();
 
-    DynamicContext dynamicContext = new DynamicContext();
-
     doReturn(flagDefinition).when(flag).getDefinition();
     doReturn("flag/path").when(flag).toPath(any(IPathFormatter.class));
 
@@ -85,6 +81,7 @@ class DefaultConstraintValidatorTest {
 
     FindingCollectingConstraintValidationHandler handler = new FindingCollectingConstraintValidationHandler();
     DefaultConstraintValidator validator = new DefaultConstraintValidator(handler);
+    DynamicContext dynamicContext = new DynamicContext();
     validator.validate(flag, dynamicContext);
     validator.finalizeValidation(dynamicContext);
 
@@ -121,8 +118,6 @@ class DefaultConstraintValidatorTest {
     List<? extends IAllowedValuesConstraint> allowedValuesConstraints
         = List.of(allowedValues1, allowedValues2);
 
-    DynamicContext dynamicContext = new DynamicContext();
-
     doReturn(flagDefinition).when(flag).getDefinition();
     doReturn("flag/path").when(flag).toPath(any(IPathFormatter.class));
 
@@ -136,6 +131,7 @@ class DefaultConstraintValidatorTest {
 
     FindingCollectingConstraintValidationHandler handler = new FindingCollectingConstraintValidationHandler();
     DefaultConstraintValidator validator = new DefaultConstraintValidator(handler);
+    DynamicContext dynamicContext = new DynamicContext();
     validator.validate(flag, dynamicContext);
     validator.finalizeValidation(dynamicContext);
 
@@ -205,24 +201,5 @@ class DefaultConstraintValidatorTest {
         () -> assertFalse(handler.isPassing(), "must pass"),
         () -> assertThat("only 1 finding", handler.getFindings(), hasSize(1)),
         () -> assertThat("finding is for a flag node", handler.getFindings(), hasItem(hasProperty("node", is(flag1)))));
-  }
-
-  private static class FlagVisitorAction
-      extends CustomAction {
-    @NonNull
-    private DynamicContext dynamicContext;
-
-    public FlagVisitorAction(@NonNull DynamicContext dynamicContext) {
-      super("return the flag");
-      this.dynamicContext = dynamicContext;
-    }
-
-    @Override
-    public Object invoke(Invocation invocation) {
-      IFlagNodeItem thisFlag = (IFlagNodeItem) invocation.getInvokedObject();
-      assert thisFlag != null;
-      DefaultConstraintValidator.Visitor visitor = (DefaultConstraintValidator.Visitor) invocation.getParameter(0);
-      return visitor.visitFlag(thisFlag, dynamicContext);
-    }
   }
 }

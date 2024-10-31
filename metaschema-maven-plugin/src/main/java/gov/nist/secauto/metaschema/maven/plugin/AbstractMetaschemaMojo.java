@@ -15,6 +15,7 @@ import gov.nist.secauto.metaschema.core.model.constraint.ExternalConstraintsModu
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraintSet;
 import gov.nist.secauto.metaschema.core.model.validation.AbstractValidationResultProcessor;
 import gov.nist.secauto.metaschema.core.model.validation.IValidationFinding;
+import gov.nist.secauto.metaschema.core.model.validation.IValidationResult;
 import gov.nist.secauto.metaschema.core.model.validation.JsonSchemaContentValidator.JsonValidationFinding;
 import gov.nist.secauto.metaschema.core.model.validation.XmlSchemaContentValidator.XmlValidationFinding;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
@@ -33,11 +34,14 @@ import gov.nist.secauto.metaschema.databind.codegen.ModuleCompilerHelper;
 import gov.nist.secauto.metaschema.databind.codegen.config.DefaultBindingConfiguration;
 import gov.nist.secauto.metaschema.databind.codegen.config.IBindingConfiguration;
 import gov.nist.secauto.metaschema.databind.model.IBoundModule;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingMetaschemaModule;
+import gov.nist.secauto.metaschema.databind.model.metaschema.IBindingModuleLoader;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -48,12 +52,15 @@ import org.xml.sax.SAXParseException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -388,7 +395,7 @@ public abstract class AbstractMetaschemaMojo
   }
 
   protected Set<String> getClassPath() throws DependencyResolutionRequiredException {
-    Set<String> pathElements = null;
+    Set<String> pathElements;
     try {
       pathElements = new LinkedHashSet<>(getMavenProject().getCompileClasspathElements());
     } catch (DependencyResolutionRequiredException ex) {
@@ -404,6 +411,51 @@ public abstract class AbstractMetaschemaMojo
       }
     }
     return pathElements;
+  }
+
+  @NonNull
+  protected Set<IModule> getModulesToGenerateFor(@NonNull IBindingContext bindingContext)
+      throws MetaschemaException, IOException {
+    IBindingModuleLoader loader = bindingContext.newModuleLoader();
+    loader.allowEntityResolution();
+
+    LoggingValidationHandler validationHandler = new LoggingValidationHandler();
+
+    Set<IModule> modules = new HashSet<>();
+    for (File source : getModuleSources().collect(Collectors.toList())) {
+      assert source != null;
+      if (getLog().isInfoEnabled()) {
+        getLog().info("Using metaschema source: " + source.getPath());
+      }
+      IBindingMetaschemaModule module = loader.load(source);
+
+      IValidationResult result = bindingContext.validate(
+          module.getSourceNodeItem(),
+          loader.getBindingContext().newBoundLoader(),
+          null);
+
+      validationHandler.handleResults(result);
+
+      modules.add(module);
+    }
+    return modules;
+  }
+
+  protected void createStaleFile(@NonNull File staleFile) throws MojoExecutionException {
+    // create the stale file
+    if (!staleFileDirectory.exists() && !staleFileDirectory.mkdirs()) {
+      throw new MojoExecutionException("Unable to create output directory: " + staleFileDirectory);
+    }
+    try (OutputStream os
+        = Files.newOutputStream(staleFile.toPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING)) {
+      os.close();
+      if (getLog().isInfoEnabled()) {
+        getLog().info("Created stale file: " + staleFile);
+      }
+    } catch (IOException ex) {
+      throw new MojoExecutionException("Failed to write stale file: " + staleFile.getPath(), ex);
+    }
   }
 
   protected final class LoggingValidationHandler
@@ -528,7 +580,7 @@ public abstract class AbstractMetaschemaMojo
             .append('}');
       }
       if (documentUri != null || location != null) {
-        builder.append("]");
+        builder.append(']');
       }
       return builder;
     }
@@ -569,9 +621,9 @@ public abstract class AbstractMetaschemaMojo
         throws IOException, DependencyResolutionRequiredException {
       List<IGeneratedClass> classesToCompile = production.getGeneratedClasses().collect(Collectors.toList());
 
-      List<Path> classes = classesToCompile.stream()
+      List<Path> classes = ObjectUtils.notNull(classesToCompile.stream()
           .map(IGeneratedClass::getClassFile)
-          .collect(Collectors.toUnmodifiableList());
+          .collect(Collectors.toUnmodifiableList()));
 
       JavaCompilerSupport compiler = new JavaCompilerSupport(classDir);
 

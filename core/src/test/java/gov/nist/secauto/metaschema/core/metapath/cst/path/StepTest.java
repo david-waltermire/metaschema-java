@@ -317,7 +317,7 @@ class StepTest
 
     Assertions.assertThat(actual.getValue())
         .hasOnlyElementsOfType(IFlagNodeItem.class)
-        .map(flag -> FnData.fnDataItem(flag).asString())
+        .map(flag -> FnData.fnDataItem(ObjectUtils.requireNonNull(flag)).asString())
         .containsExactly("flag-2-b-v1", "flag-2-b-v2", "flag-2-b-v3");
   }
 

@@ -50,10 +50,11 @@ public class StreamSequence<ITEM extends IItem>
   }
 
   @Override
-  public <T> T[] toArray(T[] a) {
-    return getValue().toArray(a);
+  public <T> T[] toArray(T[] array) {
+    return getValue().toArray(array);
   }
 
+  @SuppressWarnings("PMD.NullAssignment")
   @Override
   public List<ITEM> getValue() {
     instanceLock.lock();

@@ -83,9 +83,8 @@ class BuildCstVisitorTest {
   @RegisterExtension
   Mockery context = new JUnit5Mockery();
 
-  @SuppressWarnings("null")
   @NonNull
-  private IDocumentNodeItem newTestDocument() {
+  private static IDocumentNodeItem newTestDocument() {
     MockNodeItemFactory factory = new MockNodeItemFactory();
 
     return factory.document(URI.create("http://example.com/content"), ROOT,

@@ -30,10 +30,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @SuppressWarnings("checkstyle:MissingJavadocMethodCheck")
 @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
 public class MockNodeItemFactory {
-  @SuppressWarnings("exports")
-  public MockNodeItemFactory() {
-  }
-
   @SuppressWarnings("null")
   @NonNull
   protected <T extends INodeItem> T newMock(@NonNull Class<T> clazz, @NonNull String name) {
@@ -44,7 +40,7 @@ public class MockNodeItemFactory {
         .append('-')
         .append(UUID.randomUUID().toString())
         .toString();
-    return Mockito.mock(clazz, withSettings().defaultAnswer(Answers.CALLS_REAL_METHODS));
+    return Mockito.mock(clazz, withSettings().name(mockName).defaultAnswer(Answers.CALLS_REAL_METHODS));
   }
 
   @NonNull
