@@ -101,6 +101,8 @@ public class DefaultFunctionLibrary
     // P2: https://www.w3.org/TR/xpath-functions-31/#func-format-integer
     // P2: https://www.w3.org/TR/xpath-functions-31/#func-format-number
     // P2: https://www.w3.org/TR/xpath-functions-31/#func-format-time
+    // https://www.w3.org/TR/xpath-functions-31/#func-function-arity
+    registerFunction(FnFunctionArity.SIGNATURE);
     // https://www.w3.org/TR/xpath-functions-31/#func-function-lookup
     registerFunction(FnFunctionLookup.SIGNATURE);
     // P1: https://www.w3.org/TR/xpath-functions-31/#func-generate-id

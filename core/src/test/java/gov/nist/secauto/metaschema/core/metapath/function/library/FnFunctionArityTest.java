@@ -6,6 +6,7 @@
 package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import static gov.nist.secauto.metaschema.core.metapath.TestUtils.integer;
+import static gov.nist.secauto.metaschema.core.metapath.TestUtils.string;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import gov.nist.secauto.metaschema.core.metapath.ExpressionTestBase;
@@ -21,14 +22,17 @@ import java.util.stream.Stream;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-class FnFunctionLookupTest
+class FnFunctionArityTest
     extends ExpressionTestBase {
 
   private static Stream<Arguments> provideValues() { // NOPMD - false positive
     return Stream.of(
         Arguments.of(
             integer(2),
-            "fn:function-arity(fn:substring#2)"));
+            "fn:function-arity(fn:substring#2)"),
+        Arguments.of(
+            integer(1),
+            "fn:function-arity(function($node){name($node)})"));
   }
 
   @ParameterizedTest
