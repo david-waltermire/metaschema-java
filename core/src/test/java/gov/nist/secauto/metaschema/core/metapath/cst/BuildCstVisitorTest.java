@@ -8,7 +8,7 @@ package gov.nist.secauto.metaschema.core.metapath.cst;
 import static com.github.seregamorph.hamcrest.MoreMatchers.where;
 import static gov.nist.secauto.metaschema.core.metapath.TestUtils.bool;
 import static gov.nist.secauto.metaschema.core.metapath.TestUtils.integer;
-import static gov.nist.secauto.metaschema.core.metapath.TestUtils.qname;
+import static gov.nist.secauto.metaschema.core.metapath.TestUtils.eqname;
 import static gov.nist.secauto.metaschema.core.metapath.TestUtils.string;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
@@ -266,7 +266,7 @@ class BuildCstVisitorTest {
 
   static Stream<Arguments> testNamedFunctionRef() {
     return Stream.of(
-        Arguments.of("fn:string#1", qname(MetapathConstants.NS_METAPATH_FUNCTIONS, "string"), 1));
+        Arguments.of("fn:string#1", eqname(MetapathConstants.NS_METAPATH_FUNCTIONS, "string"), 1));
   }
 
   @ParameterizedTest

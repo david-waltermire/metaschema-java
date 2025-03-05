@@ -18,6 +18,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.atomic.IDayTimeDurationIte
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IDecimalItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IDurationItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IIntegerItem;
+import gov.nist.secauto.metaschema.core.metapath.item.atomic.IQNameItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.ITimeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IUuidItem;
@@ -306,8 +307,13 @@ public final class TestUtils {
   }
 
   @NonNull
-  public static IEnhancedQName qname(@NonNull String namespace, @NonNull String localname) {
+  public static IEnhancedQName eqname(@NonNull String namespace, @NonNull String localname) {
     return IEnhancedQName.of(namespace, localname);
+  }
+
+  @NonNull
+  public static IQNameItem qname(@NonNull String namespace, @NonNull String localname) {
+    return IQNameItem.valueOf(eqname(namespace, localname));
   }
 
   private TestUtils() {

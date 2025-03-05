@@ -105,6 +105,8 @@ public class DefaultFunctionLibrary
     registerFunction(FnFunctionArity.SIGNATURE);
     // https://www.w3.org/TR/xpath-functions-31/#func-function-lookup
     registerFunction(FnFunctionLookup.SIGNATURE);
+    // https://www.w3.org/TR/xpath-functions-31/#func-function-name
+    registerFunction(FnFunctionName.SIGNATURE);
     // P1: https://www.w3.org/TR/xpath-functions-31/#func-generate-id
     // https://www.w3.org/TR/xpath-functions-31/#func-has-children
     registerFunction(FnHasChildren.SIGNATURE_NO_ARG);

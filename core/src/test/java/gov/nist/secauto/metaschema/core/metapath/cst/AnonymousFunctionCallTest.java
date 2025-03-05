@@ -5,7 +5,7 @@
 
 package gov.nist.secauto.metaschema.core.metapath.cst;
 
-import static gov.nist.secauto.metaschema.core.metapath.TestUtils.qname;
+import static gov.nist.secauto.metaschema.core.metapath.TestUtils.eqname;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
@@ -60,7 +60,7 @@ class AnonymousFunctionCallTest {
         .build();
     DynamicContext dynamicContext = new DynamicContext(staticContext);
     String metapath = "function ($argument1 as meta:string, $argument2 as meta:string) as meta:string { $argument2 }";
-    dynamicContext.bindVariableValue(qname(NS, "boom"),
+    dynamicContext.bindVariableValue(eqname(NS, "boom"),
         IMetapathExpression.compile(metapath, staticContext).evaluate(null, dynamicContext));
     String result = IMetapathExpression.compile("$ex:boom('a', 'b')", staticContext).evaluateAs(null, ResultType.STRING,
         dynamicContext);
@@ -90,7 +90,7 @@ class AnonymousFunctionCallTest {
     INodeItem flag = MockedDocumentGenerator.generateOrphanedFlagNodeItem();
     DynamicContext dynamicContext = new DynamicContext(staticContext);
     dynamicContext.bindVariableValue(
-        qname(NS, "should-dereference-param-flag-value"),
+        eqname(NS, "should-dereference-param-flag-value"),
         IMetapathExpression
             .compile("function($arg as meta:string) as meta:string { $arg }", dynamicContext.getStaticContext())
             .evaluate(flag, dynamicContext));
