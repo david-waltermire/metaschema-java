@@ -101,6 +101,9 @@ public class ExternalConstraintsModulePostProcessor implements IModuleLoader.IMo
           .filter(item -> filterNonDefinitionItem(item, metapath))
           .map(item -> (IDefinitionNodeItem<?, ?>) item)
           .map(IDefinitionNodeItem::getDefinition)
+          // ensure the definition only gets processed if the module being processed is
+          // the containing module
+          .filter(definition -> definition.getContainingModule().equals(module))
           .collect(Collectors.toUnmodifiableSet());
 
       // apply the constraints
