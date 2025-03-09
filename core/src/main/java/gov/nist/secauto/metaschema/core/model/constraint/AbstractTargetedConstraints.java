@@ -6,7 +6,13 @@
 package gov.nist.secauto.metaschema.core.model.constraint;
 
 import gov.nist.secauto.metaschema.core.metapath.IMetapathExpression;
+import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
+import gov.nist.secauto.metaschema.core.model.IDefinition;
+import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
+import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
 import gov.nist.secauto.metaschema.core.model.ISource;
+
+import java.util.Locale;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -58,5 +64,49 @@ public abstract class AbstractTargetedConstraints<T extends IValueConstrained>
   @Override
   public T getConstraintSupport() {
     return constraints;
+  }
+
+  /**
+   * Apply the constraints to the provided {@code definition}.
+   * <p>
+   * This will be called when a definition is found that matches the target
+   * expression.
+   *
+   * @param definition
+   *          the definition to apply the constraints to.
+   */
+  protected void applyTo(@NonNull IValueConstrained definition) {
+    getLetExpressions().values().forEach(definition::addLetExpression);
+    getAllowedValuesConstraints().forEach(definition::addConstraint);
+    getMatchesConstraints().forEach(definition::addConstraint);
+    getIndexHasKeyConstraints().forEach(definition::addConstraint);
+    getExpectConstraints().forEach(definition::addConstraint);
+  }
+
+  @Override
+  public void target(IFlagDefinition definition) {
+    applyTo(definition);
+  }
+
+  @Override
+  public void target(IFieldDefinition definition) {
+    applyTo(definition);
+  }
+
+  @Override
+  public void target(IAssemblyDefinition definition) {
+    applyTo(definition);
+  }
+
+  protected void wrongDefinitionTypeTargeted(@NonNull IDefinition definition) {
+    throw new ConstraintInitializationException(
+        String.format(
+            "The %s named '%s' from metaschema '%s' is incorrectly targeted by a set of" +
+                " constraints with the target '%s'. Ensure the target expression is correct in '%s'.",
+            definition.getModelType().name().toLowerCase(Locale.ROOT),
+            definition.getEffectiveName(),
+            definition.getContainingModule().getQName().toString(),
+            getTarget(),
+            getSource().getLocationHint()));
   }
 }

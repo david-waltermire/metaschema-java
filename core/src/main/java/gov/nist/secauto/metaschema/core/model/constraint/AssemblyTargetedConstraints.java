@@ -7,8 +7,9 @@ package gov.nist.secauto.metaschema.core.model.constraint;
 
 import gov.nist.secauto.metaschema.core.metapath.IMetapathExpression;
 import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
+import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
+import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
 import gov.nist.secauto.metaschema.core.model.ISource;
-import gov.nist.secauto.metaschema.core.model.constraint.impl.AbstractDefinitionTargetedConstraints;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -19,7 +20,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * @see #getTarget()
  */
 public class AssemblyTargetedConstraints
-    extends AbstractDefinitionTargetedConstraints<IAssemblyDefinition, IModelConstrained>
+    extends ModelTargetedConstraints
     implements IFeatureModelConstrained {
 
   /**
@@ -40,15 +41,17 @@ public class AssemblyTargetedConstraints
   }
 
   @Override
-  public void target(@NonNull IAssemblyDefinition definition) {
-    applyTo(definition);
+  public void target(@NonNull IFlagDefinition definition) {
+    wrongDefinitionTypeTargeted(definition);
   }
 
   @Override
-  protected void applyTo(@NonNull IAssemblyDefinition definition) {
-    super.applyTo(definition);
-    getIndexConstraints().forEach(definition::addConstraint);
-    getUniqueConstraints().forEach(definition::addConstraint);
-    getHasCardinalityConstraints().forEach(definition::addConstraint);
+  public void target(@NonNull IFieldDefinition definition) {
+    wrongDefinitionTypeTargeted(definition);
+  }
+
+  @Override
+  public void target(@NonNull IAssemblyDefinition definition) {
+    applyTo(definition);
   }
 }

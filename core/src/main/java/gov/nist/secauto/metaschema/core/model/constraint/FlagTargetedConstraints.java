@@ -6,9 +6,10 @@
 package gov.nist.secauto.metaschema.core.model.constraint;
 
 import gov.nist.secauto.metaschema.core.metapath.IMetapathExpression;
+import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
+import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
 import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
 import gov.nist.secauto.metaschema.core.model.ISource;
-import gov.nist.secauto.metaschema.core.model.constraint.impl.AbstractDefinitionTargetedConstraints;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -19,7 +20,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * @see #getTarget()
  */
 public class FlagTargetedConstraints
-    extends AbstractDefinitionTargetedConstraints<IFlagDefinition, IValueConstrained> {
+    extends AbstractTargetedConstraints<IValueConstrained> {
 
   /**
    * Construct a new set of targeted constraints.
@@ -41,5 +42,15 @@ public class FlagTargetedConstraints
   @Override
   public void target(@NonNull IFlagDefinition definition) {
     applyTo(definition);
+  }
+
+  @Override
+  public void target(@NonNull IFieldDefinition definition) {
+    wrongDefinitionTypeTargeted(definition);
+  }
+
+  @Override
+  public void target(@NonNull IAssemblyDefinition definition) {
+    wrongDefinitionTypeTargeted(definition);
   }
 }

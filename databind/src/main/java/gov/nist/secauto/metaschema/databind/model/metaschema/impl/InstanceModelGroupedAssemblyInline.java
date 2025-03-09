@@ -20,6 +20,7 @@ import gov.nist.secauto.metaschema.core.model.IContainerFlagSupport;
 import gov.nist.secauto.metaschema.core.model.IContainerModelAssemblySupport;
 import gov.nist.secauto.metaschema.core.model.IFieldInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
+import gov.nist.secauto.metaschema.core.model.IModelElementVisitor;
 import gov.nist.secauto.metaschema.core.model.IModelInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.INamedModelInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.ISource;
@@ -152,6 +153,11 @@ public class InstanceModelGroupedAssemblyInline
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
     return ObjectUtils.notNull(boundNodeItem.get());
+  }
+
+  @Override
+  public <CONTEXT, RESULT> RESULT accept(IModelElementVisitor<CONTEXT, RESULT> visitor, CONTEXT context) {
+    return IAssemblyInstanceGrouped.super.accept(visitor, context);
   }
 
   // ---------------------------------------

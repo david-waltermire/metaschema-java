@@ -8,6 +8,7 @@ package gov.nist.secauto.metaschema.databind.model;
 import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IContainerFlagSupport;
 import gov.nist.secauto.metaschema.core.model.IFeatureDefinitionInstanceInlined;
+import gov.nist.secauto.metaschema.core.model.IModelElementVisitor;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.model.info.IFeatureScalarItemValueHandler;
 import gov.nist.secauto.metaschema.databind.model.info.IItemReadHandler;
@@ -82,5 +83,10 @@ public interface IBoundInstanceModelFieldScalar
   @Override
   default void writeItem(Object item, IItemWriteHandler handler) throws IOException {
     handler.writeItemField(item, this);
+  }
+
+  @Override
+  default <CONTEXT, RESULT> RESULT accept(IModelElementVisitor<CONTEXT, RESULT> visitor, CONTEXT context) {
+    return IBoundInstanceModelField.super.accept(visitor, context);
   }
 }

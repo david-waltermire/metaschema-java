@@ -39,6 +39,11 @@ public interface IFeatureDefinitionInstanceInlined<
   }
 
   @Override
+  default boolean isInlineDefinition() {
+    return true;
+  }
+
+  @Override
   default boolean isInline() {
     // has to be inline
     return true;

@@ -24,10 +24,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -90,6 +88,7 @@ public class ExternalConstraintsModulePostProcessor implements IModuleLoader.IMo
       @NonNull IConstraintSet set,
       @NonNull ConstraintComposingVisitor visitor,
       @NonNull DynamicContext dynamicContext) {
+
     for (ITargetedConstraints targeted : set.getTargetedConstraintsForModule(module)) {
       // apply targeted constraints
       IMetapathExpression metapath = targeted.getTarget();
@@ -98,15 +97,15 @@ public class ExternalConstraintsModulePostProcessor implements IModuleLoader.IMo
 
       // first build a map to ensure the constraint is only applied once to each
       // underlying definition
-      Map<IDefinition, IDefinitionNodeItem<?, ?>> definitions = items.stream()
+      Set<IDefinition> definitions = items.stream()
           .filter(item -> filterNonDefinitionItem(item, metapath))
           .map(item -> (IDefinitionNodeItem<?, ?>) item)
-          .collect(Collectors.toMap(IDefinitionNodeItem::getDefinition, Function.identity(), (v1, v2) -> v1,
-              LinkedHashMap::new));
+          .map(IDefinitionNodeItem::getDefinition)
+          .collect(Collectors.toUnmodifiableSet());
 
       // apply the constraints
-      definitions.values().forEach(item -> {
-        item.accept(visitor, targeted);
+      definitions.forEach(definition -> {
+        definition.accept(visitor, targeted);
       });
     }
   }

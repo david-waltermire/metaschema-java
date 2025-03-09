@@ -16,6 +16,7 @@ import gov.nist.secauto.metaschema.core.model.IContainerModelAbsolute;
 import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
 import gov.nist.secauto.metaschema.core.model.IFieldInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
+import gov.nist.secauto.metaschema.core.model.IModelElementVisitor;
 import gov.nist.secauto.metaschema.core.model.ISource;
 import gov.nist.secauto.metaschema.core.model.constraint.IValueConstrained;
 import gov.nist.secauto.metaschema.core.model.constraint.ValueConstraintSet;
@@ -151,6 +152,11 @@ public class InstanceModelFieldInline
   @Override
   public IAssemblyNodeItem getSourceNodeItem() {
     return ObjectUtils.notNull(boundNodeItem.get());
+  }
+
+  @Override
+  public <CONTEXT, RESULT> RESULT accept(IModelElementVisitor<CONTEXT, RESULT> visitor, CONTEXT context) {
+    return IFieldInstanceAbsolute.super.accept(visitor, context);
   }
 
   // ---------------------------------------

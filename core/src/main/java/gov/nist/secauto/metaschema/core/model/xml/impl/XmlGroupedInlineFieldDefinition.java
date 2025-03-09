@@ -17,6 +17,7 @@ import gov.nist.secauto.metaschema.core.model.IContainerFlagSupport;
 import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
 import gov.nist.secauto.metaschema.core.model.IFieldInstanceGrouped;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
+import gov.nist.secauto.metaschema.core.model.IModelElementVisitor;
 import gov.nist.secauto.metaschema.core.model.ISource;
 import gov.nist.secauto.metaschema.core.model.constraint.IValueConstrained;
 import gov.nist.secauto.metaschema.core.model.constraint.ValueConstraintSet;
@@ -90,6 +91,24 @@ public class XmlGroupedInlineFieldDefinition
   @Override
   public IValueConstrained getConstraintSupport() {
     return ObjectUtils.notNull(constraints.get());
+  }
+
+  /**
+   * A visitor callback.
+   *
+   * @param <CONTEXT>
+   *          the type of the context parameter
+   * @param <RESULT>
+   *          the type of the visitor result
+   * @param visitor
+   *          the calling visitor
+   * @param context
+   *          a parameter used to pass contextual information between visitors
+   * @return the visitor result
+   */
+  @Override
+  public <CONTEXT, RESULT> RESULT accept(@NonNull IModelElementVisitor<CONTEXT, RESULT> visitor, CONTEXT context) {
+    return visitor.visitFieldInstance(this, context);
   }
 
   // ----------------------------------------

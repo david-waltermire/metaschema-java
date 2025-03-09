@@ -25,6 +25,14 @@ public interface INamedInstance extends INamedModelElement, IAttributable, IInst
   IDefinition getDefinition();
 
   /**
+   * Determine if the definition of this instance is declared inline.
+   *
+   * @return {@code true} if the definition of this instance is declared inline or
+   *         {@code false} otherwise
+   */
+  boolean isInlineDefinition();
+
+  /**
    * This represents the qualified name of a referenced definition.
    *
    * @return the qualified name

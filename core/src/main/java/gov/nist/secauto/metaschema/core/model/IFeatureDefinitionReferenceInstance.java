@@ -18,6 +18,11 @@ public interface IFeatureDefinitionReferenceInstance<
   @Override
   DEFINITION getDefinition();
 
+  @Override
+  default boolean isInlineDefinition() {
+    return false;
+  }
+
   /**
    * Get the instance this definition is combined with.
    *

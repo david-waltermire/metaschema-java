@@ -5,14 +5,19 @@
 
 package gov.nist.secauto.metaschema.core.model.constraint.impl;
 
-import gov.nist.secauto.metaschema.core.metapath.item.node.IAssemblyInstanceGroupedNodeItem;
-import gov.nist.secauto.metaschema.core.metapath.item.node.IAssemblyNodeItem;
-import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
-import gov.nist.secauto.metaschema.core.metapath.item.node.IFieldNodeItem;
-import gov.nist.secauto.metaschema.core.metapath.item.node.IFlagNodeItem;
-import gov.nist.secauto.metaschema.core.metapath.item.node.IModuleNodeItem;
-import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
-import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItemVisitor;
+import gov.nist.secauto.metaschema.core.model.AbstractModelElementVisitor;
+import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
+import gov.nist.secauto.metaschema.core.model.IAssemblyInstanceAbsolute;
+import gov.nist.secauto.metaschema.core.model.IAssemblyInstanceGrouped;
+import gov.nist.secauto.metaschema.core.model.IChoiceGroupInstance;
+import gov.nist.secauto.metaschema.core.model.IChoiceInstance;
+import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
+import gov.nist.secauto.metaschema.core.model.IFieldInstanceAbsolute;
+import gov.nist.secauto.metaschema.core.model.IFieldInstanceGrouped;
+import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
+import gov.nist.secauto.metaschema.core.model.IFlagInstance;
+import gov.nist.secauto.metaschema.core.model.IModelElement;
+import gov.nist.secauto.metaschema.core.model.INamedModelElement;
 import gov.nist.secauto.metaschema.core.model.constraint.ConstraintInitializationException;
 import gov.nist.secauto.metaschema.core.model.constraint.ITargetedConstraints;
 
@@ -22,54 +27,104 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * Applies targeted constraints to their intended targets.
  */
 public class ConstraintComposingVisitor
-    implements INodeItemVisitor<ITargetedConstraints, Void> {
+    extends AbstractModelElementVisitor<ITargetedConstraints, Void> {
 
   @Override
-  public Void visitDocument(IDocumentNodeItem item, ITargetedConstraints context) {
-    illegalTargetError(item, context);
+  public Void visitChoiceInstance(IChoiceInstance instance, ITargetedConstraints context) {
+    illegalTargetError(instance, context);
     return null;
   }
 
   @Override
-  public Void visitFlag(IFlagNodeItem item, ITargetedConstraints context) {
-    context.target(item.getDefinition());
+  public Void visitChoiceGroupInstance(IChoiceGroupInstance instance, ITargetedConstraints context) {
+    illegalTargetError(instance, context);
     return null;
   }
 
   @Override
-  public Void visitField(IFieldNodeItem item, ITargetedConstraints context) {
-    context.target(item.getDefinition());
+  public Void visitFlagInstance(IFlagInstance instance, ITargetedConstraints context) {
+    if (instance.isInlineDefinition()) {
+      visitFlagDefinition(instance.getDefinition(), context);
+    } else {
+      illegalTargetError(instance, context);
+    }
     return null;
   }
 
   @Override
-  public Void visitAssembly(IAssemblyNodeItem item, ITargetedConstraints context) {
-    context.target(item.getDefinition());
+  public Void visitFieldInstance(IFieldInstanceAbsolute instance, ITargetedConstraints context) {
+    if (instance.isInlineDefinition()) {
+      visitFieldDefinition(instance.getDefinition(), context);
+    } else {
+      illegalTargetError(instance, context);
+    }
     return null;
   }
 
   @Override
-  public Void visitAssembly(IAssemblyInstanceGroupedNodeItem item, ITargetedConstraints context) {
-    context.target(item.getDefinition());
+  public Void visitFieldInstance(IFieldInstanceGrouped instance, ITargetedConstraints context) {
+    if (instance.isInlineDefinition()) {
+      visitFieldDefinition(instance.getDefinition(), context);
+    } else {
+      illegalTargetError(instance, context);
+    }
     return null;
   }
 
   @Override
-  public Void visitMetaschema(@NonNull IModuleNodeItem item, ITargetedConstraints context) {
-    illegalTargetError(item, context);
+  public Void visitAssemblyInstance(IAssemblyInstanceAbsolute instance, ITargetedConstraints context) {
+    if (instance.isInlineDefinition()) {
+      visitAssemblyDefinition(instance.getDefinition(), context);
+    } else {
+      illegalTargetError(instance, context);
+    }
+    return null;
+  }
+
+  @Override
+  public Void visitAssemblyInstance(IAssemblyInstanceGrouped instance, ITargetedConstraints context) {
+    if (instance.isInlineDefinition()) {
+      visitAssemblyDefinition(instance.getDefinition(), context);
+    } else {
+      illegalTargetError(instance, context);
+    }
+    return null;
+  }
+
+  @Override
+  public Void visitFlagDefinition(IFlagDefinition definition, ITargetedConstraints context) {
+    context.target(definition);
+    return null;
+  }
+
+  @Override
+  public Void visitFieldDefinition(IFieldDefinition definition, ITargetedConstraints context) {
+    context.target(definition);
+    return null;
+  }
+
+  @Override
+  public Void visitAssemblyDefinition(IAssemblyDefinition definition, ITargetedConstraints context) {
+    context.target(definition);
     return null;
   }
 
   private static void illegalTargetError(
-      @NonNull INodeItem item,
+      @NonNull IModelElement element,
       ITargetedConstraints context) {
     throw new ConstraintInitializationException(
         String.format(
-            "Invalid target '%s' for constraints targeting '%s' in '%s'. A document node is an" +
+            "Invalid %s target%s for constraints targeting '%s' in '%s'. A document node is an" +
                 " invalid constraint target. Constraints can only apply to an assembly, field, or flag definition.",
-            item.getMetapath(),
+            element.getModelType(),
+            element instanceof INamedModelElement ? " '" + ((INamedModelElement) element).getQName() + "'" : "",
             context.getTarget(),
             context.getSource().getLocationHint()));
 
+  }
+
+  @Override
+  protected Void defaultResult(IModelElement element, ITargetedConstraints context) {
+    return null;
   }
 }

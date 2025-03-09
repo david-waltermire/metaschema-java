@@ -18,6 +18,7 @@ import gov.nist.secauto.metaschema.core.model.IContainerModel;
 import gov.nist.secauto.metaschema.core.model.IContainerModelAssemblySupport;
 import gov.nist.secauto.metaschema.core.model.IFieldInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
+import gov.nist.secauto.metaschema.core.model.IModelElementVisitor;
 import gov.nist.secauto.metaschema.core.model.IModelInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.INamedModelInstanceAbsolute;
 import gov.nist.secauto.metaschema.core.model.ISource;
@@ -52,6 +53,24 @@ class XmlInlineAssemblyDefinition
         IChoiceInstance,
         IChoiceGroupInstance>
     implements IAssemblyInstanceAbsolute {
+
+  /**
+   * A visitor callback.
+   *
+   * @param <CONTEXT>
+   *          the type of the context parameter
+   * @param <RESULT>
+   *          the type of the visitor result
+   * @param visitor
+   *          the calling visitor
+   * @param context
+   *          a parameter used to pass contextual information between visitors
+   * @return the visitor result
+   */
+  @Override
+  public <CONTEXT, RESULT> RESULT accept(@NonNull IModelElementVisitor<CONTEXT, RESULT> visitor, CONTEXT context) {
+    return visitor.visitAssemblyInstance(this, context);
+  }
 
   // ----------------------------------------
   // - Start XmlBeans driven code - CPD-OFF -

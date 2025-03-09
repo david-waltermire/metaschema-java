@@ -8,6 +8,7 @@ package gov.nist.secauto.metaschema.databind.model;
 import gov.nist.secauto.metaschema.core.model.IBoundObject;
 import gov.nist.secauto.metaschema.core.model.IFeatureDefinitionInstanceInlined;
 import gov.nist.secauto.metaschema.core.model.IFlagInstance;
+import gov.nist.secauto.metaschema.core.model.IModelElementVisitor;
 import gov.nist.secauto.metaschema.core.qname.IEnhancedQName;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 import gov.nist.secauto.metaschema.databind.io.BindingException;
@@ -117,5 +118,10 @@ public interface IBoundInstanceFlag
   @Override
   default boolean canHandleXmlQName(@NonNull IEnhancedQName qname) {
     return qname.equals(getQName());
+  }
+
+  @Override
+  default <CONTEXT, RESULT> RESULT accept(IModelElementVisitor<CONTEXT, RESULT> visitor, CONTEXT context) {
+    return IFlagInstance.super.accept(visitor, context);
   }
 }

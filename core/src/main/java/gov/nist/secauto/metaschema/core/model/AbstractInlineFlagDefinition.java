@@ -47,4 +47,22 @@ public abstract class AbstractInlineFlagDefinition<
   public final INSTANCE getInlineInstance() {
     return ObjectUtils.asType(this);
   }
+
+  /**
+   * A visitor callback.
+   *
+   * @param <CONTEXT>
+   *          the type of the context parameter
+   * @param <RESULT>
+   *          the type of the visitor result
+   * @param visitor
+   *          the calling visitor
+   * @param context
+   *          a parameter used to pass contextual information between visitors
+   * @return the visitor result
+   */
+  @Override
+  public <CONTEXT, RESULT> RESULT accept(@NonNull IModelElementVisitor<CONTEXT, RESULT> visitor, CONTEXT context) {
+    return visitor.visitFlagInstance(this, context);
+  }
 }

@@ -7,8 +7,7 @@ package gov.nist.secauto.metaschema.core.model;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-public interface IAssemblyInstanceAbsolute extends IAssemblyInstance, INamedModelInstanceAbsolute {
-
+public interface IModelElementVisitable {
   /**
    * A visitor callback.
    *
@@ -22,8 +21,5 @@ public interface IAssemblyInstanceAbsolute extends IAssemblyInstance, INamedMode
    *          a parameter used to pass contextual information between visitors
    * @return the visitor result
    */
-  @Override
-  default <CONTEXT, RESULT> RESULT accept(@NonNull IModelElementVisitor<CONTEXT, RESULT> visitor, CONTEXT context) {
-    return visitor.visitAssemblyInstance(this, context);
-  }
+  <CONTEXT, RESULT> RESULT accept(@NonNull IModelElementVisitor<CONTEXT, RESULT> visitor, CONTEXT context);
 }

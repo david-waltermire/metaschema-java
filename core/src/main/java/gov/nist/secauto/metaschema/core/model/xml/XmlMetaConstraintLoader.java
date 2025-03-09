@@ -8,19 +8,14 @@ package gov.nist.secauto.metaschema.core.model.xml;
 import gov.nist.secauto.metaschema.core.metapath.IMetapathExpression;
 import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.model.AbstractLoader;
-import gov.nist.secauto.metaschema.core.model.IAssemblyDefinition;
 import gov.nist.secauto.metaschema.core.model.IConstraintLoader;
-import gov.nist.secauto.metaschema.core.model.IDefinition;
-import gov.nist.secauto.metaschema.core.model.IFieldDefinition;
-import gov.nist.secauto.metaschema.core.model.IFlagDefinition;
 import gov.nist.secauto.metaschema.core.model.IModule;
 import gov.nist.secauto.metaschema.core.model.ISource;
-import gov.nist.secauto.metaschema.core.model.constraint.AbstractTargetedConstraints;
 import gov.nist.secauto.metaschema.core.model.constraint.AssemblyConstraintSet;
 import gov.nist.secauto.metaschema.core.model.constraint.IConstraintSet;
-import gov.nist.secauto.metaschema.core.model.constraint.IFeatureModelConstrained;
 import gov.nist.secauto.metaschema.core.model.constraint.IModelConstrained;
 import gov.nist.secauto.metaschema.core.model.constraint.ITargetedConstraints;
+import gov.nist.secauto.metaschema.core.model.constraint.ModelTargetedConstraints;
 import gov.nist.secauto.metaschema.core.model.xml.impl.ConstraintXmlSupport;
 import gov.nist.secauto.metaschema.core.model.xml.xmlbeans.MetaschemaMetaConstraintsDocument;
 import gov.nist.secauto.metaschema.core.model.xml.xmlbeans.MetaschemaMetapathReferenceType;
@@ -152,7 +147,7 @@ public class XmlMetaConstraintLoader
     public List<ITargetedConstraints> getTargetedConstraints() {
       return Stream.concat(
           getMetapaths().stream()
-              .map(metapath -> new MetaTargetedContraints(
+              .map(metapath -> new ModelTargetedConstraints(
                   source,
                   IMetapathExpression.lazyCompile(
                       ObjectUtils.requireNonNull(metapath),
@@ -169,57 +164,6 @@ public class XmlMetaConstraintLoader
 
     public List<String> getMetapaths() {
       return metapaths;
-    }
-  }
-
-  private static class MetaTargetedContraints
-      extends AbstractTargetedConstraints<IModelConstrained>
-      implements IFeatureModelConstrained {
-
-    protected MetaTargetedContraints(
-        @NonNull ISource source,
-        @NonNull IMetapathExpression target,
-        @NonNull IModelConstrained constraints) {
-      super(source, target, constraints);
-    }
-
-    /**
-     * Apply the constraints to the provided {@code definition}.
-     * <p>
-     * This will be called when a definition is found that matches the target
-     * expression.
-     *
-     * @param definition
-     *          the definition to apply the constraints to.
-     */
-    protected void applyTo(@NonNull IDefinition definition) {
-      getLetExpressions().values().forEach(definition::addLetExpression);
-      getAllowedValuesConstraints().forEach(definition::addConstraint);
-      getMatchesConstraints().forEach(definition::addConstraint);
-      getIndexHasKeyConstraints().forEach(definition::addConstraint);
-      getExpectConstraints().forEach(definition::addConstraint);
-    }
-
-    protected void applyTo(@NonNull IAssemblyDefinition definition) {
-      applyTo((IDefinition) definition);
-      getIndexConstraints().forEach(definition::addConstraint);
-      getUniqueConstraints().forEach(definition::addConstraint);
-      getHasCardinalityConstraints().forEach(definition::addConstraint);
-    }
-
-    @Override
-    public void target(IFlagDefinition definition) {
-      applyTo(definition);
-    }
-
-    @Override
-    public void target(IFieldDefinition definition) {
-      applyTo(definition);
-    }
-
-    @Override
-    public void target(IAssemblyDefinition definition) {
-      applyTo(definition);
     }
   }
 
