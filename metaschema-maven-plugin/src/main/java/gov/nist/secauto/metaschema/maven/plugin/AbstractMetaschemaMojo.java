@@ -290,19 +290,13 @@ public abstract class AbstractMetaschemaMojo
   }
 
   @NonNull
-  protected IModuleLoader.IModulePostProcessor newModulePostProcessor()
-      throws MetaschemaException, IOException {
-    List<IConstraintSet> constraints = getConstraints();
-    return new LimitedExternalConstraintsModulePostProcessor(constraints);
-  }
-
-  @NonNull
-  protected IBindingContext newBindingContext() throws IOException, MetaschemaException {
+  protected IBindingContext newBindingContext(
+      @NonNull IModuleLoader.IModulePostProcessor modulePostProcessor) throws IOException, MetaschemaException {
     // generate Java sources based on provided metaschema sources
     return new DefaultBindingContext(
         new PostProcessingModuleLoaderStrategy(
             // ensure that the external constraints do not apply to the built in module
-            CollectionUtil.singletonList(newModulePostProcessor()),
+            CollectionUtil.singletonList(modulePostProcessor),
             new SimpleModuleLoaderStrategy(
                 // this is used instead of the default generator to ensure that plugin classpath
                 // entries are used for compilation
@@ -315,18 +309,19 @@ public abstract class AbstractMetaschemaMojo
    * Get the configured collection of constraints.
    *
    * @return the loaded constraints
-   * @throws MetaschemaException
-   *           if a binding exception occurred while loading the constraints
-   * @throws IOException
-   *           if an error occurred while reading the constraints
+   * @throws MojoExecutionException
+   *           if an error occurred while loading the constraints
    */
   @NonNull
-  protected List<IConstraintSet> getConstraints()
-      throws MetaschemaException, IOException {
+  protected List<IConstraintSet> getConstraints() throws MojoExecutionException {
     IConstraintLoader loader = IBindingContext.getConstraintLoader();
     List<IConstraintSet> constraintSets = new ArrayList<>(constraints.length);
     for (File constraint : this.constraints) {
-      constraintSets.addAll(loader.load(ObjectUtils.notNull(constraint)));
+      try {
+        constraintSets.addAll(loader.load(ObjectUtils.notNull(constraint)));
+      } catch (IOException | MetaschemaException ex) {
+        throw new MojoExecutionException("Loading of external constraints failed", ex);
+      }
     }
     return CollectionUtil.unmodifiableList(constraintSets);
   }
@@ -427,18 +422,16 @@ public abstract class AbstractMetaschemaMojo
   }
 
   @NonNull
-  protected Set<IModule> getModulesToGenerateFor(@NonNull IBindingContext bindingContext)
+  protected Set<IModule> getModulesToGenerateFor(
+      @NonNull IBindingContext bindingContext,
+      @NonNull IModuleLoader.IModulePostProcessor modulePostProcessor)
       throws MetaschemaException, IOException {
 
     // Don't use the normal loader, since it attempts to register and compile the
     // module.
     // We only care about the module content for generating sources and schemas
     IBindingModuleLoader loader = new BindingModuleLoader(bindingContext, (module, ctx) -> {
-      try {
-        newModulePostProcessor().processModule(module);
-      } catch (IOException | MetaschemaException ex) {
-        throw new IllegalStateException(ex);
-      }
+      modulePostProcessor.processModule(module);
     });
     loader.allowEntityResolution();
 
@@ -509,10 +502,13 @@ public abstract class AbstractMetaschemaMojo
     }
 
     if (generate) {
+      List<IConstraintSet> constraints = getConstraints();
+      IModuleLoader.IModulePostProcessor modulePostProcessor
+          = new LimitedExternalConstraintsModulePostProcessor(constraints);
 
       List<File> generatedFiles;
       try {
-        generatedFiles = performGeneration();
+        generatedFiles = performGeneration(modulePostProcessor);
       } finally {
         // ensure the stale file is created to ensure that regeneration is only
         // performed when a
@@ -533,7 +529,8 @@ public abstract class AbstractMetaschemaMojo
 
   @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "PMD.ExceptionAsFlowControl" })
   @NonNull
-  private List<File> performGeneration() throws MojoExecutionException {
+  private List<File> performGeneration(
+      @NonNull IModuleLoader.IModulePostProcessor modulePostProcessor) throws MojoExecutionException {
     File outputDir = getOutputDirectory();
     if (getLog().isDebugEnabled()) {
       getLog().debug(String.format("Using outputDirectory: %s", outputDir.getPath()));
@@ -545,7 +542,7 @@ public abstract class AbstractMetaschemaMojo
 
     IBindingContext bindingContext;
     try {
-      bindingContext = newBindingContext();
+      bindingContext = newBindingContext(modulePostProcessor);
     } catch (MetaschemaException | IOException ex) {
       throw new MojoExecutionException("Failed to create the binding context", ex);
     }
@@ -553,7 +550,7 @@ public abstract class AbstractMetaschemaMojo
     // generate Java sources based on provided metaschema sources
     Set<IModule> modules;
     try {
-      modules = getModulesToGenerateFor(bindingContext);
+      modules = getModulesToGenerateFor(bindingContext, modulePostProcessor);
     } catch (Exception ex) {
       throw new MojoExecutionException("Loading of metaschema modules failed", ex);
     }
