@@ -191,8 +191,8 @@ public final class MetaschemaDataTypeProvider // NOPMD - Used for service initia
   public static final TokenAdapter TOKEN = new TokenAdapter();
   /**
    * The Metaschema <a href=
-   * "https://pages.nist.gov/metaschema/specification/datatypes/#tbd">TBD</a>
-   * data type instance.
+   * "https://pages.nist.gov/metaschema/specification/datatypes/#tbd">TBD</a> data
+   * type instance.
    */
   public static final QNameAdapter QNAME = new QNameAdapter();
   /**

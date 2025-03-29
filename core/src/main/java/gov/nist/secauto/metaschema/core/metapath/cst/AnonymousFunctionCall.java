@@ -127,6 +127,12 @@ public class AnonymousFunctionCall
     }
 
     @Override
+    public boolean isNamedFunction() {
+      // these functions are anonymous
+      return false;
+    }
+
+    @Override
     @NonNull
     protected ISequence<?> executeInternal(
         @NonNull List<ISequence<?>> arguments,

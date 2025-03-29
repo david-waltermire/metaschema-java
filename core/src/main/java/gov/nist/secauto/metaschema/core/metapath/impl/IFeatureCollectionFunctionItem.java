@@ -68,4 +68,10 @@ public interface IFeatureCollectionFunctionItem extends IFunction {
   default ISequenceType getResult() {
     return RESULT;
   }
+
+  @Override
+  default boolean isNamedFunction() {
+    // these functions are not named, since they refer to anonymous collections
+    return false;
+  }
 }

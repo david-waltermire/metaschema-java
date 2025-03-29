@@ -9,24 +9,24 @@ import static gov.nist.secauto.metaschema.core.metapath.TestUtils.qname;
 import static gov.nist.secauto.metaschema.core.metapath.TestUtils.sequence;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.stream.Stream;
+import gov.nist.secauto.metaschema.core.metapath.ExpressionTestBase;
+import gov.nist.secauto.metaschema.core.metapath.IMetapathExpression;
+import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
+import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.stream.Stream;
+
 import edu.umd.cs.findbugs.annotations.NonNull;
-import gov.nist.secauto.metaschema.core.metapath.ExpressionTestBase;
-import gov.nist.secauto.metaschema.core.metapath.IMetapathExpression;
-import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 
 class FnFunctionNameTest
     extends ExpressionTestBase {
 
   private static Stream<Arguments> provideValues() { // NOPMD - false positive
     return Stream.of(
-    	//TODO: Change return type not string, make sequence of IQNameItem to test faithfully
         Arguments.of(
             sequence(qname(MetapathConstants.NS_METAPATH_FUNCTIONS, "substring")),
             "fn:function-name(fn:substring#2)"),

@@ -49,7 +49,7 @@ public class QNameAdapter
   @SuppressWarnings("null")
   @Override
   public IEnhancedQName parse(String value) {
-	throw new UnsupportedOperationException("QNameAdapter does not support parse qualified namespaces or prefixes."); 
+    throw new UnsupportedOperationException("QNameAdapter does not support parse qualified namespaces or prefixes.");
   }
 
   @Override

@@ -48,7 +48,7 @@ public interface IQNameItem extends IAnyAtomicItem {
    */
   @NonNull
   static IQNameItem valueOf(@NonNull String value) {
-	return valueOf(EQNameFactory.instance().parseUriQualifiedName(value));
+    return valueOf(EQNameFactory.instance().parseUriQualifiedName(value));
   }
 
   /**
@@ -84,8 +84,6 @@ public interface IQNameItem extends IAnyAtomicItem {
       throw new InvalidValueForCastFunctionException(ex);
     }
   }
-
-
 
   @Override
   default IQNameItem castAsType(IAnyAtomicItem item) {

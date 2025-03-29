@@ -73,6 +73,11 @@ public class DefaultFunction
     return result;
   }
 
+  @Override
+  public boolean isNamedFunction() {
+    return true;
+  }
+
   /**
    * Execute the provided function using the provided arguments, dynamic context,
    * and focus.
