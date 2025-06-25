@@ -9,6 +9,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IMetapathQueryable {
   /**
    * Get the Metapath node item for this Metaschema module construct, which can be

@@ -51,7 +51,7 @@ public final class NodeComparators {
       @Nullable IAnyAtomicItem atomic1,
       @Nullable IAnyAtomicItem atomic2,
       @NonNull DynamicContext dynamicContext) {
-    return (atomic1 == null && atomic2 == null) || (atomic1 != null && atomic1.deepEquals(atomic2, dynamicContext));
+    return atomic1 == null && atomic2 == null || atomic1 != null && atomic1.deepEquals(atomic2, dynamicContext);
   }
 
   /**
@@ -164,7 +164,6 @@ public final class NodeComparators {
         && compareAtomics(item1.toAtomicItem(), item2.toAtomicItem(), dynamicContext);
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
   private static boolean compareAsField(
       @NonNull IModelNodeItem<?, ?> item1,
       @NonNull IModelNodeItem<?, ?> item2,

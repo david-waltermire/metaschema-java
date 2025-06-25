@@ -15,7 +15,6 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings({
-    "PMD.DataClass",
     "PMD.FieldNamingConventions"
 })
 @MetaschemaAssembly(

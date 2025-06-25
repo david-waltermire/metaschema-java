@@ -7,14 +7,12 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.List;
 
@@ -63,10 +61,8 @@ public final class FnRoot {
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    INodeItem arg = FunctionUtils.asType(
-        // test that the focus is an INodeItem
-        INodeItem.type().test(ObjectUtils.requireNonNull(focus)));
-
+    // test that the focus is an INodeItem
+    INodeItem arg = INodeItem.type().test(focus);
     return ISequence.of(fnRoot(arg));
   }
 
@@ -76,7 +72,7 @@ public final class FnRoot {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    INodeItem arg = FunctionUtils.asTypeOrNull(ObjectUtils.requireNonNull(arguments.get(0)).getFirstItem(true));
+    INodeItem arg = INodeItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
     return arg == null ? ISequence.empty() : ISequence.of(fnRoot(arg));
   }
 

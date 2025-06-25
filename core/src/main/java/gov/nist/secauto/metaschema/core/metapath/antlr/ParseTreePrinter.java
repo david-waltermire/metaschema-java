@@ -19,7 +19,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * the tree.
  */
 public class ParseTreePrinter {
-  @SuppressWarnings("resource")
   @NotOwning
   @NonNull
   private final PrintStream outputStream;

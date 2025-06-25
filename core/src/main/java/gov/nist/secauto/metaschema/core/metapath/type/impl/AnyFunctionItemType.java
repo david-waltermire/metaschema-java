@@ -45,17 +45,17 @@ public final class AnyFunctionItemType<T extends IFunction>
       "array(*)");
 
   @NonNull
-  private final String signature;
+  private final String signatureBase;
 
   private AnyFunctionItemType(
       @NonNull Class<T> itemClass,
       @NonNull String signature) {
     super(itemClass);
-    this.signature = signature;
+    this.signatureBase = signature;
   }
 
   @Override
-  public String toSignature() {
-    return signature;
+  protected String generateSignature() {
+    return signatureBase;
   }
 }

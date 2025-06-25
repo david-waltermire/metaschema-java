@@ -10,26 +10,14 @@ import gov.nist.secauto.metaschema.core.model.IDefinition;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@FunctionalInterface
 public interface IInlineStrategy {
   @NonNull
-  IInlineStrategy NONE_INLINE = new IInlineStrategy() {
-    @Override
-    public boolean isInline(
-        @NonNull IDefinition definition,
-        @NonNull ModuleIndex metaschemaIndex) {
-      return false;
-    }
-  };
+  IInlineStrategy NONE_INLINE = (@NonNull IDefinition definition, @NonNull ModuleIndex metaschemaIndex) -> false;
 
   @NonNull
-  IInlineStrategy DEFINED_AS_INLINE = new IInlineStrategy() {
-    @Override
-    public boolean isInline(
-        @NonNull IDefinition definition,
-        @NonNull ModuleIndex metaschemaIndex) {
-      return definition.isInline();
-    }
-  };
+  IInlineStrategy DEFINED_AS_INLINE
+      = (@NonNull IDefinition definition, @NonNull ModuleIndex metaschemaIndex) -> definition.isInline();
 
   @NonNull
   IInlineStrategy CHOICE_NOT_INLINE = new ChoiceNotInlineStrategy();

@@ -38,8 +38,8 @@ public abstract class AbstractGlobalDefinition<MODULE extends IModule, INSTANCE 
    */
   protected AbstractGlobalDefinition(@NonNull MODULE module, @NonNull NameInitializer initializer) {
     this.module = module;
-    this.qname = ObjectUtils.notNull(Lazy.lazy(() -> initializer.apply(getEffectiveName())));
-    this.definitionQName = ObjectUtils.notNull(Lazy.lazy(() -> initializer.apply(getName())));
+    this.qname = ObjectUtils.notNull(Lazy.of(() -> initializer.apply(getEffectiveName())));
+    this.definitionQName = ObjectUtils.notNull(Lazy.of(() -> initializer.apply(getName())));
   }
 
   @Override

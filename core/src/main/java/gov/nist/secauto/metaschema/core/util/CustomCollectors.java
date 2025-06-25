@@ -293,7 +293,6 @@ public final class CustomCollectors {
   @NonNull
   public static <ITEM_TYPE extends IItem> Collector<ITEM_TYPE, ?, ISequence<ITEM_TYPE>> toSequence() {
     return new Collector<ITEM_TYPE, List<ITEM_TYPE>, ISequence<ITEM_TYPE>>() {
-      @SuppressWarnings("null")
       @Override
       public Supplier<List<ITEM_TYPE>> supplier() {
         return ArrayList::new;

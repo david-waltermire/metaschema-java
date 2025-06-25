@@ -10,6 +10,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.atomic.ITemporalItem;
 /**
  * An {@link IMapItem} key based on an {@link ITemporalItem} value.
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface ITemporalMapKey extends IMapKey {
 
   @Override

@@ -38,7 +38,6 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * flags.
  */
 final class XmlFlagContainerSupport {
-  @SuppressWarnings("PMD.UseConcurrentHashMap")
   @NonNull
   private static final XmlObjectParser<Pair<IModelDefinition, IFlagContainerBuilder<IFlagInstance>>> XML_MODEL_PARSER
       = new XmlObjectParser<>(ObjectUtils.notNull(

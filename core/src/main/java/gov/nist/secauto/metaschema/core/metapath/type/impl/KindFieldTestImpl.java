@@ -33,7 +33,12 @@ public class KindFieldTestImpl
       @Nullable IEnhancedQName instanceName,
       @Nullable String typeName,
       @NonNull StaticContext staticContext) {
-    super("field", instanceName, typeName, staticContext);
+    super(instanceName, typeName, staticContext);
+  }
+
+  @Override
+  protected String getTestName() {
+    return "field";
   }
 
   @Override

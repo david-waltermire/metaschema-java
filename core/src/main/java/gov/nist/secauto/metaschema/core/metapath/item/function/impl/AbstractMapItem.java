@@ -6,14 +6,12 @@
 package gov.nist.secauto.metaschema.core.metapath.item.function.impl;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.library.MapGet;
 import gov.nist.secauto.metaschema.core.metapath.impl.IFeatureCollectionFunctionItem;
 import gov.nist.secauto.metaschema.core.metapath.item.ICollectionValue;
 import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
-import gov.nist.secauto.metaschema.core.metapath.item.atomic.IIntegerItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IMapItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IMapKey;
 import gov.nist.secauto.metaschema.core.qname.IEnhancedQName;
@@ -78,9 +76,7 @@ public abstract class AbstractMapItem<VALUE extends ICollectionValue>
   @Override
   public ISequence<?> execute(List<? extends ISequence<?>> arguments, DynamicContext dynamicContext,
       ISequence<?> focus) {
-    ISequence<? extends IIntegerItem> arg = FunctionUtils.asType(
-        ObjectUtils.notNull(arguments.get(0)));
-
+    ISequence<? extends IAnyAtomicItem> arg = arguments.get(0).ofType(IAnyAtomicItem.type());
     IAnyAtomicItem key = arg.getFirstItem(true);
     if (key == null) {
       return ISequence.empty(); // NOPMD - readability

@@ -20,7 +20,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * that siblings must never share <code>json-key</code> values.
  */
 @SuppressWarnings({
-    "PMD.DataClass",
     "PMD.FieldNamingConventions"
 })
 @MetaschemaAssembly(

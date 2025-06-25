@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.function.InvalidArgumentFunctionException;
@@ -16,7 +15,6 @@ import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyUriItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.List;
 
@@ -81,8 +79,7 @@ public final class FnResolveUri {
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    ISequence<? extends IStringItem> relativeSequence
-        = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
+    ISequence<IStringItem> relativeSequence = arguments.get(0).ofType(IStringItem.type());
     if (relativeSequence.isEmpty()) {
       return ISequence.empty(); // NOPMD - readability
     }
@@ -110,26 +107,23 @@ public final class FnResolveUri {
    * @return a sequence containing the resolved URI or and empty sequence if
    *         either the base or relative URI is {@code null}
    */
-  @SuppressWarnings("PMD.UnusedPrivateMethod") // used in lambda
+  @SuppressWarnings({ "PMD.UnusedFormalParameter" }) // used in lambda
   @NonNull
   private static ISequence<IAnyUriItem> executeTwoArg(
-      @NonNull IFunction function, // NOPMD - ok
+      @NonNull IFunction function,
       @NonNull List<ISequence<?>> arguments,
-      @NonNull DynamicContext dynamicContext, // NOPMD - ok
-      IItem focus) { // NOPMD - ok
+      @NonNull DynamicContext dynamicContext,
+      IItem focus) {
 
     /* there will always be two arguments */
     assert arguments.size() == 2;
 
-    ISequence<? extends IStringItem> relativeSequence = FunctionUtils.asType(
-        ObjectUtils.requireNonNull(arguments.get(0)));
+    ISequence<IStringItem> relativeSequence = arguments.get(0).ofType(IStringItem.type());
     if (relativeSequence.isEmpty()) {
       return ISequence.empty(); // NOPMD - readability
     }
 
-    ISequence<? extends IStringItem> baseSequence = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1)));
-    IStringItem baseString = baseSequence.getFirstItem(true);
-
+    IStringItem baseString = IStringItem.type().ofTypeOrNull(arguments.get(1).getFirstItem(true));
     if (baseString == null) {
       throw new InvalidArgumentFunctionException(
           InvalidArgumentFunctionException.INVALID_ARGUMENT_TO_RESOLVE_URI,

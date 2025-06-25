@@ -5,9 +5,6 @@
 
 package gov.nist.secauto.metaschema.core.metapath;
 
-import java.util.Deque;
-
-import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
 public class InvalidTreatTypeDynamicMetapathException
@@ -21,9 +18,7 @@ public class InvalidTreatTypeDynamicMetapathException
    * @param message
    *          the exception message
    */
-  public InvalidTreatTypeDynamicMetapathException(
-      @NonNull Deque<IExpression> evaluationStack,
-      @Nullable String message) {
+  public InvalidTreatTypeDynamicMetapathException(@Nullable String message) {
     super(TREAT_DOES_NOT_MATCH_TYPE, message);
   }
 

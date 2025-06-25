@@ -49,7 +49,6 @@ public class Base64BinaryItemImpl
     return asByteBuffer().hashCode();
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override
   public boolean equals(Object obj) {
     return this == obj

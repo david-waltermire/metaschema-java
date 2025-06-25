@@ -3,6 +3,7 @@ package gov.nist.secauto.metaschema.core.metapath.item.node;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface INodeItemVisitable {
   /**
    * A visitor callback.

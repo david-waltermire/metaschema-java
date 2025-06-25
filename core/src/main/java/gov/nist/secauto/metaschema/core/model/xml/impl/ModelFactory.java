@@ -275,7 +275,7 @@ public final class ModelFactory {
     for (KeyConstraintType.KeyField xmlKeyField : xmlObject.getKeyFieldList()) {
       IKeyField keyField = IKeyField.of(
           metapath(ObjectUtils.requireNonNull(xmlKeyField.getTarget()), source),
-          xmlKeyField.isSetPattern() ? xmlKeyField.getPattern() : null, // NOPMD - intentional
+          xmlKeyField.isSetPattern() ? xmlKeyField.getPattern() : null,
           xmlKeyField.isSetRemarks() ? remarks(ObjectUtils.notNull(xmlKeyField.getRemarks())) : null);
       builder.keyField(keyField);
     }

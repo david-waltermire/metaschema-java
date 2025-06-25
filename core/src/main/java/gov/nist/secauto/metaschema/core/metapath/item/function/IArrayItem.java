@@ -40,7 +40,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * @param <ITEM>
  *          the Metapath item type of array members
  */
-@SuppressWarnings({ "PMD.ShortMethodName", "PMD.ExcessivePublicCount" })
+@SuppressWarnings({ "PMD.ShortMethodName" })
 public interface IArrayItem<ITEM extends ICollectionValue> extends IFunction, List<ITEM> {
   /**
    * Get the type information for this item.
@@ -224,7 +224,7 @@ public interface IArrayItem<ITEM extends ICollectionValue> extends IFunction, Li
    * @return an array item containing the specified entries
    */
   @NonNull
-  static <T extends ICollectionValue> IArrayItem<T> ofCollection( // NOPMD - intentional
+  static <T extends ICollectionValue> IArrayItem<T> ofCollection(
       @NonNull List<T> items) {
     return items.isEmpty() ? empty() : new ArrayItemN<>(items);
   }

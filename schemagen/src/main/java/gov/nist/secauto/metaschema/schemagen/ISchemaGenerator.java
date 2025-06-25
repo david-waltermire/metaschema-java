@@ -19,6 +19,7 @@ import java.nio.file.StandardOpenOption;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface ISchemaGenerator {
   /**
    * Generate and write a schema for the provided {@code metaschema} to the

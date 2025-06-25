@@ -10,6 +10,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.atomic.ICalendarTemporalIt
 /**
  * An {@link IMapItem} key based on an {@link ICalendarTemporalItem}.
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface ICalendarMapKey extends ITemporalMapKey {
   @Override
   ICalendarTemporalItem getKey();

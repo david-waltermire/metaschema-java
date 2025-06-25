@@ -7,14 +7,12 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IDateTimeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IDayTimeDurationItem;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.List;
 
@@ -55,7 +53,8 @@ public final class FnTimezoneFromDateTime {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IDateTimeItem arg = FunctionUtils.asTypeOrNull(ObjectUtils.requireNonNull(arguments.get(0).getFirstItem(true)));
+    IDateTimeItem arg
+        = IDateTimeItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
     return arg == null
         // Per spec, return empty sequence if the arg is null
         ? ISequence.empty()

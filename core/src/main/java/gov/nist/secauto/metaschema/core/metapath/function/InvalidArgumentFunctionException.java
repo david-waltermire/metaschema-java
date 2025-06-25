@@ -12,6 +12,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 /**
  * FORG: Exceptions related to argument types.
  */
+@SuppressWarnings("PMD.DataClass")
 public class InvalidArgumentFunctionException
     extends FunctionMetapathError {
   @NonNull

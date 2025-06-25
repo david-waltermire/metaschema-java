@@ -40,10 +40,10 @@ class FieldInstanceNodeItemImpl
       @NonNull Object value,
       @NonNull INodeItemGenerator generator) {
     super(instance, parent);
-    this.model = ObjectUtils.notNull(Lazy.lazy(generator.newDataModelSupplier(this)));
+    this.model = ObjectUtils.notNull(Lazy.of(generator.newDataModelSupplier(this)));
     this.position = position;
     this.value = value;
-    this.atomicItem = ObjectUtils.notNull(Lazy.lazy(this::newAtomicItem));
+    this.atomicItem = ObjectUtils.notNull(Lazy.of(this::newAtomicItem));
   }
 
   @SuppressWarnings("null")

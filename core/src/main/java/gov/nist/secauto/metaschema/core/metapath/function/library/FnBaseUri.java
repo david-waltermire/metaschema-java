@@ -7,14 +7,12 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyUriItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.net.URI;
 import java.util.List;
@@ -72,8 +70,7 @@ public final class FnBaseUri {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    return ISequence.of(fnBaseUri(
-        FunctionUtils.requireTypeOrNull(INodeItem.class, focus)));
+    return ISequence.of(fnBaseUri(INodeItem.type().testOrNull(focus)));
   }
 
   @SuppressWarnings("unused")
@@ -82,12 +79,7 @@ public final class FnBaseUri {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-
-    ISequence<? extends INodeItem> arg = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
-
-    INodeItem item = arg.getFirstItem(true);
-
-    return ISequence.of(fnBaseUri(item));
+    return ISequence.of(fnBaseUri(INodeItem.type().ofType(arguments.get(0).getFirstItem(true))));
   }
 
   /**
@@ -107,7 +99,7 @@ public final class FnBaseUri {
   public static IAnyUriItem fnBaseUri(INodeItem nodeItem) {
     IAnyUriItem retval;
     if (nodeItem == null) {
-      retval = null; // NOPMD - intentional
+      retval = null;
     } else {
       URI baseUri = nodeItem.getBaseUri();
       retval = baseUri == null ? null : IAnyUriItem.valueOf(baseUri);

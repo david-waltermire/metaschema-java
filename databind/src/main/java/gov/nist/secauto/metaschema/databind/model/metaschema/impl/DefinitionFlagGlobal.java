@@ -73,7 +73,7 @@ public class DefinitionFlagGlobal
         binding.getAsType(),
         source);
     this.defaultValue = ModelSupport.defaultValue(binding.getDefault(), this.javaTypeAdapter);
-    this.valueConstraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.valueConstraints = ObjectUtils.notNull(Lazy.of(() -> {
       IValueConstrained retval = new ValueConstraintSet(source);
       FlagConstraints constraints = binding.getConstraint();
       if (constraints != null) {
@@ -81,7 +81,7 @@ public class DefinitionFlagGlobal
       }
       return retval;
     }));
-    this.boundNodeItem = ObjectUtils.notNull(Lazy.lazy(() -> ObjectUtils.requireNonNull(ModelSupport.toNodeItem(
+    this.boundNodeItem = ObjectUtils.notNull(Lazy.of(() -> ObjectUtils.requireNonNull(ModelSupport.toNodeItem(
         module,
         bindingInstance.getQName(),
         position))));

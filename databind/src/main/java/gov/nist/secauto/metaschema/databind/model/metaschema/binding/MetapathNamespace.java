@@ -22,7 +22,6 @@ import java.net.URI;
  * a lexical qualified name.
  */
 @SuppressWarnings({
-    "PMD.DataClass",
     "PMD.FieldNamingConventions",
 })
 @MetaschemaAssembly(

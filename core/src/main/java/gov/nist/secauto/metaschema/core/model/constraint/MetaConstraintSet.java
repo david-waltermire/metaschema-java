@@ -131,12 +131,11 @@ public class MetaConstraintSet
         @NonNull List<IMetapathExpression> metapaths,
         @NonNull IModelConstrained modelConstrained) {
       this.metapaths = metapaths;
-      this.contextualizedMetapaths = ObjectUtils.notNull(Lazy.lazy(() -> {
-        return concatMetapaths(parent, ObjectUtils.notNull(metapaths.stream()), source)
-            .collect(Collectors.toUnmodifiableList());
-      }));
+      this.contextualizedMetapaths
+          = ObjectUtils.notNull(Lazy.of(() -> concatMetapaths(parent, ObjectUtils.notNull(metapaths.stream()), source)
+              .collect(Collectors.toUnmodifiableList())));
 
-      this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> new ModelTargetedConstraints(
+      this.constraints = ObjectUtils.notNull(Lazy.of(() -> new ModelTargetedConstraints(
           source,
           this::getContextualizedMetapaths,
           modelConstrained)));

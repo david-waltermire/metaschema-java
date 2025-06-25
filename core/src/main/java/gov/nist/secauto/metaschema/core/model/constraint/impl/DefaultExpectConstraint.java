@@ -57,7 +57,6 @@ public final class DefaultExpectConstraint
    * @param remarks
    *          optional remarks describing the intent of the constraint
    */
-  @SuppressWarnings("PMD.ExcessiveParameterList")
   public DefaultExpectConstraint(
       @Nullable String id,
       @Nullable String formalName,

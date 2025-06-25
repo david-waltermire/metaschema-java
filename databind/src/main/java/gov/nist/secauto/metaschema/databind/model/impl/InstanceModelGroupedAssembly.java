@@ -70,9 +70,9 @@ public class InstanceModelGroupedAssembly
     // Predicate<IBoundInstanceFlag> flagFilter = jsonKey == null ? null : (flag) ->
     // !jsonKey.equals(flag);
     // return getDefinition().getJsonProperties(flagFilter);
-    this.jsonProperties = ObjectUtils.notNull(Lazy.lazy(() -> getDefinition().getJsonProperties(null)));
+    this.jsonProperties = ObjectUtils.notNull(Lazy.of(() -> getDefinition().getJsonProperties(null)));
     this.properties = ObjectUtils.notNull(
-        Lazy.lazy(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
+        Lazy.of(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
             Arrays.stream(annotation.properties())
                 .map(ModelUtil::toPropertyEntry)
                 .collect(

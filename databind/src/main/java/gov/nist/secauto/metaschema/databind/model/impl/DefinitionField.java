@@ -125,27 +125,27 @@ public final class DefinitionField
       throw new IllegalArgumentException(
           String.format("Class '%s' is missing the '%s' annotation on one of its fields.",
               clazz.getName(),
-              BoundFieldValue.class.getName())); // NOPMD false positive
+              BoundFieldValue.class.getName()));
     }
     FieldSupport.bindField(field);
     this.fieldValue = new FieldValue(field, BoundFieldValue.class, bindingContext);
-    this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> new FlagContainerSupport(this, this::handleFlagInstance)));
+    this.flagContainer = ObjectUtils.notNull(Lazy.of(() -> new FlagContainerSupport(this, this::handleFlagInstance)));
 
     ISource source = module.getSource();
 
-    this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.constraints = ObjectUtils.notNull(Lazy.of(() -> {
       IModelConstrained retval = new AssemblyConstraintSet(source);
       ValueConstraints valueAnnotation = getAnnotation().valueConstraints();
       ConstraintSupport.parse(valueAnnotation, source, retval);
       return retval;
     }));
-    this.jsonProperties = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.jsonProperties = ObjectUtils.notNull(Lazy.of(() -> {
       IBoundInstanceFlag jsonValueKey = getJsonValueKeyFlagInstance();
       Predicate<IBoundInstanceFlag> flagFilter = jsonValueKey == null ? null : flag -> !flag.equals(jsonValueKey);
       return getJsonProperties(flagFilter);
     }));
     this.properties = ObjectUtils.notNull(
-        Lazy.lazy(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
+        Lazy.of(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
             Arrays.stream(annotation.properties())
                 .map(ModelUtil::toPropertyEntry)
                 .collect(

@@ -67,7 +67,7 @@ public class DefinitionFieldGlobal
         binding.getAsType(),
         source);
     this.defaultValue = ModelSupport.defaultValue(binding.getDefault(), this.javaTypeAdapter);
-    this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.flagContainer = ObjectUtils.notNull(Lazy.of(() -> {
       JsonKey jsonKey = binding.getJsonKey();
       return FlagContainerSupport.newFlagContainer(
           binding.getFlags(),
@@ -75,7 +75,7 @@ public class DefinitionFieldGlobal
           this,
           jsonKey == null ? null : jsonKey.getFlagRef());
     }));
-    this.valueConstraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.valueConstraints = ObjectUtils.notNull(Lazy.of(() -> {
       IValueConstrained retval = new ValueConstraintSet(source);
       FieldConstraints constraints = binding.getConstraint();
       if (constraints != null) {
@@ -83,7 +83,7 @@ public class DefinitionFieldGlobal
       }
       return retval;
     }));
-    this.boundNodeItem = ObjectUtils.notNull(Lazy.lazy(() -> ObjectUtils.requireNonNull(ModelSupport.toNodeItem(
+    this.boundNodeItem = ObjectUtils.notNull(Lazy.of(() -> ObjectUtils.requireNonNull(ModelSupport.toNodeItem(
         module,
         bindingInstance.getQName(),
         position))));

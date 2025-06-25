@@ -6,9 +6,11 @@
 package gov.nist.secauto.metaschema.core.metapath.type.impl;
 
 import gov.nist.secauto.metaschema.core.metapath.item.function.IMapItem;
+import gov.nist.secauto.metaschema.core.metapath.type.AbstractItemTypeBase;
 import gov.nist.secauto.metaschema.core.metapath.type.IAtomicOrUnionType;
 import gov.nist.secauto.metaschema.core.metapath.type.IMapTest;
 import gov.nist.secauto.metaschema.core.metapath.type.ISequenceType;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -16,7 +18,9 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * An item type that applies to all {@link IMapItem} with a specific key and
  * value type.
  */
-public class MapTestImpl implements IMapTest {
+public class MapTestImpl
+    extends AbstractItemTypeBase
+    implements IMapTest {
   @NonNull
   private final IAtomicOrUnionType<?> keyType;
   @NonNull
@@ -48,7 +52,13 @@ public class MapTestImpl implements IMapTest {
   }
 
   @Override
-  public String toString() {
-    return toSignature();
+  protected String generateSignature() {
+    return ObjectUtils.notNull(new StringBuilder()
+        .append("map(")
+        .append(getKeyType().toSignature())
+        .append(',')
+        .append(getValueType().toSignature())
+        .append(')')
+        .toString());
   }
 }

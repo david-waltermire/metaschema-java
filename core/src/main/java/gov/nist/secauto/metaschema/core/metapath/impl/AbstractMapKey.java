@@ -10,7 +10,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.function.IMapKey;
 import nl.talsmasoftware.lazy4j.Lazy;
 
 public abstract class AbstractMapKey implements IMapKey {
-  private final Lazy<Integer> hashCode = Lazy.lazy(this::generateHashCode);
+  private final Lazy<Integer> hashCode = Lazy.of(this::generateHashCode);
 
   @Override
   public int hashCode() {
@@ -29,7 +29,7 @@ public abstract class AbstractMapKey implements IMapKey {
   @Override
   public boolean equals(Object obj) {
     return this == obj
-        || (obj instanceof IMapKey && isSameKey((IMapKey) obj));
+        || obj instanceof IMapKey && isSameKey((IMapKey) obj);
   }
 
   @Override

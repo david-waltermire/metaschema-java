@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -59,7 +58,7 @@ public final class FnUpperCase {
     // returned.
     return ISequence.of(arguments.get(0).isEmpty()
         ? IStringItem.valueOf("")
-        : fnUpperCase(FunctionUtils.asType(ObjectUtils.notNull(arguments.get(0).getFirstItem(true)))));
+        : fnUpperCase(IStringItem.type().ofType(arguments.get(0).getFirstItem(true))));
   }
 
   /**

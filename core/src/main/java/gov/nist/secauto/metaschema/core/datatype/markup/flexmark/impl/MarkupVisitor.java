@@ -145,7 +145,7 @@ public class MarkupVisitor<T, E extends Throwable> implements IMarkupVisitor<T, 
   @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount" })
   protected boolean processInlineElements(
       @NonNull Node node,
-      @NonNull IMarkupWriter<T, E> writer) throws E { // NOPMD - acceptable
+      @NonNull IMarkupWriter<T, E> writer) throws E {
     boolean retval = true;
     if (node instanceof Text) {
       writer.writeText((Text) node);

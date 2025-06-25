@@ -8,7 +8,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
 import gov.nist.secauto.metaschema.core.metapath.function.ComparisonFunctions;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -16,7 +15,6 @@ import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IIntegerItem;
 import gov.nist.secauto.metaschema.core.metapath.type.InvalidTypeMetapathException;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +59,8 @@ public final class FnIndexOf {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<IAnyAtomicItem> seq = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
-    IAnyAtomicItem search = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
+    ISequence<IAnyAtomicItem> seq = arguments.get(0).ofType(IAnyAtomicItem.type());
+    IAnyAtomicItem search = IAnyAtomicItem.type().ofType(arguments.get(1).getFirstItem(true));
 
     return seq.isEmpty() ? ISequence.empty() : fnIndexOf(seq, search, dynamicContext);
   }
@@ -104,7 +102,7 @@ public final class FnIndexOf {
           // Offset for Metapath indices that start from 1
           indices.add(IIntegerItem.valueOf(index));
         }
-      } catch (@SuppressWarnings("unused") InvalidTypeMetapathException ex) {
+      } catch (InvalidTypeMetapathException ex) {
         // this is an effective false on the match
       }
     }

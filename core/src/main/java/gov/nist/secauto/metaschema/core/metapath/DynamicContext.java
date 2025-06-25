@@ -46,7 +46,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * The implementation of a Metapath
  * <a href="https://www.w3.org/TR/xpath-31/#eval_context">dynamic context</a>.
  */
-public class DynamicContext { // NOPMD - intentional data class
+public class DynamicContext {
 
   @NonNull
   private final Map<Integer, ISequence<?>> letVariableMap;

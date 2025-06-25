@@ -295,7 +295,6 @@ public final class MetaschemaCommands {
    *           if the format option was not provided or was an invalid choice
    * @since 2.0.0
    */
-  @SuppressWarnings("PMD.PreserveStackTrace")
   @NonNull
   public static SchemaFormat getSchemaFormat(
       @NonNull CommandLine commandLine,
@@ -348,7 +347,7 @@ public final class MetaschemaCommands {
    *           if an error occurred while determining the source format
    * @since 2.0.0
    */
-  @SuppressWarnings({ "PMD.PreserveStackTrace", "PMD.OnlyOneReturn" })
+  @SuppressWarnings("PMD.OnlyOneReturn")
   @NonNull
   public static Format determineSourceFormat(
       @NonNull CommandLine commandLine,

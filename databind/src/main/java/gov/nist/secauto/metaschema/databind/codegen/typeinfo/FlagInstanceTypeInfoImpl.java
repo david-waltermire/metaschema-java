@@ -47,7 +47,6 @@ public class FlagInstanceTypeInfoImpl
     return ObjectUtils.notNull(ClassName.get(getInstance().getDefinition().getJavaTypeAdapter().getJavaClass()));
   }
 
-  @SuppressWarnings("PMD.CyclomaticComplexity") // acceptable
   @Override
   public Set<IModelDefinition> buildField(
       TypeSpec.Builder typeBuilder,

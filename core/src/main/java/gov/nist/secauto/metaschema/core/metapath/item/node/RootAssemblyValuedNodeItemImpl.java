@@ -29,7 +29,7 @@ class RootAssemblyValuedNodeItemImpl
       @NonNull INodeItemGenerator generator) {
     this.definition = definition;
     this.parent = parent;
-    this.model = ObjectUtils.notNull(Lazy.lazy(generator.newDataModelSupplier((IAssemblyNodeItem) this)));
+    this.model = ObjectUtils.notNull(Lazy.of(generator.newDataModelSupplier((IAssemblyNodeItem) this)));
     this.value = value;
   }
 

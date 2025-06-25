@@ -27,7 +27,7 @@ class FieldOrphanedDefinitionNodeItemImpl
       @Nullable URI baseUri,
       @NonNull INodeItemGenerator generator) {
     super(definition, baseUri);
-    this.model = Lazy.lazy(generator.newMetaschemaModelSupplier(this));
+    this.model = Lazy.of(generator.newMetaschemaModelSupplier(this));
   }
 
   @SuppressWarnings("null")

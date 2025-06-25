@@ -9,6 +9,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IAssemblyNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDocumentNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IRootAssemblyNodeItem;
+import gov.nist.secauto.metaschema.core.metapath.type.AbstractItemTypeBase;
 import gov.nist.secauto.metaschema.core.metapath.type.IKindTest;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
@@ -18,10 +19,10 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * Tests that that a given item is an {@link IDocumentNodeItem} that has a root
  * node of the provided kind.
  */
-public class KindDocumentTestImpl implements IKindTest<IDocumentNodeItem> {
+public class KindDocumentTestImpl
+    extends AbstractItemTypeBase
+    implements IKindTest<IDocumentNodeItem> {
   private final IKindTest<IAssemblyNodeItem> assemblyTest;
-  @NonNull
-  private final String signature;
 
   /**
    * Construct a new test.
@@ -31,13 +32,6 @@ public class KindDocumentTestImpl implements IKindTest<IDocumentNodeItem> {
    */
   public KindDocumentTestImpl(@NonNull IKindTest<IAssemblyNodeItem> assemblyTest) {
     this.assemblyTest = assemblyTest;
-
-    // build the signature
-    this.signature = ObjectUtils.notNull(new StringBuilder()
-        .append("document-node(")
-        .append(assemblyTest.toSignature())
-        .append(')')
-        .toString());
   }
 
   @Override
@@ -58,8 +52,12 @@ public class KindDocumentTestImpl implements IKindTest<IDocumentNodeItem> {
   }
 
   @Override
-  public String toSignature() {
-    return this.signature;
+  protected String generateSignature() {
+    // build the signature
+    return ObjectUtils.notNull(new StringBuilder()
+        .append("document-node(")
+        .append(assemblyTest.toSignature())
+        .append(')')
+        .toString());
   }
-
 }

@@ -71,8 +71,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 
 @SuppressWarnings({
     "PMD.CouplingBetweenObjects", // ok
-    "PMD.GodClass", // ok
-    "PMD.CyclomaticComplexity" // ok
 })
 public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
   @NonNull
@@ -130,7 +128,6 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
 
     Set<String> classNames = new LinkedHashSet<>();
 
-    @SuppressWarnings("PMD.UseConcurrentHashMap") // map is unmodifiable
     Map<IModelDefinition, IGeneratedDefinitionClass> definitionProductions
         = ObjectUtils.notNull(globalDefinitions
             // Get type information for assembly and field definitions.
@@ -243,7 +240,7 @@ public class DefaultMetaschemaClassFactory implements IMetaschemaClassFactory {
   @NonNull
   protected TypeSpec.Builder newClassBuilder(
       @NonNull IModule module,
-      @NonNull ClassName className) { // NOPMD - long, but readable
+      @NonNull ClassName className) {
 
     // create the class
     TypeSpec.Builder builder = TypeSpec.classBuilder(className)

@@ -83,14 +83,14 @@ public class InstanceFlagInline
     IModule module = parent.getContainingModule();
     ISource source = module.getSource();
 
-    this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.constraints = ObjectUtils.notNull(Lazy.of(() -> {
       IValueConstrained retval = new ValueConstraintSet(source);
       ValueConstraints valueAnnotation = getAnnotation().valueConstraints();
       ConstraintSupport.parse(valueAnnotation, source, retval);
       return retval;
     }));
     this.properties = ObjectUtils.notNull(
-        Lazy.lazy(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
+        Lazy.of(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
             Arrays.stream(annotation.properties())
                 .map(ModelUtil::toPropertyEntry)
                 .collect(

@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -15,7 +14,6 @@ import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDefinitionNodeItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.INodeItem;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.List;
 
@@ -64,12 +62,9 @@ public final class FnNamespaceUri {
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    INodeItem arg = FunctionUtils.asType(
-        // test that the focus is an INodeItem
-        INodeItem.type().test(ObjectUtils.requireNonNull(focus)));
-
-    return ISequence.of(
-        IStringItem.valueOf(fnNamespaceUri(arg)));
+    // test that the focus is an INodeItem
+    INodeItem arg = INodeItem.type().test(focus);
+    return ISequence.of(IStringItem.valueOf(fnNamespaceUri(arg)));
   }
 
   @SuppressWarnings("unused")
@@ -78,10 +73,8 @@ public final class FnNamespaceUri {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    INodeItem arg = FunctionUtils.asTypeOrNull(ObjectUtils.requireNonNull(arguments.get(0)).getFirstItem(true));
-
-    return ISequence.of(
-        IStringItem.valueOf(arg == null ? "" : fnNamespaceUri(arg)));
+    INodeItem arg = INodeItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
+    return ISequence.of(IStringItem.valueOf(arg == null ? "" : fnNamespaceUri(arg)));
   }
 
   /**

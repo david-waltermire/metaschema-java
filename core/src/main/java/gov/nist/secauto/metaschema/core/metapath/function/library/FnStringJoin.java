@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -81,9 +80,10 @@ public final class FnStringJoin {
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    ISequence<IAnyAtomicItem> arg1 = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
-    IStringItem arg2 = arguments.size() == 1 ? IStringItem.valueOf("")
-        : FunctionUtils.asTypeOrNull(arguments.get(1).getFirstItem(true));
+    ISequence<IAnyAtomicItem> arg1 = arguments.get(0).ofType(IAnyAtomicItem.type());
+    IStringItem arg2 = arguments.size() == 1
+        ? IStringItem.valueOf("")
+        : IStringItem.type().ofTypeOrNull(arguments.get(1).getFirstItem(true));
 
     if (arg1.isEmpty()) {
       return ISequence.of(IStringItem.valueOf(""));

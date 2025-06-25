@@ -72,7 +72,7 @@ public abstract class AbstractCSTVisitorBase
    *           if the expanded QName prefix is not bound or if the resulting
    *           namespace is invalid
    */
-  @SuppressWarnings({ "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity" })
+  @SuppressWarnings({ "PMD.CyclomaticComplexity" })
   @NonNull
   static QName toQName(@NonNull Metapath10.EqnameContext eqname, @NonNull StaticContext context,
       boolean requireNamespace) {

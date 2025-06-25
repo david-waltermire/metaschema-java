@@ -21,8 +21,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * target Metapath expression.
  */
 public class AssemblyTargetedConstraints
-    extends ModelTargetedConstraints
-    implements IFeatureModelConstrained {
+    extends ModelTargetedConstraints {
 
   /**
    * Construct a new set of targeted constraints.

@@ -6,7 +6,6 @@
 package gov.nist.secauto.metaschema.core.metapath.item.function.impl;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.impl.IFeatureCollectionFunctionItem;
 import gov.nist.secauto.metaschema.core.metapath.item.ICollectionValue;
@@ -68,9 +67,7 @@ public abstract class AbstractArrayItem<ITEM extends ICollectionValue>
   @Override
   public ISequence<?> execute(List<? extends ISequence<?>> arguments, DynamicContext dynamicContext,
       ISequence<?> focus) {
-    ISequence<? extends IIntegerItem> arg = FunctionUtils.asType(
-        ObjectUtils.notNull(arguments.get(0)));
-
+    ISequence<? extends IIntegerItem> arg = arguments.get(0).ofType(IIntegerItem.type());
     IIntegerItem position = arg.getFirstItem(true);
     if (position == null) {
       return ISequence.empty(); // NOPMD - readability

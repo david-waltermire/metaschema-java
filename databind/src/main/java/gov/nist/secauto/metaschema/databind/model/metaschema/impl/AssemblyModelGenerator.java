@@ -35,7 +35,6 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * <p>
  * This class is not thread safe.
  */
-@SuppressWarnings("PMD.UseConcurrentHashMap")
 public final class AssemblyModelGenerator
     extends AbstractAbsoluteModelGenerator<
         IBindingDefinitionModelAssembly,

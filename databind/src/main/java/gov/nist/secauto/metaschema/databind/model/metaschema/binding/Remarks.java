@@ -26,7 +26,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * parent.
  */
 @SuppressWarnings({
-    "PMD.DataClass",
     "PMD.FieldNamingConventions"
 })
 @MetaschemaField(

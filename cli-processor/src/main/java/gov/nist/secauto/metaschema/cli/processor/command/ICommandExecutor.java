@@ -17,6 +17,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * implementations. Concrete subclasses must implement the {@link #execute()}
  * method to define specific command behavior.
  */
+@FunctionalInterface
 public interface ICommandExecutor {
   /**
    * Execute the command operation.

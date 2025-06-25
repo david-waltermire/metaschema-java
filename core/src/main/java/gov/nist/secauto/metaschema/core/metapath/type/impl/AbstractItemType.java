@@ -6,7 +6,7 @@
 package gov.nist.secauto.metaschema.core.metapath.type.impl;
 
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
-import gov.nist.secauto.metaschema.core.metapath.type.IItemType;
+import gov.nist.secauto.metaschema.core.metapath.type.AbstractItemTypeBase;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -16,7 +16,8 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * @param <T>
  *          the Java type of the item supported by the implementation
  */
-public abstract class AbstractItemType<T extends IItem> implements IItemType {
+public abstract class AbstractItemType<T extends IItem>
+    extends AbstractItemTypeBase {
   @NonNull
   private final Class<T> itemClass;
 
@@ -33,10 +34,5 @@ public abstract class AbstractItemType<T extends IItem> implements IItemType {
   @Override
   public Class<T> getItemClass() {
     return itemClass;
-  }
-
-  @Override
-  public String toString() {
-    return toSignature();
   }
 }

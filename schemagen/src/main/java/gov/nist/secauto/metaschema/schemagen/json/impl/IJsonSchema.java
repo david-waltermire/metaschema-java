@@ -13,6 +13,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * Represents a JSON schema for a given Metaschema-based model object, which may
  * be part of a larger JSON schema.
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IJsonSchema {
 
   /**

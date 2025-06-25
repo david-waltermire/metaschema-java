@@ -31,8 +31,8 @@ public abstract class AbstractNamedInstance<
    */
   protected AbstractNamedInstance(@NonNull PARENT parent, @NonNull NameInitializer initializer) {
     super(parent);
-    this.qname = ObjectUtils.notNull(Lazy.lazy(() -> initializer.apply(getEffectiveName())));
-    this.definitionQName = ObjectUtils.notNull(Lazy.lazy(() -> initializer.apply(getName())));
+    this.qname = ObjectUtils.notNull(Lazy.of(() -> initializer.apply(getEffectiveName())));
+    this.definitionQName = ObjectUtils.notNull(Lazy.of(() -> initializer.apply(getName())));
   }
 
   @SuppressWarnings("null")

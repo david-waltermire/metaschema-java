@@ -51,10 +51,10 @@ public abstract class AbstractBoundDefinitionModelComplex<A extends Annotation>
     this.annotation = annotation;
     this.bindingContext = bindingContext;
     this.module = module;
-    this.qname = ObjectUtils.notNull(Lazy.lazy(() -> ModuleUtils.parseModelName(
+    this.qname = ObjectUtils.notNull(Lazy.of(() -> ModuleUtils.parseModelName(
         getContainingModule(),
         getEffectiveName())));
-    this.definitionQName = ObjectUtils.notNull(Lazy.lazy(() -> ModuleUtils.parseModelName(
+    this.definitionQName = ObjectUtils.notNull(Lazy.of(() -> ModuleUtils.parseModelName(
         getContainingModule(),
         getName())));
     this.beforeDeserializeMethod = ClassIntrospector.getMatchingMethod(

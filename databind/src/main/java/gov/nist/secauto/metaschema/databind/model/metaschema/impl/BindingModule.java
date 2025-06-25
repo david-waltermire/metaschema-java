@@ -79,9 +79,8 @@ public class BindingModule
    * @throws MetaschemaException
    *           if a processing error occurs
    */
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @SuppressFBWarnings(value = "CT_CONSTRUCTOR_THROW", justification = "Use of final fields")
-  public BindingModule( // NOPMD - unavoidable
+  public BindingModule(
       @NonNull URI resource,
       @NonNull IBoundDefinitionModelAssembly rootDefinition,
       @NonNull METASCHEMA binding,
@@ -90,7 +89,7 @@ public class BindingModule
 
     this.binding = binding;
 
-    this.staticContext = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.staticContext = ObjectUtils.notNull(Lazy.of(() -> {
       StaticContext.Builder builder = StaticContext.builder()
           .baseUri(resource)
           .defaultModelNamespace(getXmlNamespace());
@@ -102,11 +101,11 @@ public class BindingModule
     }));
 
     INodeItemFactory nodeItemFactory = INodeItemFactory.instance();
-    this.definitions = ObjectUtils.notNull(Lazy.lazy(() -> new Definitions(resource, rootDefinition, nodeItemFactory)));
+    this.definitions = ObjectUtils.notNull(Lazy.of(() -> new Definitions(resource, rootDefinition, nodeItemFactory)));
     this.documentNodeItem
-        = ObjectUtils.notNull(Lazy.lazy(() -> nodeItemFactory.newDocumentNodeItem(rootDefinition, resource, binding)));
+        = ObjectUtils.notNull(Lazy.of(() -> nodeItemFactory.newDocumentNodeItem(rootDefinition, resource, binding)));
     this.moduleNodeItem
-        = ObjectUtils.notNull(Lazy.lazy(() -> nodeItemFactory.newModuleNodeItem(this)));
+        = ObjectUtils.notNull(Lazy.of(() -> nodeItemFactory.newModuleNodeItem(this)));
     this.source = ISource.moduleSource(this);
   }
 

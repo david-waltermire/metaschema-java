@@ -30,7 +30,7 @@ class DocumentNodeItemImpl
       @NonNull INodeItemGenerator generator) {
     this.root = new RootAssemblyValuedNodeItemImpl(root, this, rootValue, generator);
     this.documentUri = documentUri;
-    this.model = ObjectUtils.notNull(Lazy.lazy(generator.newDataModelSupplier(this.root)));
+    this.model = ObjectUtils.notNull(Lazy.of(generator.newDataModelSupplier(this.root)));
 
     StaticContext.Builder builder = StaticContext.builder()
         .baseUri(documentUri)

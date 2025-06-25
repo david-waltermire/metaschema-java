@@ -45,7 +45,6 @@ public abstract class AbstractIPAddressItem<TYPE extends IPAddress>
     return asIpAddress().hashCode();
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override
   public boolean equals(Object obj) {
     return this == obj

@@ -16,7 +16,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * @param <V>
  *          the Java type of the configuration value
  */
-@SuppressWarnings("PMD.DataClass") // not a data class
 public final class ValidationFeature<V>
     extends AbstractConfigurationFeature<V> {
   /**

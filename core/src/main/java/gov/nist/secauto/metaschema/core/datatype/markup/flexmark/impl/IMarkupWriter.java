@@ -51,7 +51,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  */
 @SuppressFBWarnings(value = "THROWS_METHOD_THROWS_CLAUSE_THROWABLE",
     justification = "There is a need to support varying exceptions from multiple stream writers")
-public interface IMarkupWriter<T, E extends Throwable> { // NOPMD
+public interface IMarkupWriter<T, E extends Throwable> {
   /**
    * Write an HTML element with the provided local name, with no attributes.
    *

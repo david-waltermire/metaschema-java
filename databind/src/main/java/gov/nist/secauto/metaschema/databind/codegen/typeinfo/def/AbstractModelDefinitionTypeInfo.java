@@ -56,7 +56,7 @@ public abstract class AbstractModelDefinitionTypeInfo<DEF extends IModelDefiniti
     this.className = typeResolver.getClassName(definition);
     this.baseClassName = typeResolver.getBaseClassName(definition);
     this.superinterfaces = typeResolver.getSuperinterfaces(definition);
-    this.flagTypeInfos = ObjectUtils.notNull(Lazy.lazy(() -> flags()
+    this.flagTypeInfos = ObjectUtils.notNull(Lazy.of(() -> flags()
         .collect(CustomCollectors.toMap(
             ITypeInfo::getPropertyName,
             CustomCollectors.identity(),

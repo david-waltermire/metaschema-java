@@ -78,7 +78,7 @@ public class InstanceModelFieldReference
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
     this.groupAs = ModelSupport.groupAs(binding.getGroupAs(), parent.getOwningDefinition().getContainingModule());
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
+        Lazy.of(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getQName())
             .get(position)));
     this.defaultValue = ModelSupport.defaultValue(binding.getDefault(), definition.getJavaTypeAdapter());

@@ -281,12 +281,10 @@ public final class ModelUtil {
   public static Map.Entry<IAttributable.Key, Set<String>> toPropertyEntry(@NonNull Property property) {
     String name = property.name();
     String namespace = property.namespace();
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // ok
     IAttributable.Key key = IAttributable.key(namespace, name);
 
     String[] values = property.values();
     List<String> valueList = Arrays.asList(values);
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // ok
     Set<String> valueSet = new LinkedHashSet<>(valueList);
 
     return Map.entry(key, CollectionUtil.unmodifiableSet(valueSet));

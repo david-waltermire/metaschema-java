@@ -18,6 +18,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * <a href="https://www.w3.org/TR/xpath-31/#node-tests">wildcard node test</a>
  * syntax.
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IWildcardMatcher extends Predicate<IDefinitionNodeItem<?, ?>> {
   /**
    * Construct a wildcard matcher that matches the provided local name in any

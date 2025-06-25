@@ -40,7 +40,7 @@ import nl.talsmasoftware.lazy4j.Lazy;
  */
 public final class DataTypeService {
   private static final Logger LOGGER = LogManager.getLogger(DataTypeService.class);
-  private static final Lazy<DataTypeService> INSTANCE = Lazy.lazy(DataTypeService::new);
+  private static final Lazy<DataTypeService> INSTANCE = Lazy.of(DataTypeService::new);
 
   private static final List<IItemType> BUILTIN_ITEM_TYPES;
 

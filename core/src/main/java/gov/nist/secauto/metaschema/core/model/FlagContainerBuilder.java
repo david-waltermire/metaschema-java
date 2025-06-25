@@ -70,7 +70,6 @@ public class FlagContainerBuilder<T extends IFlagInstance> implements IFlagConta
     return retval;
   }
 
-  @SuppressWarnings("unused")
   private static <INSTANCE extends IFlagInstance> INSTANCE handleShadowedInstances(
       @NonNull Integer keyIndex,
       @NonNull INSTANCE shadowed,

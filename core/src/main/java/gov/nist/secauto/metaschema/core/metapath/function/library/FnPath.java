@@ -8,7 +8,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
 import gov.nist.secauto.metaschema.core.metapath.format.IPathFormatter;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -73,7 +72,7 @@ public final class FnPath {
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    INodeItem item = FunctionUtils.requireTypeOrNull(INodeItem.class, focus);
+    INodeItem item = INodeItem.type().testOrNull(focus);
 
     ISequence<IStringItem> retval;
     if (item == null) {

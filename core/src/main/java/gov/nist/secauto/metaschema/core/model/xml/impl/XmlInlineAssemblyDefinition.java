@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-package gov.nist.secauto.metaschema.core.model.xml.impl; // NOPMD - excessive public methods and coupling is unavoidable
+package gov.nist.secauto.metaschema.core.model.xml.impl;
 
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupLine;
 import gov.nist.secauto.metaschema.core.datatype.markup.MarkupMultiline;
@@ -105,13 +105,13 @@ class XmlInlineAssemblyDefinition
       @NonNull IContainerModel parent) {
     super(parent);
     this.xmlObject = xmlObject;
-    this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> XmlFlagContainerSupport.newInstance(xmlObject, this)));
+    this.flagContainer = ObjectUtils.notNull(Lazy.of(() -> XmlFlagContainerSupport.newInstance(xmlObject, this)));
     this.modelContainer
-        = ObjectUtils.notNull(Lazy.lazy(() -> XmlAssemblyModelContainerSupport.of(xmlObject.getModel(), this)));
+        = ObjectUtils.notNull(Lazy.of(() -> XmlAssemblyModelContainerSupport.of(xmlObject.getModel(), this)));
 
     ISource source = parent.getOwningDefinition().getContainingModule().getSource();
 
-    this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.constraints = ObjectUtils.notNull(Lazy.of(() -> {
       IModelConstrained retval = new AssemblyConstraintSet(source);
       if (getXmlObject().isSetConstraint()) {
         ConstraintXmlSupport.parse(

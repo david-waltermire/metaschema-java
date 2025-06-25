@@ -32,7 +32,7 @@ class FlagInstanceNodeItemImpl
       @NonNull Object value) {
     super(instance, parent);
     this.value = value;
-    this.atomicItem = ObjectUtils.notNull(Lazy.lazy(this::newAtomicItem));
+    this.atomicItem = ObjectUtils.notNull(Lazy.of(this::newAtomicItem));
   }
 
   @Override

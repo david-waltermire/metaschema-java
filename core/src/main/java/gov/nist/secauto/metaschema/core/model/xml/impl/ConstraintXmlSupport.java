@@ -66,7 +66,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public final class ConstraintXmlSupport {
-  @SuppressWarnings("PMD.UseConcurrentHashMap")
   @NonNull
   private static final XmlObjectParser<IValueConstrained> FLAG_PARSER
       = new XmlObjectParser<>(ObjectUtils.notNull(
@@ -95,7 +94,6 @@ public final class ConstraintXmlSupport {
         }
       };
 
-  @SuppressWarnings("PMD.UseConcurrentHashMap")
   @NonNull
   private static final XmlObjectParser<IValueConstrained> FIELD_PARSER
       = new XmlObjectParser<>(ObjectUtils.notNull(Map.ofEntries(
@@ -125,7 +123,6 @@ public final class ConstraintXmlSupport {
         }
       };
 
-  @SuppressWarnings("PMD.UseConcurrentHashMap")
   @NonNull
   private static final XmlObjectParser<IModelConstrained> ASSEMBLY_PARSER
       = new XmlObjectParser<>(ObjectUtils.notNull(Map.ofEntries(
@@ -254,7 +251,6 @@ public final class ConstraintXmlSupport {
     parser.parse(source, xmlObject, constraints);
   }
 
-  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static void handleAllowedValues(
       @NonNull ISource source,
       @NonNull XmlObject obj,
@@ -265,7 +261,6 @@ public final class ConstraintXmlSupport {
     state.addConstraint(constraint);
   }
 
-  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static void handleScopedAllowedValues(
       @NonNull ISource source,
       @NonNull XmlObject obj,
@@ -276,7 +271,6 @@ public final class ConstraintXmlSupport {
     state.addConstraint(constraint);
   }
 
-  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static void handleMatches(
       @NonNull ISource source,
       @NonNull XmlObject obj,
@@ -287,7 +281,6 @@ public final class ConstraintXmlSupport {
     state.addConstraint(constraint);
   }
 
-  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static void handleScopedMatches(
       @NonNull ISource source,
       @NonNull XmlObject obj,
@@ -298,7 +291,6 @@ public final class ConstraintXmlSupport {
     state.addConstraint(constraint);
   }
 
-  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static void handleIndexHasKey(
       @NonNull ISource source,
       @NonNull XmlObject obj,
@@ -309,7 +301,6 @@ public final class ConstraintXmlSupport {
     state.addConstraint(constraint);
   }
 
-  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static void handleScopedIndexHasKey(
       @NonNull ISource source,
       @NonNull XmlObject obj,
@@ -320,7 +311,6 @@ public final class ConstraintXmlSupport {
     state.addConstraint(constraint);
   }
 
-  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static void handleExpect(
       @NonNull ISource source,
       @NonNull XmlObject obj,
@@ -331,7 +321,6 @@ public final class ConstraintXmlSupport {
     state.addConstraint(constraint);
   }
 
-  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static void handleScopedExpect(
       @NonNull ISource source,
       @NonNull XmlObject obj,
@@ -342,7 +331,6 @@ public final class ConstraintXmlSupport {
     state.addConstraint(constraint);
   }
 
-  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static void handleScopedIndex(
       @NonNull ISource source,
       @NonNull XmlObject obj,
@@ -353,7 +341,6 @@ public final class ConstraintXmlSupport {
     state.addConstraint(constraint);
   }
 
-  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static void handleScopedIsUnique(
       @NonNull ISource source,
       @NonNull XmlObject obj,
@@ -364,7 +351,6 @@ public final class ConstraintXmlSupport {
     state.addConstraint(constraint);
   }
 
-  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static void handleScopedHasCardinality(
       @NonNull ISource source,
       @NonNull XmlObject obj,

@@ -88,7 +88,7 @@ public final class XmlMarkupParser {
    */
   public MarkupLine parseMarkupline(
       @NonNull XMLEventReader2 reader,
-      @NonNull URI resource) throws XMLStreamException { // NOPMD - acceptable
+      @NonNull URI resource) throws XMLStreamException {
     StringBuilder buffer = new StringBuilder();
     parseContents(reader, resource, null, buffer);
     String html = buffer.toString().trim();
@@ -134,8 +134,7 @@ public final class XmlMarkupParser {
   private void parseToString(
       @NonNull XMLEventReader2 reader,
       @NonNull URI resource,
-      @NonNull StringBuilder buffer) // NOPMD - acceptable
-      throws XMLStreamException {
+      @NonNull StringBuilder buffer) throws XMLStreamException {
     // if (LOGGER.isDebugEnabled()) {
     // LOGGER.debug("parseToString(enter): {}",
     // XmlEventUtil.toString(reader.peek()));

@@ -65,7 +65,7 @@ class ValidateModuleCommand
 
   private final class CommandExecutor
       extends AbstractValidationCommandExecutor {
-    private final Lazy<ValidationProvider> validationProvider = Lazy.lazy(ValidationProvider::new);
+    private final Lazy<ValidationProvider> validationProvider = Lazy.of(ValidationProvider::new);
 
     private CommandExecutor(
         @NonNull CallingContext callingContext,

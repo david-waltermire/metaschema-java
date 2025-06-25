@@ -189,34 +189,6 @@ public final class JsonUtil {
     // advance past the value
     return parser.nextToken();
   }
-  //
-  // @SuppressWarnings("PMD.CyclomaticComplexity") // acceptable
-  // private static boolean checkEndOfValue(@NonNull JsonParser parser, @NonNull
-  // JsonToken startToken) {
-  // JsonToken currentToken = parser.getCurrentToken();
-  //
-  // boolean retval;
-  // switch (startToken) { // NOPMD - intentional fall through
-  // case START_OBJECT:
-  // retval = JsonToken.END_OBJECT.equals(currentToken);
-  // break;
-  // case START_ARRAY:
-  // retval = JsonToken.END_ARRAY.equals(currentToken);
-  // break;
-  // case VALUE_EMBEDDED_OBJECT:
-  // case VALUE_FALSE:
-  // case VALUE_NULL:
-  // case VALUE_NUMBER_FLOAT:
-  // case VALUE_NUMBER_INT:
-  // case VALUE_STRING:
-  // case VALUE_TRUE:
-  // retval = true;
-  // break;
-  // default:
-  // retval = false;
-  // }
-  // return retval;
-  // }
 
   /**
    * Ensure that the current token is one of the provided tokens.

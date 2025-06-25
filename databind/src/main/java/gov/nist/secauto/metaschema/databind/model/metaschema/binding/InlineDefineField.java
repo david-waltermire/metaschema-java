@@ -36,7 +36,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings({
-    "PMD.DataClass",
     "PMD.FieldNamingConventions",
     "PMD.TooManyFields"
 })

@@ -22,7 +22,7 @@ import nl.talsmasoftware.lazy4j.Lazy;
  * cannot have child commands.
  */
 public abstract class AbstractTerminalCommand implements ICommand {
-  private static Lazy<Path> currentWorkingDirectory = Lazy.lazy(() -> Paths.get(System.getProperty("user.dir")));
+  private static Lazy<Path> currentWorkingDirectory = Lazy.of(() -> Paths.get(System.getProperty("user.dir")));
 
   /**
    * A utility method that can be used to get the current working directory.

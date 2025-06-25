@@ -54,7 +54,7 @@ public final class DeleteOnShutdown {
                   return FileVisitResult.CONTINUE;
                 }
               });
-        } catch (@SuppressWarnings("unused") IOException ex) {
+        } catch (IOException ex) {
           // this is a best effort, ignore the error
         }
       });

@@ -6,7 +6,6 @@
 package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunctionExecutor;
@@ -73,8 +72,7 @@ public final class NumericFunction implements IFunctionExecutor {
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    ISequence<? extends INumericItem> sequence = FunctionUtils.asType(
-        ObjectUtils.requireNonNull(arguments.get(0)));
+    ISequence<INumericItem> sequence = arguments.get(0).ofType(INumericItem.type());
     if (sequence.isEmpty()) {
       return ISequence.empty(); // NOPMD - readability
     }

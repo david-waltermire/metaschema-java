@@ -60,7 +60,7 @@ public abstract class AbstractBoundModule
       @NonNull IBindingContext bindingContext) {
     super(importedModules);
     this.bindingContext = bindingContext;
-    this.assemblyDefinitions = ObjectUtils.notNull(Lazy.lazy(() -> Arrays.stream(getAssemblyClasses())
+    this.assemblyDefinitions = ObjectUtils.notNull(Lazy.of(() -> Arrays.stream(getAssemblyClasses())
         .map(clazz -> {
           assert clazz != null;
           return (IBoundDefinitionModelAssembly) ObjectUtils
@@ -69,7 +69,7 @@ public abstract class AbstractBoundModule
         .collect(Collectors.toUnmodifiableMap(
             def -> def.getDefinitionQName().getIndexPosition(),
             Function.identity()))));
-    this.fieldDefinitions = ObjectUtils.notNull(Lazy.lazy(() -> Arrays.stream(getFieldClasses())
+    this.fieldDefinitions = ObjectUtils.notNull(Lazy.of(() -> Arrays.stream(getFieldClasses())
         .map(clazz -> {
           assert clazz != null;
           return (IBoundDefinitionModelField<?>) ObjectUtils
@@ -78,7 +78,7 @@ public abstract class AbstractBoundModule
         .collect(Collectors.toUnmodifiableMap(
             def -> def.getDefinitionQName().getIndexPosition(),
             Function.identity()))));
-    this.staticContext = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.staticContext = ObjectUtils.notNull(Lazy.of(() -> {
       StaticContext.Builder builder = StaticContext.builder()
           .defaultModelNamespace(getXmlNamespace());
 

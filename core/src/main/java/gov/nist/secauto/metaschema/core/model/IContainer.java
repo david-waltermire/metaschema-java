@@ -5,6 +5,7 @@
 
 package gov.nist.secauto.metaschema.core.model;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IContainer {
   /**
    * Identifies if the container allows child instances or not.

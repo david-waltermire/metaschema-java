@@ -18,7 +18,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * An implementation of <a href="https://www.w3.org/TR/xpath-31/#axes">Metapath
  * axes</a>.
  */
-@SuppressWarnings("PMD.ShortClassName")
 public enum Axis {
   /**
    * The {@code self::} axis, referring to the current context node.

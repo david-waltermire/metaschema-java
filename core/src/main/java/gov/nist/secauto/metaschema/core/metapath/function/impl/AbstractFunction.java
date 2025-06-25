@@ -197,7 +197,7 @@ public abstract class AbstractFunction implements IFunction {
     if (IAnyAtomicItem.class.isAssignableFrom(requiredSequenceTypeClass)) {
       Stream<? extends IAnyAtomicItem> atomicStream = stream.flatMap(IItem::atomize);
 
-      // if (IUntypedAtomicItem.class.isInstance(item)) { // NOPMD
+      // if (IUntypedAtomicItem.class.isInstance(item)) {
       // // TODO: apply cast to atomic type
       // }
 
@@ -271,7 +271,8 @@ public abstract class AbstractFunction implements IFunction {
       // toSignature(), convertedArguments.toString(), result.asList().toString()));
       return result;
     } catch (MetapathException ex) {
-      throw ex.registerEvaluationContext(dynamicContext);
+      ex.registerEvaluationContext(dynamicContext);
+      throw ex;
     }
   }
 

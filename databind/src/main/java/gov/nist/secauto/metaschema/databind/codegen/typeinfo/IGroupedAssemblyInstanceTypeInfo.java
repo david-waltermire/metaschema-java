@@ -5,6 +5,7 @@
 
 package gov.nist.secauto.metaschema.databind.codegen.typeinfo;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IGroupedAssemblyInstanceTypeInfo extends IGroupedNamedModelInstanceTypeInfo {
   // no additional methods
 }

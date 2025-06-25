@@ -5,14 +5,12 @@
 
 package gov.nist.secauto.metaschema.core.metapath;
 
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.library.FnBoolean;
 import gov.nist.secauto.metaschema.core.metapath.impl.LazyCompilationMetapathExpression;
 import gov.nist.secauto.metaschema.core.metapath.impl.MetapathExpression;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
-import gov.nist.secauto.metaschema.core.metapath.item.atomic.INumericItem;
 import gov.nist.secauto.metaschema.core.metapath.type.InvalidTypeMetapathException;
 import gov.nist.secauto.metaschema.core.metapath.type.TypeMetapathException;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -34,10 +32,7 @@ public interface IMetapathExpression extends IExpression {
     /**
      * The result is expected to be a {@link BigDecimal} value.
      */
-    NUMBER(BigDecimal.class, sequence -> {
-      INumericItem numeric = FunctionUtils.toNumeric(sequence, true);
-      return numeric == null ? null : numeric.asDecimal();
-    }),
+    NUMBER(BigDecimal.class, sequence -> sequence.toNumeric(true)),
     /**
      * The result is expected to be a {@link String} value.
      */

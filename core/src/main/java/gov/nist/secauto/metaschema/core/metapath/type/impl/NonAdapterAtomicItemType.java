@@ -50,11 +50,6 @@ public class NonAdapterAtomicItemType<T extends IAnyAtomicItem>
   }
 
   @Override
-  public String toString() {
-    return toSignature();
-  }
-
-  @Override
   @Nullable
   public IDataTypeAdapter<?> getAdapter() {
     // always null
@@ -62,8 +57,14 @@ public class NonAdapterAtomicItemType<T extends IAnyAtomicItem>
   }
 
   @Override
-  public int hashCode() {
+  protected int generateHashCode() {
     return Objects.hash(getItemClass(), qname);
+  }
+
+  @Override
+  public int hashCode() {
+    // for parity with equals
+    return super.hashCode();
   }
 
   @SuppressWarnings("PMD.OnlyOneReturn")

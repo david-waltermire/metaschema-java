@@ -35,7 +35,6 @@ public class FlagContainerSupport implements IContainerFlagSupport<IBoundInstanc
   @Nullable
   private IBoundInstanceFlag jsonKeyFlag;
 
-  @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
   @SuppressFBWarnings(value = "CT_CONSTRUCTOR_THROW", justification = "Use of final fields")
   public FlagContainerSupport(
       @NonNull IBoundDefinitionModelComplex definition,

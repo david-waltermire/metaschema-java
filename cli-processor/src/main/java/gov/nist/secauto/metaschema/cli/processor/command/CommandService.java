@@ -24,7 +24,7 @@ import nl.talsmasoftware.lazy4j.Lazy;
  * @see ServiceLoader for more information
  */
 public final class CommandService {
-  private static final Lazy<CommandService> INSTANCE = Lazy.lazy(CommandService::new);
+  private static final Lazy<CommandService> INSTANCE = Lazy.of(CommandService::new);
   @NonNull
   private final ServiceLoader<ICommand> loader;
 

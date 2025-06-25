@@ -21,7 +21,7 @@ import nl.talsmasoftware.lazy4j.Lazy;
  * {@link ServiceLoader} interface.
  */
 public final class FunctionService implements IFunctionResolver {
-  private static final Lazy<FunctionService> INSTANCE = Lazy.lazy(FunctionService::new);
+  private static final Lazy<FunctionService> INSTANCE = Lazy.of(FunctionService::new);
   @NonNull
   private final ServiceLoader<IFunctionLibrary> loader;
   @NonNull
@@ -46,7 +46,7 @@ public final class FunctionService implements IFunctionResolver {
     this.loader = ServiceLoader.load(IFunctionLibrary.class);
     ServiceLoader<IFunctionLibrary> loader = getLoader();
 
-    this.library = Lazy.lazy(() -> {
+    this.library = Lazy.of(() -> {
       FunctionLibrary functionLibrary = new FunctionLibrary();
       loader.stream()
           .map(Provider<IFunctionLibrary>::get)

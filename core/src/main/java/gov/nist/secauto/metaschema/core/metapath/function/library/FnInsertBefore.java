@@ -7,13 +7,11 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IIntegerItem;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,10 +62,10 @@ public final class FnInsertBefore {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<IItem> target = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
+    ISequence<IItem> target = arguments.get(0).ofType(IItem.type());
 
-    IIntegerItem position = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
-    ISequence<IItem> inserts = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(2)));
+    IIntegerItem position = IIntegerItem.type().ofType(arguments.get(1).getFirstItem(true));
+    ISequence<IItem> inserts = arguments.get(2).ofType(IItem.type());
     return ISequence.ofCollection(fnInsertBefore(target, position, inserts));
   }
 

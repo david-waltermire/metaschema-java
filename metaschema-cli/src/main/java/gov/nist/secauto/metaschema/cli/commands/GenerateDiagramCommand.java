@@ -92,10 +92,6 @@ class GenerateDiagramCommand
    * @throws CommandExecutionException
    *           if an error occurred while executing the command
    */
-  @SuppressWarnings({
-      "PMD.OnlyOneReturn", // readability
-      "PMD.AvoidCatchingGenericException"
-  })
   @SuppressFBWarnings(value = "REC_CATCH_EXCEPTION",
       justification = "Catching generic exception for CLI error handling")
   protected void executeCommand(

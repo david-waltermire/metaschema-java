@@ -415,7 +415,6 @@ public class CLIProcessor {
      */
     @SuppressWarnings({
         "PMD.OnlyOneReturn",
-        "PMD.NPathComplexity",
         "PMD.CyclomaticComplexity"
     })
     @NonNull
@@ -505,7 +504,6 @@ public class CLIProcessor {
      * @return the result of executing the command
      */
     @SuppressWarnings({
-        "PMD.OnlyOneReturn", // readability
         "PMD.AvoidCatchingGenericException" // needed here
     })
     @NonNull
@@ -756,7 +754,7 @@ public class CLIProcessor {
       @SuppressWarnings("resource")
       AnsiPrintStream out = AnsiConsole.out();
 
-      try (PrintWriter writer = new PrintWriter( // NOPMD not owned
+      try (PrintWriter writer = new PrintWriter(
           AutoCloser.preventClose(out),
           true,
           StandardCharsets.UTF_8)) {

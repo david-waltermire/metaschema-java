@@ -18,6 +18,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * A marker interface for implementations that supports the mapping of a
  * namespace valued key to a set of values.
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IAttributable {
   /**
    * The default key namespace for a property.

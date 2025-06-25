@@ -23,8 +23,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings({
-    "PMD.DataClass",
-    "PMD.ExcessivePublicCount",
     "PMD.FieldNamingConventions"
 })
 @MetaschemaAssembly(

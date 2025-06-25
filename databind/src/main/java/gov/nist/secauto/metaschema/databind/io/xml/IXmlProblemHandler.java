@@ -20,6 +20,7 @@ import javax.xml.stream.events.StartElement;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IXmlProblemHandler extends IProblemHandler {
   /**
    * Callback used to handle an attribute that is unknown to the model being

@@ -32,7 +32,12 @@ public class KindAssemblyTestImpl
       @Nullable IEnhancedQName instanceName,
       @Nullable String typeName,
       @NonNull StaticContext staticContext) {
-    super("assembly", instanceName, typeName, staticContext);
+    super(instanceName, typeName, staticContext);
+  }
+
+  @Override
+  protected String getTestName() {
+    return "assembly";
   }
 
   @Override

@@ -8,17 +8,40 @@ package gov.nist.secauto.metaschema.core.metapath.item;
 import gov.nist.secauto.metaschema.core.datatype.IDataTypeAdapter;
 import gov.nist.secauto.metaschema.core.metapath.function.InvalidTypeFunctionException;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
+import gov.nist.secauto.metaschema.core.metapath.item.atomic.IDecimalItem;
+import gov.nist.secauto.metaschema.core.metapath.item.atomic.INumericItem;
 import gov.nist.secauto.metaschema.core.metapath.type.IItemType;
+import gov.nist.secauto.metaschema.core.metapath.type.InvalidTypeMetapathException;
+import gov.nist.secauto.metaschema.core.metapath.type.TypeMetapathException;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 /**
  * The base interface inherited by all Metapath item implementations.
  */
 public interface IItem extends ICollectionValue {
+  /**
+   * Generate a list of Metapath item types classes from a list of Metapath items.
+   *
+   * @param <T>
+   *          the item's Java type
+   * @param items
+   *          the items to get the type information for
+   * @return a list of corresponding Metapath item type information objects in the
+   *         same order as the original items
+   */
+  static <T extends IItem> List<IItemType> getTypes(@NonNull List<T> items) {
+    return ObjectUtils.notNull(items.stream()
+        .map(IItem::getType)
+        .collect(Collectors.toList()));
+  }
+
   /**
    * Get the type information for this item.
    *
@@ -97,6 +120,42 @@ public interface IItem extends ICollectionValue {
   @Override
   default Stream<IAnyAtomicItem> atomize() {
     return ObjectUtils.notNull(Stream.of(this.toAtomicItem()));
+  }
+
+  /**
+   * Gets the provided item value as a {@link INumericItem} value.
+   *
+   * @return the numeric item value
+   * @throws TypeMetapathException
+   *           if the sequence contains more than one item, or the item cannot be
+   *           cast to a numeric value
+   */
+  @NonNull
+  default INumericItem toNumeric() {
+    // atomize
+    IAnyAtomicItem atomicItem = ISequence.getFirstItem(atomize(), true);
+    if (atomicItem == null) {
+      throw new InvalidTypeMetapathException(this, "Unable to cast null item");
+    }
+    return IDecimalItem.cast(atomicItem);
+  }
+
+  /**
+   * Gets the provided item value as a {@link INumericItem} value. If the item is
+   * {@code null}, then a {@code null} value is returned.
+   *
+   * @param item
+   *          the value to convert
+   * @return the numeric item value
+   * @throws TypeMetapathException
+   *           if the item cannot be cast to a numeric value
+   */
+  @Nullable
+  default INumericItem toNumericOrNull() {
+    // atomize
+    IAnyAtomicItem atomicItem = ISequence.getFirstItem(atomize(), true);
+
+    return atomicItem == null ? null : IDecimalItem.cast(atomicItem);
   }
 
   @SuppressWarnings("null")

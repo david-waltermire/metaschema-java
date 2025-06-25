@@ -83,7 +83,7 @@ public final class InstanceModelFieldComplex
       @NonNull IBoundDefinitionModelAssembly parent) {
     BoundField annotation = ModelUtil.getAnnotation(javaField, BoundField.class);
     if (!annotation.inXmlWrapped()) {
-      if (definition.hasChildren()) { // NOPMD efficiency
+      if (definition.hasChildren()) {
         throw new IllegalStateException(
             String.format("Field '%s' on class '%s' is requested to be unwrapped, but it has flags preventing this.",
                 javaField.getName(),
@@ -107,7 +107,7 @@ public final class InstanceModelFieldComplex
         throw new IllegalStateException(String.format("Field '%s' on class '%s' is missing the '%s' annotation.",
             javaField.getName(),
             javaField.getDeclaringClass().getName(),
-            GroupAs.class.getName())); // NOPMD false positive
+            GroupAs.class.getName()));
       }
     } else if (!IGroupAs.SINGLETON_GROUP_AS.equals(groupAs)) {
       // max is 1 and a groupAs is set
@@ -116,7 +116,7 @@ public final class InstanceModelFieldComplex
               "Field '%s' on class '%s' has the '%s' annotation, but maxOccurs=1. A groupAs must not be specfied.",
               javaField.getName(),
               javaField.getDeclaringClass().getName(),
-              GroupAs.class.getName())); // NOPMD false positive
+              GroupAs.class.getName()));
     }
     return new InstanceModelFieldComplex(javaField, annotation, groupAs, definition, parent);
   }
@@ -143,10 +143,10 @@ public final class InstanceModelFieldComplex
     FieldSupport.bindField(javaField);
     this.javaField = javaField;
     this.annotation = annotation;
-    this.collectionInfo = ObjectUtils.notNull(Lazy.lazy(() -> IModelInstanceCollectionInfo.of(this)));
+    this.collectionInfo = ObjectUtils.notNull(Lazy.of(() -> IModelInstanceCollectionInfo.of(this)));
     this.groupAs = groupAs;
     this.definition = definition;
-    this.defaultValue = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.defaultValue = ObjectUtils.notNull(Lazy.of(() -> {
       Object retval = null;
       if (getMaxOccurs() == 1) {
         IBoundFieldValue fieldValue = definition.getFieldValue();
@@ -168,7 +168,7 @@ public final class InstanceModelFieldComplex
       }
       return retval;
     }));
-    this.jsonProperties = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.jsonProperties = ObjectUtils.notNull(Lazy.of(() -> {
       Predicate<IBoundInstanceFlag> flagFilter = null;
       IBoundInstanceFlag jsonKey = getEffectiveJsonKey();
       if (jsonKey != null) {
@@ -177,7 +177,7 @@ public final class InstanceModelFieldComplex
       return definition.getJsonProperties(flagFilter);
     }));
     this.properties = ObjectUtils.notNull(
-        Lazy.lazy(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
+        Lazy.of(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
             Arrays.stream(annotation.properties())
                 .map(ModelUtil::toPropertyEntry)
                 .collect(

@@ -75,7 +75,6 @@ public abstract class AbstractStringItem
     return asString().hashCode();
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override
   public boolean equals(Object obj) {
     return this == obj

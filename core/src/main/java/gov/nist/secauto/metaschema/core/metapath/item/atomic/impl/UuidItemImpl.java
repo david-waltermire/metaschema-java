@@ -25,7 +25,8 @@ import nl.talsmasoftware.lazy4j.Lazy;
 public class UuidItemImpl
     extends AbstractAnyAtomicItem<UUID>
     implements IUuidItem {
-  private final Lazy<String> stringValue = Lazy.lazy(super::asString);
+  @SuppressWarnings("synthetic-access")
+  private final Lazy<String> stringValue = Lazy.of(super::asString);
 
   /**
    * Construct a new item with the provided {@code value}.
@@ -57,7 +58,6 @@ public class UuidItemImpl
     return asString().hashCode();
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override
   public boolean equals(Object obj) {
     return this == obj

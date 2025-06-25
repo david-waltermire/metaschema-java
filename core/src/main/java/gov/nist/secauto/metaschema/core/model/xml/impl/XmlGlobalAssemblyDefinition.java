@@ -34,7 +34,6 @@ import java.util.Set;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import nl.talsmasoftware.lazy4j.Lazy;
 
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 class XmlGlobalAssemblyDefinition
     extends AbstractGlobalAssemblyDefinition<
         XmlModule,
@@ -77,11 +76,11 @@ class XmlGlobalAssemblyDefinition
       @NonNull XmlModule module) {
     super(module);
     this.xmlAssembly = xmlObject;
-    this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> XmlFlagContainerSupport.newInstance(xmlObject, this)));
+    this.flagContainer = ObjectUtils.notNull(Lazy.of(() -> XmlFlagContainerSupport.newInstance(xmlObject, this)));
     this.modelContainer = ObjectUtils.notNull(
-        Lazy.lazy(() -> XmlAssemblyModelContainerSupport.of(xmlObject.getModel(), this)));
+        Lazy.of(() -> XmlAssemblyModelContainerSupport.of(xmlObject.getModel(), this)));
     ISource source = module.getSource();
-    this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.constraints = ObjectUtils.notNull(Lazy.of(() -> {
       IModelConstrained retval = new AssemblyConstraintSet(source);
       if (xmlObject.isSetConstraint()) {
         ConstraintXmlSupport.parse(retval, ObjectUtils.notNull(xmlObject.getConstraint()), source);

@@ -56,7 +56,7 @@ public final class UriUtils {
         // try to parse the location as a local file path
         Path path = Paths.get(location);
         asUri = path.toUri();
-      } catch (@SuppressWarnings("unused") InvalidPathException ex2) {
+      } catch (InvalidPathException ex2) {
         // not a local file path, so rethrow the original URI exception
         throw ex;
       }

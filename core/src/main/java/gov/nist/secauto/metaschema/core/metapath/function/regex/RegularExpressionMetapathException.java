@@ -11,6 +11,7 @@ import gov.nist.secauto.metaschema.core.metapath.MetapathException;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
+@SuppressWarnings("PMD.DataClass")
 public class RegularExpressionMetapathException
     extends MetapathException {
   @NonNull

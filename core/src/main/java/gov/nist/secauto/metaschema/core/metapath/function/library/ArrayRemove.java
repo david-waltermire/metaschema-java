@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -66,10 +65,8 @@ public final class ArrayRemove {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IArrayItem<T> array = FunctionUtils.asType(ObjectUtils.requireNonNull(
-        arguments.get(0).getFirstItem(true)));
-    ISequence<? extends IIntegerItem> positions = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1)));
-
+    IArrayItem<T> array = IArrayItem.type().ofType(arguments.get(0).getFirstItem(true));
+    ISequence<IIntegerItem> positions = arguments.get(1).ofType(IIntegerItem.type());
     return ISequence.of(removeItems(array, positions));
   }
 

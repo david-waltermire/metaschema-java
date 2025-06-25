@@ -81,7 +81,7 @@ public class DateAdapter
       } catch (DateTimeParseException ex2) {
         IllegalArgumentException newEx = new IllegalArgumentException(ex2.getLocalizedMessage(), ex2);
         newEx.addSuppressed(ex);
-        throw newEx; // NOPMD - false positive
+        throw newEx;
       }
     }
   }

@@ -20,14 +20,14 @@ abstract class AbstractTypeInfo<PARENT extends IDefinitionTypeInfo> implements I
 
   protected AbstractTypeInfo(@NonNull PARENT parentDefinition) {
     this.parentDefinition = parentDefinition;
-    this.propertyName = Lazy.lazy(() -> {
+    this.propertyName = Lazy.of(() -> {
       String baseName = ClassUtils.toPropertyName(getBaseName());
       IDefinitionTypeInfo parent = getParentTypeInfo();
 
       // first check if a property already exists with the same name
       return parent.getTypeResolver().getPropertyName(parent, baseName);
     });
-    this.fieldName = Lazy.lazy(() -> "_" + ClassUtils.toVariableName(getPropertyName()));
+    this.fieldName = Lazy.of(() -> "_" + ClassUtils.toVariableName(getPropertyName()));
   }
 
   @Override

@@ -10,7 +10,9 @@ import gov.nist.secauto.metaschema.core.metapath.impl.SequenceN;
 import gov.nist.secauto.metaschema.core.metapath.impl.SingletonSequence;
 import gov.nist.secauto.metaschema.core.metapath.impl.StreamSequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
+import gov.nist.secauto.metaschema.core.metapath.item.atomic.INumericItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IArrayItem;
+import gov.nist.secauto.metaschema.core.metapath.type.IItemType;
 import gov.nist.secauto.metaschema.core.metapath.type.InvalidTypeMetapathException;
 import gov.nist.secauto.metaschema.core.metapath.type.TypeMetapathException;
 import gov.nist.secauto.metaschema.core.util.CustomCollectors;
@@ -185,6 +187,26 @@ public interface ISequence<ITEM extends IItem> extends List<ITEM>, ICollectionVa
   }
 
   /**
+   * Gets the first item of the provided sequence as a {@link INumericItem} value.
+   * If the sequence is empty, then a {@code null} value is returned.
+   *
+   * @param requireSingleton
+   *          if {@code true} then a {@link TypeMetapathException} is thrown if
+   *          the sequence contains more than one item
+   * @return the numeric item value, or {@code null} if the result is an empty
+   *         sequence
+   * @throws TypeMetapathException
+   *           if the sequence contains more than one item, or the item cannot be
+   *           cast to a numeric value
+   *
+   */
+  @Nullable
+  default INumericItem toNumeric(boolean requireSingleton) {
+    IItem item = getFirstItem(requireSingleton);
+    return item == null ? null : item.toNumeric();
+  }
+
+  /**
    * Get this sequence as a collection value.
    *
    * @return the collection value
@@ -259,7 +281,7 @@ public interface ISequence<ITEM extends IItem> extends List<ITEM>, ICollectionVa
    * @return the new sequence
    */
   @NonNull
-  static <ITEM_TYPE extends IItem> ISequence<ITEM_TYPE> ofCollection( // NOPMD - intentional
+  static <ITEM_TYPE extends IItem> ISequence<ITEM_TYPE> ofCollection(
       @NonNull Collection<ITEM_TYPE> items) {
     ISequence<ITEM_TYPE> retval;
     if (items.isEmpty()) {
@@ -284,7 +306,7 @@ public interface ISequence<ITEM extends IItem> extends List<ITEM>, ICollectionVa
    * @return the new sequence
    */
   @NonNull
-  static <T extends IItem> ISequence<T> of( // NOPMD - intentional
+  static <T extends IItem> ISequence<T> of(
       @Nullable T item) {
     return item == null ? empty() : new SingletonSequence<>(item);
   }
@@ -592,5 +614,13 @@ public interface ISequence<ITEM extends IItem> extends List<ITEM>, ICollectionVa
         : collection.isEmpty()
             ? empty()
             : new SequenceN<>(new ArrayList<>(collection));
+  }
+
+  @NonNull
+  @SuppressWarnings("unchecked")
+  default <T extends IItem> ISequence<T> ofType(@NonNull IItemType type) {
+    assert safeStream().allMatch(type::isInstance);
+
+    return (ISequence<T>) this;
   }
 }

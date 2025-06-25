@@ -6,7 +6,7 @@
 package gov.nist.secauto.metaschema.core.metapath.type.impl;
 
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
-import gov.nist.secauto.metaschema.core.metapath.type.IItemType;
+import gov.nist.secauto.metaschema.core.metapath.type.AbstractItemTypeBase;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -16,7 +16,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  */
 @SuppressFBWarnings(value = "SING_SINGLETON_GETTER_NOT_SYNCHRONIZED", justification = "false positive")
 public final class AnyItemType
-    implements IItemType {
+    extends AbstractItemTypeBase {
   @NonNull
   private static final AnyItemType INSTANCE = new AnyItemType();
 
@@ -42,13 +42,8 @@ public final class AnyItemType
   }
 
   @Override
-  public String toSignature() {
+  public String generateSignature() {
     return "item()";
-  }
-
-  @Override
-  public String toString() {
-    return toSignature();
   }
 
   private AnyItemType() {

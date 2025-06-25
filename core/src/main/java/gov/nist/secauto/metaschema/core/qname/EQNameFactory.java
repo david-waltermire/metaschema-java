@@ -28,7 +28,7 @@ public final class EQNameFactory {
   private static final Pattern URI_QUALIFIED_NAME = Pattern.compile("^Q\\{([^{}]*)\\}(.+)$");
   private static final Pattern LEXICAL_NAME = Pattern.compile("^(?:([^:]+):)?(.+)$");
   @NonNull
-  private static final Lazy<EQNameFactory> INSTANCE = ObjectUtils.notNull(Lazy.lazy(EQNameFactory::new));
+  private static final Lazy<EQNameFactory> INSTANCE = ObjectUtils.notNull(Lazy.of(EQNameFactory::new));
 
   @NonNull
   private final QNameCache cache;

@@ -43,7 +43,7 @@ class AssemblyDefinitionTypeInfoImpl
 
   public AssemblyDefinitionTypeInfoImpl(@NonNull IAssemblyDefinition definition, @NonNull ITypeResolver typeResolver) {
     super(definition, typeResolver);
-    this.instanceToTypeInfoMap = ObjectUtils.notNull(Lazy.lazy(() -> Stream.concat(
+    this.instanceToTypeInfoMap = ObjectUtils.notNull(Lazy.of(() -> Stream.concat(
         getFlagInstanceTypeInfos().stream(),
         processModel(definition))
         .collect(CustomCollectors.toMap(
@@ -56,7 +56,7 @@ class AssemblyDefinitionTypeInfoImpl
               return ObjectUtils.notNull(v2);
             },
             LinkedHashMap::new))));
-    this.propertyNameToTypeInfoMap = ObjectUtils.notNull(Lazy.lazy(() -> getInstanceTypeInfoMap().values().stream()
+    this.propertyNameToTypeInfoMap = ObjectUtils.notNull(Lazy.of(() -> getInstanceTypeInfoMap().values().stream()
         .collect(Collectors.toMap(
             IInstanceTypeInfo::getPropertyName,
             Function.identity(),

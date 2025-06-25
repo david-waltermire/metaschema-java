@@ -147,6 +147,7 @@ public final class LoggingValidationHandler
   }
 
   @NonNull
+  @SuppressWarnings("PMD.CyclomaticComplexity")
   private LogBuilder getLogger(@NonNull IValidationFinding finding) {
     LogBuilder retval;
     switch (finding.getSeverity()) {

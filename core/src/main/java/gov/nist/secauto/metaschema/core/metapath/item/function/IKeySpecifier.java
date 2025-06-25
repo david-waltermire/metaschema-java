@@ -17,6 +17,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 /**
  * A common interface for all key specifier implementations.
  */
+@FunctionalInterface
 public interface IKeySpecifier {
 
   /**

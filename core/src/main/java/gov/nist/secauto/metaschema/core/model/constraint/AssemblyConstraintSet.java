@@ -18,7 +18,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * Represents a container of rules constraining the effective model of a
  * Metaschema assembly data instance.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class AssemblyConstraintSet
     extends ValueConstraintSet
     implements IModelConstrained {

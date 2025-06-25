@@ -11,6 +11,7 @@ import gov.nist.secauto.metaschema.databind.model.IBoundModule;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@FunctionalInterface
 public interface IModuleBindingGenerator {
   @NonNull
   Class<? extends IBoundModule> generate(@NonNull IModule module) throws MetaschemaException;

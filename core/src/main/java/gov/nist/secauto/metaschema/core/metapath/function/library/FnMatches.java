@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.function.regex.RegexUtil;
@@ -16,7 +15,6 @@ import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IBooleanItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -91,8 +89,8 @@ public final class FnMatches {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IStringItem input = FunctionUtils.asTypeOrNull(arguments.get(0).getFirstItem(true));
-    IStringItem pattern = ObjectUtils.requireNonNull(FunctionUtils.asTypeOrNull(arguments.get(1).getFirstItem(true)));
+    IStringItem input = IStringItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
+    IStringItem pattern = IStringItem.type().ofType(arguments.get(1).getFirstItem(true));
 
     return execute(input, pattern, IStringItem.valueOf(""));
   }
@@ -104,9 +102,9 @@ public final class FnMatches {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IStringItem input = FunctionUtils.asTypeOrNull(arguments.get(0).getFirstItem(true));
-    IStringItem pattern = ObjectUtils.requireNonNull(FunctionUtils.asTypeOrNull(arguments.get(1).getFirstItem(true)));
-    IStringItem flags = ObjectUtils.requireNonNull(FunctionUtils.asTypeOrNull(arguments.get(2).getFirstItem(true)));
+    IStringItem input = IStringItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
+    IStringItem pattern = IStringItem.type().ofType(arguments.get(1).getFirstItem(true));
+    IStringItem flags = IStringItem.type().ofType(arguments.get(2).getFirstItem(true));
 
     return execute(input, pattern, flags);
   }

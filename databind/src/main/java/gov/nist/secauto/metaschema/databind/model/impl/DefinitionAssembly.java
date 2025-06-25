@@ -102,14 +102,14 @@ public final class DefinitionAssembly
     super(clazz, annotation, module, bindingContext);
 
     String rootLocalName = ModelUtil.resolveNoneOrDefault(getAnnotation().rootName(), null);
-    this.xmlRootQName = ObjectUtils.notNull(Lazy.lazy(() -> rootLocalName == null
+    this.xmlRootQName = ObjectUtils.notNull(Lazy.of(() -> rootLocalName == null
         ? null
         : ModuleUtils.parseModelName(getContainingModule(), rootLocalName)));
-    this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> new FlagContainerSupport(this, null)));
-    this.modelContainer = ObjectUtils.notNull(Lazy.lazy(() -> AssemblyModelGenerator.of(this)));
+    this.flagContainer = ObjectUtils.notNull(Lazy.of(() -> new FlagContainerSupport(this, null)));
+    this.modelContainer = ObjectUtils.notNull(Lazy.of(() -> AssemblyModelGenerator.of(this)));
 
     ISource source = module.getSource();
-    this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.constraints = ObjectUtils.notNull(Lazy.of(() -> {
       IModelConstrained retval = new AssemblyConstraintSet(source);
       ValueConstraints valueAnnotation = getAnnotation().valueConstraints();
       ConstraintSupport.parse(valueAnnotation, source, retval);
@@ -118,9 +118,9 @@ public final class DefinitionAssembly
       ConstraintSupport.parse(assemblyAnnotation, source, retval);
       return retval;
     }));
-    this.jsonProperties = ObjectUtils.notNull(Lazy.lazy(() -> getJsonProperties(null)));
+    this.jsonProperties = ObjectUtils.notNull(Lazy.of(() -> getJsonProperties(null)));
     this.properties = ObjectUtils.notNull(
-        Lazy.lazy(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
+        Lazy.of(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
             Arrays.stream(annotation.properties())
                 .map(ModelUtil::toPropertyEntry)
                 .collect(

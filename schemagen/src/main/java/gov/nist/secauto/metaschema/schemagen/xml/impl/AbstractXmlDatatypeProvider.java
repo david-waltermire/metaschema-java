@@ -5,6 +5,8 @@
 
 package gov.nist.secauto.metaschema.schemagen.xml.impl;
 
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
+
 import org.codehaus.stax2.XMLStreamWriter2;
 import org.eclipse.jdt.annotation.Owning;
 import org.jdom2.Element;
@@ -22,30 +24,18 @@ import javax.xml.stream.XMLStreamException;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import nl.talsmasoftware.lazy4j.Lazy;
 
 public abstract class AbstractXmlDatatypeProvider implements IDatatypeProvider {
-  private Map<String, IDatatypeContent> datatypes;
+  private Lazy<Map<String, IDatatypeContent>> datatypes;
+
+  protected AbstractXmlDatatypeProvider() {
+    this.datatypes = Lazy.of(this::initSchema);
+  }
 
   @Owning
   @NonNull
   protected abstract InputStream getSchemaResource();
-
-  private void initSchema() {
-    synchronized (this) {
-      if (datatypes == null) {
-        try (InputStream is = getSchemaResource()) {
-          assert is != null;
-          JDom2XmlSchemaLoader loader = new JDom2XmlSchemaLoader(is);
-
-          List<Element> elements = queryElements(loader);
-
-          datatypes = Collections.unmodifiableMap(handleResults(elements));
-        } catch (JDOMException | IOException ex) {
-          throw new IllegalStateException(ex);
-        }
-      }
-    }
-  }
 
   @NonNull
   protected abstract List<Element> queryElements(JDom2XmlSchemaLoader loader);
@@ -53,12 +43,23 @@ public abstract class AbstractXmlDatatypeProvider implements IDatatypeProvider {
   @NonNull
   protected abstract Map<String, IDatatypeContent> handleResults(@NonNull List<Element> items);
 
+  private Map<String, IDatatypeContent> initSchema() {
+    try (InputStream is = getSchemaResource()) {
+      assert is != null;
+      JDom2XmlSchemaLoader loader = new JDom2XmlSchemaLoader(is);
+
+      List<Element> elements = queryElements(loader);
+
+      return Collections.unmodifiableMap(handleResults(elements));
+    } catch (JDOMException | IOException ex) {
+      throw new IllegalStateException(ex);
+    }
+  }
+
   @Override
   @SuppressFBWarnings({ "IS2_INCONSISTENT_SYNC", "MT_CORRECTNESS", "EI_EXPOSE_REP" })
   public Map<String, IDatatypeContent> getDatatypes() {
-    initSchema();
-    assert datatypes != null;
-    return datatypes;
+    return ObjectUtils.notNull(datatypes.get());
   }
 
   @Override

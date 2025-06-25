@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.ICollectionValue;
@@ -17,7 +16,6 @@ import gov.nist.secauto.metaschema.core.metapath.item.atomic.IIntegerItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IArrayItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IndexOutOfBoundsArrayMetapathException;
 import gov.nist.secauto.metaschema.core.metapath.item.function.NegativeLengthArrayMetapathException;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,9 +87,8 @@ public final class ArraySubarray {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IArrayItem<T> array = FunctionUtils.asType(ObjectUtils.requireNonNull(
-        arguments.get(0).getFirstItem(true)));
-    IIntegerItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
+    IArrayItem<T> array = IArrayItem.type().ofType(arguments.get(0).getFirstItem(true));
+    IIntegerItem start = IIntegerItem.type().ofType(arguments.get(1).getFirstItem(true));
 
     return ISequence.of(subarray(array, start));
   }
@@ -102,10 +99,9 @@ public final class ArraySubarray {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IArrayItem<T> array = FunctionUtils.asType(ObjectUtils.requireNonNull(
-        arguments.get(0).getFirstItem(true)));
-    IIntegerItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
-    IIntegerItem length = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(2).getFirstItem(true)));
+    IArrayItem<T> array = IArrayItem.type().ofType(arguments.get(0).getFirstItem(true));
+    IIntegerItem start = IIntegerItem.type().ofType(arguments.get(1).getFirstItem(true));
+    IIntegerItem length = IIntegerItem.type().ofType(arguments.get(2).getFirstItem(true));
 
     return ISequence.of(subarray(array, start, length));
   }
@@ -124,7 +120,6 @@ public final class ArraySubarray {
    * @throws IndexOutOfBoundsArrayMetapathException
    *           if the start position is not in the range of 1 to array:size
    */
-  @SuppressWarnings("PMD.OnlyOneReturn")
   @NonNull
   public static <T extends ICollectionValue> IArrayItem<T> subarray(
       @NonNull IArrayItem<T> array,
@@ -151,7 +146,6 @@ public final class ArraySubarray {
    * @throws IndexOutOfBoundsArrayMetapathException
    *           if the start position is not in the range of 1 to array:size
    */
-  @SuppressWarnings("PMD.OnlyOneReturn")
   @NonNull
   public static <T extends ICollectionValue> IArrayItem<T> subarray(
       @NonNull IArrayItem<T> array,

@@ -21,6 +21,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * The {@link #behaviorFor(IModelInstanceAbsolute)} method can be used to get
  * the appropriate behavior for a Metaschema definition model instance.
  */
+@FunctionalInterface
 public interface ICardinalityBehavior {
   /**
    * Used to get the appropriate behavior for a Metaschema definition model

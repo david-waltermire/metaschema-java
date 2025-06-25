@@ -56,7 +56,7 @@ public class StaticFunctionCall
       @NonNull Supplier<IFunction> functionSupplier,
       @NonNull List<IExpression> arguments) {
     super(text);
-    this.functionSupplier = ObjectUtils.notNull(Lazy.lazy(functionSupplier));
+    this.functionSupplier = ObjectUtils.notNull(Lazy.of(functionSupplier));
     this.arguments = arguments;
   }
 

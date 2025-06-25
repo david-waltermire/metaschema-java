@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.function.InvalidArgumentFunctionException;
@@ -67,8 +66,8 @@ public final class FnDateTime {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IDateItem date = FunctionUtils.asTypeOrNull(arguments.get(0).getFirstItem(true));
-    ITimeItem time = FunctionUtils.asTypeOrNull(arguments.get(1).getFirstItem(true));
+    IDateItem date = IDateItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
+    ITimeItem time = ITimeItem.type().ofTypeOrNull(arguments.get(1).getFirstItem(true));
 
     return ISequence.of(fnDateTimeOfNullable(date, time));
   }

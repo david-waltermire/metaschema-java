@@ -28,7 +28,7 @@ public abstract class AbstractDecimalItem<TYPE>
     implements IDecimalItem {
 
   @SuppressWarnings("synthetic-access")
-  private final Lazy<String> stringValue = Lazy.lazy(super::asString);
+  private final Lazy<String> stringValue = Lazy.of(super::asString);
 
   /**
    * Construct a new item with the provided {@code value}.

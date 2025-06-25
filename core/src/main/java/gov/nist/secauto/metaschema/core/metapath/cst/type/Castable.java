@@ -20,7 +20,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * A compact syntax tree node that supports the Metapath
  * <a href="https://www.w3.org/TR/xpath-31/#id-cast">"cast as" operator</a>.
  */
-@SuppressWarnings("PMD.ShortClassName")
 public class Castable
     extends AbstractCastingExpression {
 
@@ -56,7 +55,7 @@ public class Castable
     try {
       cast(focus);
       retval = true;
-    } catch (@SuppressWarnings("unused") MetapathException ex) {
+    } catch (MetapathException ex) {
       // this exception proves the cast did not work
       retval = false;
     }

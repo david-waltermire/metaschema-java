@@ -91,7 +91,7 @@ public abstract class AbstractAtomicItemBase<TYPE> implements IAnyAtomicItem {
               (IAnyAtomicItem) other,
               dynamicContext)
               .toBoolean();
-    } catch (@SuppressWarnings("unused") InvalidTypeMetapathException ex) {
+    } catch (InvalidTypeMetapathException ex) {
       // incompatible types are a non-match
       retval = false;
     }

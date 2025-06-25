@@ -86,9 +86,7 @@ public final class FnSum {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<? extends IAnyAtomicItem> sequence = FunctionUtils.asType(
-        ObjectUtils.requireNonNull(arguments.get(0)));
-
+    ISequence<IAnyAtomicItem> sequence = arguments.get(0).ofType(IAnyAtomicItem.type());
     return ISequence.of(sum(sequence, IIntegerItem.ZERO));
   }
 
@@ -99,10 +97,8 @@ public final class FnSum {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<? extends IAnyAtomicItem> sequence = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
-
-    IAnyAtomicItem zero = FunctionUtils.asTypeOrNull(arguments.get(1).getFirstItem(true));
-
+    ISequence<IAnyAtomicItem> sequence = arguments.get(0).ofType(IAnyAtomicItem.type());
+    IAnyAtomicItem zero = IAnyAtomicItem.type().ofTypeOrNull(arguments.get(1).getFirstItem(true));
     return ISequence.of(sum(sequence, zero));
   }
 

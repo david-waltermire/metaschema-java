@@ -22,7 +22,7 @@ class AssemblyGlobalDefinitionNodeItemImpl
       @NonNull IModuleNodeItem metaschemaNodeItem,
       @NonNull INodeItemGenerator generator) {
     super(definition, metaschemaNodeItem);
-    this.model = ObjectUtils.notNull(Lazy.lazy(generator.newMetaschemaModelSupplier(this)));
+    this.model = ObjectUtils.notNull(Lazy.of(generator.newMetaschemaModelSupplier(this)));
   }
 
   @SuppressWarnings("null")

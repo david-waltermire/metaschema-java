@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.type;
 
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IMapItem;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -56,16 +55,5 @@ public interface IMapTest extends IItemType {
           });
     }
     return retval;
-  }
-
-  @Override
-  default String toSignature() {
-    return ObjectUtils.notNull(new StringBuilder()
-        .append("map(")
-        .append(getKeyType().toSignature())
-        .append(',')
-        .append(getValueType().toSignature())
-        .append(')')
-        .toString());
   }
 }

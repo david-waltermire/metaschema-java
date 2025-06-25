@@ -61,7 +61,6 @@ public class XmlConstraintLoader
     extends AbstractLoader<List<IConstraintSet>>
     implements IConstraintLoader {
 
-  @SuppressWarnings("PMD.UseConcurrentHashMap")
   @NonNull
   private static final Map<IEnhancedQName,
       Handler<Pair<ISource, List<ITargetedConstraints>>>> SCOPE_OBJECT_MAPPING = ObjectUtils.notNull(
@@ -178,7 +177,7 @@ public class XmlConstraintLoader
     for (Scope scope : constraints.getScopeList()) {
       assert scope != null;
 
-      List<ITargetedConstraints> targetedConstraints = new LinkedList<>(); // NOPMD - intentional
+      List<ITargetedConstraints> targetedConstraints = new LinkedList<>();
       SCOPE_PARSER.parse(source, scope, Pair.of(source, targetedConstraints));
 
       URI namespace = ObjectUtils.notNull(URI.create(scope.getMetaschemaNamespace()));
@@ -209,7 +208,7 @@ public class XmlConstraintLoader
         constraints));
   }
 
-  private static void handleScopedField( // NOPMD false positive
+  private static void handleScopedField(
       @NonNull ISource source,
       @NonNull XmlObject obj,
       Pair<ISource, List<ITargetedConstraints>> state) {
@@ -226,7 +225,7 @@ public class XmlConstraintLoader
         constraints));
   }
 
-  private static void handleScopedFlag( // NOPMD false positive
+  private static void handleScopedFlag(
       @NonNull ISource source,
       @NonNull XmlObject obj,
       Pair<ISource, List<ITargetedConstraints>> state) {

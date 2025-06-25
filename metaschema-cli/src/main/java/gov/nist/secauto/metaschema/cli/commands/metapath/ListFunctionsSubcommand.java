@@ -64,7 +64,6 @@ class ListFunctionsSubcommand
    * @return the execution result
    */
   @SuppressWarnings({
-      "PMD.OnlyOneReturn", // readability
       "PMD.AvoidInstantiatingObjectsInLoops",
       "PMD.CognitiveComplexity"
   })

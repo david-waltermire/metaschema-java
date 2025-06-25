@@ -288,7 +288,6 @@ public class MetaschemaXmlReader
    * @throws XMLStreamException
    *           if an error occurred while parsing XML events
    */
-  @SuppressWarnings("PMD.OnlyOneReturn")
   protected boolean isNextInstance(
       @NonNull IBoundInstanceModel<?> targetInstance)
       throws XMLStreamException {

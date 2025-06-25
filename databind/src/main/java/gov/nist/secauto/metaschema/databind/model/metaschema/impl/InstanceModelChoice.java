@@ -49,13 +49,13 @@ public class InstanceModelChoice
       @NonNull IBindingDefinitionModelAssembly parent,
       @NonNull INodeItemFactory nodeItemFactory) {
     super(parent);
-    this.modelContainer = ObjectUtils.notNull(Lazy.lazy(() -> ChoiceModelGenerator.of(
+    this.modelContainer = ObjectUtils.notNull(Lazy.of(() -> ChoiceModelGenerator.of(
         binding,
         bindingInstance,
         this,
         nodeItemFactory)));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
+        Lazy.of(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getQName())
             .get(position)));
   }

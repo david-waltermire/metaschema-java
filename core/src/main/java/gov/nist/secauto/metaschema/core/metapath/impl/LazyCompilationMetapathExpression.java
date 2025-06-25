@@ -8,7 +8,6 @@ package gov.nist.secauto.metaschema.core.metapath.impl;
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.IExpression;
 import gov.nist.secauto.metaschema.core.metapath.IMetapathExpression;
-import gov.nist.secauto.metaschema.core.metapath.InvalidMetapathGrammarException;
 import gov.nist.secauto.metaschema.core.metapath.MetapathException;
 import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.metapath.cst.IExpressionVisitor;
@@ -48,15 +47,7 @@ public class LazyCompilationMetapathExpression implements IMetapathExpression {
       @NonNull StaticContext staticContext) {
     this.path = path;
     this.staticContext = staticContext;
-    this.compiledMetapath = ObjectUtils.notNull(Lazy.lazy(() -> {
-      IMetapathExpression result;
-      try {
-        result = IMetapathExpression.compile(path, staticContext);
-      } catch (InvalidMetapathGrammarException ex) {
-        throw new InvalidMetapathGrammarException(ex);
-      }
-      return result;
-    }));
+    this.compiledMetapath = ObjectUtils.notNull(Lazy.of(() -> IMetapathExpression.compile(path, staticContext)));
   }
 
   @Override

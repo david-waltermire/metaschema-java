@@ -256,7 +256,7 @@ public class InsertAnchorExtension
           : Collections.emptySet();
     }
 
-    private void processInsert( // NOPMD used as lambda
+    private void processInsert(
         Element node,
         @SuppressWarnings("unused") HtmlNodeConverterContext context,
         HtmlMarkdownWriter out) {

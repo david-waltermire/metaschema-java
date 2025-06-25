@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.function.regex.RegexUtil;
@@ -102,14 +101,14 @@ public final class FnTokenize {
       .build();
   // CPD-ON
 
-  @SuppressWarnings({ "PMD.UnusedFormalParameter", "unused" })
+  @SuppressWarnings({ "unused" })
   @NonNull
   private static ISequence<IStringItem> executeOneArg(
       @NonNull IFunction function,
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IStringItem input = FunctionUtils.asTypeOrNull(arguments.get(0).getFirstItem(true));
+    IStringItem input = IStringItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
 
     return input == null
         ? ISequence.empty()
@@ -118,20 +117,20 @@ public final class FnTokenize {
                 .map(IStringItem::valueOf)));
   }
 
-  @SuppressWarnings({ "PMD.UnusedFormalParameter", "unused" })
+  @SuppressWarnings({ "unused" })
   @NonNull
   private static ISequence<IStringItem> executeTwoArg(
       @NonNull IFunction function,
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IStringItem input = FunctionUtils.asTypeOrNull(arguments.get(0).getFirstItem(true));
-    IStringItem pattern = ObjectUtils.requireNonNull(FunctionUtils.asTypeOrNull(arguments.get(1).getFirstItem(true)));
+    IStringItem input = IStringItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
+    IStringItem pattern = IStringItem.type().ofType(arguments.get(1).getFirstItem(true));
 
     return execute(input, pattern, IStringItem.valueOf(""));
   }
 
-  @SuppressWarnings({ "PMD.UnusedFormalParameter", "unused" })
+  @SuppressWarnings({ "unused" })
   @NonNull
   private static ISequence<IStringItem> executeThreeArg(
       @NonNull IFunction function,
@@ -139,14 +138,13 @@ public final class FnTokenize {
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    IStringItem input = FunctionUtils.asTypeOrNull(arguments.get(0).getFirstItem(true));
-    IStringItem pattern = ObjectUtils.requireNonNull(FunctionUtils.asTypeOrNull(arguments.get(1).getFirstItem(true)));
-    IStringItem flags = ObjectUtils.requireNonNull(FunctionUtils.asTypeOrNull(arguments.get(2).getFirstItem(true)));
+    IStringItem input = IStringItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
+    IStringItem pattern = IStringItem.type().ofType(arguments.get(1).getFirstItem(true));
+    IStringItem flags = IStringItem.type().ofType(arguments.get(2).getFirstItem(true));
 
     return execute(input, pattern, flags);
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
   @NonNull
   private static ISequence<IStringItem> execute(
       @Nullable IStringItem input,

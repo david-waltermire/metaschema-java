@@ -12,6 +12,7 @@ import org.apache.xmlbeans.XmlObject;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IXmlObjectBinding {
   /**
    * Get the underlying XML data.

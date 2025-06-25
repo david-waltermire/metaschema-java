@@ -113,15 +113,15 @@ public final class InstanceModelAssemblyComplex
     this.javaField = javaField;
     this.annotation = annotation;
     this.groupAs = groupAs;
-    this.collectionInfo = ObjectUtils.notNull(Lazy.lazy(() -> IModelInstanceCollectionInfo.of(this)));
+    this.collectionInfo = ObjectUtils.notNull(Lazy.of(() -> IModelInstanceCollectionInfo.of(this)));
     this.definition = definition;
-    this.jsonProperties = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.jsonProperties = ObjectUtils.notNull(Lazy.of(() -> {
       IBoundInstanceFlag jsonKey = getEffectiveJsonKey();
       Predicate<IBoundInstanceFlag> flagFilter = jsonKey == null ? null : flag -> !jsonKey.equals(flag);
       return getDefinition().getJsonProperties(flagFilter);
     }));
     this.properties = ObjectUtils.notNull(
-        Lazy.lazy(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
+        Lazy.of(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
             Arrays.stream(annotation.properties())
                 .map(ModelUtil::toPropertyEntry)
                 .collect(

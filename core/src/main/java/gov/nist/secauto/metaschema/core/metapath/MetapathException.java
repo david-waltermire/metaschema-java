@@ -29,7 +29,7 @@ public class MetapathException
   private final IErrorCode errorCode;
 
   @Nullable
-  private Deque<IExpression> evaluationStack = null;
+  private Deque<IExpression> evaluationStack;
 
   /**
    * Constructs a new Metapath exception with the provided {@code code} and

@@ -321,6 +321,61 @@ public interface IItemType {
   }
 
   /**
+   * Cast the provided item to the expected type.
+   * <p>
+   * If Java assertions are enabled, this method will check that the provided item
+   * is an instance of this type. As a result, this method is not a rigorous as
+   * the {@link #test(IItem)} method, which always checks that the item matches
+   * the type. However, this method can be used where it is certain that the type
+   * matches, perhaps because the type has been previously checked.
+   *
+   * @param <T>
+   *          the expected Java type of the item
+   * @param item
+   *          the item to cast
+   * @return the item cast to the expected type
+   * @throws ClassCastException
+   *           if the item's Java type is not a subclass of the expected type
+   * @throws AssertionError
+   *           if the item is not an instance of this type
+   */
+  @SuppressWarnings("unchecked")
+  @NonNull
+  default <T extends IItem> T ofType(@Nullable IItem item) {
+    assert item != null && isInstance(item);
+
+    return (T) item;
+  }
+
+  /**
+   * Cast the provided item to the expected type.
+   * <p>
+   * If Java assertions are enabled, this method will check that the provided item
+   * is an instance of this type or {@code null}. As a result, this method is not
+   * a rigorous as the {@link #testOrNull(IItem)} method, which always checks that
+   * the item matches the type. However, this method can be used where it is
+   * certain that the type matches, perhaps because the type has been previously
+   * checked.
+   *
+   * @param <T>
+   *          the expected Java type of the item
+   * @param item
+   *          the item to cast
+   * @return the item, which may be {@code null} cast to the expected type
+   * @throws ClassCastException
+   *           if the item's Java type is not a subclass of the expected type
+   * @throws AssertionError
+   *           if the item is not an instance of this type
+   */
+  @SuppressWarnings("unchecked")
+  @Nullable
+  default <T extends IItem> T ofTypeOrNull(@Nullable IItem item) {
+    assert item == null || isInstance(item);
+
+    return (T) item;
+  }
+
+  /**
    * Test if the provided item matches this item type.
    *
    * @param <T>
@@ -331,15 +386,40 @@ public interface IItemType {
    * @throws InvalidTypeMetapathException
    *           if the test fails because the item is not the required type
    */
+  @SuppressWarnings("unchecked")
   @NonNull
-  default <T extends IItem> T test(@Nullable T item) {
+  default <T extends IItem> T test(@Nullable IItem item) {
     if (item != null && isInstance(item)) {
-      return item;
+      return (T) item;
     }
     throw new InvalidTypeMetapathException(
         null,
         String.format("The item '%s' is not a '%s'",
             item == null ? "null" : item.toSignature(),
+            toSignature()));
+  }
+
+  /**
+   * Test if the provided item matches this item type.
+   *
+   * @param <T>
+   *          the Java type of the item tested
+   * @param item
+   *          the item to test
+   * @return the item if the test passes
+   * @throws InvalidTypeMetapathException
+   *           if the test fails because the item is not the required type
+   */
+  @SuppressWarnings("unchecked")
+  @Nullable
+  default <T extends IItem> T testOrNull(@Nullable IItem item) {
+    if (item == null || isInstance(item)) {
+      return (T) item;
+    }
+    throw new InvalidTypeMetapathException(
+        null,
+        String.format("The item '%s' is not a '%s'",
+            item.toSignature(),
             toSignature()));
   }
 

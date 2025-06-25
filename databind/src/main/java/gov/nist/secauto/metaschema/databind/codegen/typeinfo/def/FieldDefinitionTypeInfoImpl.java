@@ -39,7 +39,7 @@ class FieldDefinitionTypeInfoImpl
 
   public FieldDefinitionTypeInfoImpl(@NonNull IFieldDefinition definition, @NonNull ITypeResolver typeResolver) {
     super(definition, typeResolver);
-    this.instanceToTypeInfoMap = ObjectUtils.notNull(Lazy.lazy(() -> getFlagInstanceTypeInfos().stream()
+    this.instanceToTypeInfoMap = ObjectUtils.notNull(Lazy.of(() -> getFlagInstanceTypeInfos().stream()
         .collect(CustomCollectors.toMap(
             IFlagInstanceTypeInfo::getInstance,
             CustomCollectors.identity(),
@@ -50,7 +50,7 @@ class FieldDefinitionTypeInfoImpl
               return ObjectUtils.notNull(v2);
             },
             LinkedHashMap::new))));
-    this.propertyNameToTypeInfoMap = ObjectUtils.notNull(Lazy.lazy(() -> Stream.concat(
+    this.propertyNameToTypeInfoMap = ObjectUtils.notNull(Lazy.of(() -> Stream.concat(
         getInstanceTypeInfoMap().values().stream(),
         Stream.of((IPropertyTypeInfo) IFieldValueTypeInfo.newTypeInfo(this)))
         .collect(Collectors.toMap(

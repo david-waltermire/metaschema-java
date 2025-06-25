@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -60,8 +59,8 @@ public final class MapForEach {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IMapItem<?> map = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0).getFirstItem(true)));
-    IFunction action = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
+    IMapItem<?> map = IMapItem.type().ofType(arguments.get(0).getFirstItem(true));
+    IFunction action = IFunction.type().ofType(arguments.get(1).getFirstItem(true));
 
     BiFunction<IAnyAtomicItem, ISequence<?>, ISequence<?>> lambda = adaptFunction(action, dynamicContext);
     return forEach(map, lambda);

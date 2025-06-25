@@ -103,8 +103,7 @@ public abstract class AbstractConvertSubcommand
     protected abstract IBindingContext getBindingContext() throws CommandExecutionException, MetaschemaException;
 
     @SuppressWarnings({
-        "PMD.OnlyOneReturn", // readability
-        "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity" // reasonable
+        "PMD.CyclomaticComplexity" // reasonable
     })
     @Override
     public void execute() throws CommandExecutionException {

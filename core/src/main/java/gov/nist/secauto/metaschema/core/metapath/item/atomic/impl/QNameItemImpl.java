@@ -76,7 +76,6 @@ public class QNameItemImpl
     return value.hashCode();
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override
   public boolean equals(Object obj) {
     return this == obj

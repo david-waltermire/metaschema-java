@@ -70,11 +70,6 @@ public interface IAtomicOrUnionType<I extends IAnyAtomicItem> extends IItemType 
   @NonNull
   Class<I> getItemClass();
 
-  @Override
-  default String toSignature() {
-    return getQName().toEQName();
-  }
-
   /**
    * Check if the other type is a member of this type.
    *

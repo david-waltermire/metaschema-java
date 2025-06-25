@@ -8,6 +8,7 @@ package gov.nist.secauto.metaschema.core.metapath.type.impl;
 import gov.nist.secauto.metaschema.core.metapath.StaticContext;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.node.IDefinitionNodeItem;
+import gov.nist.secauto.metaschema.core.metapath.type.AbstractItemTypeBase;
 import gov.nist.secauto.metaschema.core.metapath.type.IKindTest;
 import gov.nist.secauto.metaschema.core.qname.IEnhancedQName;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -26,7 +27,9 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * @param <T>
  *          the Java type of the node-based item supported by the implementation
  */
-public abstract class AbstractDefinitionTest<T extends IDefinitionNodeItem<?, ?>> implements IKindTest<T> {
+public abstract class AbstractDefinitionTest<T extends IDefinitionNodeItem<?, ?>>
+    extends AbstractItemTypeBase
+    implements IKindTest<T> {
   /**
    * The qualified name of the node instance.
    */
@@ -38,8 +41,6 @@ public abstract class AbstractDefinitionTest<T extends IDefinitionNodeItem<?, ?>
   @Nullable
   private final String typeName;
   @NonNull
-  private final String signature;
-  @NonNull
   private final StaticContext testStaticContext;
 
   /**
@@ -47,7 +48,7 @@ public abstract class AbstractDefinitionTest<T extends IDefinitionNodeItem<?, ?>
    *
    * @param testName
    *          the name of the test
-   * @param itemName
+   * @param instanceName
    *          the name of the node item to test
    * @param typeName
    *          the name of the definition or atomic type to test
@@ -55,36 +56,20 @@ public abstract class AbstractDefinitionTest<T extends IDefinitionNodeItem<?, ?>
    *          the static context in which the test was declared
    */
   protected AbstractDefinitionTest(
-      @NonNull String testName,
-      @Nullable IEnhancedQName itemName,
+      @Nullable IEnhancedQName instanceName,
       @Nullable String typeName,
       @NonNull StaticContext staticContext) {
-    this.instanceName = itemName;
+    this.instanceName = instanceName;
     this.typeName = typeName;
     this.testStaticContext = staticContext;
-
-    StringBuilder signatureBuilder = new StringBuilder()
-        .append(testName)
-        .append('(');
-
-    if (itemName != null && typeName != null) {
-      signatureBuilder
-          .append(itemName.toQName())
-          .append(',')
-          .append(typeName);
-    } else if (itemName != null) {
-      signatureBuilder
-          .append(itemName.toQName());
-    } else if (typeName != null) {
-      signatureBuilder
-          .append("*,")
-          .append(typeName);
-    }
-
-    this.signature = ObjectUtils.notNull(signatureBuilder
-        .append(')')
-        .toString());
   }
+
+  /**
+   * Get the name identifying the type of test.
+   *
+   * @return the name
+   */
+  protected abstract String getTestName();
 
   /**
    * Get the qualified name of the node instance.
@@ -116,11 +101,6 @@ public abstract class AbstractDefinitionTest<T extends IDefinitionNodeItem<?, ?>
     return testStaticContext;
   }
 
-  @Override
-  public String toSignature() {
-    return signature;
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public boolean isInstance(IItem item) {
@@ -146,4 +126,30 @@ public abstract class AbstractDefinitionTest<T extends IDefinitionNodeItem<?, ?>
    *         otherwise
    */
   protected abstract boolean matchesType(@NonNull T item);
+
+  @Override
+  protected String generateSignature() {
+
+    StringBuilder signatureBuilder = new StringBuilder()
+        .append(getTestName())
+        .append('(');
+
+    if (instanceName != null && typeName != null) {
+      signatureBuilder
+          .append(instanceName.toQName())
+          .append(',')
+          .append(typeName);
+    } else if (instanceName != null) {
+      signatureBuilder
+          .append(instanceName.toQName());
+    } else if (typeName != null) {
+      signatureBuilder
+          .append("*,")
+          .append(typeName);
+    }
+
+    return ObjectUtils.notNull(signatureBuilder
+        .append(')')
+        .toString());
+  }
 }

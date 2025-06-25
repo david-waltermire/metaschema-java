@@ -50,7 +50,6 @@ public class YearMonthDurationItemImpl
     return Objects.hash(asPeriod());
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn") // readability
   @Override
   public boolean equals(Object obj) {
     return this == obj

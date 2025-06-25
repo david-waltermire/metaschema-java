@@ -10,6 +10,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IDecimalItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.INumericItem;
+import gov.nist.secauto.metaschema.core.metapath.type.IItemType;
 import gov.nist.secauto.metaschema.core.metapath.type.InvalidTypeMetapathException;
 import gov.nist.secauto.metaschema.core.metapath.type.TypeMetapathException;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
@@ -33,7 +34,6 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  */
 // FIXME: Remove these methods in favor of direct calls to methods on the item
 // types
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 public final class FunctionUtils {
   private FunctionUtils() {
     // disable
@@ -42,6 +42,8 @@ public final class FunctionUtils {
   /**
    * Gets the first item of the provided sequence as a {@link INumericItem} value.
    * If the sequence is empty, then a {@code null} value is returned.
+   * <p>
+   * Use {@link ISequence#toNumeric(boolean)} instead.
    *
    * @param sequence
    *          a Metapath sequence containing the value to convert
@@ -55,7 +57,7 @@ public final class FunctionUtils {
    *           cast to a numeric value
    *
    */
-  @Deprecated(since = "3.0.0", forRemoval = true)
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @Nullable
   public static INumericItem toNumeric(@NonNull ISequence<?> sequence, boolean requireSingleton) {
     IItem item = sequence.getFirstItem(requireSingleton);
@@ -64,6 +66,8 @@ public final class FunctionUtils {
 
   /**
    * Gets the provided item value as a {@link INumericItem} value.
+   * <p>
+   * Use {@link IItem#toNumeric()} instead.
    *
    * @param item
    *          the value to convert
@@ -72,7 +76,7 @@ public final class FunctionUtils {
    *           if the sequence contains more than one item, or the item cannot be
    *           cast to a numeric value
    */
-  @Deprecated(since = "3.0.0", forRemoval = true)
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @NonNull
   public static INumericItem toNumeric(@NonNull IItem item) {
     // atomize
@@ -85,6 +89,8 @@ public final class FunctionUtils {
 
   /**
    * Gets the provided item value as a {@link INumericItem} value.
+   * <p>
+   * Use {@link IItem#toNumeric()} instead.
    *
    * @param item
    *          the value to convert
@@ -92,7 +98,7 @@ public final class FunctionUtils {
    * @throws TypeMetapathException
    *           if the item cannot be cast to a numeric value
    */
-  @Deprecated(since = "3.0.0", forRemoval = true)
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @NonNull
   public static INumericItem toNumeric(@NonNull IAnyAtomicItem item) {
     try {
@@ -105,6 +111,8 @@ public final class FunctionUtils {
   /**
    * Gets the provided item value as a {@link INumericItem} value. If the item is
    * {@code null}, then a {@code null} value is returned.
+   * <p>
+   * Use {@link IAnyAtomicItem#toNumeric()} instead.
    *
    * @param item
    *          the value to convert
@@ -112,6 +120,7 @@ public final class FunctionUtils {
    * @throws TypeMetapathException
    *           if the item cannot be cast to a numeric value
    */
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @Nullable
   public static INumericItem toNumericOrNull(@Nullable IAnyAtomicItem item) {
     return item == null ? null : toNumeric(item);
@@ -120,6 +129,8 @@ public final class FunctionUtils {
   /**
    * Casts the provided {@code item} as the result type, if the item is not
    * {@code null}.
+   * <p>
+   * Use {@link IItemType#ofTypeOrNull(IItem)} instead.
    *
    * @param <TYPE>
    *          the Java type to cast to
@@ -130,7 +141,7 @@ public final class FunctionUtils {
    * @throws ClassCastException
    *           if the item's type is not compatible with the requested type
    */
-  @Deprecated(since = "3.0.0", forRemoval = true)
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @SuppressWarnings("unchecked")
   @Nullable
   public static <TYPE extends IItem> TYPE asTypeOrNull(@Nullable IItem item) {
@@ -139,6 +150,8 @@ public final class FunctionUtils {
 
   /**
    * Casts the provided {@code item} as the result type.
+   * <p>
+   * Use {@link IItemType#ofType(IItem)} instead.
    *
    * @param <TYPE>
    *          the Java type to cast to
@@ -148,7 +161,7 @@ public final class FunctionUtils {
    * @throws ClassCastException
    *           if the item's type is not compatible with the requested type
    */
-  @Deprecated(since = "3.0.0", forRemoval = true)
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @SuppressWarnings("unchecked")
   @NonNull
   public static <TYPE extends IItem> TYPE asType(@NonNull IItem item) {
@@ -157,6 +170,10 @@ public final class FunctionUtils {
 
   /**
    * Casts the provided {@code item} as the result sequence type.
+   * <p>
+   * Use
+   * {@link ISequence#ofType(gov.nist.secauto.metaschema.core.metapath.type.IItemType)}
+   * instead.
    *
    * @param <TYPE>
    *          the Java type to cast to
@@ -166,7 +183,7 @@ public final class FunctionUtils {
    * @throws ClassCastException
    *           if the sequence's type is not compatible with the requested type
    */
-  @Deprecated(since = "3.0.0", forRemoval = true)
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @SuppressWarnings("unchecked")
   @NonNull
   public static <TYPE extends IItem> ISequence<TYPE> asType(@NonNull ISequence<?> sequence) {
@@ -175,6 +192,8 @@ public final class FunctionUtils {
 
   /**
    * Casts the provided {@code item} as the result type.
+   * <p>
+   * Use {@link IItemType#test(IItem)} instead.
    *
    * @param <TYPE>
    *          the Java type to cast to
@@ -187,7 +206,7 @@ public final class FunctionUtils {
    *           if the provided item is {@code null} or if the item's type is not
    *           assignment compatible to the requested type
    */
-  @Deprecated(since = "3.0.0", forRemoval = true)
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @NonNull
   public static <TYPE extends IItem> TYPE requireType(Class<TYPE> clazz, IItem item) {
     if (item == null) {
@@ -209,6 +228,8 @@ public final class FunctionUtils {
   /**
    * Casts the provided {@code item} as the result type, if the item is not
    * {@code null}.
+   * <p>
+   * Use {@link IItemType#testOrNull(IItem)} instead.
    *
    * @param <TYPE>
    *          the Java type to cast to
@@ -222,7 +243,7 @@ public final class FunctionUtils {
    *           if the provided item is {@code null} or if the item's type is not
    *           assignment compatible to the requested type
    */
-  @Deprecated(since = "3.0.0", forRemoval = true)
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @Nullable
   public static <TYPE extends IItem> TYPE requireTypeOrNull(Class<TYPE> clazz, @Nullable IItem item) {
     if (item == null || clazz.isInstance(item)) {
@@ -242,7 +263,7 @@ public final class FunctionUtils {
    *          the Metapath items to get the data types for
    * @return a stream of data type classes
    */
-  @Deprecated(since = "3.0.0", forRemoval = true)
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @NonNull
   public static Stream<Class<?>> getTypes(@NonNull Stream<? extends IItem> items) {
     return ObjectUtils.notNull(items.map(Object::getClass));
@@ -251,6 +272,10 @@ public final class FunctionUtils {
   /**
    * Generate a list of Metapath item Java type classes from a list of Metapath
    * items.
+   * <p>
+   * Use {@link IItem#getTypes(List)} instead. Note this returns an ordered
+   * collection of {@link IItemType} instances. The class can be accessed using
+   * {@link IItemType#getItemClass()}.
    *
    * @param <T>
    *          the base Java types of the items
@@ -258,7 +283,7 @@ public final class FunctionUtils {
    *          the items to get Java type class for
    * @return a list of corresponding Java type classes for the provided items
    */
-  @Deprecated(since = "3.0.0", forRemoval = true)
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @SuppressWarnings("unchecked")
   @NonNull
   public static <T extends IItem> List<Class<? extends T>> getTypes(@NonNull List<T> items) {
@@ -279,7 +304,7 @@ public final class FunctionUtils {
    *          the Metapath items to analyze
    * @return a mapping of Metapath item class to count
    */
-  @Deprecated(since = "3.0.0", forRemoval = true)
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @NonNull
   public static <T extends IItem> Map<Class<? extends T>, Integer> countTypes(
       @NonNull Set<Class<? extends T>> classes,

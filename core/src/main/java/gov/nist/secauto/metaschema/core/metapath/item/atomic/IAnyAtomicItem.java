@@ -13,6 +13,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.function.IMapItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IMapKey;
 import gov.nist.secauto.metaschema.core.metapath.type.IAtomicOrUnionType;
 import gov.nist.secauto.metaschema.core.metapath.type.IItemType;
+import gov.nist.secauto.metaschema.core.metapath.type.InvalidTypeMetapathException;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.stream.Stream;
@@ -40,6 +41,16 @@ public interface IAnyAtomicItem extends IAtomicValuedItem {
   @NonNull
   default IAnyAtomicItem toAtomicItem() {
     return this;
+  }
+
+  @Override
+  @NonNull
+  default INumericItem toNumeric() {
+    try {
+      return IDecimalItem.cast(this);
+    } catch (InvalidValueForCastFunctionException ex) {
+      throw new InvalidTypeMetapathException(this, ex.getLocalizedMessage(), ex);
+    }
   }
 
   /**

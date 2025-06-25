@@ -23,7 +23,7 @@ class FieldInstanceNoValueNodeItemImpl
       @NonNull IAssemblyNodeItem parent,
       @NonNull INodeItemGenerator generator) {
     super(instance, parent);
-    this.model = ObjectUtils.notNull(Lazy.lazy(generator.newMetaschemaModelSupplier(this)));
+    this.model = ObjectUtils.notNull(Lazy.of(generator.newMetaschemaModelSupplier(this)));
   }
 
   @SuppressWarnings("null")

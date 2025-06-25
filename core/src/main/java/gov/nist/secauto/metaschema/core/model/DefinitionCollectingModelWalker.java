@@ -31,7 +31,7 @@ public abstract class DefinitionCollectingModelWalker
   private final Set<IDefinition> definitions = new LinkedHashSet<>();
 
   @Override
-  protected Void getDefaultData() { // NOPMD - intentional
+  protected Void getDefaultData() {
     return null;
   }
 

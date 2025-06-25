@@ -39,11 +39,13 @@ public final class ItemUtils {
    *           if the item is {@code null} or not an {@link INodeItem}
    */
   // FIXME: make this a method on the type implementation
+  // FIXME: Use IItemType method
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @NonNull
   public static INodeItem checkItemIsNodeItem(
       @NonNull DynamicContext dynamicContext,
       @Nullable IItem item) {
-    return checkItemIsType(dynamicContext, item, INodeItem.class);
+    return checkItemIsType(item, INodeItem.class, dynamicContext);
   }
 
   /**
@@ -57,18 +59,53 @@ public final class ItemUtils {
    * @throws TypeMetapathException
    *           if the item is {@code null} or not an {@link INodeItem}
    */
+  // FIXME: Use IItemType method
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @NonNull
   public static IDocumentBasedNodeItem checkItemIsDocumentNodeItem(
       @NonNull DynamicContext dynamicContext,
       @Nullable IItem item) {
-    return checkItemIsType(dynamicContext, item, IDocumentBasedNodeItem.class);
+    return checkItemIsType(item, IDocumentBasedNodeItem.class, dynamicContext);
   }
 
+  /**
+   * Check that the item is the type specified by {@code clazz}.
+   *
+   * @param <TYPE>
+   *          the Java type the item is required to match
+   * @param item
+   *          the item to check
+   * @param clazz
+   *          the Java class to check the item against
+   * @return the item cast to the required class value
+   * @throws TypeMetapathException
+   *           if the item is {@code null} or does not match the type specified by
+   *           {@code clazz}
+   */
+  // FIXME: make this a method on the type implementation
+  // FIXME: Use IItemType method
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
+  @SuppressWarnings("unchecked")
+  @NonNull
+  public static <TYPE> TYPE checkItemType(@NonNull IItem item, @NonNull Class<? super TYPE> clazz) {
+    if (clazz.isInstance(item)) {
+      return (TYPE) item;
+    }
+    throw new InvalidTypeMetapathException(
+        item,
+        String.format(
+            "The item of type '%s' is not the required type '%s'.",
+            item.getClass().getName(),
+            clazz.getName()));
+  }
+
+  // FIXME: Use IItemType method
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @NonNull
   private static <T extends IItem> T checkItemIsType(
-      @NonNull DynamicContext dynamicContext,
       @Nullable IItem item,
-      @NonNull Class<T> itemClass) {
+      @NonNull Class<T> itemClass,
+      @NonNull DynamicContext dynamicContext) {
     if (itemClass.isInstance(item)) {
       return ObjectUtils.notNull(itemClass.cast(item));
     }
@@ -90,53 +127,28 @@ public final class ItemUtils {
    * The resulting sequence has items of the {@link IDocumentBasedNodeItem} to
    * allow for both module and document querying.
    *
+   * @param dynamicContext
+   *          the Metapath execution context
    * @param items
    *          the node items to get the document roots for
    * @return the document root node items
    */
+  // FIXME: Add to INodeItem
+  @Deprecated(since = "3.0.0.M1", forRemoval = true)
   @NonNull
   public static ISequence<IDocumentBasedNodeItem> getDocumentNodeItems(
       @NonNull DynamicContext dynamicContext,
       @NonNull ISequence<?> items) {
     return ISequence.of(ObjectUtils.notNull(items.stream()
         // ensures a non-null INodeItem instance
-        .map(item -> ItemUtils.checkItemIsNodeItem(dynamicContext, item))
+        .map(item -> checkItemIsNodeItem(dynamicContext, item))
         .map(item -> Axis.ANCESTOR_OR_SELF.execute(ObjectUtils.notNull(item))
             .findFirst().stream()
             .filter(IDocumentBasedNodeItem.class::isInstance)
-            .map(firstItem -> ItemUtils.checkItemIsDocumentNodeItem(dynamicContext, firstItem))
+            .map(firstItem -> checkItemIsDocumentNodeItem(dynamicContext, firstItem))
             .findFirst().orElseThrow(() -> new InvalidTreatTypeDynamicMetapathException(
-                dynamicContext.getExecutionStack(),
                 String.format("The node '%s' is not the descendant of a document node.",
-                    item.getMetapath()))))));
-  }
-
-  /**
-   * Check that the item is the type specified by {@code clazz}.
-   *
-   * @param <TYPE>
-   *          the Java type the item is required to match
-   * @param item
-   *          the item to check
-   * @param clazz
-   *          the Java class to check the item against
-   * @return the item cast to the required class value
-   * @throws TypeMetapathException
-   *           if the item is {@code null} or does not match the type specified by
-   *           {@code clazz}
-   */
-  // FIXME: make this a method on the type implementation
-  @SuppressWarnings("unchecked")
-  @NonNull
-  public static <TYPE> TYPE checkItemType(@NonNull IItem item, @NonNull Class<TYPE> clazz) {
-    if (clazz.isInstance(item)) {
-      return (TYPE) item;
-    }
-    throw new InvalidTypeMetapathException(
-        item,
-        String.format(
-            "The item of type '%s' is not the required type '%s'.",
-            item.getClass().getName(),
-            clazz.getName()));
+                    item.getMetapath()))
+                        .registerEvaluationContext(dynamicContext)))));
   }
 }

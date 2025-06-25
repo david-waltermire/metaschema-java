@@ -33,7 +33,7 @@ class AssemblyInstanceNodeItemImpl
       @NonNull Object value,
       @NonNull INodeItemGenerator generator) {
     super(instance, parent);
-    this.model = ObjectUtils.notNull(Lazy.lazy(generator.newDataModelSupplier(this)));
+    this.model = ObjectUtils.notNull(Lazy.of(generator.newDataModelSupplier(this)));
     this.position = position;
     this.value = value;
   }

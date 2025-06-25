@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.ICollectionValue;
@@ -58,14 +57,18 @@ public final class MapFind {
     // disable construction
   }
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings({ "unused", "PMD.OnlyOneReturn" })
   @NonNull
   private static ISequence<?> execute(@NonNull IFunction function,
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<?> input = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
-    IAnyAtomicItem key = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
+    ISequence<?> input = ObjectUtils.requireNonNull(arguments.get(0));
+    if (input.isEmpty()) {
+      return ISequence.of(IArrayItem.empty());
+    }
+
+    IAnyAtomicItem key = IAnyAtomicItem.type().ofType(arguments.get(1).getFirstItem(true));
 
     return ISequence.of(IArrayItem.ofCollection(
         ObjectUtils.notNull(find((Collection<? extends IItem>) input, key)
@@ -122,7 +125,6 @@ public final class MapFind {
     return retval;
   }
 
-  @SuppressWarnings("unused")
   @NonNull
   private static Stream<ICollectionValue> find(
       @NonNull ICollectionValue value,

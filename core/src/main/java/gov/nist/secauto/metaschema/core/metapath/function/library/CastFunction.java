@@ -6,7 +6,6 @@
 package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunctionExecutor;
@@ -16,7 +15,6 @@ import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
 import gov.nist.secauto.metaschema.core.metapath.type.AbstractAtomicOrUnionType;
 import gov.nist.secauto.metaschema.core.metapath.type.IAtomicOrUnionType;
 import gov.nist.secauto.metaschema.core.qname.IEnhancedQName;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.List;
 
@@ -80,16 +78,9 @@ public final class CastFunction<ITEM extends IAnyAtomicItem> implements IFunctio
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-
-    ISequence<? extends IAnyAtomicItem> arg = FunctionUtils.asType(
-        ObjectUtils.notNull(arguments.get(0)));
-
-    IAnyAtomicItem item = arg.getFirstItem(true);
-    if (item == null) {
-      return ISequence.empty(); // NOPMD - readability
-    }
-
-    ITEM castItem = castExecutor.cast(item);
-    return ISequence.of(castItem);
+    IAnyAtomicItem item = IAnyAtomicItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
+    return item == null
+        ? ISequence.empty()
+        : ISequence.of(castExecutor.cast(item));
   }
 }

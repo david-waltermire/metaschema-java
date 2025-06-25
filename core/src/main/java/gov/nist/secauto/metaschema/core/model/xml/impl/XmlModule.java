@@ -91,7 +91,7 @@ public class XmlModule
    * @throws MetaschemaException
    *           if a processing error occurs
    */
-  public XmlModule( // NOPMD - unavoidable
+  public XmlModule(
       @NonNull URI resource,
       @NonNull METASCHEMADocument xmlObject,
       @NonNull List<? extends IXmlMetaschemaModule> importedModules) throws MetaschemaException {
@@ -99,7 +99,7 @@ public class XmlModule
 
     METASCHEMADocument.METASCHEMA moduleXml = ObjectUtils.requireNonNull(xmlObject.getMETASCHEMA());
 
-    this.staticContext = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.staticContext = ObjectUtils.notNull(Lazy.of(() -> {
       StaticContext.Builder builder = StaticContext.builder()
           .baseUri(resource)
           .defaultModelNamespace(ObjectUtils.requireNonNull(moduleXml.getNamespace()));
@@ -111,7 +111,7 @@ public class XmlModule
       return builder.build();
     }));
     this.module = xmlObject;
-    this.definitions = Lazy.lazy(() -> new Definitions(moduleXml));
+    this.definitions = Lazy.of(() -> new Definitions(moduleXml));
     this.source = ISource.moduleSource(this);
   }
 
@@ -250,7 +250,6 @@ public class XmlModule
     private final Map<Integer, IAssemblyDefinition> assemblyDefinitions;
     private final Map<Integer, IAssemblyDefinition> rootAssemblyDefinitions;
 
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     private Definitions(@NonNull METASCHEMA metaschemaNode) {
 
       // handle definitions in this module

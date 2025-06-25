@@ -40,7 +40,6 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 /**
  * Used to load a set of external constraints from an XML-based resource.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class XmlMetaConstraintLoader
     extends AbstractLoader<List<IConstraintSet>>
     implements IConstraintLoader {

@@ -50,7 +50,6 @@ import java.util.List;
 @SuppressWarnings({
     "PMD.CouplingBetweenObjects",
     "PMD.DataClass",
-    "PMD.ExcessivePublicCount",
     "PMD.FieldNamingConventions",
     "PMD.TooManyFields"
 })

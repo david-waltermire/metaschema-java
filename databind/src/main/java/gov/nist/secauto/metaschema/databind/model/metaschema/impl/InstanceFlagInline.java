@@ -66,7 +66,7 @@ public class InstanceFlagInline
         binding.getAsType(),
         source);
     this.defaultValue = ModelSupport.defaultValue(binding.getDefault(), this.javaTypeAdapter);
-    this.valueConstraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.valueConstraints = ObjectUtils.notNull(Lazy.of(() -> {
       IValueConstrained retval = new ValueConstraintSet(source);
       FlagConstraints constraints = binding.getConstraint();
       if (constraints != null) {
@@ -75,7 +75,7 @@ public class InstanceFlagInline
       return retval;
     }));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(parent.getSourceNodeItem())
+        Lazy.of(() -> (IAssemblyNodeItem) ObjectUtils.notNull(parent.getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getQName())
             .get(position)));
   }

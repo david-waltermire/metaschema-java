@@ -69,7 +69,7 @@ public class InstanceModelGroupedFieldComplex
     super(container);
     this.annotation = annotation;
     this.definition = definition;
-    this.jsonProperties = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.jsonProperties = ObjectUtils.notNull(Lazy.of(() -> {
       Predicate<IBoundInstanceFlag> flagFilter = null;
       IBoundInstanceFlag jsonKey = getEffectiveJsonKey();
       if (jsonKey != null) {
@@ -84,7 +84,7 @@ public class InstanceModelGroupedFieldComplex
       return getDefinition().getJsonProperties(flagFilter);
     }));
     this.properties = ObjectUtils.notNull(
-        Lazy.lazy(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
+        Lazy.of(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
             Arrays.stream(annotation.properties())
                 .map(ModelUtil::toPropertyEntry)
                 .collect(

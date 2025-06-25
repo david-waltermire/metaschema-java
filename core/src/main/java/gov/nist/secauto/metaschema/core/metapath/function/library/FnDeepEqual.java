@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -58,14 +57,9 @@ public final class FnDeepEqual {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<?> parameter1
-        = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
-    ISequence<?> parameter2
-        = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1)));
-
-    // FIXME: support implicit timezone
-    return ISequence.of(
-        IBooleanItem.valueOf(parameter1.deepEquals(parameter2, dynamicContext)));
+    ISequence<?> parameter1 = ObjectUtils.requireNonNull(arguments.get(0));
+    ISequence<?> parameter2 = ObjectUtils.requireNonNull(arguments.get(1));
+    return ISequence.of(IBooleanItem.valueOf(parameter1.deepEquals(parameter2, dynamicContext)));
   }
 
   private FnDeepEqual() {

@@ -62,7 +62,7 @@ public class BindingModuleLoader
   public BindingModuleLoader(
       @NonNull IBindingContext bindingContext,
       @NonNull ModuleLoadingPostProcessor postProcessor) {
-    this.loader = Lazy.lazy(bindingContext::newBoundLoader);
+    this.loader = Lazy.of(bindingContext::newBoundLoader);
     this.postProcessor = postProcessor;
   }
 

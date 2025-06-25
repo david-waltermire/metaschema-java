@@ -30,7 +30,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import nl.talsmasoftware.lazy4j.Lazy;
 
-@SuppressWarnings({ "PMD.GodClass", "PMD.CouplingBetweenObjects" })
 class XmlGlobalFieldDefinition
     extends AbstractGlobalFieldDefinition<XmlModule, IFieldInstance, IFlagInstance> {
   @NonNull
@@ -59,9 +58,9 @@ class XmlGlobalFieldDefinition
       defaultValue = getJavaTypeAdapter().parse(ObjectUtils.requireNonNull(xmlObject.getDefault()));
     }
     this.defaultValue = defaultValue;
-    this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> XmlFlagContainerSupport.newInstance(xmlObject, this)));
+    this.flagContainer = ObjectUtils.notNull(Lazy.of(() -> XmlFlagContainerSupport.newInstance(xmlObject, this)));
     ISource source = module.getSource();
-    this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.constraints = ObjectUtils.notNull(Lazy.of(() -> {
       IValueConstrained retval = new ValueConstraintSet(source);
       if (getXmlObject().isSetConstraint()) {
         ConstraintXmlSupport.parse(retval, ObjectUtils.notNull(getXmlObject().getConstraint()), source);

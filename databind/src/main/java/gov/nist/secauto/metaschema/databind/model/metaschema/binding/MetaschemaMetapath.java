@@ -19,7 +19,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * applied to.
  */
 @SuppressWarnings({
-    "PMD.DataClass",
     "PMD.FieldNamingConventions",
 })
 @MetaschemaAssembly(

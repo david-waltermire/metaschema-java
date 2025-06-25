@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IValuedMutable extends IValued {
   /**
    * Set the provided value on the provided object. The provided object must be of

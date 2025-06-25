@@ -74,24 +74,28 @@ public final class AnyKindTest<T extends INodeItem>
       "flag",
       IFlagNodeItem.class,
       "");
+
   @NonNull
-  private final String signature;
+  private final String testName;
+  @NonNull
+  private final String test;
 
   private AnyKindTest(
       @NonNull String testName,
       @NonNull Class<T> itemClass,
       @NonNull String test) {
     super(itemClass);
-    this.signature = ObjectUtils.notNull(new StringBuilder()
+    this.testName = testName;
+    this.test = test;
+  }
+
+  @Override
+  protected String generateSignature() {
+    return ObjectUtils.notNull(new StringBuilder()
         .append(testName)
         .append('(')
         .append(test)
         .append(')')
         .toString());
-  }
-
-  @Override
-  public String toSignature() {
-    return signature;
   }
 }

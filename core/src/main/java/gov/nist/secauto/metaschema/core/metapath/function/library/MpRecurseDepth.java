@@ -8,7 +8,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.IMetapathExpression;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -80,9 +79,8 @@ public final class MpRecurseDepth {
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    ISequence<INodeItem> initalContext = ISequence.of(FunctionUtils.requireType(INodeItem.class, focus));
-
-    ISequence<? extends IStringItem> arg = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
+    ISequence<INodeItem> initalContext = ISequence.of((INodeItem) INodeItem.type().test(focus));
+    ISequence<? extends IStringItem> arg = arguments.get(0).ofType(IStringItem.type());
     IStringItem recursionPath = ObjectUtils.requireNonNull(arg.getFirstItem(true));
 
     return recurseDepth(initalContext, recursionPath, dynamicContext);
@@ -96,9 +94,8 @@ public final class MpRecurseDepth {
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    ISequence<INodeItem> initalContext = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
-
-    ISequence<? extends IStringItem> arg = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1)));
+    ISequence<INodeItem> initalContext = arguments.get(0).ofType(INodeItem.type());
+    ISequence<? extends IStringItem> arg = arguments.get(1).ofType(IStringItem.type());
     IStringItem recursionPath = ObjectUtils.requireNonNull(arg.getFirstItem(true));
 
     return recurseDepth(initalContext, recursionPath, dynamicContext);

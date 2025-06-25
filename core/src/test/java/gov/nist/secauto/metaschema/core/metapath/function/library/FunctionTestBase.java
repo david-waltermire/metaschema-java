@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.ExpressionTestBase;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
 import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
@@ -70,8 +69,8 @@ public class FunctionTestBase
     assertAll(
         () -> assertEquals(expectedResult, result),
         () -> assertEquals(
-            FunctionUtils.getTypes(expectedResult),
-            FunctionUtils.getTypes(result)));
+            IItem.getTypes(expectedResult),
+            IItem.getTypes(result)));
 
   }
 

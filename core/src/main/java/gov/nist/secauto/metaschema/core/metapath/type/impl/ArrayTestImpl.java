@@ -6,8 +6,10 @@
 package gov.nist.secauto.metaschema.core.metapath.type.impl;
 
 import gov.nist.secauto.metaschema.core.metapath.item.function.IArrayItem;
+import gov.nist.secauto.metaschema.core.metapath.type.AbstractItemTypeBase;
 import gov.nist.secauto.metaschema.core.metapath.type.IArrayTest;
 import gov.nist.secauto.metaschema.core.metapath.type.ISequenceType;
+import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
@@ -15,7 +17,9 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * An item type that applies to all {@link IArrayItem} with a specific value
  * type.
  */
-public class ArrayTestImpl implements IArrayTest {
+public class ArrayTestImpl
+    extends AbstractItemTypeBase
+    implements IArrayTest {
   @NonNull
   private final ISequenceType valueType;
 
@@ -35,7 +39,12 @@ public class ArrayTestImpl implements IArrayTest {
   }
 
   @Override
-  public String toString() {
-    return toSignature();
+  protected String generateSignature() {
+    return ObjectUtils.notNull(
+        new StringBuilder()
+            .append("array(")
+            .append(getValueType().toSignature())
+            .append(')')
+            .toString());
   }
 }

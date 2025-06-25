@@ -53,7 +53,7 @@ public class InstanceModelGroupedAssemblyReference
     this.definition = definition;
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
+        Lazy.of(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getQName())
             .get(position)));
   }

@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.function.JsonFunctionException;
@@ -20,7 +19,6 @@ import gov.nist.secauto.metaschema.core.metapath.item.function.IMapItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IMapKey;
 import gov.nist.secauto.metaschema.core.util.CollectionUtil;
 import gov.nist.secauto.metaschema.core.util.CustomCollectors;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -144,7 +142,7 @@ public final class MapMerge {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<IMapItem<?>> maps = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
+    ISequence<IMapItem<?>> maps = arguments.get(0).ofType(IMapItem.type());
 
     return ISequence.of(merge(maps, CollectionUtil.emptyMap()));
   }
@@ -155,8 +153,8 @@ public final class MapMerge {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<IMapItem<?>> maps = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
-    IMapItem<?> options = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
+    ISequence<IMapItem<?>> maps = arguments.get(0).ofType(IMapItem.type());
+    IMapItem<?> options = IMapItem.type().ofType(arguments.get(1).getFirstItem(true));
 
     return ISequence.of(merge(maps, options));
   }

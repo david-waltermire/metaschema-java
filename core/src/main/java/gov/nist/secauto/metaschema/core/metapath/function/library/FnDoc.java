@@ -9,7 +9,6 @@ import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
 import gov.nist.secauto.metaschema.core.metapath.MetapathException;
 import gov.nist.secauto.metaschema.core.metapath.function.DocumentFunctionException;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -54,14 +53,15 @@ public final class FnDoc {
 
   @SuppressWarnings("unused")
   @NonNull
-  private static ISequence<IDocumentNodeItem> execute(@NonNull IFunction function,
-      @NonNull List<ISequence<?>> arguments, @NonNull DynamicContext dynamicContext,
+  private static ISequence<IDocumentNodeItem> execute(
+      @NonNull IFunction function,
+      @NonNull List<ISequence<?>> arguments,
+      @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<? extends IStringItem> arg = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
-
-    IStringItem item = arg.getFirstItem(true);
-
-    return item == null ? ISequence.empty() : ISequence.of(fnDoc(item, dynamicContext));
+    IStringItem item = IStringItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
+    return item == null
+        ? ISequence.empty()
+        : ISequence.of(fnDoc(item, dynamicContext));
   }
 
   /**
@@ -104,6 +104,7 @@ public final class FnDoc {
    *          the Metapath dynamic context
    * @return the loaded document node item
    */
+  @NonNull
   public static IDocumentNodeItem fnDoc(@NonNull IAnyUriItem documentUri, @NonNull DynamicContext context) {
     // resolve if possible
     IAnyUriItem uri = FnResolveUri.fnResolveUri(documentUri, null, context);

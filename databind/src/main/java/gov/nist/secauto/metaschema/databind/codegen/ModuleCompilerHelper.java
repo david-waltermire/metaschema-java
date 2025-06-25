@@ -113,12 +113,6 @@ public final class ModuleCompilerHelper {
       @NonNull IModule module,
       @NonNull Path classDir,
       @NonNull IBindingConfiguration bindingConfiguration) throws IOException {
-    IProduction production = JavaGenerator.generate(module, classDir, bindingConfiguration);
-    List<IGeneratedClass> classesToCompile = production.getGeneratedClasses().collect(Collectors.toList());
-
-    List<Path> classes = ObjectUtils.notNull(classesToCompile.stream()
-        .map(IGeneratedClass::getClassFile)
-        .collect(Collectors.toUnmodifiableList()));
 
     // configure the compiler
     JavaCompilerSupport compiler = new JavaCompilerSupport(classDir);
@@ -160,6 +154,11 @@ public final class ModuleCompilerHelper {
     handleClassAndModulePath(compiler, useModulePath);
 
     // perform compilation
+    IProduction production = JavaGenerator.generate(module, classDir, bindingConfiguration);
+    List<IGeneratedClass> classesToCompile = production.getGeneratedClasses().collect(Collectors.toList());
+    List<Path> classes = ObjectUtils.notNull(classesToCompile.stream()
+        .map(IGeneratedClass::getClassFile)
+        .collect(Collectors.toUnmodifiableList()));
     JavaCompilerSupport.CompilationResult result = compiler.compile(classes);
 
     if (!result.isSuccessful()) {

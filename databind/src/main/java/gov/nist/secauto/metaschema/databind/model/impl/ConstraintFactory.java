@@ -217,7 +217,6 @@ final class ConstraintFactory {
       @NonNull ISource source,
       @NonNull KeyField... keyFields) {
     for (KeyField keyField : keyFields) {
-      @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // ok
       IKeyField field = IKeyField.of(
           metapath(keyField.target(), source),
           toPattern(keyField.pattern()),

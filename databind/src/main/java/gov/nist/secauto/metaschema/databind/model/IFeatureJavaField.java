@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IFeatureJavaField extends IValuedMutable {
 
   /**
@@ -48,8 +49,6 @@ public interface IFeatureJavaField extends IValuedMutable {
   @Override
   default Object getValue(@NonNull Object parent) {
     Field field = getField();
-    // boolean accessable = field.canAccess(parent);
-    // field.setAccessible(true); // NOPMD - intentional
     Object retval;
     try {
       Object result = field.get(parent);
@@ -59,8 +58,6 @@ public interface IFeatureJavaField extends IValuedMutable {
           String.format("Unable to get the value of field '%s' in class '%s'.", field.getName(),
               field.getDeclaringClass().getName()),
           ex);
-      // } finally {
-      // field.setAccessible(accessable); // NOPMD - intentional
     }
     return retval;
   }
@@ -68,8 +65,6 @@ public interface IFeatureJavaField extends IValuedMutable {
   @Override
   default void setValue(@NonNull Object parentObject, Object value) {
     Field field = getField();
-    // boolean accessable = field.canAccess(parentObject);
-    // field.setAccessible(true); // NOPMD - intentional
     try {
       field.set(parentObject, value);
     } catch (IllegalArgumentException | IllegalAccessException ex) {
@@ -80,8 +75,6 @@ public interface IFeatureJavaField extends IValuedMutable {
               field.getName(),
               field.getDeclaringClass().getName()),
           ex);
-      // } finally {
-      // field.setAccessible(accessable); // NOPMD - intentional
     }
   }
 

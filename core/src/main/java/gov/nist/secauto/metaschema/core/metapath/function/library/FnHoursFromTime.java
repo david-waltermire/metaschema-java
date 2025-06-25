@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -53,7 +52,7 @@ public final class FnHoursFromTime {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ITimeItem arg = FunctionUtils.asTypeOrNull(arguments.get(0).getFirstItem(true));
+    ITimeItem arg = ITimeItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
     return arg == null
         // Per spec, return empty sequence if the arg is null
         ? ISequence.empty()

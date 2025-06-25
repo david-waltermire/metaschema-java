@@ -40,7 +40,6 @@ public interface IMarkupLineItem extends IMarkupItem {
    *          a line of markup
    * @return the new item
    */
-  @SuppressWarnings("PMD.AvoidCatchingGenericException")
   @NonNull
   static IMarkupLineItem valueOf(@NonNull String value) {
     try {

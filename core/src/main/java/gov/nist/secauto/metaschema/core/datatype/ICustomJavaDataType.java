@@ -14,6 +14,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * @param <TYPE>
  *          the type of the custom Java class
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface ICustomJavaDataType<TYPE extends ICustomJavaDataType<TYPE>> {
   /**
    * Provides a copy of the data value associated with the Datatype instance.

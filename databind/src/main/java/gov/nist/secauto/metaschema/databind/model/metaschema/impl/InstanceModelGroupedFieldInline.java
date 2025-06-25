@@ -76,12 +76,12 @@ public class InstanceModelGroupedFieldInline
         binding.getAsType(),
         source);
     this.defaultValue = ModelSupport.defaultValue(binding.getDefault(), this.javaTypeAdapter);
-    this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> FlagContainerSupport.newFlagContainer(
+    this.flagContainer = ObjectUtils.notNull(Lazy.of(() -> FlagContainerSupport.newFlagContainer(
         binding.getFlags(),
         bindingInstance,
         this,
         getParentContainer().getJsonKeyFlagInstanceName())));
-    this.valueConstraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.valueConstraints = ObjectUtils.notNull(Lazy.of(() -> {
       IValueConstrained retval = new ValueConstraintSet(source);
       FieldConstraints constraints = binding.getConstraint();
       if (constraints != null) {
@@ -93,7 +93,7 @@ public class InstanceModelGroupedFieldInline
       return retval;
     }));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
+        Lazy.of(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getQName())
             .get(position)));
   }

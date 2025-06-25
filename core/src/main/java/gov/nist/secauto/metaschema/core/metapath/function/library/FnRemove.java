@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -59,8 +58,8 @@ public final class FnRemove {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<?> target = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
-    IIntegerItem position = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
+    ISequence<?> target = ObjectUtils.requireNonNull(arguments.get(0));
+    IIntegerItem position = IIntegerItem.type().ofType(arguments.get(1).getFirstItem(true));
     return ISequence.ofCollection(fnRemove(target, position));
   }
 

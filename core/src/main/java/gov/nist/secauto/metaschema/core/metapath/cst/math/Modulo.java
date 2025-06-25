@@ -8,7 +8,6 @@ package gov.nist.secauto.metaschema.core.metapath.cst.math;
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.IExpression;
 import gov.nist.secauto.metaschema.core.metapath.cst.IExpressionVisitor;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.impl.OperationFunctions;
 import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.INumericItem;
@@ -56,8 +55,8 @@ public class Modulo
 
   @Override
   protected ISequence<? extends INumericItem> evaluate(DynamicContext dynamicContext, ISequence<?> focus) {
-    INumericItem dividend = FunctionUtils.toNumeric(getLeft().accept(dynamicContext, focus), true);
-    INumericItem divisor = FunctionUtils.toNumeric(getRight().accept(dynamicContext, focus), true);
+    INumericItem dividend = getLeft().accept(dynamicContext, focus).toNumeric(true);
+    INumericItem divisor = getRight().accept(dynamicContext, focus).toNumeric(true);
     return resultOrEmpty(dividend, divisor);
   }
 

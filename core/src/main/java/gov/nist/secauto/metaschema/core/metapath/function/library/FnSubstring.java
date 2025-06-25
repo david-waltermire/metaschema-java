@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -88,13 +87,13 @@ public final class FnSubstring {
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    IStringItem sourceString = FunctionUtils.asTypeOrNull(arguments.get(0).getFirstItem(true));
+    IStringItem sourceString = IStringItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
 
     if (sourceString == null) {
       return ISequence.of(IStringItem.valueOf(""));
     }
 
-    IDecimalItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
+    IDecimalItem start = IDecimalItem.type().ofType(arguments.get(1).getFirstItem(true));
 
     int startIndex = start.round().toIntValueExact();
 
@@ -113,14 +112,14 @@ public final class FnSubstring {
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
 
-    IStringItem sourceString = FunctionUtils.asTypeOrNull(arguments.get(0).getFirstItem(true));
+    IStringItem sourceString = IStringItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
 
     if (sourceString == null) {
       return ISequence.of(IStringItem.valueOf(""));
     }
 
-    IDecimalItem start = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
-    IDecimalItem length = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(2).getFirstItem(true)));
+    IDecimalItem start = IDecimalItem.type().ofType(arguments.get(1).getFirstItem(true));
+    IDecimalItem length = IDecimalItem.type().ofType(arguments.get(2).getFirstItem(true));
 
     return ISequence.of(IStringItem.valueOf(
         fnSubstring(

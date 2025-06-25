@@ -41,7 +41,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  */
 @SuppressWarnings({
     "PMD.AbstractClassWithoutAbstractMethod",
-    "PMD.UseConcurrentHashMap" })
+})
 public abstract class AbstractAbsoluteModelGenerator<
     PARENT extends IContainerModelAbsolute,
     BUILDER extends DefaultChoiceModelBuilder<

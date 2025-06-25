@@ -71,7 +71,6 @@ public class DefaultContainerModelAssemblySupport<
   /**
    * Construct an empty, mutable container.
    */
-  @SuppressWarnings("PMD.UseConcurrentHashMap")
   public DefaultContainerModelAssemblySupport() {
     this(
         new LinkedList<>(),

@@ -7,6 +7,7 @@ package gov.nist.secauto.metaschema.core.model;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface IJsonInstance {
   @NonNull
   String getJsonName();

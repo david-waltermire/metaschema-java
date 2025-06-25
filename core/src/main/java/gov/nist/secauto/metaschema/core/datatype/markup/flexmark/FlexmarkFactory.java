@@ -21,7 +21,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * Provides factory methods for Flexmark processing to support HTML-to-markdown
  * and markdown-to-HTML conversion.
  */
-@SuppressWarnings("PMD.DataClass")
 public final class FlexmarkFactory {
   @NonNull
   private static final FlexmarkFactory SINGLETON = new FlexmarkFactory();

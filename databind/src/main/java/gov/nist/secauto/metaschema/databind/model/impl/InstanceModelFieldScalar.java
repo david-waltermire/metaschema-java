@@ -93,7 +93,7 @@ public final class InstanceModelFieldScalar
         throw new IllegalStateException(String.format("Field '%s' on class '%s' is missing the '%s' annotation.",
             javaField.getName(),
             javaField.getDeclaringClass().getName(),
-            GroupAs.class.getName())); // NOPMD false positive
+            GroupAs.class.getName()));
       }
     } else if (!IGroupAs.SINGLETON_GROUP_AS.equals(groupAs)) {
       // max is 1 and a groupAs is set
@@ -102,7 +102,7 @@ public final class InstanceModelFieldScalar
               "Field '%s' on class '%s' has the '%s' annotation, but maxOccurs=1. A groupAs must not be specfied.",
               javaField.getName(),
               javaField.getDeclaringClass().getName(),
-              GroupAs.class.getName())); // NOPMD false positive
+              GroupAs.class.getName()));
     }
 
     return new InstanceModelFieldScalar(
@@ -121,7 +121,7 @@ public final class InstanceModelFieldScalar
     FieldSupport.bindField(javaField);
     this.javaField = javaField;
     this.annotation = annotation;
-    this.collectionInfo = ObjectUtils.notNull(Lazy.lazy(() -> IModelInstanceCollectionInfo.of(this)));
+    this.collectionInfo = ObjectUtils.notNull(Lazy.of(() -> IModelInstanceCollectionInfo.of(this)));
     this.groupAs = groupAs;
     this.javaTypeAdapter = ModelUtil.getDataTypeAdapter(
         annotation.typeAdapter(),
@@ -131,14 +131,14 @@ public final class InstanceModelFieldScalar
     IModule module = getContainingModule();
     ISource source = module.getSource();
 
-    this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.constraints = ObjectUtils.notNull(Lazy.of(() -> {
       IValueConstrained retval = new ValueConstraintSet(source);
       ValueConstraints valueAnnotation = annotation.valueConstraints();
       ConstraintSupport.parse(valueAnnotation, module.getSource(), retval);
       return retval;
     }));
     this.properties = ObjectUtils.notNull(
-        Lazy.lazy(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
+        Lazy.of(() -> CollectionUtil.unmodifiableMap(ObjectUtils.notNull(
             Arrays.stream(annotation.properties())
                 .map(ModelUtil::toPropertyEntry)
                 .collect(

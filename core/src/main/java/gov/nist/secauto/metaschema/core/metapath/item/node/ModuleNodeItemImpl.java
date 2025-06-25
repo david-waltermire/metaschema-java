@@ -23,7 +23,7 @@ class ModuleNodeItemImpl
       @NonNull IModule module,
       @NonNull INodeItemGenerator generator) {
     this.module = module;
-    this.model = ObjectUtils.notNull(Lazy.lazy(generator.newMetaschemaModelSupplier(this)));
+    this.model = ObjectUtils.notNull(Lazy.of(generator.newMetaschemaModelSupplier(this)));
   }
 
   @NonNull

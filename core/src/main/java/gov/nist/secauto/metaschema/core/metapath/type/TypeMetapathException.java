@@ -75,8 +75,6 @@ public class TypeMetapathException
    * Constructs a new exception with the provided {@code code}, {@code message},
    * and no cause.
    *
-   * @param evaluationStack
-   *          the Metapath evaluation stack that lead to this exception
    * @param code
    *          the error code value
    * @param message

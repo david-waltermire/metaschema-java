@@ -77,7 +77,6 @@ public final class ModelSupport {
    *          the text scope value
    * @return the enumerated value
    */
-  @SuppressWarnings("PMD.ImplicitSwitchFallThrough")
   @NonNull
   public static IDefinition.ModuleScope moduleScope(@NonNull String value) {
     IDefinition.ModuleScope retval;

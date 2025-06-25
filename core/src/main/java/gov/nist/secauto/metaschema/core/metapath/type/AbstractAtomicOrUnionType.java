@@ -41,4 +41,9 @@ public abstract class AbstractAtomicOrUnionType<T extends IAnyAtomicItem>
   public T cast(IAnyAtomicItem item) {
     return castExecutor.cast(item);
   }
+
+  @Override
+  protected String generateSignature() {
+    return getQName().toEQName();
+  }
 }

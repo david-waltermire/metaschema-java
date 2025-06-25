@@ -111,9 +111,7 @@ class EvaluateMetapathCommand
   }
 
   @SuppressWarnings({
-      "PMD.OnlyOneReturn", // readability
       "PMD.AvoidCatchingGenericException",
-      "PMD.NPathComplexity",
       "PMD.CognitiveComplexity",
       "PMD.CyclomaticComplexity"
   })

@@ -58,7 +58,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
     "PMD.GodClass" // provides validators for all types
 })
 public class DefaultConstraintValidator
-    implements IConstraintValidator, IMutableConfiguration<ValidationFeature<?>> { // NOPMD - intentional
+    implements IConstraintValidator, IMutableConfiguration<ValidationFeature<?>> {
   private static final Logger LOGGER = LogManager.getLogger(DefaultConstraintValidator.class);
 
   @NonNull
@@ -245,7 +245,7 @@ public class DefaultConstraintValidator
    * @throws ConstraintValidationException
    *           if an unexpected error occurred while validating a constraint
    */
-  private void validateHasCardinality( // NOPMD false positive
+  private void validateHasCardinality(
       @NonNull List<? extends ICardinalityConstraint> constraints,
       @NonNull IAssemblyNodeItem item,
       @NonNull DynamicContext dynamicContext) throws ConstraintValidationException {
@@ -631,7 +631,7 @@ public class DefaultConstraintValidator
    * @throws ConstraintValidationException
    *           if an unexpected error occurred while validating a constraint
    */
-  private void validateIndexHasKey( // NOPMD false positive
+  private void validateIndexHasKey(
       @NonNull List<? extends IIndexHasKeyConstraint> constraints,
       @NonNull IDefinitionNodeItem<?, ?> item,
       @NonNull DynamicContext dynamicContext) throws ConstraintValidationException {

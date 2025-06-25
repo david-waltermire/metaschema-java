@@ -9,6 +9,7 @@ import java.net.URI;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
+@FunctionalInterface
 public interface IUriResolver {
   /**
    * Resolve the provided URI, producing a resolved URI, which may point to a

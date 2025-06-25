@@ -83,12 +83,12 @@ public class InstanceModelGroupedAssemblyInline
     super(parent);
     this.binding = binding;
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
-    this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> FlagContainerSupport.newFlagContainer(
+    this.flagContainer = ObjectUtils.notNull(Lazy.of(() -> FlagContainerSupport.newFlagContainer(
         binding.getFlags(),
         bindingInstance,
         this,
         getParentContainer().getJsonKeyFlagInstanceName())));
-    this.modelContainer = ObjectUtils.notNull(Lazy.lazy(() -> AssemblyModelGenerator.of(
+    this.modelContainer = ObjectUtils.notNull(Lazy.of(() -> AssemblyModelGenerator.of(
         binding.getModel(),
         ObjectUtils.requireNonNull(bindingInstance.getDefinition()
             .getAssemblyInstanceByName(XmlModuleConstants.MODEL_QNAME.getIndexPosition())),
@@ -97,7 +97,7 @@ public class InstanceModelGroupedAssemblyInline
 
     ISource source = parent.getOwningDefinition().getContainingModule().getSource();
 
-    this.modelConstraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.modelConstraints = ObjectUtils.notNull(Lazy.of(() -> {
       IModelConstrained retval = new AssemblyConstraintSet(source);
       AssemblyConstraints constraints = binding.getConstraint();
       if (constraints != null) {
@@ -109,7 +109,7 @@ public class InstanceModelGroupedAssemblyInline
       return retval;
     }));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
+        Lazy.of(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getQName())
             .get(position)));
   }

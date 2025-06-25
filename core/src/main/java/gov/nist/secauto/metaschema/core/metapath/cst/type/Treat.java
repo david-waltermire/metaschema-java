@@ -23,7 +23,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * A compact syntax tree node that supports the Metapath
  * <a href="https://www.w3.org/TR/xpath-31/#id-cast">"cast as" operator</a>.
  */
-@SuppressWarnings("PMD.ShortClassName")
 public class Treat
     extends AbstractExpression {
   @NonNull
@@ -64,9 +63,12 @@ public class Treat
   protected ISequence<?> evaluate(DynamicContext dynamicContext, ISequence<?> focus) {
     ISequence<?> retval = value.accept(dynamicContext, focus);
     if (!type.matches(retval)) {
+
       throw new InvalidTreatTypeDynamicMetapathException(
-          dynamicContext.getExecutionStack(),
-          String.format("The sequence '%s' does not match the sequence type '%s'.", retval, type.toSignature()));
+          String.format("The sequence '%s' does not match the sequence type '%s'.",
+              retval,
+              type.toSignature()))
+                  .registerEvaluationContext(dynamicContext);
     }
     return retval;
   }

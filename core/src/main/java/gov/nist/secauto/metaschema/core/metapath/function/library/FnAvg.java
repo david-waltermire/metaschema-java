@@ -70,8 +70,7 @@ public final class FnAvg {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<? extends IAnyAtomicItem> sequence = FunctionUtils.asType(
-        ObjectUtils.requireNonNull(arguments.get(0)));
+    ISequence<IAnyAtomicItem> sequence = arguments.get(0).ofType(IAnyAtomicItem.type());
 
     return ISequence.of(average(sequence));
   }
@@ -150,7 +149,6 @@ public final class FnAvg {
     return retval;
   }
 
-  @SuppressWarnings("PMD.UnnecessaryCast")
   @NonNull
   private static <T, R extends T> R average(
       @NonNull Collection<? extends T> items,

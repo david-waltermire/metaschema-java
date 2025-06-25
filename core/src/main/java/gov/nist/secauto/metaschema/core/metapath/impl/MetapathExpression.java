@@ -41,9 +41,6 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 /**
  * Supports compiling and executing Metapath expressions.
  */
-@SuppressWarnings({
-    "PMD.CouplingBetweenObjects" // necessary since this class aggregates functionality
-})
 public class MetapathExpression
     extends AbstractMetapathExpression {
 

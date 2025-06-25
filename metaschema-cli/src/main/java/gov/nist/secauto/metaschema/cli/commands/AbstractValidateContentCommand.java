@@ -164,7 +164,6 @@ public abstract class AbstractValidateContentCommand
      * @return the loaded Metaschema module
      * @throws CommandExecutionException
      *           if an error occurred while loading the module
-     * @throws MetaschemaException
      */
     @NonNull
     protected abstract IModule getModule(
@@ -197,7 +196,6 @@ public abstract class AbstractValidateContentCommand
     /**
      * Execute the validation operation.
      */
-    @SuppressWarnings("PMD.OnlyOneReturn") // readability
     @Override
     public void execute() throws CommandExecutionException {
       CommandLine cmdLine = getCommandLine();

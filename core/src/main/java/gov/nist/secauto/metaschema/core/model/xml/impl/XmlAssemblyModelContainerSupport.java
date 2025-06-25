@@ -40,7 +40,6 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * data.
  */
 public final class XmlAssemblyModelContainerSupport {
-  @SuppressWarnings("PMD.UseConcurrentHashMap")
   @NonNull
   private static final XmlObjectParser<Pair<IAssemblyDefinition, ModelBuilder>> XML_MODEL_PARSER
       = new XmlObjectParser<>(ObjectUtils.notNull(
@@ -165,7 +164,7 @@ public final class XmlAssemblyModelContainerSupport {
   }
 
   @SuppressWarnings("unused")
-  private static void handleChoice( // NOPMD false positive
+  private static void handleChoice(
       @NonNull ISource source,
       @NonNull XmlObject obj,
       Pair<IAssemblyDefinition, ModelBuilder> state) {
@@ -176,7 +175,7 @@ public final class XmlAssemblyModelContainerSupport {
   }
 
   @SuppressWarnings("unused")
-  private static void handleChoiceGroup( // NOPMD false positive
+  private static void handleChoiceGroup(
       @NonNull ISource source,
       @NonNull XmlObject obj,
       Pair<IAssemblyDefinition, ModelBuilder> state) {

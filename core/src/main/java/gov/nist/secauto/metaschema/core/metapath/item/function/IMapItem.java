@@ -155,7 +155,7 @@ public interface IMapItem<VALUE extends ICollectionValue>
    * @return a map item containing the specified entries
    */
   @NonNull
-  static <V extends ICollectionValue> IMapItem<V> ofCollection( // NOPMD - intentional
+  static <V extends ICollectionValue> IMapItem<V> ofCollection(
       @NonNull Map<IMapKey, V> map) {
     return map.isEmpty() ? empty() : new MapItemN<>(map);
   }

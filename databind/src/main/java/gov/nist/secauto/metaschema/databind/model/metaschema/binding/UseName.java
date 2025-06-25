@@ -22,7 +22,6 @@ import java.math.BigInteger;
  * Allows the name of the definition to be overridden.
  */
 @SuppressWarnings({
-    "PMD.DataClass",
     "PMD.FieldNamingConventions"
 })
 @MetaschemaField(

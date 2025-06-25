@@ -24,6 +24,7 @@ import gov.nist.secauto.metaschema.core.metapath.item.atomic.IDecimalItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IDurationItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IUntypedAtomicItem;
+import gov.nist.secauto.metaschema.core.metapath.type.IItemType;
 import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.List;
@@ -104,9 +105,7 @@ public final class FnMinMax {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<? extends IAnyAtomicItem> sequence = FunctionUtils.asType(
-        ObjectUtils.requireNonNull(arguments.get(0)));
-
+    ISequence<IAnyAtomicItem> sequence = arguments.get(0).ofType(IAnyAtomicItem.type());
     return ISequence.of(min(sequence));
   }
 
@@ -117,9 +116,7 @@ public final class FnMinMax {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<? extends IAnyAtomicItem> sequence = FunctionUtils.asType(
-        ObjectUtils.requireNonNull(arguments.get(0)));
-
+    ISequence<IAnyAtomicItem> sequence = arguments.get(0).ofType(IAnyAtomicItem.type());
     return ISequence.of(max(sequence));
   }
 
@@ -135,16 +132,13 @@ public final class FnMinMax {
   public static IAnyAtomicItem min(@NonNull List<? extends IAnyAtomicItem> items) {
     // FIXME: support implicit timezone
     return normalize(items)
-        .reduce(null, (item1, item2) -> {
-          // FIXME: figure out a better way to handle implicit namespaces
-          return item1 != null && ComparisonFunctions.valueCompairison(
-              item1,
-              ComparisonFunctions.Operator.LE,
-              ObjectUtils.notNull(item2),
-              new DynamicContext()).toBoolean()
-                  ? item1
-                  : item2;
-        });
+        .reduce(null, (item1, item2) -> item1 != null && ComparisonFunctions.valueCompairison(
+            item1,
+            ComparisonFunctions.Operator.LE,
+            ObjectUtils.notNull(item2),
+            new DynamicContext()).toBoolean()
+                ? item1
+                : item2);
   }
 
   /**
@@ -159,16 +153,13 @@ public final class FnMinMax {
   public static IAnyAtomicItem max(@NonNull List<? extends IAnyAtomicItem> items) {
     // FIXME: support implicit timezone
     return normalize(items)
-        .reduce(null, (item1, item2) -> {
-          // FIXME: figure out a better way to handle implicit namespaces
-          return item1 != null && ComparisonFunctions.valueCompairison(
-              item1,
-              ComparisonFunctions.Operator.GE,
-              ObjectUtils.notNull(item2),
-              new DynamicContext()).toBoolean()
-                  ? item1
-                  : item2;
-        });
+        .reduce(null, (item1, item2) -> item1 != null && ComparisonFunctions.valueCompairison(
+            item1,
+            ComparisonFunctions.Operator.GE,
+            ObjectUtils.notNull(item2),
+            new DynamicContext()).toBoolean()
+                ? item1
+                : item2);
   }
 
   @SuppressWarnings("PMD.OnlyOneReturn") // readability
@@ -231,8 +222,8 @@ public final class FnMinMax {
         InvalidArgumentFunctionException.INVALID_ARGUMENT_TYPE,
         String.format(
             "Values must all be of a single atomic type. Found multiple types: [%s]",
-            FunctionUtils.getTypes(items).stream()
-                .map(Class::getSimpleName)
+            IItem.getTypes(items).stream()
+                .map(IItemType::toSignature)
                 .collect(Collectors.joining(", "))));
   }
 }

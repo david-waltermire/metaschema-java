@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.cst.math;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.IExpression;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyAtomicItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.INumericItem;
@@ -115,7 +114,9 @@ public abstract class AbstractBasicArithmeticExpression
 
     // Find matching strategy for minuend type
     Map<Class<? extends IAnyAtomicItem>, OperationStrategy> typeStrategies = null;
-    for (Map.Entry<Class<? extends IAnyAtomicItem>,
+    // CHECKSTYLE.OFF: Indentation
+    for (Map.Entry<
+        Class<? extends IAnyAtomicItem>,
         Map<Class<? extends IAnyAtomicItem>, OperationStrategy>> entry : strategies.entrySet()) {
       if (entry.getKey().isAssignableFrom(leftClass)) {
         // this is a matching strategy map
@@ -123,11 +124,10 @@ public abstract class AbstractBasicArithmeticExpression
         break;
       }
     }
+    // CHECKSTYLE.ON: Indentation
 
     if (typeStrategies == null) {
-      return operationAsNumeric(
-          FunctionUtils.toNumeric(left),
-          FunctionUtils.toNumeric(right));
+      return operationAsNumeric(left.toNumeric(), right.toNumeric());
     }
 
     // Find matching strategy for subtrahend type

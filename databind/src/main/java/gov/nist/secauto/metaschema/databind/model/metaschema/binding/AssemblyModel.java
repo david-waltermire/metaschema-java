@@ -36,9 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings({
-    "PMD.CouplingBetweenObjects",
     "PMD.DataClass",
-    "PMD.ExcessivePublicCount",
     "PMD.FieldNamingConventions"
 })
 @MetaschemaAssembly(

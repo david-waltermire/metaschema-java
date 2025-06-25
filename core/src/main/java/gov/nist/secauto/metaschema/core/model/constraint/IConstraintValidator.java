@@ -25,6 +25,7 @@ public interface IConstraintValidator {
    *          the Metapath dynamic execution context to use for Metapath
    *          evaluation
    * @throws ConstraintValidationException
+   *           if an error occurred while performing the constraint validation
    * @throws MetapathException
    *           if an error occurred while evaluating a Metapath used in a
    *           constraint
@@ -40,6 +41,7 @@ public interface IConstraintValidator {
    *          the Metapath dynamic execution context to use for Metapath
    *          evaluation
    * @throws ConstraintValidationException
+   *           if an error occurred while performing the constraint validation
    * @throws MetapathException
    *           if an error occurred while evaluating a Metapath used in a
    *           constraint

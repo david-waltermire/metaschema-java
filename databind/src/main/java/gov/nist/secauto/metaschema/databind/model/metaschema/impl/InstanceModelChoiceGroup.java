@@ -57,13 +57,13 @@ public class InstanceModelChoiceGroup
     super(parent);
     this.binding = binding;
     this.groupAs = ModelSupport.groupAs(binding.getGroupAs(), parent.getContainingModule());
-    this.modelContainer = ObjectUtils.notNull(Lazy.lazy(() -> ChoiceGroupModelGenerator.of(
+    this.modelContainer = ObjectUtils.notNull(Lazy.of(() -> ChoiceGroupModelGenerator.of(
         binding,
         bindingInstance,
         this,
         nodeItemFactory)));
     this.boundNodeItem = ObjectUtils.notNull(
-        Lazy.lazy(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
+        Lazy.of(() -> (IAssemblyNodeItem) ObjectUtils.notNull(getContainingDefinition().getSourceNodeItem())
             .getModelItemsByName(bindingInstance.getQName())
             .get(position)));
   }

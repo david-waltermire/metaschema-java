@@ -16,7 +16,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 public class CloseDetectingInputStream
     extends InputStream {
 
-  @SuppressWarnings("resource")
   @NotOwning
   private final InputStream delegate;
   private boolean closed;

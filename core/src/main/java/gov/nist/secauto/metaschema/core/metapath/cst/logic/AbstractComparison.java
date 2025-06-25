@@ -17,7 +17,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
  * expressions representing the left and right sides of the comparison, and a
  * comparison operator.
  */
-public abstract class AbstractComparison // NOPMD - unavoidable
+public abstract class AbstractComparison
     extends AbstractBinaryExpression<IExpression, IExpression>
     implements IBooleanLogicExpression {
 

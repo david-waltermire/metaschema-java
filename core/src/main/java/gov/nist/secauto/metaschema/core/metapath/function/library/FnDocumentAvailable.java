@@ -9,7 +9,6 @@ import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
 import gov.nist.secauto.metaschema.core.metapath.MetapathException;
 import gov.nist.secauto.metaschema.core.metapath.function.DocumentFunctionException;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.function.UriFunctionException;
@@ -18,7 +17,6 @@ import gov.nist.secauto.metaschema.core.metapath.item.ISequence;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IAnyUriItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IBooleanItem;
 import gov.nist.secauto.metaschema.core.metapath.item.atomic.IStringItem;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -57,14 +55,15 @@ public final class FnDocumentAvailable {
 
   @SuppressWarnings("unused")
   @NonNull
-  private static ISequence<IBooleanItem> execute(@NonNull IFunction function,
-      @NonNull List<ISequence<?>> arguments, @NonNull DynamicContext dynamicContext,
+  private static ISequence<IBooleanItem> execute(
+      @NonNull IFunction function,
+      @NonNull List<ISequence<?>> arguments,
+      @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    ISequence<? extends IStringItem> arg = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0)));
-
-    IStringItem item = arg.getFirstItem(true);
-
-    return item == null ? ISequence.empty() : ISequence.of(fnDocAvailable(item, dynamicContext));
+    IStringItem item = IStringItem.type().ofTypeOrNull(arguments.get(0).getFirstItem(true));
+    return item == null
+        ? ISequence.empty()
+        : ISequence.of(fnDocAvailable(item, dynamicContext));
   }
 
   /**
@@ -125,7 +124,7 @@ public final class FnDocumentAvailable {
         connection.connect();
         retval = true;
       }
-    } catch (@SuppressWarnings("unused") IOException | UriFunctionException ex) {
+    } catch (IOException | UriFunctionException ex) {
       // an error occurred while retrieving, report false
       retval = false;
     }

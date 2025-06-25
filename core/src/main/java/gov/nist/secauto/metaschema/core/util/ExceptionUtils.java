@@ -38,6 +38,11 @@ public final class ExceptionUtils {
     return ex.unwrap(wrappedExceptionClass);
   }
 
+  /**
+   * Supports wrapping a check exception as a runtime exception.
+   * <p>
+   * The cause of this exception is immutable.
+   */
   public static final class WrappedException
       extends RuntimeException {
 
@@ -46,12 +51,12 @@ public final class ExceptionUtils {
      */
     private static final long serialVersionUID = 2L;
 
-    public WrappedException(@NonNull Throwable cause) {
+    private WrappedException(@NonNull Throwable cause) {
       super(cause);
     }
 
     @Override
-    public synchronized Throwable initCause(Throwable cause) {
+    public Throwable initCause(Throwable cause) {
       throw new UnsupportedOperationException("must set cause in constructor");
     }
 

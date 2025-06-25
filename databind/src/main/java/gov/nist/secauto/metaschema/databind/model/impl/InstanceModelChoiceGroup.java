@@ -143,23 +143,23 @@ public final class InstanceModelChoiceGroup
     this.javaField = javaField;
     this.annotation = annotation;
     this.groupAs = groupAs;
-    this.collectionInfo = ObjectUtils.notNull(Lazy.lazy(() -> IModelInstanceCollectionInfo.of(this)));
-    this.modelContainer = ObjectUtils.notNull(Lazy.lazy(() -> newContainerModel(
+    this.collectionInfo = ObjectUtils.notNull(Lazy.of(() -> IModelInstanceCollectionInfo.of(this)));
+    this.modelContainer = ObjectUtils.notNull(Lazy.of(() -> newContainerModel(
         this.annotation.assemblies(),
         this.annotation.fields(),
         this)));
-    this.classToInstanceMap = ObjectUtils.notNull(Lazy.lazy(() -> Collections.unmodifiableMap(
+    this.classToInstanceMap = ObjectUtils.notNull(Lazy.of(() -> Collections.unmodifiableMap(
         getNamedModelInstances().stream()
             .map(instance -> instance)
             .collect(Collectors.toMap(
                 item -> item.getDefinition().getBoundClass(),
                 CustomCollectors.identity())))));
-    this.qnameToInstanceMap = ObjectUtils.notNull(Lazy.lazy(() -> Collections.unmodifiableMap(
+    this.qnameToInstanceMap = ObjectUtils.notNull(Lazy.of(() -> Collections.unmodifiableMap(
         getNamedModelInstances().stream()
             .collect(Collectors.toMap(
                 IBoundInstanceModelGroupedNamed::getQName,
                 CustomCollectors.identity())))));
-    this.discriminatorToInstanceMap = ObjectUtils.notNull(Lazy.lazy(() -> Collections.unmodifiableMap(
+    this.discriminatorToInstanceMap = ObjectUtils.notNull(Lazy.of(() -> Collections.unmodifiableMap(
         getNamedModelInstances().stream()
             .collect(Collectors.toMap(
                 IBoundInstanceModelGroupedNamed::getEffectiveDisciminatorValue,

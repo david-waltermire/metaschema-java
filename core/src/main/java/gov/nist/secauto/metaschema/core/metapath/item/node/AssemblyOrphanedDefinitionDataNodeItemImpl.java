@@ -30,7 +30,7 @@ class AssemblyOrphanedDefinitionDataNodeItemImpl
       @NonNull INodeItemGenerator generator) {
     super(definition, baseUri);
     this.value = value;
-    this.model = ObjectUtils.notNull(Lazy.lazy(generator.newDataModelSupplier(this)));
+    this.model = ObjectUtils.notNull(Lazy.of(generator.newDataModelSupplier(this)));
   }
 
   @SuppressWarnings("null")

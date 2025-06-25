@@ -73,7 +73,7 @@ public class DefaultDiagramNode implements IDiagramNode {
                 .map(field -> new Attribute(field.getEffectiveName(), field.getDefinition().getJavaTypeAdapter()))
             : Stream.empty())
         .collect(Collectors.toUnmodifiableList()));
-    this.edges = ObjectUtils.notNull(Lazy.lazy(() -> definition instanceof IAssemblyDefinition
+    this.edges = ObjectUtils.notNull(Lazy.of(() -> definition instanceof IAssemblyDefinition
         ? generateEdges((IAssemblyDefinition) definition)
         : CollectionUtil.emptyList()));
   }

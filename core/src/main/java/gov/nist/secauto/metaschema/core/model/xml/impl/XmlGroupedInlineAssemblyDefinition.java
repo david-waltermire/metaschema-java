@@ -99,22 +99,21 @@ public class XmlGroupedInlineAssemblyDefinition
    * @param parent
    *          the parent container, either a choice or assembly
    */
-  @SuppressWarnings("PMD.NullAssignment")
   public XmlGroupedInlineAssemblyDefinition(
       @NonNull GroupedInlineAssemblyDefinitionType xmlObject,
       @NonNull IChoiceGroupInstance parent) {
     super(parent);
     this.xmlObject = xmlObject;
-    this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> XmlFlagContainerSupport.newInstance(
+    this.flagContainer = ObjectUtils.notNull(Lazy.of(() -> XmlFlagContainerSupport.newInstance(
         xmlObject,
         this,
         parent.getJsonKeyFlagInstanceName())));
     this.modelContainer = ObjectUtils.notNull(
-        Lazy.lazy(() -> XmlAssemblyModelContainerSupport.of(xmlObject.getModel(), this)));
+        Lazy.of(() -> XmlAssemblyModelContainerSupport.of(xmlObject.getModel(), this)));
 
     ISource source = parent.getContainingModule().getSource();
 
-    this.constraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.constraints = ObjectUtils.notNull(Lazy.of(() -> {
       IModelConstrained retval = new AssemblyConstraintSet(source);
       if (getXmlObject().isSetConstraint()) {
         ConstraintXmlSupport.parse(

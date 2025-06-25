@@ -49,7 +49,6 @@ class XmlChoiceGroupInstance
       IFieldInstanceGrouped,
       IAssemblyInstanceGrouped>> modelContainer;
 
-  @SuppressWarnings("PMD.UseConcurrentHashMap")
   @NonNull
   private static final XmlObjectParser<Pair<IChoiceGroupInstance, ModelBuilder>> XML_MODEL_PARSER
       = new XmlObjectParser<>(ObjectUtils.notNull(
@@ -167,7 +166,7 @@ class XmlChoiceGroupInstance
       @NonNull IAssemblyDefinition parent) {
     super(parent);
     this.xmlObject = xmlObject;
-    this.modelContainer = ObjectUtils.notNull(Lazy.lazy(() -> newContainer(
+    this.modelContainer = ObjectUtils.notNull(Lazy.of(() -> newContainer(
         parent.getContainingModule().getSource(),
         xmlObject,
         this)));

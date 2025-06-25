@@ -38,7 +38,6 @@ public class XmlGroupedFieldInstance
    * @param parent
    *          the parent container, either a choice or assembly
    */
-  @SuppressWarnings("PMD.NullAssignment")
   public XmlGroupedFieldInstance(
       @NonNull GroupedFieldReferenceType xmlObject,
       @NonNull IChoiceGroupInstance parent) {

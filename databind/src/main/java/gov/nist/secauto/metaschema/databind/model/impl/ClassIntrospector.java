@@ -15,7 +15,6 @@ public final class ClassIntrospector {
     // disable construction
   }
 
-  @SuppressWarnings("PMD.EmptyCatchBlock")
   public static List<Method> getMatchingMethods(Class<?> clazz, String name, Class<?>... parameterTypes) {
     List<Method> retval = new LinkedList<>();
     Class<?> searchClass = clazz;
@@ -23,7 +22,7 @@ public final class ClassIntrospector {
       try {
         Method method = searchClass.getDeclaredMethod(name, parameterTypes);
         retval.add(method);
-      } catch (@SuppressWarnings("unused") NoSuchMethodException ex) {
+      } catch (NoSuchMethodException ex) {
         // do nothing, no matching method was found
       }
     } while ((searchClass = searchClass.getSuperclass()) != null);
@@ -31,7 +30,6 @@ public final class ClassIntrospector {
     return retval.isEmpty() ? Collections.emptyList() : Collections.unmodifiableList(retval);
   }
 
-  @SuppressWarnings("PMD.EmptyCatchBlock")
   public static Method getMatchingMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
     Method retval = null;
     Class<?> searchClass = clazz;
@@ -40,7 +38,7 @@ public final class ClassIntrospector {
         retval = searchClass.getDeclaredMethod(name, parameterTypes);
         // stop on first found method
         break;
-      } catch (@SuppressWarnings("unused") NoSuchMethodException ex) {
+      } catch (NoSuchMethodException ex) {
         // do nothing, no matching method was found
       }
     } while ((searchClass = searchClass.getSuperclass()) != null);

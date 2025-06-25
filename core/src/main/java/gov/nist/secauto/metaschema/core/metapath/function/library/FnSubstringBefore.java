@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.IItem;
@@ -56,7 +55,7 @@ public final class FnSubstringBefore {
     // disable construction
   }
 
-  @SuppressWarnings({ "unused", "PMD.OnlyOneReturn" })
+  @SuppressWarnings({ "unused" })
   @NonNull
   private static ISequence<IStringItem> executeTwoArg(
       @NonNull IFunction function,
@@ -69,10 +68,10 @@ public final class FnSubstringBefore {
     // ignorable collation units, it is interpreted as the zero-length string.
     IStringItem arg1 = arguments.get(0).isEmpty()
         ? IStringItem.valueOf("")
-        : FunctionUtils.asType(ObjectUtils.notNull(arguments.get(0).getFirstItem(true)));
+        : IStringItem.type().ofType(arguments.get(0).getFirstItem(true));
     IStringItem arg2 = arguments.get(1).isEmpty()
         ? IStringItem.valueOf("")
-        : FunctionUtils.asType(ObjectUtils.notNull(arguments.get(1).getFirstItem(true)));
+        : IStringItem.type().ofType(arguments.get(1).getFirstItem(true));
 
     return ISequence.of(IStringItem.valueOf(fnSubstringBefore(arg1.asString(), arg2.asString())));
   }

@@ -95,7 +95,7 @@ public class DefinitionAssemblyGlobal
     super(module);
     this.binding = binding;
     this.properties = ModelSupport.parseProperties(ObjectUtils.requireNonNull(binding.getProps()));
-    this.flagContainer = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.flagContainer = ObjectUtils.notNull(Lazy.of(() -> {
       JsonKey jsonKey = getBinding().getJsonKey();
       return FlagContainerSupport.newFlagContainer(
           binding.getFlags(),
@@ -103,7 +103,7 @@ public class DefinitionAssemblyGlobal
           this,
           jsonKey == null ? null : jsonKey.getFlagRef());
     }));
-    this.modelContainer = ObjectUtils.notNull(Lazy.lazy(() -> AssemblyModelGenerator.of(
+    this.modelContainer = ObjectUtils.notNull(Lazy.of(() -> AssemblyModelGenerator.of(
         binding.getModel(),
         ObjectUtils.requireNonNull(bindingInstance.getDefinition()
             .getAssemblyInstanceByName(XmlModuleConstants.MODEL_QNAME.getIndexPosition())),
@@ -112,7 +112,7 @@ public class DefinitionAssemblyGlobal
 
     ISource source = module.getSource();
 
-    this.modelConstraints = ObjectUtils.notNull(Lazy.lazy(() -> {
+    this.modelConstraints = ObjectUtils.notNull(Lazy.of(() -> {
       IModelConstrained retval = new AssemblyConstraintSet(source);
       AssemblyConstraints constraints = getBinding().getConstraint();
       if (constraints != null) {
@@ -120,7 +120,7 @@ public class DefinitionAssemblyGlobal
       }
       return retval;
     }));
-    this.boundNodeItem = ObjectUtils.notNull(Lazy.lazy(() -> ObjectUtils.requireNonNull(ModelSupport.toNodeItem(
+    this.boundNodeItem = ObjectUtils.notNull(Lazy.of(() -> ObjectUtils.requireNonNull(ModelSupport.toNodeItem(
         module,
         bindingInstance.getQName(),
         position))));

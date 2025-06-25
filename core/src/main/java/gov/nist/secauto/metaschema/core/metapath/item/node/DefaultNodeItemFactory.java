@@ -167,7 +167,7 @@ final class DefaultNodeItemFactory
       @NonNull IAssemblyNodeItem parent,
       @NonNull INamedModelInstance namedInstance,
       @NonNull Stream<?> itemValues) {
-    AtomicInteger index = new AtomicInteger(); // NOPMD - intentional
+    AtomicInteger index = new AtomicInteger();
 
     // the item values will be all non-null items
     return itemValues.map(itemValue -> {

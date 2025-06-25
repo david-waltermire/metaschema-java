@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.ICollectionValue;
@@ -65,8 +64,8 @@ public final class MapRemove {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IMapItem<V> map = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(0).getFirstItem(true)));
-    ISequence<? extends IAnyAtomicItem> keys = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1)));
+    IMapItem<V> map = IMapItem.type().ofType(arguments.get(0).getFirstItem(true));
+    ISequence<IAnyAtomicItem> keys = arguments.get(1).ofType(IAnyAtomicItem.type());
 
     return ISequence.of(removeItems(map, keys));
   }

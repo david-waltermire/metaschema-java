@@ -45,7 +45,7 @@ public class DefaultXmlSerializer<CLASS extends IBoundObject>
   }
 
   protected final void resetFactory() {
-    this.factory = Lazy.lazy(this::newFactoryInstance);
+    this.factory = Lazy.of(this::newFactoryInstance);
   }
 
   @Override
@@ -134,7 +134,7 @@ public class DefaultXmlSerializer<CLASS extends IBoundObject>
           throw new IOException(ex);
         }
         caughtException.addSuppressed(ex);
-        throw caughtException; // NOPMD - intentional
+        throw caughtException;
       }
     }
   }

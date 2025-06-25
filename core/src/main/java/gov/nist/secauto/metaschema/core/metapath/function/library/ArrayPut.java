@@ -7,7 +7,6 @@ package gov.nist.secauto.metaschema.core.metapath.function.library;
 
 import gov.nist.secauto.metaschema.core.metapath.DynamicContext;
 import gov.nist.secauto.metaschema.core.metapath.MetapathConstants;
-import gov.nist.secauto.metaschema.core.metapath.function.FunctionUtils;
 import gov.nist.secauto.metaschema.core.metapath.function.IArgument;
 import gov.nist.secauto.metaschema.core.metapath.function.IFunction;
 import gov.nist.secauto.metaschema.core.metapath.item.ICollectionValue;
@@ -17,7 +16,6 @@ import gov.nist.secauto.metaschema.core.metapath.item.atomic.IIntegerItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IArrayItem;
 import gov.nist.secauto.metaschema.core.metapath.item.function.IndexOutOfBoundsArrayMetapathException;
 import gov.nist.secauto.metaschema.core.metapath.item.function.NegativeLengthArrayMetapathException;
-import gov.nist.secauto.metaschema.core.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,9 +69,8 @@ public final class ArrayPut {
       @NonNull List<ISequence<?>> arguments,
       @NonNull DynamicContext dynamicContext,
       IItem focus) {
-    IArrayItem<T> array = FunctionUtils.asType(ObjectUtils.requireNonNull(
-        arguments.get(0).getFirstItem(true)));
-    IIntegerItem position = FunctionUtils.asType(ObjectUtils.requireNonNull(arguments.get(1).getFirstItem(true)));
+    IArrayItem<T> array = IArrayItem.type().ofType(arguments.get(0).getFirstItem(true));
+    IIntegerItem position = IIntegerItem.type().ofType(arguments.get(1).getFirstItem(true));
     @SuppressWarnings("unchecked")
     T member = (T) arguments.get(2).toCollectionValue();
 

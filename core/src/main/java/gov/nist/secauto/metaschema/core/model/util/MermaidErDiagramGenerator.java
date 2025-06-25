@@ -36,7 +36,7 @@ import nl.talsmasoftware.lazy4j.Lazy;
 public final class MermaidErDiagramGenerator {
   @NonNull
   private static final Lazy<Map<IDiagramNode.Relationship, Pair<String, String>>> RELATIONSHIP_SYMBOLS
-      = ObjectUtils.notNull(Lazy.lazy(() -> {
+      = ObjectUtils.notNull(Lazy.of(() -> {
         Map<IDiagramNode.Relationship, Pair<String, String>> retval = new EnumMap<>(IDiagramNode.Relationship.class);
 
         retval.put(IDiagramNode.Relationship.ZERO_OR_ONE, Pair.of("|o", "o|"));

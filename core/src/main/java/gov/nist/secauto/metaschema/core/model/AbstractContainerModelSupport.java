@@ -42,7 +42,6 @@ public abstract class AbstractContainerModelSupport<
   /**
    * Construct an empty, mutable container.
    */
-  @SuppressWarnings("PMD.UseConcurrentHashMap")
   public AbstractContainerModelSupport() {
     this(
         new LinkedHashMap<>(),
