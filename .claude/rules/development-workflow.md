@@ -123,6 +123,33 @@ No Issues → Proceed to Verification
 - Create PR against `develop` branch
 - Always use squash merge with branch deletion (`gh pr merge --squash --delete-branch`)
 
+### Build Verification Summary Format
+
+After running builds with quality checks, provide a scannable summary:
+
+```text
+Build verified successfully:
+- ✅ Tests: 56 passed, 0 failed
+- ✅ SpotBugs: 0 bugs, 0 errors
+- ✅ PMD: 0 violations, 97 warnings
+- ✅ Checkstyle: 0 violations, 5 warnings
+```
+
+**Guidelines:**
+- Use ✅ for passing checks (no blocking errors/violations), ❌ for failures
+- Always report both errors/violations AND warnings for each tool
+- Add brief context for notable items (e.g., "import order fixed")
+- Report failures clearly so they can be addressed before proceeding
+
+**Example with failures:**
+```text
+Build failed:
+- ✅ Tests: 54 passed, 2 failed
+- ❌ SpotBugs: 2 bugs (null pointer issues), 0 errors
+- ✅ PMD: 0 violations, 45 warnings
+- ❌ Checkstyle: 3 violations (missing Javadoc), 12 warnings
+```
+
 ### Workflow Summary
 ```
 GitHub issue/prompt
