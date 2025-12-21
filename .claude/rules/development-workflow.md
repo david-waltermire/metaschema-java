@@ -29,6 +29,7 @@ If you think any of these, STOP and check for skills:
 
 **Project Skills** (defined in `.claude/skills/`):
 - `prd-construction` - Templates and methodology for creating PRDs and implementation plans
+- `unit-test-writing` - Edge case checklist, test structure patterns, coverage workflow
 
 **Managed Skills** (from superpowers plugin - install via `claude plugin add superpowers-marketplace`):
 - `superpowers:brainstorming` - Refine ideas into designs through collaborative questioning
