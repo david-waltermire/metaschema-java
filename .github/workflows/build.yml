@@ -83,6 +83,10 @@ jobs:
     # -------------------------
     # Maven Build
     # -------------------------
+    - name: Install Plugin
+      run: |
+        # Install the metaschema-maven-plugin first to ensure locally built version is used
+        mvn -B -e -pl core,databind,schemagen,metaschema-maven-plugin -am install -DskipTests
     - name: Build and Test Code
       run: |
         mvn -B -e -Prelease -Psnapshots -DaltDeploymentRepository=repo-snapshot::file://${GITHUB_WORKSPACE}/maven2/ -DaltSnapshotDeploymentRepository=repo-snapshot::file://${GITHUB_WORKSPACE}/maven2/ -DrepositoryId=repo-snapshot deploy
@@ -229,7 +233,11 @@ jobs:
     # -------------------------
     # Maven Build
     # -------------------------
-    - name: Build and Test Website
+    - name: Install Plugin
+      run: |
+        # Install the metaschema-maven-plugin first to ensure locally built version is used
+        mvn -B -e -pl core,databind,schemagen,metaschema-maven-plugin -am install -DskipTests
+    - name: Build Website
       run: |
         mvn -B -e -PCI -Prelease install site site:stage -Dmaven.test.skip=true
     - name: Zip Artifacts for Upload
